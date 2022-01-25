@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Matplotlib">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/015/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/015/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Matplotlib"> 
+
+    
+        <meta property="article:published_time" content="Wed Apr 29 2020 00:03:11 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jan 22 2022 23:47:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/015/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/015/index.html",
+    "headline": "Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性",
+    "datePublished": "Wed Apr 29 2020 00:03:11 GMT+0800",
+    "dateModified": "Sat Jan 22 2022 23:47:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,数据分析,MatplotlibITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%901x00%E3%80%91%E6%B7%BB%E5%8A%A0%E6%96%87%E6%9C%AC%E6%8F%8F%E8%BF%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">【1x00】添加文本描述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x01%E3%80%91%E6%B7%BB%E5%8A%A0%E6%A0%87%E9%A2%98%EF%BC%9Amatplotlib-pyplot-title"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">【1x01】添加标题：matplotlib.pyplot.title()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x02%E3%80%91%E4%B8%BA%E5%9D%90%E6%A0%87%E8%BD%B4%E6%B7%BB%E5%8A%A0%E6%A0%87%E7%AD%BE%EF%BC%9Amatplotlib-pyplot-xlabel-ylabel"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() &#x2F; ylabel()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x03%E3%80%91%E4%BB%BB%E6%84%8F%E4%BD%8D%E7%BD%AE%E6%B7%BB%E5%8A%A0%E6%96%87%E6%9C%AC%EF%BC%9Amatplotlib-pyplot-text"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">【1x03】任意位置添加文本：matplotlib.pyplot.text()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x03%E3%80%91%E4%BB%BB%E6%84%8F%E4%BD%8D%E7%BD%AE%E6%B7%BB%E5%8A%A0%E6%96%87%E6%9C%AC%EF%BC%9Amatplotlib-pyplot-annotate"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">【1x03】任意位置添加文本：matplotlib.pyplot.annotate()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902x00%E3%80%91%E8%AE%BE%E7%BD%AE%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA"><span class="post-toc-number">2.</span> <span class="post-toc-text">【2x00】设置中文显示</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x01%E3%80%91%E5%B8%B8%E8%A7%81%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%B8%A6%E6%96%87%E5%AD%97%E5%8F%8A%E5%85%B6%E8%8B%B1%E6%96%87%E5%90%8D%E7%A7%B0"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">【2x01】常见系统自带文字及其英文名称</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x02%E3%80%91%E6%8C%87%E5%AE%9A%E5%85%A8%E5%B1%80%E5%AD%97%E4%BD%93%EF%BC%9ArcParams"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">【2x02】指定全局字体：rcParams</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x03%E3%80%91%E6%8C%87%E5%AE%9A%E5%8D%95%E4%B8%AA%E5%AD%97%E4%BD%93%EF%BC%9Afontproperties"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">【2x03】指定单个字体：fontproperties</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x04%E3%80%91%E6%8C%87%E5%AE%9A%E6%96%87%E5%AD%97%E8%B7%AF%E5%BE%84%EF%BC%9AFontProperties"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">【2x04】指定文字路径：FontProperties</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x05%E3%80%91%E6%96%87%E5%AD%97%E6%9B%B4%E5%A4%9A%E5%B1%9E%E6%80%A7%EF%BC%9Arc"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">【2x05】文字更多属性：rc</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903x00%E3%80%91%E8%AE%BE%E7%BD%AE%E7%94%BB%E5%B8%83%E5%A4%A7%E5%B0%8F-%E5%88%86%E8%BE%A8%E7%8E%87-%E9%A2%9C%E8%89%B2"><span class="post-toc-number">3.</span> <span class="post-toc-text">【3x00】设置画布大小 &#x2F; 分辨率 &#x2F; 颜色</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%904x00%E3%80%91%E8%AE%BE%E7%BD%AE%E7%BD%91%E6%A0%BC"><span class="post-toc-number">4.</span> <span class="post-toc-text">【4x00】设置网格</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>4月 29, 2020</span> -->
+        <span>2020-04-29 00:03:11</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZklEQVR42u3aS27DMAwFwNz/0um2QBv1kfrYNcarQHAtjQuQNKXX+9HXCw8PDw8PDw8P72a8V3z98qDWeD5Lb214eHh4Z3h/hNoPEycj38d//h7P3lwbHh4e3kHep4Cb3DN+ZhLux3+b3I+Hh4d3Z17CGJfUSarAw8PDezZvHPpn7sHDw8O7My/54M+bvHliyJe+vdeCh4eHF/PyTabzv4/u7+Hh4eEFvPKRpulNrJk0UD50hYeHh7eBlwfiark8syU2sx48PDy8M7zeEdXxgnJewk42yfDw8PDO8JJFJIF7KpRPHPwqfDHg4eHhLeUlAb1XOhfar0E6abZx8fDw8Dbw8gDdW8r8lluhfMfDw8PbzKu2IXrg3ki+Hjw8PLzzvPmmQ7WMzl9innLw8PDwzvOqCaA6fTLSa2Tg4eHhneflQbzaaBgzqskgOnCAh4eHt5lXbTr0Qnz+CqpUPDw8vGt5yWTv4OqV4/mLLpTUeHh4eBt4hS35+BBAD9lrTODh4eFdxasmhmaDtfjKkn8DHh4e3lW8vGBNCuhqO2M+OeHh4eGd5yXTVwP3fHqoPgcPDw/vPK8ZiOMNqrwQz48mFBIDHh4e3gZer0TuvYK8UbvgTBkeHh7eUl71ihqpS5NBddsMDw8PbzdvPij3Ct/x/UlD5OPT8PDw8I7wqsmgfIR0UWKYOnSFh4eHt4GXB+h9aaOXovDw8PD+C6+36PyAQrXsxsPDw7szb9Uxgrwtkn8G4OHh4Z3kJc2ImZHkydXEgIeHh3cVL28B9NJGTs1fU6GNi4eHh7eU97wLDw8PDw8PDw/vBtcX/jyGkvbFvYQAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;3.9k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;17 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/015/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性&url=https://www.itbob.cn/article/015/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性&url=https://www.itbob.cn/article/015/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/015/index.html&text=Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/015/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/015/index.html&title=Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/015/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/10/A68-Matplotlib-01/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/12/A69-Matplotlib-02/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/14/A70-Matplotlib-03/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/16/A71-Matplotlib-04/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/18/A72-Matplotlib-05/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/21/A73-Matplotlib-06/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/24/A74-Matplotlib-07/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/30/A75-Matplotlib-08/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/03/A76-Matplotlib-09/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/08/A77-Matplotlib-10/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/09/A78-Matplotlib-11/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105828049
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【1x00】添加文本描述"><a href="#【1x00】添加文本描述" class="headerlink" title="【1x00】添加文本描述"></a><font color=#FF0000>【1x00】添加文本描述</font></h2><h3 id="【1x01】添加标题：matplotlib-pyplot-title"><a href="#【1x01】添加标题：matplotlib-pyplot-title" class="headerlink" title="【1x01】添加标题：matplotlib.pyplot.title()"></a><font color=#1BC3FB>【1x01】添加标题：matplotlib.pyplot.title()</font></h3><p><code>matplotlib.pyplot.title()</code> 方法可为图表添加标题。</p>
+<p>基本语法：<code>matplotlib.pyplot.title(label[, fontdict=None, loc=None, pad=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>label</td>
+<td>str 类型，标题文字</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;&#39;fontsize&#39;: rcParams[&#39;axes.titlesize&#39;], </code><br><code>&#39;fontweight&#39; : rcParams[&#39;axes.titleweight&#39;], </code><br><code>&#39;color&#39; : rcParams[&#39;axes.titlecolor&#39;], </code><br><code>&#39;verticalalignment&#39;: &#39;baseline&#39;, </code><br><code>&#39;horizontalalignment&#39;: loc&#125;</code></td>
+</tr>
+<tr>
+<td>loc</td>
+<td>str 类型，可选项，三个可选值：center、left、right，默认为 <code>rcParams[&quot;axes.titlelocation&quot;]</code>（默认为 <code>center</code>）</td>
+</tr>
+<tr>
+<td>pad</td>
+<td>float 类型，可选项，标题距轴顶部的偏移量（以磅为单位）。如果为 None，则默认为 <code>rcParams[&quot;axes.titlepad&quot;]</code>（默认为：6.0）</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+x = range(2, 26, 2)
+y = range(0, 12)
+plt.title(&#39;This is a title&#39;)
+plt.plot(x, y)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/01.png" alt="01"></p>
+<h3 id="【1x02】为坐标轴添加标签：matplotlib-pyplot-xlabel-ylabel"><a href="#【1x02】为坐标轴添加标签：matplotlib-pyplot-xlabel-ylabel" class="headerlink" title="【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() / ylabel()"></a><font color=#1BC3FB>【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() / ylabel()</font></h3><p><code>matplotlib.pyplot.xlabel()</code>：为 x 轴添加标签；<br><code>matplotlib.pyplot.ylabel()</code>：为 y 轴添加标签。</p>
+<p>基本语法：<br><code>matplotlib.pyplot.xlabel(xlabel[, fontdict=None, labelpad=None])</code><br><code>matplotlib.pyplot.ylabel(ylabel[, fontdict=None, labelpad=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xlabel / ylabel</td>
+<td>str 类型，要添加的文本信息</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;&#39;fontsize&#39;: rcParams[&#39;axes.titlesize&#39;], </code><br><code>&#39;fontweight&#39; : rcParams[&#39;axes.titleweight&#39;], </code><br><code>&#39;color&#39; : rcParams[&#39;axes.titlecolor&#39;], </code><br><code>&#39;verticalalignment&#39;: &#39;baseline&#39;, </code><br><code>&#39;horizontalalignment&#39;: loc&#125;</code></td>
+</tr>
+<tr>
+<td>labelpad</td>
+<td>float 类型，可选项，x 轴标签距离 x 轴的距离</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+x = range(2, 26, 2)
+y = range(0, 12)
+a = [5, 10, 15, 20, 25, 30]
+b = [3, 4, 5, 6, 7, 8]
+
+plt.title(&#39;This is a title&#39;)
+plt.xlabel(&#39;This is x label&#39;, fontdict=&#123;&#39;fontsize&#39;: 15, &#39;fontweight&#39;: &#39;bold&#39;, &#39;color&#39;: &#39;red&#39;&#125;, labelpad=15.0)
+plt.ylabel(&#39;This is y label&#39;, fontsize=10, fontweight=&#39;light&#39;, color=&#39;blue&#39;, labelpad=15.0)
+
+plt.plot(x, y)
+plt.plot(a, b)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/02.png" alt="02"></p>
+<h3 id="【1x03】任意位置添加文本：matplotlib-pyplot-text"><a href="#【1x03】任意位置添加文本：matplotlib-pyplot-text" class="headerlink" title="【1x03】任意位置添加文本：matplotlib.pyplot.text()"></a><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.text()</font></h3><p><code>matplotlib.pyplot.text()</code> 方法可以在画布上任意位置添加文本描述。</p>
+<p>基本语法：<code>matplotlib.pyplot.text(x, y, s[, fontdict=None, withdash=&lt;deprecated parameter&gt;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x, y</td>
+<td>放置文本的坐标位置</td>
+</tr>
+<tr>
+<td>s</td>
+<td>str 类型，要添加的文本信息</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;&#39;fontsize&#39;: rcParams[&#39;axes.titlesize&#39;], </code><br><code>&#39;fontweight&#39; : rcParams[&#39;axes.titleweight&#39;], </code><br><code>&#39;color&#39; : rcParams[&#39;axes.titlecolor&#39;], </code><br><code>&#39;verticalalignment&#39;: &#39;baseline&#39;, </code><br><code>&#39;horizontalalignment&#39;: loc&#125;</code></td>
+</tr>
+<tr>
+<td>ha</td>
+<td>注释点在注释文本的左边、右边或中间（<code>left</code>、<code>right</code>、<code>center</code>）</td>
+</tr>
+<tr>
+<td>va</td>
+<td>注释点在注释文本的上边、下边、中间或基线 （<code>top</code>、<code>bottom</code>、<code>center</code>、<code>baseline</code>）</td>
+</tr>
+<tr>
+<td>withdash</td>
+<td>bool 类型，可选项，默认为 False，创建一个 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html#matplotlib.text.TextWithDash">TextWithDash</a> 实例而不是一个 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text">Text</a> 实例</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;lines.marker&#39;] = &#39;o&#39;  # 设置线条上点的形状
+a = [5, 10, 15, 20, 25, 30]
+b = [3, 4, 5, 6, 7, 8]
+
+plt.title(&#39;This is a title&#39;)
+plt.xlabel(&#39;This is x label&#39;)
+plt.ylabel(&#39;This is y label&#39;)
+
+plt.text(4, 3.2, &#39;text1&#39;)
+plt.text(9, 4.2, &#39;text2&#39;)
+plt.text(14, 5.2, &#39;text3&#39;)
+plt.text(19, 6.2, &#39;text4&#39;)
+plt.text(24, 7.2, &#39;text5&#39;)
+plt.text(27.5, 7.9, &#39;text6&#39;)
+
+plt.plot(a, b)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/03.png" alt="03"></p>
+<h3 id="【1x03】任意位置添加文本：matplotlib-pyplot-annotate"><a href="#【1x03】任意位置添加文本：matplotlib-pyplot-annotate" class="headerlink" title="【1x03】任意位置添加文本：matplotlib.pyplot.annotate()"></a><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.annotate()</font></h3><p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定坐标点添加文本或 LaTeX 描述，也可以在其他位置添加描述后，使用箭头指向某个坐标点。比 <code>matplotlib.pyplot.text()</code> 更高级。</p>
+<p>基本语法：<code>matplotlib.pyplot.annotate(text, xy, xytext, xycoords, textcoords, ha, va, arrowprops, \*\*kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text</td>
+<td>str 类型，注释的文本</td>
+</tr>
+<tr>
+<td>xy</td>
+<td>被注释的坐标点，格式：<code>(x, y)</code></td>
+</tr>
+<tr>
+<td>xytext</td>
+<td>注释文本的坐标点，格式：<code>(x, y)</code>，默认与 xy 相同</td>
+</tr>
+<tr>
+<td>xycoords</td>
+<td>被注释的坐标点的参考系，取值参见<font color=#FF0000><strong>表一</strong></font>，默认为 ‘data’</td>
+</tr>
+<tr>
+<td>textcoords</td>
+<td>注释文本的坐标点的参考系，取值参见<font color=#FF0000><strong>表二</strong></font>，默认为 xycoords 的值</td>
+</tr>
+<tr>
+<td>ha</td>
+<td>注释点在注释文本的左边、右边或中间（<code>left</code>、<code>right</code>、<code>center</code>）</td>
+</tr>
+<tr>
+<td>va</td>
+<td>注释点在注释文本的上边、下边、中间或基线 （<code>top</code>、<code>bottom</code>、<code>center</code>、<code>baseline</code>）</td>
+</tr>
+<tr>
+<td>arrowprops</td>
+<td>dict 字典类型，箭头的样式<br>如果 arrowprops 不包含键 arrowstyle，则允许的键参见<font color=#FF0000><strong>表三</strong></font><br>如果 arrowprops 包含键 arrowstyle，则允许的键参见<font color=#FF0000><strong>表四</strong></font></td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表一：xycoords 取值类型</font></strong></td></tr></table>
+
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>‘figure points’</td>
+<td>以画布左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘figure pixels’</td>
+<td>以画布左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘figure fraction’</td>
+<td>以画布左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘axes points’</td>
+<td>以绘图区左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘axes pixels’</td>
+<td>以绘图区左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘axes fraction’</td>
+<td>以绘图区左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘data’</td>
+<td>使用被注释对象的坐标系，即数据的 x, y 轴（默认）</td>
+</tr>
+<tr>
+<td>‘polar’</td>
+<td>使用（θ，r）形式的极坐标系</td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表二：textcoords 取值类型</font></strong></td></tr></table>
+
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>‘figure points’</td>
+<td>以画布左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘figure pixels’</td>
+<td>以画布左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘figure fraction’</td>
+<td>以画布左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘axes points’</td>
+<td>以绘图区左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘axes pixels’</td>
+<td>以绘图区左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘axes fraction’</td>
+<td>以绘图区左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘data’</td>
+<td>使用被注释对象的坐标系，即数据的 x, y 轴</td>
+</tr>
+<tr>
+<td>‘polar’</td>
+<td>使用（θ，r）形式的极坐标系</td>
+</tr>
+<tr>
+<td>‘offset points’</td>
+<td>相对于被注释点的坐标 xy 的偏移量，单位是点</td>
+</tr>
+<tr>
+<td>‘offset pixels’</td>
+<td>相对于被注释点的坐标 xy 的偏移量，单位是像素</td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表三：arrowprops 不包含键 arrowstyle 时的取值</font></strong></td></tr></table>
+
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>width</td>
+<td>箭头的宽度，以点为单位</td>
+</tr>
+<tr>
+<td>headwidth</td>
+<td>箭头底部的宽度，以点为单位</td>
+</tr>
+<tr>
+<td>headlength</td>
+<td>箭头的长度，以点为单位</td>
+</tr>
+<tr>
+<td>shrink</td>
+<td>箭头两端收缩占总长的百分比</td>
+</tr>
+<tr>
+<td>?</td>
+<td>其他 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.FancyArrowPatch.html#matplotlib.patches.FancyArrowPatch">matplotlib.patches.FancyArrowPatch</a> 中的关键字，部分常用关键字参见<font color=#FF0000><strong>表五</strong></font></td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表四：arrowprops 包含键 arrowstyle 时的取值</font></strong></td></tr></table>
+
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&#39;-&#39;</code></td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>&#39;-&gt;&#39;</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td><code>&#39;-[&#39;</code></td>
+<td>widthB=1.0,lengthB=0.2,angleB=None</td>
+</tr>
+<tr>
+<td><code>&#39;]-&#39;</code></td>
+<td>widthA=1.0, lengthA=0.2, angleA=None</td>
+</tr>
+<tr>
+<td><code>]-[</code></td>
+<td>widthA=1.0, lengthA=0.2, angleA=None, widthB=1.0, lengthB=0.2, angleB=None</td>
+</tr>
+<tr>
+<td>`’</td>
+<td>-</td>
+</tr>
+<tr>
+<td>`’-</td>
+<td>&gt;’`</td>
+</tr>
+<tr>
+<td><code>&#39;&lt;-&#39;</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td><code>&#39;&lt;-&gt;&#39;</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td>`’&lt;</td>
+<td>-‘`</td>
+</tr>
+<tr>
+<td>`’&lt;</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&#39;fancy&#39;</code></td>
+<td>head_length=0.4,head_width=0.4,tail_width=0.4</td>
+</tr>
+<tr>
+<td><code>&#39;simple&#39;</code></td>
+<td>head_length=0.5,head_width=0.5,tail_width=0.2</td>
+</tr>
+<tr>
+<td><code>&#39;wedge&#39;</code></td>
+<td>tail_width=0.3,shrink_factor=0.5</td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表五：matplotlib.patches.FancyArrowPatch 常用的键</font></strong></td></tr></table>
+
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>arrowstyle</td>
+<td>箭头样式，取值参见<font color=#FF0000><strong>表四</strong></font></td>
+</tr>
+<tr>
+<td>connectionstyle</td>
+<td>连接方式，默认为 <code>arc3</code>，有以下五种取值：<br><code>angle</code>：angleA=90, angleB=0, rad=0.0<br><code>angle3</code>：angleA=90, angleB=0<br><code>arc</code>：angleA=0, angleB=0, armA=None, armB=None, rad=0.0<br><code>arc3</code>：rad=0.0<br><code>bar</code>：armA=0.0, armB=0.0, fraction=0.3, angle=None<br>angle 为箭头旋转的角度，rad 为弧度</td>
+</tr>
+<tr>
+<td>relpos</td>
+<td>箭头起始点相对注释文本的位置，默认为 (0.5, 0.5)，即文本的中心<br>（0，0）表示左下角，（1，1）表示右上角</td>
+</tr>
+<tr>
+<td>patchA</td>
+<td>箭头起点处的图形，默认为文本的边框</td>
+</tr>
+<tr>
+<td>patchB</td>
+<td>箭头终点处的图形，默认为空</td>
+</tr>
+<tr>
+<td>shrinkA</td>
+<td>箭头起点的缩进点数，默认为2</td>
+</tr>
+<tr>
+<td>shrinkB</td>
+<td>箭头终点的缩进点数，默认为2</td>
+</tr>
+<tr>
+<td>？</td>
+<td>其他键值，参见官方文档 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.PathPatch.html#matplotlib.patches.PathPatch">matplotlib.patches.PathPatch</a></td>
+</tr>
+</tbody></table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>connectionstyle 样式举例</font></strong></td></tr></table>
+
+
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/04.png" alt="04"></p>
+<p>应用举例：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(-2*np.pi, 2*np.pi, 0.01)
+y = np.sin(1*x)/x
+plt.title(&#39;This is a title&#39;)
+plt.xlabel(&#39;This is x label&#39;)
+plt.ylabel(&#39;This is y label&#39;)
+
+plt.plot(x, y)
+
+plt.annotate(r&#39;$\lim_&#123;x\to 0&#125;\frac&#123;\sin(x)&#125;&#123;x&#125;=1$&#39;,  # 插入 LaTeX 表达式
+             xy=[0, 1],                              # 被标记的坐标
+             xycoords=&#39;data&#39;,                        # 被标记的坐标的参考系
+             xytext=[50, -40],                        # 注释文本的坐标
+             textcoords=&#39;offset points&#39;,             # 注释文本的坐标的参考系
+             fontsize=16,                            # 字体大小
+             arrowprops=dict(arrowstyle=&quot;-&gt;&quot;, connectionstyle=&quot;arc3, rad=.2&quot;))  # 箭头样式
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/05.png" alt="05"></p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105828049
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【2x00】设置中文显示"><a href="#【2x00】设置中文显示" class="headerlink" title="【2x00】设置中文显示"></a><font color=#FF0000>【2x00】设置中文显示</font></h2><h3 id="【2x01】常见系统自带文字及其英文名称"><a href="#【2x01】常见系统自带文字及其英文名称" class="headerlink" title="【2x01】常见系统自带文字及其英文名称"></a><font color=#1BC3FB>【2x01】常见系统自带文字及其英文名称</font></h3><p>Windows 系统中常见自带字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>黑体</td>
+<td>SimHei</td>
+</tr>
+<tr>
+<td>宋体</td>
+<td>SimSun</td>
+</tr>
+<tr>
+<td>新宋体</td>
+<td>NSimSun</td>
+</tr>
+<tr>
+<td>仿宋</td>
+<td>FangSong</td>
+</tr>
+<tr>
+<td>仿宋_GB2312</td>
+<td>FangSong_GB2312</td>
+</tr>
+<tr>
+<td>楷体_GB2312</td>
+<td>KaiTi_GB2312</td>
+</tr>
+<tr>
+<td>楷体</td>
+<td>KaiTi</td>
+</tr>
+<tr>
+<td>微软正黑</td>
+<td>Microsoft JhengHei</td>
+</tr>
+<tr>
+<td>微软雅黑</td>
+<td>Microsoft YaHei</td>
+</tr>
+<tr>
+<td>细明体</td>
+<td>MingLiU</td>
+</tr>
+<tr>
+<td>标楷体</td>
+<td>DFKai-SB</td>
+</tr>
+<tr>
+<td>新细明体</td>
+<td>PMingLiU</td>
+</tr>
+</tbody></table>
+<p>装有 office 后新添加的字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>隶书</td>
+<td>LiSu</td>
+</tr>
+<tr>
+<td>幼圆</td>
+<td>YouYuan</td>
+</tr>
+<tr>
+<td>华文细黑</td>
+<td>STXihei</td>
+</tr>
+<tr>
+<td>华文楷体</td>
+<td>STKaiti</td>
+</tr>
+<tr>
+<td>华文宋体</td>
+<td>STSong</td>
+</tr>
+<tr>
+<td>华文中宋</td>
+<td>STZhongsong</td>
+</tr>
+<tr>
+<td>华文仿宋</td>
+<td>STFangsong</td>
+</tr>
+<tr>
+<td>方正舒体</td>
+<td>FZShuTi</td>
+</tr>
+<tr>
+<td>方正姚体</td>
+<td>FZYaoti</td>
+</tr>
+<tr>
+<td>华文彩云</td>
+<td>STCaiyun</td>
+</tr>
+<tr>
+<td>华文琥珀</td>
+<td>STHupo</td>
+</tr>
+<tr>
+<td>华文隶书</td>
+<td>STLiti</td>
+</tr>
+<tr>
+<td>华文行楷</td>
+<td>STXingkai</td>
+</tr>
+<tr>
+<td>华文新魏</td>
+<td>STXinwei</td>
+</tr>
+</tbody></table>
+<p>Mac OS 系统中常见自带字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>华文细黑</td>
+<td>STHeiti Light / STXihei</td>
+</tr>
+<tr>
+<td>华文黑体</td>
+<td>STHeiti</td>
+</tr>
+<tr>
+<td>华文楷体</td>
+<td>STKaiti</td>
+</tr>
+<tr>
+<td>华文宋体</td>
+<td>STSong</td>
+</tr>
+<tr>
+<td>华文仿宋</td>
+<td>STFangsong</td>
+</tr>
+<tr>
+<td>丽黑 Pro</td>
+<td>LiHei Pro Medium</td>
+</tr>
+<tr>
+<td>丽宋 Pro</td>
+<td>LiSong Pro Light</td>
+</tr>
+<tr>
+<td>标楷体</td>
+<td>BiauKai</td>
+</tr>
+<tr>
+<td>苹果丽中黑</td>
+<td>Apple LiGothic Medium</td>
+</tr>
+<tr>
+<td>苹果丽细宋</td>
+<td>Apple LiSung Light</td>
+</tr>
+</tbody></table>
+<h3 id="【2x02】指定全局字体：rcParams"><a href="#【2x02】指定全局字体：rcParams" class="headerlink" title="【2x02】指定全局字体：rcParams"></a><font color=#1BC3FB>【2x02】指定全局字体：rcParams</font></h3><p>通过 <code>rcParams[&#39;font.sans-serif&#39;]</code> 可以配置全局字体。</p>
+<p>优点：只需设置一次即可显示所有中文；缺点：污染全局，无法对单个中文设置字体。</p>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]   # 配置全局字体为微软雅黑
+plt.rcParams[&#39;axes.unicode_minus&#39;] = False              # 部分字体负号会显示乱码，可添加此参数进行配置
+a = [-15, -10, -5, 20, 25, 30]
+b = [-5, -4, -3, 6, 7, 8]
+
+plt.title(&#39;这是中文标题&#39;)
+plt.xlabel(&#39;这是 x 轴标签&#39;)
+plt.ylabel(&#39;这是 y 轴标签&#39;)
+
+plt.plot(a, b)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/06.png" alt="06"></p>
+<h3 id="【2x03】指定单个字体：fontproperties"><a href="#【2x03】指定单个字体：fontproperties" class="headerlink" title="【2x03】指定单个字体：fontproperties"></a><font color=#1BC3FB>【2x03】指定单个字体：fontproperties</font></h3><p><code>fontproperties</code> 参数可以加在要设置中文的地方</p>
+<p>优点：不污染全局；缺点：中文太多了挨个设置比较繁琐。</p>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+a = [-15, -10, -5, 20, 25, 30]
+b = [-5, -4, -3, 6, 7, 8]
+
+plt.title(&#39;这是中文标题&#39;, fontproperties=&#39;Microsoft JhengHei&#39;)   # 微软正黑
+plt.xlabel(&#39;这是 x 轴标签&#39;, fontproperties=&#39;STLiti&#39;)             # 华文隶书
+plt.ylabel(&#39;这是 y 轴标签&#39;, fontproperties=&#39;Microsoft YaHei&#39;)    # 微软雅黑
+
+plt.plot(a, b)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/07.png" alt="07"></p>
+<h3 id="【2x04】指定文字路径：FontProperties"><a href="#【2x04】指定文字路径：FontProperties" class="headerlink" title="【2x04】指定文字路径：FontProperties"></a><font color=#1BC3FB>【2x04】指定文字路径：FontProperties</font></h3><p><code>matplotlib</code> 中 <code>font_manager</code> 模块的 <code>FontProperties</code> 方法可以通过指定文字路径来使用本地文字，在 Windows 中，文字路径一般是 <code>C:\Windows\Fonts\</code>，文字名称可以通过其属性来获取，部分用户自己安装的字体可能包含多个类型，可打开字体合集后通过其属性来获取。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/08.png" alt="08"></p>
+<pre><code class="python">import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
+
+font = FontProperties(fname=r&quot;C:\Windows\Fonts\STXINGKA.TTF&quot;, size=14)
+a = [-15, -10, -5, 20, 25, 30]
+b = [-5, -4, -3, 6, 7, 8]
+
+plt.title(&#39;这是中文标题&#39;, fontproperties=font)
+plt.xlabel(&#39;这是 x 轴标签&#39;, fontproperties=font)
+plt.ylabel(&#39;这是 y 轴标签&#39;, fontproperties=font)
+
+plt.plot(a, b)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/09.png" alt="09"></p>
+<h3 id="【2x05】文字更多属性：rc"><a href="#【2x05】文字更多属性：rc" class="headerlink" title="【2x05】文字更多属性：rc"></a><font color=#1BC3FB>【2x05】文字更多属性：rc</font></h3><p>rc 参数支持文字的更多属性设置，如字体粗细、大小等，这种方法同样将影响全局。</p>
+<p>官方参考：<a target="_blank" rel="noopener" href="https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc">https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc</a></p>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+font = &#123;&#39;family&#39;: &#39;SimHei&#39;,
+        &#39;weight&#39;: &#39;bold&#39;,
+        &#39;size&#39;: &#39;10&#39;&#125;
+plt.rc(&#39;font&#39;, **font)               # 设置字体的更多属性
+plt.rc(&#39;axes&#39;, unicode_minus=False)  # 显示负号
+
+a = [-15, -10, -5, 20, 25, 30]
+b = [-5, -4, -3, 6, 7, 8]
+
+plt.title(&#39;这是中文标题&#39;)
+plt.xlabel(&#39;这是 x 轴标签&#39;)
+plt.ylabel(&#39;这是 y 轴标签&#39;)
+
+plt.plot(a, b)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/10.png" alt="10"></p>
+<h2 id="【3x00】设置画布大小-分辨率-颜色"><a href="#【3x00】设置画布大小-分辨率-颜色" class="headerlink" title="【3x00】设置画布大小 / 分辨率 / 颜色"></a><font color=#FF0000>【3x00】设置画布大小 / 分辨率 / 颜色</font></h2><p><code>matplotlib.pyplot.figure()</code> 可以设置画布的大小、图片分辨率、颜色等。</p>
+<p>基本语法：<code>matplotlib.pyplot.figure(figsize=None, dpi=None, facecolor=None, edgecolor=None, frameon=True, \*\*kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>figsize</td>
+<td><code>(float, float)</code> 的格式，代表宽度和高度，单位为英寸<br>默认为 <code>rcParams[&quot;figure.figsize&quot;] = [6.4, 4.8]</code>，即：640 x 480</td>
+</tr>
+<tr>
+<td>dpi</td>
+<td>图像分辨率，默认为 <code>rcParams[&quot;figure.figsize&quot;] = 100</code></td>
+</tr>
+<tr>
+<td>facecolor</td>
+<td>图像背景颜色，默认为 <code>rcParams[&quot;figure.edgecolor&quot;] = ‘white’</code></td>
+</tr>
+<tr>
+<td>edgecolor</td>
+<td>图像边缘颜色，默认为 <code>rcParams[’figure.edgecolor’] = ‘white’</code></td>
+</tr>
+<tr>
+<td>frameon</td>
+<td>是否启用图框</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+x = range(2, 26, 2)
+y = range(0, 12)
+
+plt.figure(figsize=(6.5, 5), dpi=120, facecolor=&#39;#BBFFFF&#39;)
+plt.plot(x, y)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/11.png" alt="11"></p>
+<h2 id="【4x00】设置网格"><a href="#【4x00】设置网格" class="headerlink" title="【4x00】设置网格"></a><font color=#FF0000>【4x00】设置网格</font></h2><p><code>matplotlib.pyplot.grid()</code> 方法可以为图表设置网格显示。</p>
+<p>基本语法：<code>matplotlib.pyplot.grid([b=None, which=&#39;major&#39;, axis=&#39;both&#39;, \*\*kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>b</td>
+<td>bool 值，可选项，是否显示网格，值为 <code>None</code> 或 <code>True</code> 则显示，<code>False</code> 不显示</td>
+</tr>
+<tr>
+<td>which</td>
+<td>可选项，在主/次刻度显示网格线，<code>major</code>：主（大）刻度；<code>minor</code>：次（小）刻度；<code>both</code>：两者同时显示</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>可选项，在横/竖轴显示网格线，<code>x</code>：x 轴；<code>y</code>：y 轴；<code>both</code>：两者同时显示</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性，常见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性见下表</td>
+</tr>
+</tbody></table>
+<p>Line2D 属性用法：<code>grid(color=&#39;r&#39;, linestyle=&#39;-&#39;, linewidth=2)</code>，部分常见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性如下：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>alpha</td>
+<td>网格透明度，float 类型，取值范围：<code>[0, 1]</code>，默认为 1.0，即不透明</td>
+</tr>
+<tr>
+<td>antialiased / aa</td>
+<td>是否使用抗锯齿渲染，默认为 True</td>
+</tr>
+<tr>
+<td>color / c</td>
+<td>网格颜色，支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>linestyle / ls</td>
+<td>网格线条样式：<code>&#39;-&#39;</code> or <code>&#39;solid&#39;</code>, <code>&#39;--&#39;</code> or <code>&#39;dashed&#39;</code>, <code>&#39;-.&#39;</code> or <code>&#39;dashdot&#39;</code> <br> <code>&#39;:&#39;</code> or <code>&#39;dotted&#39;</code>, <code>&#39;none&#39;</code> or <code>&#39; &#39;</code> or <code>&#39;&#39;</code></td>
+</tr>
+<tr>
+<td>linewidth / lw</td>
+<td>网格线条宽度，float 类型，默认 0.8</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+a = [-15, -10, -5, 20, 25, 30]
+b = [-5, -4, -3, 6, 7, 8]
+
+plt.title(&#39;这是中文标题&#39;)
+plt.xlabel(&#39;这是 x 轴标签&#39;)
+plt.ylabel(&#39;这是 y 轴标签&#39;)
+plt.grid(axis=&#39;x&#39;, color=&#39;red&#39;, linestyle=&#39;-.&#39;, linewidth=2)
+plt.plot(a, b)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A69/12.png" alt="12"></p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105828049
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/015/">https://www.itbob.cn/article/015/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/016/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/014/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 Pandas（七）：合并数据集 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Pandas">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/031/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/031/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 Pandas（七）：合并数据集 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Pandas"> 
+
+    
+        <meta property="article:published_time" content="Sun Jun 21 2020 20:58:52 GMT+0800">
+        <meta property="article:modified_time" content="Sun Jan 23 2022 00:02:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/031/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/031/index.html",
+    "headline": "Python 数据分析三剑客之 Pandas（七）：合并数据集",
+    "datePublished": "Sun Jun 21 2020 20:58:52 GMT+0800",
+    "dateModified": "Sun Jan 23 2022 00:02:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,数据分析,PandasITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9001x00%E3%80%91concat"><span class="post-toc-number">1.</span> <span class="post-toc-text">【01x00】concat</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9002x00%E3%80%91append"><span class="post-toc-number">2.</span> <span class="post-toc-text">【02x00】append</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9003x00%E3%80%91merge"><span class="post-toc-number">3.</span> <span class="post-toc-text">【03x00】merge</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x01%E3%80%91%E4%B8%80%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【03x01】一对一连接</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x02%E3%80%91%E5%A4%9A%E5%AF%B9%E4%B8%80%E8%BF%9E%E6%8E%A5"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【03x02】多对一连接</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x03%E3%80%91%E5%A4%9A%E5%AF%B9%E5%A4%9A%E8%BF%9E%E6%8E%A5"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【03x03】多对多连接</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x04%E3%80%91%E5%8F%82%E6%95%B0-on-left-on-right-on"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【03x04】参数 on &#x2F; left_on &#x2F; right_on</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x05%E3%80%91%E5%8F%82%E6%95%B0-how"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">【03x05】参数 how</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x06%E3%80%91%E5%8F%82%E6%95%B0-suffixes"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">【03x06】参数 suffixes</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x07%E3%80%91%E5%8F%82%E6%95%B0-left-index-right-index"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">【03x07】参数 left_index &#x2F; right_index</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9004x00%E3%80%91join"><span class="post-toc-number">4.</span> <span class="post-toc-text">【04x00】join</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9005x00%E3%80%91%E5%9B%9B%E7%A7%8D%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="post-toc-number">5.</span> <span class="post-toc-text">【05x00】四种方法的区别</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 Pandas（七）：合并数据集
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>6月 21, 2020</span> -->
+        <span>2020-06-21 20:58:52</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACXUlEQVR42u3aUW6DQAwFwNz/0ukBWuizDQ6Khq8IhSyzldbbt369v/p64eHh4eHh4eHhPYz3iq+jp/4Y4PR+b5TCU3h4eHgrvH+W2oCRTMHvz+ej994NDw8Pb5N3tOCeMybsfKzk+3h4eHhP5iXDnG+pk1KBh4eH90285PtJYJGHGnh4eHjP5OVb5GsLw/w38fDw8PZ5+SHT/ufV8z08PDy8gFduaSrGu0mMm5eBctMVHh4e3g28fCFONsrzJoML3gcPDw/vZl4SClQP/o8AkxKSHJLh4eHh7fAmQcC1paXXvlCue3h4eHhjXr4EJxvo3gSdF4bqxOHh4eHt8PLNbg82P3Ir/AHw8PDwbublW9VeCZncyWMRPDw8vCfwqtvZSfNWLyZuZi14eHh4l/KSAlANC6qFoRdk4OHh4e3zkuP5eXCQt21VN9Z4eHh4m7xksHdwVYvBfOOOh4eH9yle9bDqKmo1Mi6UGTw8PLxF3tFLJJ/Pp6bXZFBtt8LDw8Pb5FU3u9XAt9o6kN/Hw8PDew7vfJvbY+fjjhq58PDw8BZ5vaaB8sI9aCmI2g7w8PDwFnlJcNBb4quxQh4rl+seHh4e3qW8arDbu5O/dB7y4uHh4W3yqld1yHkxKIcgeHh4eDfzeovypOU0n7K8OOHh4eHt8/LANF+4yyHCRa1XeHh4eJu83gKdvFBO7UUSeHh4eM/nzZ+qbpqTUfDw8PCezKuy58dg+b8BeHh4eJu8JIyY3El+uVoY8PDw8D7FyyOA6gF/lZpP0+F9PDw8vJt533fh4eHh4eHh4eE94PoBGiivWwfpTVIAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;6.2k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;31 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Pandas（七）：合并数据集&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/031/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Pandas（七）：合并数据集&url=https://www.itbob.cn/article/031/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Pandas（七）：合并数据集&url=https://www.itbob.cn/article/031/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/031/index.html&text=Python 数据分析三剑客之 Pandas（七）：合并数据集" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/031/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/031/index.html&title=Python 数据分析三剑客之 Pandas（七）：合并数据集" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/031/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Pandas 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/11/A79-Pandas-01/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/13/A80-Pandas-02/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/14/A81-Pandas-03/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/15/A82-Pandas-04/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/16/A83-Pandas-05/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/17/A84-Pandas-06/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/21/A85-Pandas-07/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/22/A86-Pandas-08/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/25/A87-Pandas-09/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/26/A88-Pandas-10/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106830112
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【01x00】concat"><a href="#【01x00】concat" class="headerlink" title="【01x00】concat"></a><font color=#FF0000>【01x00】concat</font></h2><p><code>pandas.concat</code> 可以沿着指定轴将多个对象堆叠到一起。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.concat.html">https://pandas.pydata.org/docs/reference/api/pandas.concat.html</a></p>
+<p>基本语法：</p>
+<pre><code class="python">pandas.concat(objs: Union[Iterable[‘DataFrame’], Mapping[Optional[Hashable], ‘DataFrame’]],
+              axis=&#39;0&#39;,
+              join: str = &quot;&#39;outer&#39;&quot;,
+              ignore_index: bool = &#39;False&#39;,
+              keys=&#39;None&#39;,
+              levels=&#39;None&#39;,
+              names=&#39;None&#39;,
+              verify_integrity: bool = &#39;False&#39;,
+              sort: bool = &#39;False&#39;,
+              copy: bool = &#39;True&#39;) → ’DataFrame’
+</code></pre>
+<pre><code class="python">pandas.concat(objs: Union[Iterable[FrameOrSeriesUnion], Mapping[Optional[Hashable], FrameOrSeriesUnion]],
+              axis=&#39;0&#39;,
+              join: str = &quot;&#39;outer&#39;&quot;,
+              ignore_index: bool = &#39;False&#39;,
+              keys=&#39;None&#39;,
+              levels=&#39;None&#39;,
+              names=&#39;None&#39;,
+              verify_integrity: bool = &#39;False&#39;,
+              sort: bool = &#39;False&#39;,
+              copy: bool = &#39;True&#39;) → FrameOrSeriesUnion
+</code></pre>
+<p>常用参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>objs</td>
+<td>Series 或 DataFrame 对象的序列或映射，要合并的对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>沿指定轴合并，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>&#39;columns’</code></td>
+</tr>
+<tr>
+<td>join</td>
+<td>如何处理其他轴（或多个轴）上的索引，可取值：<code>‘inner’</code>，<code>‘outer’</code>（默认值）<br><code>‘outer’</code>：当 axis = 0 时，列名相同的列会合并，其余列都保留（并集），空值填充；<br><code>‘inner’</code>：当 axis = 0 时，列名相同的列会合并，其余列都舍弃（交集）</td>
+</tr>
+<tr>
+<td>ignore_index</td>
+<td>bool 类型，连接后的值是否使用原索引值，如果为 True，则索引将会是 0, 1, …, n-1</td>
+</tr>
+<tr>
+<td>keys</td>
+<td>序列形式，默认 None，传递 keys 后，会构造一个层次索引，即 MultiIndex 对象，keys 为最外层索引</td>
+</tr>
+<tr>
+<td>levels</td>
+<td>用于构造 MultiIndex 的特定级别（唯一值）。未指定则将从键中推断出来</td>
+</tr>
+<tr>
+<td>names</td>
+<td>列表类型，为索引添加标签</td>
+</tr>
+<tr>
+<td>verify_integrity</td>
+<td>bool 类型，是否检查合并后的索引有无重复项，设置为 <code>True</code> 若有重复项则会报错</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>当 <code>join=&#39;outer&#39;</code> 时对列索引进行排序。当 <code>join=&#39;inner&#39;</code> 时此操作无效</td>
+</tr>
+</tbody></table>
+<p>合并两个 Series 对象：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.Series([&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; obj2 = pd.Series([&#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; pd.concat([obj1, obj2])
+0    a
+1    b
+0    c
+1    d
+dtype: object
+</code></pre>
+<p>设置 <code>ignore_index=True</code>，放弃原有的索引值：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.Series([&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; obj2 = pd.Series([&#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; pd.concat([obj1, obj2], ignore_index=True)
+0    a
+1    b
+2    c
+3    d
+dtype: object
+</code></pre>
+<p>设置 <code>keys</code> 参数，添加最外层的索引：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.Series([&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; obj2 = pd.Series([&#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; pd.concat([obj1, obj2], keys=[&#39;s1&#39;, &#39;s2&#39;])
+s1  0    a
+    1    b
+s2  0    c
+    1    d
+dtype: object
+</code></pre>
+<p>设置 <code>names</code> 参数，为索引添加标签：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.Series([&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; obj2 = pd.Series([&#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; pd.concat([obj1, obj2], keys=[&#39;s1&#39;, &#39;s2&#39;], names=[&#39;Series name&#39;, &#39;Row ID&#39;])
+Series name  Row ID
+s1           0         a
+             1         b
+s2           0         c
+             1         d
+dtype: object
+</code></pre>
+<p>合并 <code>DataFrame</code> 对象：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([[&#39;a&#39;, 1], [&#39;b&#39;, 2]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([[&#39;c&#39;, 3], [&#39;d&#39;, 4]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj1
+  letter  number
+0      a       1
+1      b       2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  letter  number
+0      c       3
+1      d       4
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2])
+  letter  number
+0      a       1
+1      b       2
+0      c       3
+1      d       4
+</code></pre>
+<p>合并 <code>DataFrame</code> 对象，不存在的值将会被 NaN 填充：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([[&#39;a&#39;, 1], [&#39;b&#39;, 2]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([[&#39;c&#39;, 3, &#39;cat&#39;], [&#39;d&#39;, 4, &#39;dog&#39;]], columns=[&#39;letter&#39;, &#39;number&#39;, &#39;animal&#39;])
+&gt;&gt;&gt; obj1
+  letter  number
+0      a       1
+1      b       2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  letter  number animal
+0      c       3    cat
+1      d       4    dog
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2])
+  letter  number animal
+0      a       1    NaN
+1      b       2    NaN
+0      c       3    cat
+1      d       4    dog
+</code></pre>
+<p>合并 <code>DataFrame</code> 对象，设置 <code>join=&quot;inner&quot;</code> 不存在的列将会舍弃：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([[&#39;a&#39;, 1], [&#39;b&#39;, 2]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([[&#39;c&#39;, 3, &#39;cat&#39;], [&#39;d&#39;, 4, &#39;dog&#39;]], columns=[&#39;letter&#39;, &#39;number&#39;, &#39;animal&#39;])
+&gt;&gt;&gt; obj1
+  letter  number
+0      a       1
+1      b       2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  letter  number animal
+0      c       3    cat
+1      d       4    dog
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2], join=&quot;inner&quot;)
+  letter  number
+0      a       1
+1      b       2
+0      c       3
+1      d       4
+</code></pre>
+<p>合并 <code>DataFrame</code> 对象，设置 <code>axis=1</code> 沿 y 轴合并（增加列）：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([[&#39;a&#39;, 1], [&#39;b&#39;, 2]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([[&#39;bird&#39;, &#39;polly&#39;], [&#39;monkey&#39;, &#39;george&#39;]], columns=[&#39;animal&#39;, &#39;name&#39;])
+&gt;&gt;&gt; obj1
+  letter  number
+0      a       1
+1      b       2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+   animal    name
+0    bird   polly
+1  monkey  george
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2], axis=1)
+  letter  number  animal    name
+0      a       1    bird   polly
+1      b       2  monkey  george
+</code></pre>
+<p>设置 <code>verify_integrity=True</code> ，检查新的索引是否有重复项，有重复项会报错：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([1], index=[&#39;a&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([2], index=[&#39;a&#39;])
+&gt;&gt;&gt; obj1
+   0
+a  1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+   0
+a  2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2], verify_integrity=True)
+Traceback (most recent call last):
+    ...
+ValueError: Indexes have overlapping values: [&#39;a&#39;]
+</code></pre>
+<p>设置 <code>sort=True</code>，会对列索引进行排序输出：</p>
+<pre><code class="python">&gt;&gt;&gt; obj1 = pd.DataFrame([[&#39;a&#39;, 3], [&#39;d&#39;, 2]], columns=[&#39;letter&#39;, &#39;number&#39;])
+&gt;&gt;&gt; obj2 = pd.DataFrame([[&#39;c&#39;, 1, &#39;cat&#39;], [&#39;b&#39;, 4, &#39;dog&#39;]], columns=[&#39;letter&#39;, &#39;number&#39;, &#39;animal&#39;])
+&gt;&gt;&gt; obj1
+  letter  number
+0      a       3
+1      d       2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  letter  number animal
+0      c       1    cat
+1      b       4    dog
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.concat([obj1, obj2], sort=True)
+  animal letter  number
+0    NaN      a       3
+1    NaN      d       2
+0    cat      c       1
+1    dog      b       4
+</code></pre>
+<h2 id="【02x00】append"><a href="#【02x00】append" class="headerlink" title="【02x00】append"></a><font color=#FF0000>【02x00】append</font></h2><p>Append 方法事实上是在一个 Series / DataFrame 对象后最追加另一个 Series / DataFrame 对象并返回一个新对象，不改变原对象的值。</p>
+<p>基本语法：</p>
+<ul>
+<li><p><code>Series.append(self, to_append, ignore_index=False, verify_integrity=False)</code></p>
+</li>
+<li><p><code>DataFrame.append(self, other, ignore_index=False, verify_integrity=False, sort=False)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.append.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.append.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.append.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.append.html</a></p>
+</li>
+</ul>
+<p>参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>to_append / other</td>
+<td>要追加的数据</td>
+</tr>
+<tr>
+<td>ignore_index</td>
+<td>bool 类型，连接后的值是否使用原索引值，如果为 True，则索引将会是 0, 1, …, n-1</td>
+</tr>
+<tr>
+<td>verify_integrity</td>
+<td>bool 类型，是否检查合并后的索引有无重复项，设置为 <code>True</code> 若有重复项则会报错</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否对列索引（columns）进行排序，默认 False</td>
+</tr>
+</tbody></table>
+<p>合并 Series 对象：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.Series([1, 2, 3])
+&gt;&gt;&gt; obj2 = pd.Series([4, 5, 6])
+&gt;&gt;&gt; obj3 = pd.Series([4, 5, 6], index=[3, 4, 5])
+&gt;&gt;&gt; obj1
+0    1
+1    2
+2    3
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+0    4
+1    5
+2    6
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj3
+3    4
+4    5
+5    6
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj2)
+0    1
+1    2
+2    3
+0    4
+1    5
+2    6
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj3)
+0    1
+1    2
+2    3
+3    4
+4    5
+5    6
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj2, ignore_index=True)
+0    1
+1    2
+2    3
+3    4
+4    5
+5    6
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj2, verify_integrity=True)
+Traceback (most recent call last):
+...
+ValueError: Indexes have overlapping values: Int64Index([0, 1, 2], dtype=&#39;int64&#39;)
+</code></pre>
+<p>合并 DataFrame 对象：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame([[1, 2], [3, 4]], columns=list(&#39;AB&#39;))
+&gt;&gt;&gt; obj2 = pd.DataFrame([[5, 6], [7, 8]], columns=list(&#39;AB&#39;))
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1
+   A  B
+0  1  2
+1  3  4
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+   A  B
+0  5  6
+1  7  8
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj2)
+   A  B
+0  1  2
+1  3  4
+0  5  6
+1  7  8
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1.append(obj2, ignore_index=True)
+   A  B
+0  1  2
+1  3  4
+2  5  6
+3  7  8
+</code></pre>
+<p>以下虽然不是生成 DataFrames 的推荐方法，但演示了从多个数据源生成 DataFrames 的两种方法：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.DataFrame(columns=[&#39;A&#39;])
+&gt;&gt;&gt; for i in range(5):
+    obj = obj.append(&#123;&#39;A&#39;: i&#125;, ignore_index=True)
+
+    
+&gt;&gt;&gt; obj
+   A
+0  0
+1  1
+2  2
+3  3
+4  4
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.concat([pd.DataFrame([i], columns=[&#39;A&#39;]) for i in range(5)], ignore_index=True)
+   A
+0  0
+1  1
+2  2
+3  3
+4  4
+</code></pre>
+<h2 id="【03x00】merge"><a href="#【03x00】merge" class="headerlink" title="【03x00】merge"></a><font color=#FF0000>【03x00】merge</font></h2><p>将不同的数据源进行合并是数据科学中常见的操作，这既包括将两个不同的数据集非常简单地拼接在一起，也包括用数据库那样的连接（join）与合并（merge）操作处理有重叠字段的数据集。Series 与DataFrame 都具备这类操作，Pandas 的函数与方法让数据合并变得快速简单。</p>
+<p>数据集的合并（merge）或连接（join）运算是通过一个或多个键将行连接起来的。这些运算是关系型数据库（基于SQL）的核心。Pandas 的 merge 函数是对数据应用这些算法的主要切入点。</p>
+<p><font color=#FF0000> <strong><code>pandas.merge</code> 可根据一个或多个连接键将不同 DataFrame 中的行连接起来。</strong></font></p>
+<p>基本语法：</p>
+<pre><code class="python">pandas.merge(left,
+             right,
+             how: str = &#39;inner&#39;,
+             on=None,
+             left_on=None,
+             right_on=None,
+             left_index: bool = False,
+             right_index: bool = False,
+             sort: bool = False,
+             suffixes=&#39;_x&#39;, &#39;_y&#39;,
+             copy: bool = True,
+             indicator: bool = False,
+             validate=None) → ’DataFrame’
+</code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.merge.html">https://pandas.pydata.org/docs/reference/api/pandas.merge.html</a></p>
+<p>常见参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>left</td>
+<td>参与合并的左侧 DataFrame 对象</td>
+</tr>
+<tr>
+<td>right</td>
+<td>参与合并的右侧 DataFrame 对象</td>
+</tr>
+<tr>
+<td>how</td>
+<td>合并方式，默认 <code>&#39;inner&#39;</code><br><code>&#39;inner&#39;</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>&#39;outer&#39;</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>&#39;left&#39;</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>&#39;right&#39;</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+</tr>
+<tr>
+<td>on</td>
+<td>用于连接的列名。必须存在于左右两个 Dataframe对象中<br>如果未指定，且其他连接键也未指定，则以 left 和 right 列名的交集作为连接键</td>
+</tr>
+<tr>
+<td>left_on</td>
+<td>左侧 DataFrame 对象中用作连接键的列</td>
+</tr>
+<tr>
+<td>right_on</td>
+<td>右侧 DataFrame 对象中用作连接键的列</td>
+</tr>
+<tr>
+<td>left_index</td>
+<td>bool 类型，是否使用左侧 DataFrame 对象中的索引（index）作为连接键，默认 False</td>
+</tr>
+<tr>
+<td>right_index</td>
+<td>bool 类型，是否使用右侧 DataFrame 对象中的索引（index）作为连接键，默认 False</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否在结果中按顺序对连接键排序，默认 False。<br>如果为 False，则连接键的顺序取决于联接类型（how 关键字）</td>
+</tr>
+<tr>
+<td>suffixes</td>
+<td>字符串值元组，用于追加到重叠列名的末尾，默认为 <code>(&#39;_x&#39;, &#39;_y&#39;)</code>。<br>例如，如果左右两个 DataFrame 对象都有 <code>data</code> 列时，则结果中就会出现 <code>data_x</code> 和 <code>data_y</code></td>
+</tr>
+</tbody></table>
+<h3 id="【03x01】一对一连接"><a href="#【03x01】一对一连接" class="headerlink" title="【03x01】一对一连接"></a><font color=#4876FF>【03x01】一对一连接</font></h3><p><font color=#FF0000><strong>一对一连接是指两个 DataFrame 对象的列的值没有重复值。</strong></font></p>
+<p>如果不指定任何参数，调用 <code>merge</code> 方法，<code>merge</code> 就会将重叠的列的列名当做键来合并。</p>
+<p>在下面的示例中，两个 DataFrame 对象都有一个列名为 <code>key</code> 的列，未指定按照哪一列来合并，<code>merge</code> 就会默认按照 <code>key</code> 来合并：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;b&#39;, &#39;a&#39;, &#39;c&#39;], &#39;data1&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;c&#39;, &#39;b&#39;], &#39;data2&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj1
+  key  data1
+0   b      0
+1   a      1
+2   c      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  key  data2
+0   a      0
+1   c      1
+2   b      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2)
+  key  data1  data2
+0   b      0      2
+1   a      1      0
+2   c      2      1
+</code></pre>
+<h3 id="【03x02】多对一连接"><a href="#【03x02】多对一连接" class="headerlink" title="【03x02】多对一连接"></a><font color=#4876FF>【03x02】多对一连接</font></h3><p><font color=#FF0000><strong>多对一连接是指两个 DataFrame 对象中，有一个的列的值有重复值。</strong></font>通过多对一连接获得的结果，DataFrame  将会保留重复值。</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;], &#39;data1&#39;: range(7)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;], &#39;data2&#39;: range(3)&#125;)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj1
+  key  data1
+0   b      0
+1   b      1
+2   a      2
+3   c      3
+4   a      4
+5   a      5
+6   b      6
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  key  data2
+0   a      0
+1   b      1
+2   d      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2)
+  key  data1  data2
+0   b      0      1
+1   b      1      1
+2   b      6      1
+3   a      2      0
+4   a      4      0
+5   a      5      0
+</code></pre>
+<h3 id="【03x03】多对多连接"><a href="#【03x03】多对多连接" class="headerlink" title="【03x03】多对多连接"></a><font color=#4876FF>【03x03】多对多连接</font></h3><p><font color=#FF0000><strong>多对多连接是指两个 DataFrame 对象中的列的值都有重复值。</strong></font></p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;], &#39;data1&#39;: range(4)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;], &#39;data2&#39;: range(6)&#125;)
+&gt;&gt;&gt; obj1
+  key  data1
+0   a      0
+1   b      1
+2   b      2
+3   c      3
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  key  data2
+0   a      0
+1   a      1
+2   b      2
+3   b      3
+4   c      4
+5   c      5
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2)
+  key  data1  data2
+0   a      0      0
+1   a      0      1
+2   b      1      2
+3   b      1      3
+4   b      2      2
+5   b      2      3
+6   c      3      4
+7   c      3      5
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106830112
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h3 id="【03x04】参数-on-left-on-right-on"><a href="#【03x04】参数-on-left-on-right-on" class="headerlink" title="【03x04】参数 on / left_on / right_on"></a><font color=#4876FF>【03x04】参数 on / left_on / right_on</font></h3><p>参数 <code>on</code> 用于指定按照某一列来进行合并，若不指定该参数，则会默认按照重叠的列的列名当做键来合并：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;b&#39;, &#39;a&#39;, &#39;c&#39;], &#39;data1&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;c&#39;, &#39;b&#39;], &#39;data2&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj1
+  key  data1
+0   b      0
+1   a      1
+2   c      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  key  data2
+0   a      0
+1   c      1
+2   b      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, on=&#39;key&#39;)
+  key  data1  data2
+0   b      0      2
+1   a      1      0
+2   c      2      1
+</code></pre>
+<p>如果要根据多个键进行合并，传入一个由列名组成的列表即可：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; left = pd.DataFrame(&#123;&#39;key1&#39;: [&#39;foo&#39;, &#39;foo&#39;, &#39;bar&#39;],
+             &#39;key2&#39;: [&#39;one&#39;, &#39;two&#39;, &#39;one&#39;],
+             &#39;lval&#39;: [1, 2, 3]&#125;)
+&gt;&gt;&gt; right = pd.DataFrame(&#123;&#39;key1&#39;: [&#39;foo&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;bar&#39;],
+              &#39;key2&#39;: [&#39;one&#39;, &#39;one&#39;, &#39;one&#39;, &#39;two&#39;],
+              &#39;rval&#39;: [4, 5, 6, 7]&#125;)
+&gt;&gt;&gt; left
+  key1 key2  lval
+0  foo  one     1
+1  foo  two     2
+2  bar  one     3
+&gt;&gt;&gt; 
+&gt;&gt;&gt; right
+  key1 key2  rval
+0  foo  one     4
+1  foo  one     5
+2  bar  one     6
+3  bar  two     7
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(left, right, on=[&#39;key1&#39;, &#39;key2&#39;])
+  key1 key2  lval  rval
+0  foo  one     1     4
+1  foo  one     1     5
+2  bar  one     3     6
+</code></pre>
+<p>如果两个对象的列名不同，就可以使用 <code>left_on</code>、<code>right_on</code> 参数分别进行指定：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;lkey&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;], &#39;data1&#39;: range(7)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;rkey&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;], &#39;data2&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj1
+  lkey  data1
+0    b      0
+1    b      1
+2    a      2
+3    c      3
+4    a      4
+5    a      5
+6    b      6
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  rkey  data2
+0    a      0
+1    b      1
+2    d      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, left_on=&#39;lkey&#39;, right_on=&#39;rkey&#39;)
+  lkey  data1 rkey  data2
+0    b      0    b      1
+1    b      1    b      1
+2    b      6    b      1
+3    a      2    a      0
+4    a      4    a      0
+5    a      5    a      0
+</code></pre>
+<h3 id="【03x05】参数-how"><a href="#【03x05】参数-how" class="headerlink" title="【03x05】参数 how"></a><font color=#4876FF>【03x05】参数 how</font></h3><p>在前面的示例中，结果里面 c 和 d 以及与之相关的数据消失了。默认情况下，<code>merge</code> 做的是内连接（<code>&#39;inner&#39;</code>），结果中的键是交集。其他方式还有：<code>&#39;left&#39;</code>、<code>&#39;right&#39;</code>、<code>&#39;outer&#39;</code>，含义如下：</p>
+<ul>
+<li><code>&#39;inner&#39;</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；</li>
+<li><code>&#39;outer&#39;</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；</li>
+<li><code>&#39;left&#39;</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；</li>
+<li><code>&#39;right&#39;</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj1 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;b&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;], &#39;data1&#39;: range(7)&#125;)
+&gt;&gt;&gt; obj2 = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;], &#39;data2&#39;: range(3)&#125;)
+&gt;&gt;&gt; obj1
+  key  data1
+0   b      0
+1   b      1
+2   a      2
+3   c      3
+4   a      4
+5   a      5
+6   b      6
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2
+  key  data2
+0   a      0
+1   b      1
+2   d      2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, on=&#39;key&#39;, how=&#39;inner&#39;)
+  key  data1  data2
+0   b      0      1
+1   b      1      1
+2   b      6      1
+3   a      2      0
+4   a      4      0
+5   a      5      0
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, on=&#39;key&#39;, how=&#39;outer&#39;)
+  key  data1  data2
+0   b    0.0    1.0
+1   b    1.0    1.0
+2   b    6.0    1.0
+3   a    2.0    0.0
+4   a    4.0    0.0
+5   a    5.0    0.0
+6   c    3.0    NaN
+7   d    NaN    2.0
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, on=&#39;key&#39;, how=&#39;left&#39;)
+  key  data1  data2
+0   b      0    1.0
+1   b      1    1.0
+2   a      2    0.0
+3   c      3    NaN
+4   a      4    0.0
+5   a      5    0.0
+6   b      6    1.0
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(obj1, obj2, on=&#39;key&#39;, how=&#39;right&#39;)
+  key  data1  data2
+0   b    0.0      1
+1   b    1.0      1
+2   b    6.0      1
+3   a    2.0      0
+4   a    4.0      0
+5   a    5.0      0
+6   d    NaN      2
+</code></pre>
+<h3 id="【03x06】参数-suffixes"><a href="#【03x06】参数-suffixes" class="headerlink" title="【03x06】参数 suffixes"></a><font color=#4876FF>【03x06】参数 suffixes</font></h3><p><code>suffixes</code> 参数用于指定附加到左右两个 DataFrame 对象的重叠列名上的字符串：</p>
+<p>在以下示例中，选择按照 <code>key1</code> 进行合并，而两个 DataFrame 对象都包含 <code>key2</code> 列，如果未指定 <code>suffixes</code> 参数，则默认会为两个对象的 <code>key2</code> 加上 <code>_x</code> 和 <code>_y</code>，以便区分它们，如果指定了 <code>suffixes</code> 参数，就会按照添加指定的后缀：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; left = pd.DataFrame(&#123;&#39;key1&#39;: [&#39;foo&#39;, &#39;foo&#39;, &#39;bar&#39;],
+             &#39;key2&#39;: [&#39;one&#39;, &#39;two&#39;, &#39;one&#39;],
+             &#39;lval&#39;: [1, 2, 3]&#125;)
+&gt;&gt;&gt; right = pd.DataFrame(&#123;&#39;key1&#39;: [&#39;foo&#39;, &#39;foo&#39;, &#39;bar&#39;, &#39;bar&#39;],
+              &#39;key2&#39;: [&#39;one&#39;, &#39;one&#39;, &#39;one&#39;, &#39;two&#39;],
+              &#39;rval&#39;: [4, 5, 6, 7]&#125;)
+&gt;&gt;&gt; left
+  key1 key2  lval
+0  foo  one     1
+1  foo  two     2
+2  bar  one     3
+&gt;&gt;&gt; 
+&gt;&gt;&gt; right
+  key1 key2  rval
+0  foo  one     4
+1  foo  one     5
+2  bar  one     6
+3  bar  two     7
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(left, right, on=&#39;key1&#39;)
+  key1 key2_x  lval key2_y  rval
+0  foo    one     1    one     4
+1  foo    one     1    one     5
+2  foo    two     2    one     4
+3  foo    two     2    one     5
+4  bar    one     3    one     6
+5  bar    one     3    two     7
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(left, right, on=&#39;key1&#39;, suffixes=(&#39;_left&#39;, &#39;_right&#39;))
+  key1 key2_left  lval key2_right  rval
+0  foo       one     1        one     4
+1  foo       one     1        one     5
+2  foo       two     2        one     4
+3  foo       two     2        one     5
+4  bar       one     3        one     6
+5  bar       one     3        two     7
+</code></pre>
+<h3 id="【03x07】参数-left-index-right-index"><a href="#【03x07】参数-left-index-right-index" class="headerlink" title="【03x07】参数 left_index / right_index"></a><font color=#4876FF>【03x07】参数 left_index / right_index</font></h3><p>有时候，DataFrame 中的连接键位于其索引中。在这种情况下，可以使用 <code>left_index=True</code> 或<code>right_index=True</code>（或两个都传）以说明索引应该被用作连接键。这种方法称为按索引连接，在 Pandas 中还有个 <code>join</code> 方法可以实现这个功能。</p>
+<p>在以下示例中，按照 left 的 key 列进行连接，而 right 对象的连接键位于其索引中，因此要指定 <code>right_index=True</code>：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; left = pd.DataFrame(&#123;&#39;key&#39;: [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;], &#39;value&#39;: range(6)&#125;)
+&gt;&gt;&gt; right = pd.DataFrame(&#123;&#39;group_val&#39;: [3.5, 7]&#125;, index=[&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; left
+  key  value
+0   a      0
+1   b      1
+2   a      2
+3   a      3
+4   b      4
+5   c      5
+&gt;&gt;&gt; 
+&gt;&gt;&gt; right
+   group_val
+a        3.5
+b        7.0
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pd.merge(left, right, left_on=&#39;key&#39;, right_index=True)
+  key  value  group_val
+0   a      0        3.5
+2   a      2        3.5
+3   a      3        3.5
+1   b      1        7.0
+4   b      4        7.0
+</code></pre>
+<h2 id="【04x00】join"><a href="#【04x00】join" class="headerlink" title="【04x00】join"></a><font color=#FF0000>【04x00】join</font></h2><p>join 方法只适用于 DataFrame 对象，Series 对象没有该方法，该方法用于连接另一个 DataFrame 对象的列（columns）。</p>
+<p>基本语法：<code>DataFrame.join(self, other, on=None, how=&#39;left&#39;, lsuffix=&#39;&#39;, rsuffix=&#39;&#39;, sort=False) → ’DataFrame’</code></p>
+<p>参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>other</td>
+<td>另一个 DataFrame、Series 或 DataFrame 列表对象</td>
+</tr>
+<tr>
+<td>on</td>
+<td>列名称，或者列名称组成的列表、元组，连接的列</td>
+</tr>
+<tr>
+<td>how</td>
+<td>合并方式，默认 <code>&#39;left&#39;</code><br><code>&#39;inner&#39;</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>&#39;outer&#39;</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>&#39;left&#39;</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>&#39;right&#39;</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+</tr>
+<tr>
+<td>lsuffix</td>
+<td>当两个对象有相同的列名时，合并后左边数据列名的后缀</td>
+</tr>
+<tr>
+<td>rsuffix</td>
+<td>当两个对象有相同的列名时，合并后右边数据列名的后缀</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否在结果中按顺序对连接键排序，默认 False。<br>如果为 False，则连接键的顺序取决于联接类型（how 关键字）</td>
+</tr>
+</tbody></table>
+<p>使用 <code>lsuffix</code> 和 <code>rsuffix</code> 参数：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;key&#39;: [&#39;K0&#39;, &#39;K1&#39;, &#39;K2&#39;, &#39;K3&#39;, &#39;K4&#39;, &#39;K5&#39;],
+            &#39;A&#39;: [&#39;A0&#39;, &#39;A1&#39;, &#39;A2&#39;, &#39;A3&#39;, &#39;A4&#39;, &#39;A5&#39;]&#125;)
+&gt;&gt;&gt; other = pd.DataFrame(&#123;&#39;key&#39;: [&#39;K0&#39;, &#39;K1&#39;, &#39;K2&#39;],
+              &#39;B&#39;: [&#39;B0&#39;, &#39;B1&#39;, &#39;B2&#39;]&#125;)
+&gt;&gt;&gt; obj
+  key   A
+0  K0  A0
+1  K1  A1
+2  K2  A2
+3  K3  A3
+4  K4  A4
+5  K5  A5
+&gt;&gt;&gt; 
+&gt;&gt;&gt; other
+  key   B
+0  K0  B0
+1  K1  B1
+2  K2  B2
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.join(other, lsuffix=&#39;_1&#39;, rsuffix=&#39;_2&#39;)
+  key_1   A key_2    B
+0    K0  A0    K0   B0
+1    K1  A1    K1   B1
+2    K2  A2    K2   B2
+3    K3  A3   NaN  NaN
+4    K4  A4   NaN  NaN
+5    K5  A5   NaN  NaN
+</code></pre>
+<p>如果右表的索引是左表的某一列的值，这时可以将右表的索引和左表的列对齐合并这样的灵活方式进行合并：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;A&#39;: [&#39;A0&#39;, &#39;A1&#39;, &#39;A2&#39;, &#39;A3&#39;], &#39;B&#39;: [&#39;B0&#39;, &#39;B1&#39;, &#39;B2&#39;, &#39;B3&#39;],&#39;key&#39;: [&#39;K0&#39;, &#39;K1&#39;, &#39;K0&#39;, &#39;K1&#39;]&#125;)
+&gt;&gt;&gt; other = pd.DataFrame(&#123;&#39;C&#39;: [&#39;C0&#39;, &#39;C1&#39;],&#39;D&#39;: [&#39;D0&#39;, &#39;D1&#39;]&#125;,index=[&#39;K0&#39;, &#39;K1&#39;])
+&gt;&gt;&gt; obj
+    A   B key
+0  A0  B0  K0
+1  A1  B1  K1
+2  A2  B2  K0
+3  A3  B3  K1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; other
+     C   D
+K0  C0  D0
+K1  C1  D1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.join(other, on=&#39;key&#39;)
+    A   B key   C   D
+0  A0  B0  K0  C0  D0
+1  A1  B1  K1  C1  D1
+2  A2  B2  K0  C0  D0
+3  A3  B3  K1  C1  D1
+</code></pre>
+<h2 id="【05x00】四种方法的区别"><a href="#【05x00】四种方法的区别" class="headerlink" title="【05x00】四种方法的区别"></a><font color=#FF0000>【05x00】四种方法的区别</font></h2><ul>
+<li><p><code>concat</code>：可用于两个或多个 Series 或 DataFrame 对象间，通过 <code>axis</code> 参数指定按照行方向（增加行）或列方向（增加列）进合并操作，默认行合并（增加行），取并集；</p>
+</li>
+<li><p><code>append</code>：在一个 Series 或 DataFrame 对象后最追加另一个 Series 或 DataFrame 对象并返回一个新对象，不改变原对象的值。只能按行合并（增加行）。</p>
+</li>
+<li><p><code>merge</code>：只能对两个 DataFrame 对象进行合并，一般按照列方向（增加列）进行合并操作，按照行方向合并一般用 join 方法代替，默认列合并（增加列），取交集；</p>
+</li>
+<li><p><code>join</code>：只能对两个 DataFrame 对象进行合并，按照列方向（增加列）进行合并操作，默认左连接。</p>
+</li>
+</ul>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106830112
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/031/">https://www.itbob.cn/article/031/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/032/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/030/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 实现十大经典排序算法 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,算法">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/036/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/036/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 实现十大经典排序算法 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="算法"> 
+
+    
+        <meta property="article:published_time" content="Sat Oct 24 2020 00:12:00 GMT+0800">
+        <meta property="article:modified_time" content="Sun Jan 23 2022 00:07:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/036/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/036/index.html",
+    "headline": "Python 实现十大经典排序算法",
+    "datePublished": "Sat Oct 24 2020 00:12:00 GMT+0800",
+    "dateModified": "Sun Jan 23 2022 00:07:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,算法ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%88%86%E7%B1%BB"><span class="post-toc-number">1.</span> <span class="post-toc-text">排序算法分类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E3%80%81%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%EF%BC%88Bubble-Sort%EF%BC%89"><span class="post-toc-number">2.</span> <span class="post-toc-text">一、冒泡排序（Bubble Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%8C%E3%80%81%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%EF%BC%88Selection-Sort%EF%BC%89"><span class="post-toc-number">3.</span> <span class="post-toc-text">二、选择排序（Selection Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-1"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-1"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%89%E3%80%81%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%EF%BC%88Insertion-Sort%EF%BC%89"><span class="post-toc-number">4.</span> <span class="post-toc-text">三、插入排序（Insertion Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-2"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-2"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-2"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-2"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%9B%9B%E3%80%81%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%EF%BC%88Shell-Sort%EF%BC%89"><span class="post-toc-number">5.</span> <span class="post-toc-text">四、希尔排序（Shell Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-3"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-3"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-3"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-3"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-3"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%94%E3%80%81%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%EF%BC%88Merge-Sort%EF%BC%89"><span class="post-toc-number">6.</span> <span class="post-toc-text">五、归并排序（Merge Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-4"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-4"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-4"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-4"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-4"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%AD%E3%80%81%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%EF%BC%88Quick-Sort%EF%BC%89"><span class="post-toc-number">7.</span> <span class="post-toc-text">六、快速排序（Quick Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-5"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-5"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-5"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-5"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-5"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%83%E3%80%81%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%88Heap-Sort%EF%BC%89"><span class="post-toc-number">8.</span> <span class="post-toc-text">七、堆排序（Heap Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-6"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-6"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-6"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-6"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-6"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%AB%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%88Counting-Sort%EF%BC%89"><span class="post-toc-number">9.</span> <span class="post-toc-text">八、计数排序（Counting Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-7"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-7"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-7"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-7"><span class="post-toc-number">9.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-7"><span class="post-toc-number">9.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B9%9D%E3%80%81%E6%A1%B6%E6%8E%92%E5%BA%8F%EF%BC%88Bucket-Sort%EF%BC%89"><span class="post-toc-number">10.</span> <span class="post-toc-text">九、桶排序（Bucket Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-8"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-8"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-8"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-8"><span class="post-toc-number">10.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-8"><span class="post-toc-number">10.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8D%81%E3%80%81%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F%EF%BC%88Radix-Sort%EF%BC%89"><span class="post-toc-number">11.</span> <span class="post-toc-text">十、基数排序（Radix Sort）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1%E3%80%81%E5%8E%9F%E7%90%86-9"><span class="post-toc-number">11.1.</span> <span class="post-toc-text">1、原理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2%E3%80%81%E6%AD%A5%E9%AA%A4-9"><span class="post-toc-number">11.2.</span> <span class="post-toc-text">2、步骤</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3%E3%80%81%E5%8A%A8%E7%94%BB%E6%BC%94%E7%A4%BA-9"><span class="post-toc-number">11.3.</span> <span class="post-toc-text">3、动画演示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#4%E3%80%81%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-9"><span class="post-toc-number">11.4.</span> <span class="post-toc-text">4、代码实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#5%E3%80%81%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B-9"><span class="post-toc-number">11.5.</span> <span class="post-toc-text">5、具体示例</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 实现十大经典排序算法
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>10月 24, 2020</span> -->
+        <span>2020-10-24 00:12:00</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZklEQVR42u3aQZKDMAwEwPz/07sP2IWMJFCoVHNKpQK4fbCVkV8/X3298PDw8PDw8PDwHsZ7xdfRXf+84PT73lsKd+Hh4eGt8N4stQEjmYK/n8/f3hsbHh4e3ibvaMGdDCtf7s/vTX6Ph4eH93xesnBPtgo8PDy8b+Ilm0ESWOShBh4eHt4zeXmJnMSp+caQD/32rAUPDw8v5uVNpv3Pq/09PDw8vIBXPtI0bmJNtoHyoSs8PDy8G3j3lcuTlthkPHh4eHg7vPwRScvqCJAHwfnzR/8Y8PDw8Fq8ZFjVeKK8lF968AsPDw/vbt6bSLS4xFdD2Oq7Lkip8fDw8C7i5QVxbyjzlluhfMfDw8Nb4fXK5fJxqME0Ff4G4OHh4a3wkvA0D1irEUZ1usthBB4eHt4ibzNuqJbd5ZMReHh4eJfyqstxHjScM6qbQVS44+Hh4a3w8o0hjx6qz69ONB4eHt6neNVDV6OANX7CaJvBw8PDW+FNBpdMTe+QQbVFh4eHh7fP6y301eZWtf2WF9N4eHh4O7y8KTVn5+X1pIWGh4eHt8lLFvpqO2qyPTSDYzw8PLwP8Xqw/AmTIOPNvXh4eHiLvKTAnS/9+aCrpTkeHh7eDq96VePa+WZQbZvh4eHh3c3rLcq9hT6Jg8/L8SSqwMPDw9vh9TaDSVTR2xguCCPw8PDwLuVVF+i8gM6pvUgCDw8P7/m8atxQLc3zg1y3H7rCw8PDu3Rj6E1Erw2W/w3Aw8PD2+T1jgLk3yRPrm4MeHh4eJ/i5RFAtcFfpebTdPg9Hh4e3s2877vw8PDw8PDw8PAecP0Cvi8+2vXOwQgAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;9.9k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;42 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 实现十大经典排序算法&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/036/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 实现十大经典排序算法&url=https://www.itbob.cn/article/036/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 实现十大经典排序算法&url=https://www.itbob.cn/article/036/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/036/index.html&text=Python 实现十大经典排序算法" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/036/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/036/index.html&title=Python 实现十大经典排序算法" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/036/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <ul>
+<li>参考资料：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1mp4y1D7UP">https://www.bilibili.com/video/BV1mp4y1D7UP</a></li>
+<li>本文动图演示来源：<a target="_blank" rel="noopener" href="https://visualgo.net/">https://visualgo.net/</a></li>
+</ul>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/108987300
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="排序算法分类"><a href="#排序算法分类" class="headerlink" title="排序算法分类"></a><font color=#FF0000>排序算法分类</font></h2><ul>
+<li><font color=#FF0000><strong>内部排序</strong></font>：指在排序期间，元素全部存放在内存中的排序，常见的内部排序算法有：<strong>冒泡排序、选择排序、插入排序、希尔排序、归并排序、快速排序、堆排序、基数排序</strong>等。</li>
+<li><font color=#FF0000><strong>外部排序</strong></font>：指在排序期间，元素无法完全全部同时存放在内存中，必须在排序的过程中根据要求不断地在内、外存之间移动的排序；</li>
+<li><font color=#FF0000><strong>比较类排序</strong></font>：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。</li>
+<li><font color=#FF0000><strong>非比较类排序</strong></font>：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 常见的非比较类排序算法有：<strong>基数排序、计数排序、桶排序</strong>等</li>
+</ul>
+<hr>
+<p>一般情况下，内部排序算法在执行过程中都要进行两种操作：比较和移动。通过比较两个关键字的大小，确定对应元素的前后关系，然后通过移动元素以达到有序。但是，并非所有的内部排序算法都要基于比较操作。</p>
+<p>每种排序算法都有各自的优缺点，适合在不同的环境下使用，就其全面性能而言，很难提出一种被认为是最好的算法。<font color=#FF0000><strong>通常可以将排序算法分为插入排序、交换排序、选择排序、归并排序和基数排序五大类</strong></font>，内部排序算法的性能取决于算法的时间复杂度和空间复杂度，而时间复杂度一般是由比较和移动的次数决定的。</p>
+<hr>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/01.png" alt="01"></p>
+<table>
+<thead>
+<tr>
+<th>排序算法</th>
+<th>时间复杂度（平均）</th>
+<th>时间复杂度（最好）</th>
+<th>时间复杂度（最坏）</th>
+<th>空间复杂度</th>
+<th>稳定性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>冒泡排序</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(n) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(1) $$</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(1) $$</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(n) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(1) $$</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlog^2n) $$</td>
+<td>$$ O(nlog^2n) $$</td>
+<td>$$ O(1) $$</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(n) $$</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(logn) $$</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(nlogn) $$</td>
+<td>$$ O(1) $$</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>计数排序</td>
+<td>$$ O(n+k) $$</td>
+<td>$$ O(n+k) $$</td>
+<td>$$ O(n+k) $$</td>
+<td>$$ O(k) $$</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>桶排序</td>
+<td>$$ O(n+k) $$</td>
+<td>$$ O(n+k) $$</td>
+<td>$$ O(n^2) $$</td>
+<td>$$ O(n+k) $$</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>$$ O(n*k) $$</td>
+<td>$$ O(n*k) $$</td>
+<td>$$ O(n*k) $$</td>
+<td>$$ O(n+k) $$</td>
+<td>稳定</td>
+</tr>
+</tbody></table>
+<p><strong>稳定性</strong>：排序后 2 个相等键值的顺序和排序之前它们的顺序是否相同。例：如果 a 原本在 b 前面，且 a=b，排序之后 a 仍然在 b 的前面，则表示具有稳定性。</p>
+<p>常见时间复杂度大小比较：</p>
+<p>$$<br>O(1) &lt; O(logn) &lt; O(n) &lt; O(nlogn) &lt; O(n^2) &lt;…&lt; O(2^n)&lt;O (n!)<br>$$</p>
+<hr>
+<h2 id="一、冒泡排序（Bubble-Sort）"><a href="#一、冒泡排序（Bubble-Sort）" class="headerlink" title="一、冒泡排序（Bubble Sort）"></a><font color=#FF0000>一、冒泡排序（Bubble Sort）</font></h2><h3 id="1、原理"><a href="#1、原理" class="headerlink" title="1、原理"></a>1、原理</h3><p>重复地走访要排序的元素，依次比较两个相邻的元素，如果顺序（如从大到小）错误就把他们交换过来。走访元素的工作是重复地进行，直到没有相邻元素需要交换，也就是说该元素列已经排序完成。冒泡的意思其实就是每一轮冒泡一个最大的元素就会通过不断比较和交换相邻元素使它转移到最右边。</p>
+<p>假如有 10 个小盆友从左到右站成一排，个头不等。老师想让他们按照个头从低到高站好，于是他开始喊口号。 每喊一次，从第一个小盆友开始，相邻的小朋友如果身高不是正序就会两两调换，就这样第一轮个头最高的排到了最右边（冒泡到最右边），第二轮依次这么来，从第一个小朋友开始两两交换，这样次高的小盆友又排到了倒数第二个位置。依次类推。</p>
+<h3 id="2、步骤"><a href="#2、步骤" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 比较相邻的元素。如果第一个比第二个大，就交换它们两个；</li>
+<li><strong>②</strong> 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</li>
+<li><strong>③</strong> 针对所有的元素重复步骤 <strong>①</strong> ~ <strong>②</strong>，除了最后一个元素，直到排序完成。</li>
+</ul>
+<h3 id="3、动画演示"><a href="#3、动画演示" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/02%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F.gif" alt="02冒泡排序"></p>
+<h3 id="4、代码实现"><a href="#4、代码实现" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def bubbleSort(arr):
+    for i in range(len(arr)-1):         # 循环第 i 趟
+        for j in range(len(arr)-i-1):   # j 为下标
+            if arr[j] &gt; arr[j+1]:       # 如果这个数大于后面的数就交换两者的位置
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+</code></pre>
+<p>冒泡排序还有一种优化算法，就是立一个 flag，当某一趟序列遍历中元素没有发生交换，则证明该序列已经有序，就不再进行后续的排序。动画演示里就是改进后的算法，改进后的代码如下：</p>
+<pre><code class="python">def bubbleSort(arr):
+    for i in range(len(arr)-1):         # 循环第 i 趟
+    flag = False
+        for j in range(len(arr)-i-1):   # j 为下标
+            if arr[j] &gt; arr[j+1]:       # 如果这个数大于后面的数就交换两者的位置
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                flag = True
+        if not flag:
+            return
+    return arr
+</code></pre>
+<p>冒泡排序最快的情况：当输入的数据是正序时；最慢的情况：当输入的数据是反序时。</p>
+<h3 id="5、具体示例"><a href="#5、具体示例" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><p>未改进版本：</p>
+<pre><code class="python">def bubble_sort(arr):
+    for i in range(len(arr)-1):         # 循环第 i 趟
+        for j in range(len(arr)-i-1):   # j 为下标
+            if arr[j] &gt; arr[j+1]:       # 如果这个数大于后面的数就交换两者的位置
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+        print(arr)                      # 每一趟比较完了就打印一次
+
+
+arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48]
+bubble_sort(arr)
+</code></pre>
+<pre><code class="python">[3, 38, 5, 44, 15, 36, 26, 27, 2, 46, 4, 19, 47, 48, 50]
+[3, 5, 38, 15, 36, 26, 27, 2, 44, 4, 19, 46, 47, 48, 50]
+[3, 5, 15, 36, 26, 27, 2, 38, 4, 19, 44, 46, 47, 48, 50]
+[3, 5, 15, 26, 27, 2, 36, 4, 19, 38, 44, 46, 47, 48, 50]
+[3, 5, 15, 26, 2, 27, 4, 19, 36, 38, 44, 46, 47, 48, 50]
+[3, 5, 15, 2, 26, 4, 19, 27, 36, 38, 44, 46, 47, 48, 50]
+[3, 5, 2, 15, 4, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[3, 2, 5, 4, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+</code></pre>
+<p>改进版本：</p>
+<pre><code class="python">def bubble_sort(arr):
+    for i in range(len(arr)-1):         # 循环第 i 趟
+        flag = False
+        for j in range(len(arr)-i-1):   # j 为下标
+            if arr[j] &gt; arr[j+1]:       # 如果这个数大于后面的数就交换两者的位置
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                flag = True
+        if not flag:
+            return
+        print(arr)                      # 每一趟比较完了就打印一次
+
+
+arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48]
+bubble_sort(arr)
+</code></pre>
+<pre><code class="python">[3, 38, 5, 44, 15, 36, 26, 27, 2, 46, 4, 19, 47, 48, 50]
+[3, 5, 38, 15, 36, 26, 27, 2, 44, 4, 19, 46, 47, 48, 50]
+[3, 5, 15, 36, 26, 27, 2, 38, 4, 19, 44, 46, 47, 48, 50]
+[3, 5, 15, 26, 27, 2, 36, 4, 19, 38, 44, 46, 47, 48, 50]
+[3, 5, 15, 26, 2, 27, 4, 19, 36, 38, 44, 46, 47, 48, 50]
+[3, 5, 15, 2, 26, 4, 19, 27, 36, 38, 44, 46, 47, 48, 50]
+[3, 5, 2, 15, 4, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[3, 2, 5, 4, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+</code></pre>
+<hr>
+<h2 id="二、选择排序（Selection-Sort）"><a href="#二、选择排序（Selection-Sort）" class="headerlink" title="二、选择排序（Selection Sort）"></a><font color=#FF0000>二、选择排序（Selection Sort）</font></h2><h3 id="1、原理-1"><a href="#1、原理-1" class="headerlink" title="1、原理"></a>1、原理</h3><p>第一次从待排序的数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。以此类推，直到全部待排序的数据元素的个数为零。可以理解为 一个 0 到 n-1 的迭代，每次向后查找选择一个最小的元素。选择排序是不稳定的排序方法。</p>
+<p>假如有 10 个小盆友从左到右站成一排，个头不等。老师想让他们按照个头从低到高站好，我们从第一个开始，从头到尾找一个个头最小的小盆友，然后把它和第一个小盆友交换。 然后从第二个小盆友开始采取同样的策略，这样一圈下来小盆友就是有序的了。</p>
+<h3 id="2、步骤-1"><a href="#2、步骤-1" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置；</li>
+<li><strong>②</strong> 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾；</li>
+<li><strong>③</strong> 重复步骤 <strong>②</strong>，直到所有元素均排序完毕。</li>
+</ul>
+<h3 id="3、动画演示-1"><a href="#3、动画演示-1" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/03%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F.gif" alt="03选择排序"></p>
+<h3 id="4、代码实现-1"><a href="#4、代码实现-1" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><p>Python 代码：</p>
+<pre><code class="python">def selection_sort(arr):
+    for i in range(len(arr)-1):          # 循环第 i 趟
+        min_index = i                    # 记录最小数的下标
+        for j in range(i+1, len(arr)):   # j 为下标
+            if arr[j] &lt; arr[min_index]:  # 如果这个数小于记录的最小数，则更新最小数的下标
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]  # 将 i 位置的数（已排序序列的末尾的数）和最小数进行交换
+    return arr
+</code></pre>
+<h3 id="5、具体示例-1"><a href="#5、具体示例-1" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def selection_sort(arr):
+    for i in range(len(arr)-1):          # 循环第 i 趟
+        min_index = i                    # 记录最小数的下标
+        for j in range(i+1, len(arr)):   # j 为下标
+            if arr[j] &lt; arr[min_index]:  # 如果这个数小于记录的最小数，则更新最小数的下标
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]  # 将 i 位置的数（已排序序列的末尾的数）和最小数进行交换
+        print(arr)                       # 每一趟比较完了就打印一次
+
+
+arr = [3, 44, 38, 5, 47, 15, 36, 26, 27, 2, 46, 4, 19, 50, 48]
+selection_sort(arr)
+</code></pre>
+<pre><code class="python">[2, 44, 38, 5, 47, 15, 36, 26, 27, 3, 46, 4, 19, 50, 48]
+[2, 3, 38, 5, 47, 15, 36, 26, 27, 44, 46, 4, 19, 50, 48]
+[2, 3, 4, 5, 47, 15, 36, 26, 27, 44, 46, 38, 19, 50, 48]
+[2, 3, 4, 5, 47, 15, 36, 26, 27, 44, 46, 38, 19, 50, 48]
+[2, 3, 4, 5, 15, 47, 36, 26, 27, 44, 46, 38, 19, 50, 48]
+[2, 3, 4, 5, 15, 19, 36, 26, 27, 44, 46, 38, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 36, 27, 44, 46, 38, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 44, 46, 38, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 44, 46, 38, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 46, 44, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 50, 48]
+[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+</code></pre>
+<hr>
+<h2 id="三、插入排序（Insertion-Sort）"><a href="#三、插入排序（Insertion-Sort）" class="headerlink" title="三、插入排序（Insertion Sort）"></a><font color=#FF0000>三、插入排序（Insertion Sort）</font></h2><h3 id="1、原理-2"><a href="#1、原理-2" class="headerlink" title="1、原理"></a>1、原理</h3><p>插入排序一般也被称为直接插入排序。对于少量元素的排序，它是一个有效的算法。它的基本思想是将一个记录插入到已经排好序的有序表中，从而形成一个新的有序表。在其实现过程使用双层循环，外层循环对除了第一个元素之外的所有元素进行遍历，内层循环对当前元素前面有序表进行待插入位置查找，并进行移动。</p>
+<p>插入排序的工作方式像许多人排序一手扑克牌。开始时，我们的左手为空并且桌子上的牌面向下。然后，我们每次从桌子上拿走一张牌并将它插入左手中正确的位置。为了找到一张牌的正确位置，我们从右到左将它与已在手中的每张牌进行比较。拿在左手上的牌总是排序好的，原来这些牌是桌子上牌堆中顶部的牌。</p>
+<h3 id="2、步骤-2"><a href="#2、步骤-2" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 从第一个元素开始，该元素可以认为已经被排序；</li>
+<li><strong>②</strong> 取出下一个元素，在已经排序的元素序列中从后向前扫描；</li>
+<li><strong>③</strong> 如果该元素（已排序的）大于新元素，将该元素往右移到下一位置，重复该步骤，直到找到已排序的元素小于或者等于新元素的位置；</li>
+<li><strong>④</strong> 将新元素插入到步骤 <strong>③</strong> 找到的位置的后面；</li>
+<li><strong>⑤</strong> 重复步骤 <strong>②</strong> ~ <strong>④</strong>。</li>
+</ul>
+<h3 id="3、动画演示-2"><a href="#3、动画演示-2" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/04%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.gif" alt="04插入排序"></p>
+<h3 id="4、代码实现-2"><a href="#4、代码实现-2" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def insertion_sort(arr):
+    for i in range(1, len(arr)):    # 将 i 看做摸到的牌的下标
+        tmp = arr[i]                # 将摸到的牌储存到 tmp
+        j = i-1                     # 将 j 看做手里的牌的下标
+        while j &gt;= 0 and arr[j] &gt; tmp:  # 如果手里的牌大于摸到的牌
+            arr[j+1] = arr[j]       # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+            j -= 1                  # 将手里的牌的下标减 1，再次准备与摸到的牌进行比较
+        arr[j+1] = tmp              # 将摸到的牌插入到 j+1 位置
+    return arr
+</code></pre>
+<h3 id="5、具体示例-2"><a href="#5、具体示例-2" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def insertion_sort(arr):
+    for i in range(1, len(arr)):    # 将 i 看做摸到的牌的下标
+        tmp = arr[i]                # 将摸到的牌储存到 tmp
+        j = i-1                     # 将 j 看做手里的牌的下标
+        while j &gt;= 0 and arr[j] &gt; tmp:  # 如果手里的牌大于摸到的牌
+            arr[j+1] = arr[j]       # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+            j -= 1                  # 将手里的牌的下标减 1，再次准备与摸到的牌进行比较
+        arr[j+1] = tmp              # 将摸到的牌插入到 j+1 位置
+        print(arr)                  # 每一趟比较完了就打印一次
+
+
+arr = [0, 9, 8, 7, 1, 2, 3, 4, 5, 6]
+insertion_sort(arr)
+</code></pre>
+<pre><code class="python">[0, 9, 8, 7, 1, 2, 3, 4, 5, 6]  # 手里第一张牌为 0，摸到 9，此时 i=1，j=0，0 比 9 小，将 9 插到索引 j+1=1 处。
+[0, 8, 9, 7, 1, 2, 3, 4, 5, 6]  # 手里的牌为 0，9，摸到 8，此时 i=2，j=1，9 比 8 大，将 9 右移一个位置，j-1=0，将 8 插到 j+1=1 处
+[0, 7, 8, 9, 1, 2, 3, 4, 5, 6]
+[0, 1, 7, 8, 9, 2, 3, 4, 5, 6]
+[0, 1, 2, 7, 8, 9, 3, 4, 5, 6]
+[0, 1, 2, 3, 7, 8, 9, 4, 5, 6]
+[0, 1, 2, 3, 4, 7, 8, 9, 5, 6]
+[0, 1, 2, 3, 4, 5, 7, 8, 9, 6]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<hr>
+<h2 id="四、希尔排序（Shell-Sort）"><a href="#四、希尔排序（Shell-Sort）" class="headerlink" title="四、希尔排序（Shell Sort）"></a><font color=#FF0000>四、希尔排序（Shell Sort）</font></h2><h3 id="1、原理-3"><a href="#1、原理-3" class="headerlink" title="1、原理"></a>1、原理</h3><p>希尔排序是插入排序的一种更高效的改进版本，是一种分组插入排序算法，又称缩小增量排序（Diminishing Increment Sort），希尔排序是非稳定排序算法。该方法因 D.L.Shell 于 1959 年提出而得名。</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；</li>
+</ul>
+<p>希尔排序的基本思想是：先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列中的记录“基本有序”时，再对全体记录进行依次直接插入排序。</p>
+<h3 id="2、步骤-3"><a href="#2、步骤-3" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> n 为数组长度，首先取一个整数 <strong>d1=n/2</strong>，将元素分为 <strong>d1</strong> 个组，每组相邻量元素之间距离为 <strong>d1-1</strong>，在各组内进行直接插入排序；</li>
+<li><strong>②</strong> 取第二个整数 <strong>d2=d1/2</strong>，重复步骤 <strong>①</strong> 分组排序过程，直到 <strong>di=1</strong>，即所有元素在同一组内进行直接插入排序。</li>
+</ul>
+<p>PS：希尔排序每趟并不使某些元素有序，而是使整体数据越来越接近有序；最后一趟排序使得所有数据有序。</p>
+<h3 id="3、动画演示-3"><a href="#3、动画演示-3" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/05%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F.gif" alt="05希尔排序"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/06%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F.gif" alt="06希尔排序"></p>
+<h3 id="4、代码实现-3"><a href="#4、代码实现-3" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def insertion_sort_gap(arr, gap):     # 将 gap 看做隔 gap 个距离摸一张牌，而不是依次按照顺序摸牌
+    for i in range(gap, len(arr)):    # 将 i 看做摸到的牌的下标
+        tmp = arr[i]                  # 将摸到的牌储存到 tmp
+        j = i-gap                     # 将 j 看做手里的牌的下标
+        while j &gt;= 0 and arr[j] &gt; tmp:  # 如果手里的牌大于摸到的牌
+            arr[j+gap] = arr[j]         # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+            j -= gap                    # 将手里的牌的下标减 gap，再次准备与摸到的牌进行比较
+        arr[j+gap] = tmp                # 将摸到的牌插入到 j+gap 位置
+
+
+def shell_sort(arr):
+    d = len(arr) // 2                   # 第一次分组
+    while d &gt;= 1:
+        insertion_sort_gap(arr, d)      # 调用插入排序
+        d //= 2                         # 整除 2 后再次分组
+    return arr
+</code></pre>
+<p>也可以不使用两个函数，写在一起即可：</p>
+<pre><code class="python">def shell_sort(arr):
+    d = len(arr) // 2                   # 第一次分组
+    while d &gt;= 1:                       # 将 d 看做隔 d 个距离摸一张牌，而不是依次按照顺序摸牌
+        for i in range(d, len(arr)):    # 将 i 看做摸到的牌的下标
+            tmp = arr[i]                # 将摸到的牌储存到 tmp
+            j = i - d                   # 将 j 看做手里的牌的下标
+            while j &gt;= 0 and arr[j] &gt; tmp:   # 如果手里的牌大于摸到的牌
+                arr[j + d] = arr[j]          # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+                j -= d                       # 将手里的牌的下标减 d，再次准备与摸到的牌进行比较
+            arr[j + d] = tmp                 # 将摸到的牌插入到 j+d 位置
+        d //= 2                              # 整除 2 后再次分组
+    return arr
+</code></pre>
+<h3 id="5、具体示例-3"><a href="#5、具体示例-3" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def insertion_sort_gap(arr, gap):     # 将 gap 看做隔 gap 个距离摸一张牌，而不是依次按照顺序摸牌
+    for i in range(gap, len(arr)):    # 将 i 看做摸到的牌的下标
+        tmp = arr[i]                  # 将摸到的牌储存到 tmp
+        j = i-gap                     # 将 j 看做手里的牌的下标
+        while j &gt;= 0 and arr[j] &gt; tmp:  # 如果手里的牌大于摸到的牌
+            arr[j+gap] = arr[j]         # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+            j -= gap                    # 将手里的牌的下标减 gap，再次准备与摸到的牌进行比较
+        arr[j+gap] = tmp                # 将摸到的牌插入到 j+gap 位置
+
+
+def shell_sort(arr):
+    d = len(arr) // 2                   # 第一次分组
+    while d &gt;= 1:
+        insertion_sort_gap(arr, d)      # 调用插入排序
+        print(arr)                      # 每一轮排序后打印一次
+        d //= 2                         # 整除 2 后再次分组
+
+
+arr = [5, 7, 4, 6, 3, 1, 2, 9, 8]
+shell_sort(arr)
+</code></pre>
+<pre><code class="python">[3, 1, 2, 6, 5, 7, 4, 9, 8]
+[2, 1, 3, 6, 4, 7, 5, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<pre><code class="python">def shell_sort(arr):
+    d = len(arr) // 2                   # 第一次分组
+    while d &gt;= 1:                       # 将 d 看做隔 d 个距离摸一张牌，而不是依次按照顺序摸牌
+        for i in range(d, len(arr)):    # 将 i 看做摸到的牌的下标
+            tmp = arr[i]                # 将摸到的牌储存到 tmp
+            j = i - d                   # 将 j 看做手里的牌的下标
+            while j &gt;= 0 and arr[j] &gt; tmp:   # 如果手里的牌大于摸到的牌
+                arr[j + d] = arr[j]          # 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）
+                j -= d                       # 将手里的牌的下标减 d，再次准备与摸到的牌进行比较
+            arr[j + d] = tmp                 # 将摸到的牌插入到 j+d 位置
+        print(arr)                           # 每一轮排序后打印一次
+        d //= 2                              # 整除 2 后再次分组
+
+
+arr = [5, 7, 4, 6, 3, 1, 2, 9, 8]
+shell_sort(arr)
+</code></pre>
+<pre><code class="python">[3, 1, 2, 6, 5, 7, 4, 9, 8]
+[2, 1, 3, 6, 4, 7, 5, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<hr>
+<h2 id="五、归并排序（Merge-Sort）"><a href="#五、归并排序（Merge-Sort）" class="headerlink" title="五、归并排序（Merge Sort）"></a><font color=#FF0000>五、归并排序（Merge Sort）</font></h2><h3 id="1、原理-4"><a href="#1、原理-4" class="headerlink" title="1、原理"></a>1、原理</h3><p>归并的概念：假设一个列表分为两段，其中每一段都是有序列表，现在将该两段合并为一个有序列表，这种操作称为一次归并。</p>
+<p>归并排序是建立在归并操作上的一种有效，稳定的排序算法，该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/08.png" alt="08"></p>
+<h3 id="2、步骤-4"><a href="#2、步骤-4" class="headerlink" title="2、步骤"></a>2、步骤</h3><p><font color=#ff0000><strong>归并的基本步骤：</strong></font></p>
+<ul>
+<li><strong>①</strong> 申请空间，使其大小为<strong>两个已经排序序列之和</strong>，该空间用来存放合并后的序列；</li>
+<li><strong>②</strong> 设定两个指针，最初位置分别为两个已经排序序列的起始位置；</li>
+<li><strong>③</strong> 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；</li>
+<li><strong>④</strong> 重复步骤 <strong>③</strong> 直到某一指针达到序列尾；</li>
+<li><strong>⑤</strong> 将另一序列剩下的所有元素直接复制到合并序列尾。</li>
+</ul>
+<p><font color=#ff0000><strong>归并排序的步骤：</strong></font></p>
+<ul>
+<li><strong>①</strong> 分解：将列表越分越小，直至分成一个元素，终止条件：一个元素是有序的。</li>
+<li><strong>②</strong> 合并：不断将两个有序列表进行归并，列表越来越大，直到所有序列归并完毕。</li>
+</ul>
+<h3 id="3、动画演示-4"><a href="#3、动画演示-4" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/07%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F.gif" alt="07归并排序"></p>
+<h3 id="4、代码实现-4"><a href="#4、代码实现-4" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def merge(arr, low, mid, high):
+    # low 和 high 为整个数组的第一个和最后一个位置索引，mid 为中间位置索引
+    # i 和 j 为指针，最初位置分别为两个有序序列的起始位置
+    # ltmp 用来存放合并后的序列
+    i = low
+    j = mid+1
+    ltmp = []
+    while i &lt;= mid and j &lt;= high:  # 只要左右两边都有数
+        if arr[i] &lt; arr[j]:        # 当左边的数小于右边的数
+            ltmp.append(arr[i])    # 将左边的数存入 ltmp
+            i += 1                 # 左边的指针往右移一位
+        else:                      # 当右边的数小于左边的数
+            ltmp.append(arr[j])    # 将右边的数存入 ltmp
+            j += 1                 # 右边的指针往右移一位
+    # 上面的 while 语句执行完后，左边或者右边没有数了
+    while i &lt;= mid:                # 当左边还有数的时候
+        ltmp.append(arr[i])        # 将左边剩下的数全部存入 ltmp
+        i += 1
+    while j &lt;= high:               # 当右边还有数的时候
+        ltmp.append(arr[j])        # 将右边剩下的数全部存入 ltmp
+        j += 1
+    arr[low:high+1] = ltmp         # 将排序后的数组写回原数组
+
+
+def merge_sort(arr, low, high):       # low 和 high 为整个数组的第一个和最后一个位置索引
+    if low &lt; high:                    # 至少有两个元素
+        mid = (low + high) // 2
+        merge_sort(arr, low, mid)     # 把左边递归分解
+        merge_sort(arr, mid+1, high)  # 把右边递归分解
+        merge(arr, low, mid, high)    # 做归并
+</code></pre>
+<h3 id="5、具体示例-4"><a href="#5、具体示例-4" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def merge(arr, low, mid, high):
+    # low 和 high 为整个数组的第一个和最后一个位置索引，mid 为中间位置索引
+    # i 和 j 为指针，最初位置分别为两个有序序列的起始位置
+    # ltmp 用来存放合并后的序列
+    i = low
+    j = mid+1
+    ltmp = []
+    while i &lt;= mid and j &lt;= high:  # 只要左右两边都有数
+        if arr[i] &lt; arr[j]:        # 当左边的数小于右边的数
+            ltmp.append(arr[i])    # 将左边的数存入 ltmp
+            i += 1                 # 左边的指针往右移一位
+        else:                      # 当右边的数小于左边的数
+            ltmp.append(arr[j])    # 将右边的数存入 ltmp
+            j += 1                 # 右边的指针往右移一位
+    # 上面的 while 语句执行完后，左边或者右边没有数了
+    while i &lt;= mid:                # 当左边还有数的时候
+        ltmp.append(arr[i])        # 将左边剩下的数全部存入 ltmp
+        i += 1
+    while j &lt;= high:               # 当右边还有数的时候
+        ltmp.append(arr[j])        # 将右边剩下的数全部存入 ltmp
+        j += 1
+    arr[low:high+1] = ltmp         # 将排序后的数组写回原数组
+
+
+def merge_sort(arr, low, high):       # low 和 high 为整个数组的第一个和最后一个位置索引
+    if low &lt; high:                    # 至少有两个元素
+        mid = (low + high) // 2
+        merge_sort(arr, low, mid)     # 把左边递归分解
+        merge_sort(arr, mid+1, high)  # 把右边递归分解
+        merge(arr, low, mid, high)    # 做归并
+        print(arr)                    # 每一次归并打印一次
+
+
+arr = [7, 1, 3, 2, 6, 9, 4]
+merge_sort(arr, 0, len(arr)-1)
+</code></pre>
+<pre><code class="python">[1, 7, 3, 2, 6, 9, 4]
+[1, 7, 2, 3, 6, 9, 4]
+[1, 2, 3, 7, 6, 9, 4]
+[1, 2, 3, 7, 6, 9, 4]
+[1, 2, 3, 7, 4, 6, 9]
+[1, 2, 3, 4, 6, 7, 9]
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/108987300
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="六、快速排序（Quick-Sort）"><a href="#六、快速排序（Quick-Sort）" class="headerlink" title="六、快速排序（Quick Sort）"></a><font color=#FF0000>六、快速排序（Quick Sort）</font></h2><h3 id="1、原理-5"><a href="#1、原理-5" class="headerlink" title="1、原理"></a>1、原理</h3><p>快速排序是对冒泡排序的一种改进。顾名思义快速排序就是快，而且效率高！它是处理大数据最快的排序算法之一了。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<h3 id="2、步骤-5"><a href="#2、步骤-5" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 从数列中挑出一个元素，称为 “基准值”;</li>
+<li><strong>②</strong> 重新排序数列，所有元素比基准值小的放在基准值的左边，比基准值大的放在基准值的右边（相同的数可以到任一边）。在这个分区退出之后，该基准值就处于数列的中间位置。这个称为分区（partition）操作，也可以称为一次归位操作，归位操作的过程见下动图；</li>
+<li><strong>③</strong> 递归地把小于基准值元素的子数列和大于基准值元素的子数列按照步骤 <strong>① ②</strong> 排序。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/09%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F.gif" alt="09快速排序"></p>
+<h3 id="3、动画演示-5"><a href="#3、动画演示-5" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/10%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F.gif" alt="10快速排序"></p>
+<h3 id="4、代码实现-5"><a href="#4、代码实现-5" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def partition(arr, left, right):
+    # 归位操作，left，right 分别为数组左边和右边的位置索引
+    tmp = arr[left]
+    while left &lt; right:
+        while left &lt; right and arr[right] &gt;= tmp:  # 从右边找比 tmp 小的数，如果比 tmp 大，则移动指针
+            right -= 1                             # 将指针左移一个位置
+        arr[left] = arr[right]                     # 将右边的值写到左边的空位上
+        while left &lt; right and arr[left] &lt;= tmp:   # 从左边找比 tmp 大的数，如果比 tmp 小，则移动指针
+            left += 1                              # 将指针右移一个位置
+        arr[right] = arr[left]                     # 将左边的值写到右边的空位上
+    arr[left] = tmp                                # 把 tmp 归位
+    return left                   # 返回 left，right 都可以，目的是便于后面的递归操作对左右两部分进行排序
+
+
+def quick_sort(arr, left, right):          # 快速排序
+    if left &lt; right:
+        mid = partition(arr, left, right)
+        quick_sort(arr, left, mid-1)       # 对左半部分进行归位操作
+        quick_sort(arr, mid+1, right)      # 对右半部分进行归位操作
+    return arr
+</code></pre>
+<h3 id="5、具体示例-5"><a href="#5、具体示例-5" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def partition(arr, left, right):
+    # 归位操作，left，right 分别为数组左边和右边的位置索引
+    tmp = arr[left]
+    while left &lt; right:
+        while left &lt; right and arr[right] &gt;= tmp:  # 从右边找比 tmp 小的数，如果比 tmp 大，则移动指针
+            right -= 1                             # 将指针左移一个位置
+        arr[left] = arr[right]                     # 将右边的值写到左边的空位上
+        while left &lt; right and arr[left] &lt;= tmp:   # 从左边找比 tmp 大的数，如果比 tmp 小，则移动指针
+            left += 1                              # 将指针右移一个位置
+        arr[right] = arr[left]                     # 将左边的值写到右边的空位上
+    arr[left] = tmp                                # 把 tmp 归位
+    return left                   # 返回 left，right 都可以，目的是便于后面的递归操作对左右两部分进行排序
+
+
+def quick_sort(arr, left, right):
+    if left &lt; right:
+        mid = partition(arr, left, right)
+        print(arr)                         # 每次归位后打印一次
+        quick_sort(arr, left, mid-1)       # 对左半部分进行归位操作
+        quick_sort(arr, mid+1, right)      # 对右半部分进行归位操作
+
+
+arr = [5, 7, 4, 6, 3, 1, 2, 9, 8]
+quick_sort(arr, 0, len(arr)-1)
+</code></pre>
+<pre><code class="python">[2, 1, 4, 3, 5, 6, 7, 9, 8]
+[1, 2, 4, 3, 5, 6, 7, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 9, 8]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+<hr>
+<h2 id="七、堆排序（Heap-Sort）"><a href="#七、堆排序（Heap-Sort）" class="headerlink" title="七、堆排序（Heap Sort）"></a><font color=#FF0000>七、堆排序（Heap Sort）</font></h2><h3 id="1、原理-6"><a href="#1、原理-6" class="headerlink" title="1、原理"></a>1、原理</h3><p>堆排序是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<ul>
+<li>堆：一种特殊的完全二叉树结构</li>
+<li>大根堆：一棵完全二叉树，满足任一节点都比其孩子节点大</li>
+<li>小根堆：一棵完全二叉树，满足任一节点都比其孩子节点小</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/11%E5%A0%86%E6%8E%92%E5%BA%8F.png" alt="11堆排序"></p>
+<h3 id="2、步骤-6"><a href="#2、步骤-6" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li>① 构建堆：将待排序序列构建成一个堆 H[0……n-1]，从最后一个非叶子结点开始，从左至右，从下至上进行调整。根据升序或降序需求选择大顶堆或小顶堆；</li>
+<li>② 此时的堆顶元素，为最大或者最小元素；</li>
+<li>③ 把堆顶元素和堆尾元素互换，调整堆，重新使堆有序；</li>
+<li>④ 此时堆顶元素为第二大元素；</li>
+<li>⑤ 重复以上步骤，直到堆变空。</li>
+</ul>
+<h3 id="3、动画演示-6"><a href="#3、动画演示-6" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/12%E6%9E%84%E5%BB%BA%E5%A0%86.gif" alt="12构建堆"></p>
+<p>堆构建完成后再进行推排序：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/13%E5%A0%86%E6%8E%92%E5%BA%8F.gif" alt="13堆排序"></p>
+<h3 id="4、代码实现-6"><a href="#4、代码实现-6" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def sift(arr, low, high):
+    &quot;&quot;&quot;
+    :param li: 列表
+    :param low: 堆的根节点位置
+    :param high: 堆的最后一个元素的位置
+    &quot;&quot;&quot;
+    i = low                 # i最开始指向根节点
+    j = 2 * i + 1           # j开始是左孩子
+    tmp = arr[low]          # 把堆顶存起来
+    while j &lt;= high:        # 只要j位置有数
+        if j + 1 &lt;= high and arr[j+1] &gt; arr[j]:   # 如果右孩子有并且比较大
+            j = j + 1       # j指向右孩子
+        if arr[j] &gt; tmp:
+            arr[i] = arr[j]
+            i = j           # 往下看一层
+            j = 2 * i + 1
+        else:               # tmp更大，把tmp放到i的位置上
+            arr[i] = tmp    # 把tmp放到某一级领导位置上
+            break
+    else:
+        arr[i] = tmp        # 把tmp放到叶子节点上
+
+
+def heap_sort(arr):
+    n = len(arr)
+    for i in range((n-2)//2, -1, -1):   # i表示建堆的时候调整的部分的根的下标
+        sift(arr, i, n-1)
+    # 建堆完成
+    for i in range(n-1, -1, -1):        # i 指向当前堆的最后一个元素
+        arr[0], arr[i] = arr[i], arr[0]
+        sift(arr, 0, i - 1)             # i-1是新的high
+    return arr
+</code></pre>
+<h3 id="5、具体示例-6"><a href="#5、具体示例-6" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def sift(arr, low, high):
+    &quot;&quot;&quot;
+    :param li: 列表
+    :param low: 堆的根节点位置
+    :param high: 堆的最后一个元素的位置
+    &quot;&quot;&quot;
+    i = low                 # i最开始指向根节点
+    j = 2 * i + 1           # j开始是左孩子
+    tmp = arr[low]          # 把堆顶存起来
+    while j &lt;= high:        # 只要j位置有数
+        if j + 1 &lt;= high and arr[j+1] &gt; arr[j]:   # 如果右孩子有并且比较大
+            j = j + 1       # j指向右孩子
+        if arr[j] &gt; tmp:
+            arr[i] = arr[j]
+            i = j           # 往下看一层
+            j = 2 * i + 1
+        else:               # tmp更大，把tmp放到i的位置上
+            arr[i] = tmp    # 把tmp放到某一级领导位置上
+            break
+    else:
+        arr[i] = tmp        # 把tmp放到叶子节点上
+
+
+def heap_sort(arr):
+    n = len(arr)
+    print(&#39;建堆过程：&#39;)
+    print(arr)
+    for i in range((n-2)//2, -1, -1):   # i表示建堆的时候调整的部分的根的下标
+        sift(arr, i, n-1)
+        print(arr)
+    # 建堆完成
+    print(&#39;堆排序过程：&#39;)
+    print(arr)
+    for i in range(n-1, -1, -1):        # i 指向当前堆的最后一个元素
+        arr[0], arr[i] = arr[i], arr[0]
+        sift(arr, 0, i - 1)             # i-1是新的high
+        print(arr)
+
+
+arr = [2, 7, 26, 25, 19, 17, 1, 90, 3, 36]
+heap_sort(arr)
+</code></pre>
+<pre><code class="python">建堆过程：
+[2, 7, 26, 25, 19, 17, 1, 90, 3, 36]
+[2, 7, 26, 25, 36, 17, 1, 90, 3, 19]
+[2, 7, 26, 90, 36, 17, 1, 25, 3, 19]
+[2, 7, 26, 90, 36, 17, 1, 25, 3, 19]
+[2, 90, 26, 25, 36, 17, 1, 7, 3, 19]
+[90, 36, 26, 25, 19, 17, 1, 7, 3, 2]
+堆排序过程：
+[90, 36, 26, 25, 19, 17, 1, 7, 3, 2]
+[36, 25, 26, 7, 19, 17, 1, 2, 3, 90]
+[26, 25, 17, 7, 19, 3, 1, 2, 36, 90]
+[25, 19, 17, 7, 2, 3, 1, 26, 36, 90]
+[19, 7, 17, 1, 2, 3, 25, 26, 36, 90]
+[17, 7, 3, 1, 2, 19, 25, 26, 36, 90]
+[7, 2, 3, 1, 17, 19, 25, 26, 36, 90]
+[3, 2, 1, 7, 17, 19, 25, 26, 36, 90]
+[2, 1, 3, 7, 17, 19, 25, 26, 36, 90]
+[1, 2, 3, 7, 17, 19, 25, 26, 36, 90]
+[1, 2, 3, 7, 17, 19, 25, 26, 36, 90]
+</code></pre>
+<hr>
+<h2 id="八、计数排序（Counting-Sort）"><a href="#八、计数排序（Counting-Sort）" class="headerlink" title="八、计数排序（Counting Sort）"></a><font color=#FF0000>八、计数排序（Counting Sort）</font></h2><h3 id="1、原理-7"><a href="#1、原理-7" class="headerlink" title="1、原理"></a>1、原理</h3><p>计数排序是一个非基于比较的排序算法，它的优势在于在对一定范围内的整数排序时，它的复杂度为 Ο(n+k)，其中 k 是整数的范围，快于任何比较排序算法。计数排序是一种牺牲空间换取时间的做法。计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，<strong>计数排序要求输入的数据必须是有确定范围的整数。</strong></p>
+<h3 id="2、步骤-7"><a href="#2、步骤-7" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 找到待排序列表中的最大值 k，开辟一个长度为 k+1 的计数列表，计数列表中的值都为 0。</li>
+<li><strong>②</strong> 遍历待排序列表，如果遍历到的元素值为 i，则计数列表中索引 i 的值加1。</li>
+<li><strong>③</strong> 遍历完整个待排序列表，计数列表中索引 i 的值 j 表示 i 的个数为 j，统计出待排序列表中每个值的数量。</li>
+<li><strong>④</strong> 创建一个新列表（也可以清空原列表，在原列表中添加），遍历计数列表，依次在新列表中添加 j 个 i，新列表就是排好序后的列表，整个过程没有比较待排序列表中的数据大小。</li>
+</ul>
+<h3 id="3、动画演示-7"><a href="#3、动画演示-7" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/14%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F.gif" alt="14计数排序"></p>
+<h3 id="4、代码实现-7"><a href="#4、代码实现-7" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def count_sort(arr):
+    if len(arr) &lt; 2:                       # 如果数组长度小于 2 则直接返回
+        return arr
+    max_num = max(arr)
+    count = [0 for _ in range(max_num+1)]  # 开辟一个计数列表
+    for val in arr:
+        count[val] += 1
+    arr.clear()                        # 原数组清空
+    for ind, val in enumerate(count):  # 遍历值和下标（值的数量）
+        for i in range(val):
+            arr.append(ind)
+    return arr
+</code></pre>
+<h3 id="5、具体示例-7"><a href="#5、具体示例-7" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def count_sort(arr):
+    if len(arr) &lt; 2:                       # 如果数组长度小于 2 则直接返回
+        return arr
+    max_num = max(arr)
+    count = [0 for _ in range(max_num+1)]  # 开辟一个计数列表
+    for val in arr:
+        count[val] += 1
+    arr.clear()                        # 原数组清空
+    for ind, val in enumerate(count):  # 遍历值和下标（值的数量）
+        for i in range(val):
+            arr.append(ind)
+    return arr
+
+
+arr = [2, 3, 8, 7, 1, 2, 2, 2, 7, 3, 9, 8, 2, 1, 4, 2, 4, 6, 9, 2]
+sorted_arr = count_sort(arr)
+print(sorted_arr)
+</code></pre>
+<pre><code class="python">[1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 6, 7, 7, 8, 8, 9, 9]
+</code></pre>
+<hr>
+<h2 id="九、桶排序（Bucket-Sort）"><a href="#九、桶排序（Bucket-Sort）" class="headerlink" title="九、桶排序（Bucket Sort）"></a><font color=#FF0000>九、桶排序（Bucket Sort）</font></h2><h3 id="1、原理-8"><a href="#1、原理-8" class="headerlink" title="1、原理"></a>1、原理</h3><p>桶排序又叫箱排序，工作的原理是将数组分到有限数量的桶子里。每个桶子再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。桶排序是鸽巢排序的一种归纳结果。</p>
+<p>桶排序也是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，我们需要做到这两点：</p>
+<ul>
+<li>在额外空间充足的情况下，尽量增大桶的数量；</li>
+<li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中。</li>
+</ul>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。</p>
+<ul>
+<li>最快情况：当输入的数据可以均匀的分配到每一个桶中；</li>
+<li>最慢情况：当输入的数据被分配到了同一个桶中。</li>
+</ul>
+<h3 id="2、步骤-8"><a href="#2、步骤-8" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 创建一个定量的数组当作空桶子；</li>
+<li><strong>②</strong> 遍历序列，把元素一个一个放到对应的桶子去；</li>
+<li><strong>③</strong> 对每个不是空的桶子进行排序；</li>
+<li><strong>④</strong> 从不是空的桶子里把元素再放回原来的序列中。</li>
+</ul>
+<h3 id="3、动画演示-8"><a href="#3、动画演示-8" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p>（动图来源于@五分钟学算法，侵删）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/15%E6%A1%B6%E6%8E%92%E5%BA%8F.gif" alt="15桶排序"></p>
+<h3 id="4、代码实现-8"><a href="#4、代码实现-8" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def bucket_sort(arr):
+    max_num = max(arr)
+    n = len(arr)
+    buckets = [[] for _ in range(n)]         # 创建桶
+    for var in arr:
+        i = min(var // (max_num // n), n-1)  # i 表示 var 放到几号桶里
+        buckets[i].append(var)               # 把 var 加到桶里边
+        # 保持桶内的顺序
+        for j in range(len(buckets[i])-1, 0, -1):
+            if buckets[i][j] &lt; buckets[i][j-1]:
+                buckets[i][j], buckets[i][j-1] = buckets[i][j-1], buckets[i][j]
+            else:
+                break
+    sorted_arr = []
+    for buc in buckets:
+        sorted_arr.extend(buc)
+    return sorted_arr
+</code></pre>
+<h3 id="5、具体示例-8"><a href="#5、具体示例-8" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def bucket_sort(arr):
+    max_num = max(arr)
+    n = len(arr)
+    buckets = [[] for _ in range(n)]         # 创建桶
+    for var in arr:
+        i = min(var // (max_num // n), n-1)  # i 表示 var 放到几号桶里
+        buckets[i].append(var)               # 把 var 加到桶里边
+        # 保持桶内的顺序
+        for j in range(len(buckets[i])-1, 0, -1):
+            if buckets[i][j] &lt; buckets[i][j-1]:
+                buckets[i][j], buckets[i][j-1] = buckets[i][j-1], buckets[i][j]
+            else:
+                break
+    sorted_arr = []
+    for buc in buckets:
+        sorted_arr.extend(buc)
+    return sorted_arr
+
+
+arr = [7, 12, 56, 23, 19, 33, 35, 42, 42, 2, 8, 22, 39, 26, 17]
+sorted_arr = bucket_sort(arr)
+print(sorted_arr)
+</code></pre>
+<pre><code class="python">[2, 7, 8, 12, 17, 19, 22, 23, 26, 33, 35, 39, 42, 42, 56]
+</code></pre>
+<hr>
+<h2 id="十、基数排序（Radix-Sort）"><a href="#十、基数排序（Radix-Sort）" class="headerlink" title="十、基数排序（Radix Sort）"></a><font color=#FF0000>十、基数排序（Radix Sort）</font></h2><h3 id="1、原理-9"><a href="#1、原理-9" class="headerlink" title="1、原理"></a>1、原理</h3><p>基数排序属于分配式排序，是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。由于整数也可以表达字符串（比如名字或日期）和特定格式的浮点数，所以基数排序也不是只能使用于整数。</p>
+<p>基数排序、计数排序、桶排序三种排序算法都利用了桶的概念，但对桶的使用方法上是有明显差异的：</p>
+<ul>
+<li>基数排序：根据键值的每位数字来分配桶；</li>
+<li>计数排序：每个桶只存储单一键值；</li>
+<li>桶排序：每个桶存储一定范围的数值。</li>
+</ul>
+<h3 id="2、步骤-9"><a href="#2、步骤-9" class="headerlink" title="2、步骤"></a>2、步骤</h3><ul>
+<li><strong>①</strong> 取数组中的最大数，并取得位数；</li>
+<li><strong>②</strong> 从最低位开始，依次进行一次排序；</li>
+<li><strong>③</strong> 从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列。</li>
+</ul>
+<h3 id="3、动画演示-9"><a href="#3、动画演示-9" class="headerlink" title="3、动画演示"></a>3、动画演示</h3><p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A91/16%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F.gif" alt="16基数排序"></p>
+<h3 id="4、代码实现-9"><a href="#4、代码实现-9" class="headerlink" title="4、代码实现"></a>4、代码实现</h3><pre><code class="python">def radix_sort(li):
+    max_num = max(li)      # 最大值 9-&gt;1次循环, 99-&gt;2次循环, 888-&gt;3次循环, 10000-&gt;5次循环
+    it = 0
+    while 10 ** it &lt;= max_num:
+        buckets = [[] for _ in range(10)]
+        for var in li:
+            # var=987, it=1, 987//10-&gt;98, 98%10-&gt;8; it=2, 987//100-&gt;9, 9%10=9
+            digit = (var // 10 ** it) % 10   # 依次取一位数
+            buckets[digit].append(var)
+        # 分桶完成
+        li.clear()
+        for buc in buckets:
+            li.extend(buc)
+        it += 1            # 把数重新写回 li
+    return arr
+</code></pre>
+<h3 id="5、具体示例-9"><a href="#5、具体示例-9" class="headerlink" title="5、具体示例"></a>5、具体示例</h3><pre><code class="python">def radix_sort(li):
+    max_num = max(li)      # 最大值 9-&gt;1次循环, 99-&gt;2次循环, 888-&gt;3次循环, 10000-&gt;5次循环
+    it = 0
+    while 10 ** it &lt;= max_num:
+        buckets = [[] for _ in range(10)]
+        for var in li:
+            # var=987, it=1, 987//10-&gt;98, 98%10-&gt;8; it=2, 987//100-&gt;9, 9%10=9
+            digit = (var // 10 ** it) % 10   # 依次取一位数
+            buckets[digit].append(var)
+        # 分桶完成
+        li.clear()
+        for buc in buckets:
+            li.extend(buc)
+        it += 1            # 把数重新写回 li
+    return arr
+
+
+arr = [3221, 1, 10, 9680, 577, 9420, 7, 5622, 4793, 2030, 3138, 82, 2599, 743, 4127]
+sorted_arr = radix_sort(arr)
+print(sorted_arr)
+</code></pre>
+<pre><code class="python">[1, 7, 10, 82, 577, 743, 2030, 2599, 3138, 3221, 4127, 4793, 5622, 9420, 9680]
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/108987300
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<p>我的博客即将同步至 OSCHINA 社区，这是我的 OSCHINA ID：TRHX，邀请大家一同入驻：<a target="_blank" rel="noopener" href="https://www.oschina.net/sharing-plan/apply">https://www.oschina.net/sharing-plan/apply</a></p>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/036/">https://www.itbob.cn/article/036/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/037/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/035/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

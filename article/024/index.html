@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Matplotlib">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/024/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/024/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Matplotlib"> 
+
+    
+        <meta property="article:published_time" content="Tue Jun 09 2020 16:13:49 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jan 22 2022 23:56:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/024/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/024/index.html",
+    "headline": "Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】",
+    "datePublished": "Tue Jun 09 2020 16:13:49 GMT+0800",
+    "dateModified": "Sat Jan 22 2022 23:56:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,数据分析,MatplotlibITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%901x00%E3%80%91%E4%BB%8B%E7%BB%8D%EF%BC%88Introduction%EF%BC%89"><span class="post-toc-number">1.</span> <span class="post-toc-text">【1x00】介绍（Introduction）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902x00%E3%80%91%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%88Setup%EF%BC%89"><span class="post-toc-number">2.</span> <span class="post-toc-text">【2x00】准备工作（Setup）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903x00%E3%80%91%E5%85%B3%E8%81%94%EF%BC%88Correlation%EF%BC%89"><span class="post-toc-number">3.</span> <span class="post-toc-text">【3x00】关联（Correlation） </span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9001%E3%80%91%E6%95%A3%E7%82%B9%E5%9B%BE%EF%BC%88Scatter-plot%EF%BC%89"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【01】散点图（Scatter plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9002%E3%80%91%E5%B8%A6%E8%BE%B9%E7%95%8C%E7%9A%84%E6%B0%94%E6%B3%A1%E5%9B%BE%EF%BC%88Bubble-plot-with-Encircling%EF%BC%89"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【02】带边界的气泡图（Bubble plot with Encircling）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003%E3%80%91%E5%B8%A6%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%9C%80%E4%BD%B3%E6%8B%9F%E5%90%88%E7%BA%BF%E7%9A%84%E6%95%A3%E7%82%B9%E5%9B%BE%EF%BC%88Scatter-plot-with-linear-regression-line-of-best-fit%EF%BC%89"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9004%E3%80%91%E6%8A%96%E5%8A%A8%E5%9B%BE%EF%BC%88Jittering-with-stripplot%EF%BC%89"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【04】抖动图（Jittering with stripplot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9005%E3%80%91%E8%AE%A1%E6%95%B0%E5%9B%BE%EF%BC%88Counts-Plot%EF%BC%89"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">【05】计数图（Counts Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9006%E3%80%91%E8%BE%B9%E7%BC%98%E7%9B%B4%E6%96%B9%E5%9B%BE%EF%BC%88Marginal-Histogram%EF%BC%89"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">【06】边缘直方图（Marginal Histogram）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9007%E3%80%91%E8%BE%B9%E7%BC%98%E7%AE%B1%E5%BD%A2%E5%9B%BE%EF%BC%88Marginal-Boxplot%EF%BC%89"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">【07】边缘箱形图（Marginal Boxplot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9008%E3%80%91%E7%9B%B8%E5%85%B3%E5%9B%BE%EF%BC%88Correllogram%EF%BC%89"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">【08】相关图（Correllogram）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9009%E3%80%91%E6%88%90%E5%AF%B9%E5%9B%BE%EF%BC%88Pairwise-Plot%EF%BC%89"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">【09】成对图（Pairwise Plot）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%904x00%E3%80%91%E5%81%8F%E5%B7%AE%EF%BC%88Deviation%EF%BC%89"><span class="post-toc-number">4.</span> <span class="post-toc-text">【4x00】偏差（Deviation）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9010%E3%80%91%E5%8F%91%E6%95%A3%E5%9E%8B%E6%9D%A1%E5%BD%A2%E5%9B%BE%EF%BC%88Diverging-Bars%EF%BC%89"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">【10】发散型条形图（Diverging Bars）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9011%E3%80%91%E5%8F%91%E6%95%A3%E5%9E%8B%E6%96%87%E6%9C%AC%E5%9B%BE%EF%BC%88Diverging-Texts%EF%BC%89"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">【11】发散型文本图（Diverging Texts）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9012%E3%80%91%E5%8F%91%E6%95%A3%E5%9E%8B%E6%95%A3%E7%82%B9%E5%9B%BE%EF%BC%88Diverging-Dot-Plot%EF%BC%89"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">【12】发散型散点图（Diverging Dot Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9013%E3%80%91%E5%B8%A6%E6%A0%87%E8%AE%B0%E7%9A%84%E5%8F%91%E6%95%A3%E5%9E%8B%E6%A3%92%E6%A3%92%E7%B3%96%E5%9B%BE%EF%BC%88Diverging-Lollipop-Chart-with-Markers%EF%BC%89"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9014%E3%80%91%E9%9D%A2%E7%A7%AF%E5%9B%BE%EF%BC%88Area-Chart%EF%BC%89"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">【14】面积图（Area Chart）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%905x00%E3%80%91%E6%8E%92%E5%BA%8F%EF%BC%88Ranking%EF%BC%89"><span class="post-toc-number">5.</span> <span class="post-toc-text">【5x00】排序（Ranking）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9015%E3%80%91%E6%9C%89%E5%BA%8F%E6%9D%A1%E5%BD%A2%E5%9B%BE%EF%BC%88Ordered-Bar-Chart%EF%BC%89"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">【15】有序条形图（Ordered Bar Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9016%E3%80%91%E6%A3%92%E6%A3%92%E7%B3%96%E5%9B%BE%EF%BC%88Lollipop-Chart%EF%BC%89"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">【16】棒棒糖图（Lollipop Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9017%E3%80%91%E7%82%B9%E5%9B%BE%EF%BC%88Dot-Plot%EF%BC%89"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">【17】点图（Dot Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9018%E3%80%91%E5%9D%A1%E5%BA%A6%E5%9B%BE%EF%BC%88Slope-Chart%EF%BC%89"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">【18】坡度图（Slope Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9019%E3%80%91%E5%93%91%E9%93%83%E5%9B%BE%EF%BC%88Dumbbell-Plot%EF%BC%89"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">【19】哑铃图（Dumbbell Plot）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%906x00%E3%80%91%E5%88%86%E5%B8%83%EF%BC%88Distribution%EF%BC%89"><span class="post-toc-number">6.</span> <span class="post-toc-text">【6x00】分布（Distribution）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9020%E3%80%91%E8%BF%9E%E7%BB%AD%E5%8F%98%E9%87%8F%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%EF%BC%88Histogram-for-Continuous-Variable%EF%BC%89"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">【20】连续变量的直方图（Histogram for Continuous Variable）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9021%E3%80%91%E5%88%86%E7%B1%BB%E5%8F%98%E9%87%8F%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%EF%BC%88Histogram-for-Categorical-Variable%EF%BC%89"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">【21】分类变量的直方图（Histogram for Categorical Variable）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9022%E3%80%91%E5%AF%86%E5%BA%A6%E5%9B%BE%EF%BC%88Density-Plot%EF%BC%89"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">【22】密度图（Density Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9023%E3%80%91%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%AF%86%E5%BA%A6%E6%9B%B2%E7%BA%BF%EF%BC%88Density-Curves-with-Histogram%EF%BC%89"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">【23】直方图密度曲线（Density Curves with Histogram）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9024%E3%80%91%E5%B1%B1%E5%B3%B0%E5%8F%A0%E5%B3%A6%E5%9B%BE-%E6%AC%A2%E4%B9%90%E5%9B%BE%EF%BC%88Joy-Plot%EF%BC%89"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">【24】山峰叠峦图 &#x2F; 欢乐图（Joy Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9025%E3%80%91%E5%88%86%E5%B8%83%E5%BC%8F%E7%82%B9%E5%9B%BE%EF%BC%88Distributed-Dot-Plot%EF%BC%89"><span class="post-toc-number">6.6.</span> <span class="post-toc-text">【25】分布式点图（Distributed Dot Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9026%E3%80%91%E7%AE%B1%E5%BD%A2%E5%9B%BE%EF%BC%88Box-Plot%EF%BC%89"><span class="post-toc-number">6.7.</span> <span class="post-toc-text">【26】箱形图（Box Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9027%E3%80%91%E7%82%B9-%E7%AE%B1%E5%BD%A2%E5%9B%BE%EF%BC%88Dot-Box-Plot%EF%BC%89"><span class="post-toc-number">6.8.</span> <span class="post-toc-text">【27】点 + 箱形图（Dot + Box Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9028%E3%80%91%E5%B0%8F%E6%8F%90%E7%90%B4%E5%9B%BE%EF%BC%88Violin-Plot%EF%BC%89"><span class="post-toc-number">6.9.</span> <span class="post-toc-text">【28】小提琴图（Violin Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9029%E3%80%91%E4%BA%BA%E5%8F%A3%E9%87%91%E5%AD%97%E5%A1%94%E5%9B%BE%EF%BC%88Population-Pyramid%EF%BC%89"><span class="post-toc-number">6.10.</span> <span class="post-toc-text">【29】人口金字塔图（Population Pyramid）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9030%E3%80%91%E5%88%86%E7%B1%BB%E5%9B%BE%EF%BC%88Categorical-Plots%EF%BC%89"><span class="post-toc-number">6.11.</span> <span class="post-toc-text">【30】分类图（Categorical Plots）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%907x00%E3%80%91%E7%BB%84%E6%88%90%EF%BC%88Composition%EF%BC%89"><span class="post-toc-number">7.</span> <span class="post-toc-text">【7x00】组成（Composition）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9031%E3%80%91%E5%8D%8E%E5%A4%AB%E9%A5%BC%E5%9B%BE%EF%BC%88Waffle-Chart%EF%BC%89"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">【31】华夫饼图（Waffle Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9032%E3%80%91%E9%A5%BC%E5%9B%BE%EF%BC%88Pie-Chart%EF%BC%89"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">【32】饼图（Pie Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9033%E3%80%91%E7%9F%A9%E9%98%B5%E6%A0%91%E5%BD%A2%E5%9B%BE%EF%BC%88Treemap%EF%BC%89"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">【33】矩阵树形图（Treemap）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9034%E3%80%91%E6%9D%A1%E5%BD%A2%E5%9B%BE%EF%BC%88Bar-Chart%EF%BC%89"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">【34】条形图（Bar Chart）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%908x00%E3%80%91%E5%8F%98%E5%8C%96%EF%BC%88Change%EF%BC%89"><span class="post-toc-number">8.</span> <span class="post-toc-text">【8x00】变化（Change）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9035%E3%80%91%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E5%9B%BE%EF%BC%88Time-Series-Plot%EF%BC%89"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">【35】时间序列图（Time Series Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9036%E3%80%91%E5%B8%A6%E6%B3%A2%E5%B3%B0%E5%92%8C%E6%B3%A2%E8%B0%B7%E6%B3%A8%E9%87%8A%E7%9A%84%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E5%9B%BE%EF%BC%88Time-Series-with-Peaks-and-Troughs-Annotated%EF%BC%89"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9037%E3%80%91%E8%87%AA%E7%9B%B8%E5%85%B3-ACF-%E5%92%8C%E9%83%A8%E5%88%86%E8%87%AA%E7%9B%B8%E5%85%B3-PACF-%E5%9B%BE%EF%BC%88Autocorrelation-ACF-and-Partial-Autocorrelation-PACF-Plot%EF%BC%89"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9038%E3%80%91%E4%BA%A4%E5%8F%89%E7%9B%B8%E5%85%B3%E5%9B%BE%EF%BC%88Cross-Correlation-plot%EF%BC%89"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">【38】交叉相关图（Cross Correlation plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9039%E3%80%91%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E5%88%86%E8%A7%A3%E5%9B%BE%EF%BC%88Time-Series-Decomposition-Plot%EF%BC%89"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">【39】时间序列分解图（Time Series Decomposition Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9040%E3%80%91%E5%A4%9A%E9%87%8D%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%EF%BC%88Multiple-Time-Series%EF%BC%89"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">【40】多重时间序列（Multiple Time Series）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9041%E3%80%91%E4%BD%BF%E7%94%A8%E6%AC%A1%E8%A6%81%E7%9A%84-Y-%E8%BD%B4%E6%9D%A5%E7%BB%98%E5%88%B6%E4%B8%8D%E5%90%8C%E8%8C%83%E5%9B%B4%E7%9A%84%E5%9B%BE%E5%BD%A2%EF%BC%88Plotting-with-different-scales-using-secondary-Y-axis%EF%BC%89"><span class="post-toc-number">8.7.</span> <span class="post-toc-text">【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9042%E3%80%91%E5%B8%A6%E8%AF%AF%E5%B7%AE%E5%B8%A6%E7%9A%84%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%EF%BC%88Time-Series-with-Error-Bands%EF%BC%89"><span class="post-toc-number">8.8.</span> <span class="post-toc-text">【42】带误差带的时间序列（Time Series with Error Bands）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9043%E3%80%91%E5%A0%86%E7%A7%AF%E9%9D%A2%E7%A7%AF%E5%9B%BE%EF%BC%88Stacked-Area-Chart%EF%BC%89"><span class="post-toc-number">8.9.</span> <span class="post-toc-text">【43】堆积面积图（Stacked Area Chart）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9044%E3%80%91%E6%9C%AA%E5%A0%86%E7%A7%AF%E9%9D%A2%E7%A7%AF%E5%9B%BE%EF%BC%88Area-Chart-UnStacked%EF%BC%89"><span class="post-toc-number">8.10.</span> <span class="post-toc-text">【44】未堆积面积图（Area Chart UnStacked）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9045%E3%80%91%E6%97%A5%E5%8E%86%E7%83%AD%E5%8A%9B%E5%9B%BE%EF%BC%88Calendar-Heat-Map%EF%BC%89"><span class="post-toc-number">8.11.</span> <span class="post-toc-text">【45】日历热力图（Calendar Heat Map）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9046%E3%80%91%E5%AD%A3%E8%8A%82%E5%9B%BE%EF%BC%88Seasonal-Plot%EF%BC%89"><span class="post-toc-number">8.12.</span> <span class="post-toc-text">【46】季节图（Seasonal Plot）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%909x00%E3%80%91%E5%88%86%E7%BB%84%EF%BC%88-Groups%EF%BC%89"><span class="post-toc-number">9.</span> <span class="post-toc-text">【9x00】分组（ Groups）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9047%E3%80%91%E6%A0%91%E7%8A%B6%E5%9B%BE%EF%BC%88Dendrogram%EF%BC%89"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">【47】树状图（Dendrogram）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9048%E3%80%91%E8%81%9A%E7%B1%BB%E5%9B%BE%EF%BC%88Cluster-Plot%EF%BC%89"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">【48】聚类图（Cluster Plot）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9049%E3%80%91%E5%AE%89%E5%BE%B7%E9%B2%81%E6%96%AF%E6%9B%B2%E7%BA%BF%EF%BC%88Andrews-Curve%EF%BC%89"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">【49】安德鲁斯曲线（Andrews Curve）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9050%E3%80%91%E5%B9%B3%E8%A1%8C%E5%9D%90%E6%A0%87%E5%9B%BE%EF%BC%88Parallel-Coordinates%EF%BC%89"><span class="post-toc-number">9.4.</span> <span class="post-toc-text">【50】平行坐标图（Parallel Coordinates）</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>6月 09, 2020</span> -->
+        <span>2020-06-09 16:13:49</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACYUlEQVR42u3aQW7DMAwEwPz/0+21QBt3SYmyEYxPhhFbGh0khuTr66OvFx4eHh4eHh4e3sN4r/h699YfA1w+741SeAsPDw/vCO+frfbNwMmTn89/31+P3pwbHh4e3kHeuw03ub/+ZrLdJ2Nd/x4PDw/vybzkYLgOqZMv4+Hh4X0SL6EmCYs8qYGHh4f3TF7yhz+ZVvVgyKc+nmvBw8PDi3l5ken8/dH6Hh4eHl7AK7c0LaR0q8HxhqYrPDw8vAFevhFXw+WVktjKfPDw8PCmeUlSIFmOvDzWO0KSIhkeHh7eSV7vkNi2lW9qX8DDw8O7l5dv1r0FyseqLhweHh7eGV61AJZs9HlLVj5iFL7j4eHhDfNWkrbTT5JDCA8PD+8uXpI8TZaj17yVL3eUaMbDw8M7yCuXmuImgPwLvUQGHh4e3nlevolXEw3XjOphEAX3eHh4eMO8ahK2WhirLkGvWQEPDw/vJG9io19P0S4dM3h4eHgHeUl6YmUTrwbovRIdHh4e3kleNXnaK26thObRKHh4eHhHeLsC5WSiebGtV0LDw8PDO8/rNQ3sXaDed/Dw8PDu5eXD5EvTC9ariQk8PDy8u3hJMnel9NVLiERj4eHh4Q3zqlc+0V2HQbVshoeHhzfN21v6ahb7iwfSSOsAHh4eXpFXPQwmwNXWq/I/Bjw8PLwBXm+D3puK7aUk8PDw8J7PqwbiSRNVNdU7eDDg4eHhDcecvUaEahks/xuAh4eHd5LXawXI38p/U0124OHh4Z3nrQfHKyWrPOyOnuPh4eEN8z7vwsPDw8PDw8PDe8D1DcAHhpKF6a3nAAAAAElFTkSuQmCC">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;14.1k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;76 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/024/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】&url=https://www.itbob.cn/article/024/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】&url=https://www.itbob.cn/article/024/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/024/index.html&text=Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/024/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/024/index.html&title=Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/024/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/10/A68-Matplotlib-01/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/12/A69-Matplotlib-02/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/14/A70-Matplotlib-03/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/16/A71-Matplotlib-04/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/18/A72-Matplotlib-05/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/21/A73-Matplotlib-06/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/24/A74-Matplotlib-07/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/30/A75-Matplotlib-08/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/03/A76-Matplotlib-09/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/08/A77-Matplotlib-10/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/09/A78-Matplotlib-11/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<blockquote>
+<p>翻译丨<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/">TRHX</a><br>作者丨<a target="_blank" rel="noopener" href="https://www.machinelearningplus.com/author/selva86/">Selva Prabhakaran</a><br>原文丨<a target="_blank" rel="noopener" href="https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/">《Top 50 matplotlib Visualizations – The Master Plots (with full python code)》</a></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>★ 本文中的示例原作者使用的编辑器为 Jupyter Notebook；<br>★ 译者使用 PyCharm 测试原文中有部分代码不太准确，部分已进行修改，对应有注释说明；<br>★ 运行本文代码，需要安装 Matplotlib 和 Seaborn 等可视化库，其他的一些辅助可视化库已在代码部分作标注；<br>★ 示例中用到的数据均储存在作者的 GitHub：<a target="_blank" rel="noopener" href="https://github.com/selva86/datasets">https://github.com/selva86/datasets</a>，因此运行程序可能需要FQ；<br>★ 译者英文水平有限，若遇到翻译模糊的词建议参考原文来理解。<br>★ 本文50个示例代码已打包为 .py 文件，可直接下载：<a target="_blank" rel="noopener" href="https://download.csdn.net/download/qq_36759224/12507219">https://download.csdn.net/download/qq_36759224/12507219</a></p>
+</blockquote>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本译文首发于 CSDN，作者 Selva Prabhakaran，译者 TRHX。
+本文链接：https://itrhx.blog.csdn.net/article/details/106558131
+原文链接：https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/
+</code></pre>
+<hr>
+<h2 id="【1x00】介绍（Introduction）"><a href="#【1x00】介绍（Introduction）" class="headerlink" title="【1x00】介绍（Introduction）"></a><font color=#FF0000>【1x00】介绍（Introduction）</font></h2><p>在数据分析和可视化中最常用的、最有价值的前 50 个 Matplotlib 图表。这些图表会让你懂得在不同情况下合理使用 Python 的 Matplotlib 和 Seaborn 库来达到数据可视化效果。</p>
+<p>这些图表根据可视化目标的 7 个不同情景进行分组。 例如，如果要想象两个变量之间的关系，请查看“关联”部分下的图表。 或者，如果您想要显示值如何随时间变化，请查看“变化”部分，依此类推。</p>
+<p>有效图表的重要特征：</p>
+<ul>
+<li>在不歪曲事实的情况下传达正确和必要的信息；</li>
+<li>设计简单，不必太费力就能理解它；</li>
+<li>从审美角度支持信息而不是掩盖信息；</li>
+<li>信息没有超负荷。</li>
+</ul>
+<h2 id="【2x00】准备工作（Setup）"><a href="#【2x00】准备工作（Setup）" class="headerlink" title="【2x00】准备工作（Setup）"></a><font color=#FF0000>【2x00】准备工作（Setup）</font></h2><p>在代码运行前先引入下面的基本设置，当然，个别图表可能会重新定义显示要素。</p>
+<pre><code class="python"># !pip install brewer2mpl
+import numpy as np
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings; warnings.filterwarnings(action=&#39;once&#39;)
+
+large = 22; med = 16; small = 12
+params = &#123;&#39;axes.titlesize&#39;: large,
+          &#39;legend.fontsize&#39;: med,
+          &#39;figure.figsize&#39;: (16, 10),
+          &#39;axes.labelsize&#39;: med,
+          &#39;axes.titlesize&#39;: med,
+          &#39;xtick.labelsize&#39;: med,
+          &#39;ytick.labelsize&#39;: med,
+          &#39;figure.titlesize&#39;: large&#125;
+plt.rcParams.update(params)
+plt.style.use(&#39;seaborn-whitegrid&#39;)
+sns.set_style(&quot;white&quot;)
+%matplotlib inline
+
+# Version
+print(mpl.__version__)  #&gt; 3.0.0
+print(sns.__version__)  #&gt; 0.9.0
+</code></pre>
+<h2 id="【3x00】关联（Correlation）"><a href="#【3x00】关联（Correlation）" class="headerlink" title="【3x00】关联（Correlation） "></a><font color=#FF0000>【3x00】关联（Correlation） </font></h2><p>关联图用于可视化两个或多个变量之间的关系。也就是说，一个变量相对于另一个变量如何变化。</p>
+<h3 id="【01】散点图（Scatter-plot）"><a href="#【01】散点图（Scatter-plot）" class="headerlink" title="【01】散点图（Scatter plot）"></a><font color=##4876FF>【01】散点图（Scatter plot）</font></h3><p>散点图是研究两个变量之间关系的经典和基本的绘图。如果数据中有多个组，则可能需要以不同的颜色显示每个组。在 Matplotlib 中，您可以使用 <code>plt.scatterplot()</code> 方便地执行此操作。</p>
+<pre><code class="python"># Import dataset 
+midwest = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/midwest_filter.csv&quot;)
+
+# Prepare Data 
+# Create as many colors as there are unique midwest[&#39;category&#39;]
+categories = np.unique(midwest[&#39;category&#39;])
+colors = [plt.cm.tab10(i/float(len(categories)-1)) for i in range(len(categories))]
+
+# Draw Plot for Each Category
+plt.figure(figsize=(16, 10), dpi= 80, facecolor=&#39;w&#39;, edgecolor=&#39;k&#39;)
+
+for i, category in enumerate(categories):
+    plt.scatter(&#39;area&#39;, &#39;poptotal&#39;,
+                data=midwest.loc[midwest.category==category, :],
+                s=20, cmap=colors[i], label=str(category))
+# 原文 c=colors[i] 已修改为 cmap=colors[i]
+
+# Decorations
+plt.gca().set(xlim=(0.0, 0.1), ylim=(0, 90000),
+              xlabel=&#39;Area&#39;, ylabel=&#39;Population&#39;)
+
+plt.xticks(fontsize=12); plt.yticks(fontsize=12)
+plt.title(&quot;Scatterplot of Midwest Area vs Population&quot;, fontsize=22)
+plt.legend(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/01.png" alt="01"></p>
+<h3 id="【02】带边界的气泡图（Bubble-plot-with-Encircling）"><a href="#【02】带边界的气泡图（Bubble-plot-with-Encircling）" class="headerlink" title="【02】带边界的气泡图（Bubble plot with Encircling）"></a><font color=##4876FF>【02】带边界的气泡图（Bubble plot with Encircling）</font></h3><p>有时候您想在一个边界内显示一组点来强调它们的重要性。在本例中，您将从被包围的数据中获取记录，并将其传递给下面的代码中描述的 <code>encircle()</code>。</p>
+<pre><code class="python">from matplotlib import patches
+from scipy.spatial import ConvexHull
+import warnings; warnings.simplefilter(&#39;ignore&#39;)
+sns.set_style(&quot;white&quot;)
+
+# Step 1: Prepare Data
+midwest = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/midwest_filter.csv&quot;)
+
+# As many colors as there are unique midwest[&#39;category&#39;]
+categories = np.unique(midwest[&#39;category&#39;])
+colors = [plt.cm.tab10(i/float(len(categories)-1)) for i in range(len(categories))]
+
+# Step 2: Draw Scatterplot with unique color for each category
+fig = plt.figure(figsize=(16, 10), dpi=80, facecolor=&#39;w&#39;, edgecolor=&#39;k&#39;)
+
+for i, category in enumerate(categories):
+    plt.scatter(&#39;area&#39;, &#39;poptotal&#39;, data=midwest.loc[midwest.category == category, :], s=&#39;dot_size&#39;, cmap=colors[i], label=str(category), edgecolors=&#39;black&#39;, linewidths=.5)
+# 原文 c=colors[i] 已修改为 cmap=colors[i]
+
+# Step 3: Encircling
+# https://stackoverflow.com/questions/44575681/how-do-i-encircle-different-data-sets-in-scatter-plot
+def encircle(x,y, ax=None, **kw):
+    if not ax: ax = plt.gca()
+    p = np.c_[x, y]
+    hull = ConvexHull(p)
+    poly = plt.Polygon(p[hull.vertices, :], **kw)
+    ax.add_patch(poly)
+
+# Select data to be encircled
+midwest_encircle_data = midwest.loc[midwest.state==&#39;IN&#39;, :]
+
+# Draw polygon surrounding vertices
+encircle(midwest_encircle_data.area, midwest_encircle_data.poptotal, ec=&quot;k&quot;, fc=&quot;gold&quot;, alpha=0.1)
+encircle(midwest_encircle_data.area, midwest_encircle_data.poptotal, ec=&quot;firebrick&quot;, fc=&quot;none&quot;, linewidth=1.5)
+
+# Step 4: Decorations
+plt.gca().set(xlim=(0.0, 0.1), ylim=(0, 90000),
+              xlabel=&#39;Area&#39;, ylabel=&#39;Population&#39;)
+
+plt.xticks(fontsize=12); plt.yticks(fontsize=12)
+plt.title(&quot;Bubble Plot with Encircling&quot;, fontsize=22)
+plt.legend(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/02.png" alt="02"></p>
+<h3 id="【03】带线性回归最佳拟合线的散点图（Scatter-plot-with-linear-regression-line-of-best-fit）"><a href="#【03】带线性回归最佳拟合线的散点图（Scatter-plot-with-linear-regression-line-of-best-fit）" class="headerlink" title="【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）"></a><font color=##4876FF>【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</font></h3><p>如果你想了解两个变量之间是如何变化的，那么最佳拟合线就是常用的方法。下图显示了数据中不同组之间的最佳拟合线的差异。若要禁用分组并只为整个数据集绘制一条最佳拟合线，请从 <code>sns.lmplot()</code> 方法中删除 <code>hue =&#39;cyl&#39;</code> 参数。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+df_select = df.loc[df.cyl.isin([4, 8]), :]
+
+# Plot
+sns.set_style(&quot;white&quot;)
+gridobj = sns.lmplot(x=&quot;displ&quot;, y=&quot;hwy&quot;, hue=&quot;cyl&quot;, data=df_select,
+                     height=7, aspect=1.6, robust=True, palette=&#39;tab10&#39;,
+                     scatter_kws=dict(s=60, linewidths=.7, edgecolors=&#39;black&#39;))
+
+# Decorations
+gridobj.set(xlim=(0.5, 7.5), ylim=(0, 50))
+plt.title(&quot;Scatterplot with line of best fit grouped by number of cylinders&quot;, fontsize=20)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/03.png" alt="03"></p>
+<p>针对每一组数据绘制线性回归线（Each regression line in its own column），可以通过在 <code>sns.lmplot()</code> 中设置 <code>col=groupingcolumn</code> 参数来实现，如下：</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+df_select = df.loc[df.cyl.isin([4, 8]), :]
+
+# Each line in its own column
+sns.set_style(&quot;white&quot;)
+gridobj = sns.lmplot(x=&quot;displ&quot;, y=&quot;hwy&quot;,
+                     data=df_select,
+                     height=7,
+                     robust=True,
+                     palette=&#39;Set1&#39;,
+                     col=&quot;cyl&quot;,
+                     scatter_kws=dict(s=60, linewidths=.7, edgecolors=&#39;black&#39;))
+
+# Decorations
+gridobj.set(xlim=(0.5, 7.5), ylim=(0, 50))
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/04.png" alt="04"></p>
+<h3 id="【04】抖动图（Jittering-with-stripplot）"><a href="#【04】抖动图（Jittering-with-stripplot）" class="headerlink" title="【04】抖动图（Jittering with stripplot）"></a><font color=##4876FF>【04】抖动图（Jittering with stripplot）</font></h3><p>通常，多个数据点具有完全相同的 X 和 Y 值。 此时多个点绘制会重叠并隐藏。为避免这种情况，可以将数据点稍微抖动，以便可以直观地看到它们。 使用 <code>seaborn</code> 库的 <code>stripplot()</code> 方法可以很方便的实现这个功能。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+
+# Draw Stripplot
+fig, ax = plt.subplots(figsize=(16,10), dpi= 80)
+sns.stripplot(df.cty, df.hwy, jitter=0.25, size=8, ax=ax, linewidth=.5)
+
+# Decorations
+plt.title(&#39;Use jittered plots to avoid overlapping of points&#39;, fontsize=22)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/05.png" alt="05"></p>
+<h3 id="【05】计数图（Counts-Plot）"><a href="#【05】计数图（Counts-Plot）" class="headerlink" title="【05】计数图（Counts Plot）"></a><font color=##4876FF>【05】计数图（Counts Plot）</font></h3><p>避免点重叠问题的另一个选择是根据点的位置增加点的大小。所以，点的大小越大，它周围的点就越集中。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+df_counts = df.groupby([&#39;hwy&#39;, &#39;cty&#39;]).size().reset_index(name=&#39;counts&#39;)
+
+# Draw Stripplot
+fig, ax = plt.subplots(figsize=(16,10), dpi= 80)    
+# 原文代码
+# sns.stripplot(df_counts.cty, df_counts.hwy, size=df_counts.counts*2, ax=ax)
+# 纠正代码
+sns.stripplot(df_counts.cty, df_counts.hwy, sizes=df_counts.counts*2, ax=ax)
+
+# Decorations
+plt.title(&#39;Counts Plot - Size of circle is bigger as more points overlap&#39;, fontsize=22)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/06.png" alt="06"></p>
+<h3 id="【06】边缘直方图（Marginal-Histogram）"><a href="#【06】边缘直方图（Marginal-Histogram）" class="headerlink" title="【06】边缘直方图（Marginal Histogram）"></a><font color=##4876FF>【06】边缘直方图（Marginal Histogram）</font></h3><p>边缘直方图是具有沿 X 和 Y 轴变量的直方图。 这用于可视化 X 和 Y 之间的关系以及单独的 X 和 Y 的单变量分布。 这种图经常用于探索性数据分析（EDA）。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+
+# Create Fig and gridspec
+fig = plt.figure(figsize=(16, 10), dpi= 80)
+grid = plt.GridSpec(4, 4, hspace=0.5, wspace=0.2)
+
+# Define the axes
+ax_main = fig.add_subplot(grid[:-1, :-1])
+ax_right = fig.add_subplot(grid[:-1, -1], xticklabels=[], yticklabels=[])
+ax_bottom = fig.add_subplot(grid[-1, 0:-1], xticklabels=[], yticklabels=[])
+
+# Scatterplot on main ax
+ax_main.scatter(&#39;displ&#39;, &#39;hwy&#39;, s=df.cty*4, c=df.manufacturer.astype(&#39;category&#39;).cat.codes, alpha=.9, data=df, cmap=&quot;tab10&quot;, edgecolors=&#39;gray&#39;, linewidths=.5)
+
+# histogram on the right
+ax_bottom.hist(df.displ, 40, histtype=&#39;stepfilled&#39;, orientation=&#39;vertical&#39;, color=&#39;deeppink&#39;)
+ax_bottom.invert_yaxis()
+
+# histogram in the bottom
+ax_right.hist(df.hwy, 40, histtype=&#39;stepfilled&#39;, orientation=&#39;horizontal&#39;, color=&#39;deeppink&#39;)
+
+# Decorations
+ax_main.set(title=&#39;Scatterplot with Histograms \n displ vs hwy&#39;, xlabel=&#39;displ&#39;, ylabel=&#39;hwy&#39;)
+ax_main.title.set_fontsize(20)
+for item in ([ax_main.xaxis.label, ax_main.yaxis.label] + ax_main.get_xticklabels() + ax_main.get_yticklabels()):
+    item.set_fontsize(14)
+
+xlabels = ax_main.get_xticks().tolist()
+ax_main.set_xticklabels(xlabels)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/07.png" alt="07"></p>
+<h3 id="【07】边缘箱形图（Marginal-Boxplot）"><a href="#【07】边缘箱形图（Marginal-Boxplot）" class="headerlink" title="【07】边缘箱形图（Marginal Boxplot）"></a><font color=##4876FF>【07】边缘箱形图（Marginal Boxplot）</font></h3><p>边缘箱形图与边缘直方图具有相似的用途。 然而，箱线图有助于精确定位 X 和 Y 的中位数、第25和第75百分位数。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;)
+
+# Create Fig and gridspec
+fig = plt.figure(figsize=(16, 10), dpi= 80)
+grid = plt.GridSpec(4, 4, hspace=0.5, wspace=0.2)
+
+# Define the axes
+ax_main = fig.add_subplot(grid[:-1, :-1])
+ax_right = fig.add_subplot(grid[:-1, -1], xticklabels=[], yticklabels=[])
+ax_bottom = fig.add_subplot(grid[-1, 0:-1], xticklabels=[], yticklabels=[])
+
+# Scatterplot on main ax
+ax_main.scatter(&#39;displ&#39;, &#39;hwy&#39;, s=df.cty*5, c=df.manufacturer.astype(&#39;category&#39;).cat.codes, alpha=.9, data=df, cmap=&quot;Set1&quot;, edgecolors=&#39;black&#39;, linewidths=.5)
+
+# Add a graph in each part
+sns.boxplot(df.hwy, ax=ax_right, orient=&quot;v&quot;)
+sns.boxplot(df.displ, ax=ax_bottom, orient=&quot;h&quot;)
+
+# Decorations ------------------
+# Remove x axis name for the boxplot
+ax_bottom.set(xlabel=&#39;&#39;)
+ax_right.set(ylabel=&#39;&#39;)
+
+# Main Title, Xlabel and YLabel
+ax_main.set(title=&#39;Scatterplot with Histograms \n displ vs hwy&#39;, xlabel=&#39;displ&#39;, ylabel=&#39;hwy&#39;)
+
+# Set font size of different components
+ax_main.title.set_fontsize(20)
+for item in ([ax_main.xaxis.label, ax_main.yaxis.label] + ax_main.get_xticklabels() + ax_main.get_yticklabels()):
+    item.set_fontsize(14)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/08.png" alt="08"></p>
+<h3 id="【08】相关图（Correllogram）"><a href="#【08】相关图（Correllogram）" class="headerlink" title="【08】相关图（Correllogram）"></a><font color=##4876FF>【08】相关图（Correllogram）</font></h3><p>相关图用于直观地查看给定数据帧（或二维数组）中所有可能的数值变量对之间的相关性度量。</p>
+<pre><code class="python"># Import Dataset
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+
+# Plot
+plt.figure(figsize=(12, 10), dpi=80)
+sns.heatmap(df.corr(), xticklabels=df.corr().columns, yticklabels=df.corr().columns, cmap=&#39;RdYlGn&#39;, center=0, annot=True)
+
+# Decorations
+plt.title(&#39;Correlogram of mtcars&#39;, fontsize=22)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/09.png" alt="09"></p>
+<h3 id="【09】成对图（Pairwise-Plot）"><a href="#【09】成对图（Pairwise-Plot）" class="headerlink" title="【09】成对图（Pairwise Plot）"></a><font color=##4876FF>【09】成对图（Pairwise Plot）</font></h3><p>成对图是探索性分析中最受欢迎的一种方法，用来理解所有可能的数值变量对之间的关系。它是二元分析的必备工具。</p>
+<pre><code class="python"># Load Dataset
+df = sns.load_dataset(&#39;iris&#39;)
+
+# Plot
+plt.figure(figsize=(10, 8), dpi=80)
+sns.pairplot(df, kind=&quot;scatter&quot;, hue=&quot;species&quot;, plot_kws=dict(s=80, edgecolor=&quot;white&quot;, linewidth=2.5))
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/10.png" alt="10"></p>
+<pre><code class="python"># Load Dataset
+df = sns.load_dataset(&#39;iris&#39;)
+
+# Plot
+plt.figure(figsize=(10, 8), dpi=80)
+sns.pairplot(df, kind=&quot;reg&quot;, hue=&quot;species&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/11.png" alt="11"></p>
+<h2 id="【4x00】偏差（Deviation）"><a href="#【4x00】偏差（Deviation）" class="headerlink" title="【4x00】偏差（Deviation）"></a><font color=#FF0000>【4x00】偏差（Deviation）</font></h2><h3 id="【10】发散型条形图（Diverging-Bars）"><a href="#【10】发散型条形图（Diverging-Bars）" class="headerlink" title="【10】发散型条形图（Diverging Bars）"></a><font color=##4876FF>【10】发散型条形图（Diverging Bars）</font></h3><p>如果您想根据单个指标查看项目的变化情况，并可视化此差异的顺序和数量，那么散型条形图是一个很好的工具。 它有助于快速区分数据组的性能，并且非常直观，并且可以立即传达这一点。</p>
+<pre><code class="python"># Prepare Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+x = df.loc[:, [&#39;mpg&#39;]]
+df[&#39;mpg_z&#39;] = (x - x.mean())/x.std()
+df[&#39;colors&#39;] = [&#39;red&#39; if x &lt; 0 else &#39;green&#39; for x in df[&#39;mpg_z&#39;]]
+df.sort_values(&#39;mpg_z&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+plt.figure(figsize=(14,10), dpi= 80)
+plt.hlines(y=df.index, xmin=0, xmax=df.mpg_z, color=df.colors, alpha=0.4, linewidth=5)
+
+# Decorations
+plt.gca().set(ylabel=&#39;$Model$&#39;, xlabel=&#39;$Mileage$&#39;)
+plt.yticks(df.index, df.cars, fontsize=12)
+plt.title(&#39;Diverging Bars of Car Mileage&#39;, fontdict=&#123;&#39;size&#39;:20&#125;)
+plt.grid(linestyle=&#39;--&#39;, alpha=0.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/12.png" alt="12"></p>
+<h3 id="【11】发散型文本图（Diverging-Texts）"><a href="#【11】发散型文本图（Diverging-Texts）" class="headerlink" title="【11】发散型文本图（Diverging Texts）"></a><font color=##4876FF>【11】发散型文本图（Diverging Texts）</font></h3><p>发散型文本图与发散型条形图相似，如果你希望以一种美观的方式显示图表中每个项目的值，就可以使用这种方法。</p>
+<pre><code class="python"># Prepare Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+x = df.loc[:, [&#39;mpg&#39;]]
+df[&#39;mpg_z&#39;] = (x - x.mean())/x.std()
+df[&#39;colors&#39;] = [&#39;red&#39; if x &lt; 0 else &#39;green&#39; for x in df[&#39;mpg_z&#39;]]
+df.sort_values(&#39;mpg_z&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+plt.figure(figsize=(14, 14), dpi=80)
+plt.hlines(y=df.index, xmin=0, xmax=df.mpg_z)
+for x, y, tex in zip(df.mpg_z, df.index, df.mpg_z):
+    t = plt.text(x, y, round(tex, 2), horizontalalignment=&#39;right&#39; if x &lt; 0 else &#39;left&#39;,
+                 verticalalignment=&#39;center&#39;, fontdict=&#123;&#39;color&#39;:&#39;red&#39; if x &lt; 0 else &#39;green&#39;, &#39;size&#39;:14&#125;)
+
+# Decorations
+plt.yticks(df.index, df.cars, fontsize=12)
+plt.title(&#39;Diverging Text Bars of Car Mileage&#39;, fontdict=&#123;&#39;size&#39;:20&#125;)
+plt.grid(linestyle=&#39;--&#39;, alpha=0.5)
+plt.xlim(-2.5, 2.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/13.png" alt="13"></p>
+<h3 id="【12】发散型散点图（Diverging-Dot-Plot）"><a href="#【12】发散型散点图（Diverging-Dot-Plot）" class="headerlink" title="【12】发散型散点图（Diverging Dot Plot）"></a><font color=##4876FF>【12】发散型散点图（Diverging Dot Plot）</font></h3><p>发散型散点图类似于发散型条形图。 但是，与发散型条形图相比，没有条形会减少组之间的对比度和差异。</p>
+<pre><code class="python"># Prepare Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+x = df.loc[:, [&#39;mpg&#39;]]
+df[&#39;mpg_z&#39;] = (x - x.mean())/x.std()
+df[&#39;colors&#39;] = [&#39;red&#39; if x &lt; 0 else &#39;darkgreen&#39; for x in df[&#39;mpg_z&#39;]]
+df.sort_values(&#39;mpg_z&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+plt.figure(figsize=(14, 16), dpi=80)
+plt.scatter(df.mpg_z, df.index, s=450, alpha=.6, color=df.colors)
+for x, y, tex in zip(df.mpg_z, df.index, df.mpg_z):
+    t = plt.text(x, y, round(tex, 1), horizontalalignment=&#39;center&#39;,
+                 verticalalignment=&#39;center&#39;, fontdict=&#123;&#39;color&#39;: &#39;white&#39;&#125;)
+
+# Decorations
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(.3)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(.3)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.yticks(df.index, df.cars)
+plt.title(&#39;Diverging Dotplot of Car Mileage&#39;, fontdict=&#123;&#39;size&#39;: 20&#125;)
+plt.xlabel(&#39;$Mileage$&#39;)
+plt.grid(linestyle=&#39;--&#39;, alpha=0.5)
+plt.xlim(-2.5, 2.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/14.png" alt="14"></p>
+<h3 id="【13】带标记的发散型棒棒糖图（Diverging-Lollipop-Chart-with-Markers）"><a href="#【13】带标记的发散型棒棒糖图（Diverging-Lollipop-Chart-with-Markers）" class="headerlink" title="【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）"></a><font color=##4876FF>【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</font></h3><p>带有标记的棒棒糖提供了一种灵活的方式，强调您想要引起注意的任何重要数据点并在图表中适当地给出推理。</p>
+<pre><code class="python"># Prepare Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+x = df.loc[:, [&#39;mpg&#39;]]
+df[&#39;mpg_z&#39;] = (x - x.mean())/x.std()
+df[&#39;colors&#39;] = &#39;black&#39;
+
+# color fiat differently
+df.loc[df.cars == &#39;Fiat X1-9&#39;, &#39;colors&#39;] = &#39;darkorange&#39;
+df.sort_values(&#39;mpg_z&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+
+# Draw plot
+import matplotlib.patches as patches
+
+plt.figure(figsize=(14, 16), dpi=80)
+plt.hlines(y=df.index, xmin=0, xmax=df.mpg_z, color=df.colors, alpha=0.4, linewidth=1)
+plt.scatter(df.mpg_z, df.index, color=df.colors, s=[600 if x == &#39;Fiat X1-9&#39; else 300 for x in df.cars], alpha=0.6)
+plt.yticks(df.index, df.cars)
+plt.xticks(fontsize=12)
+
+# Annotate
+plt.annotate(&#39;Mercedes Models&#39;, xy=(0.0, 11.0), xytext=(1.0, 11), xycoords=&#39;data&#39;,
+            fontsize=15, ha=&#39;center&#39;, va=&#39;center&#39;,
+            bbox=dict(boxstyle=&#39;square&#39;, fc=&#39;firebrick&#39;),
+            arrowprops=dict(arrowstyle=&#39;-[, widthB=2.0, lengthB=1.5&#39;, lw=2.0, color=&#39;steelblue&#39;), color=&#39;white&#39;)
+
+# Add Patches
+p1 = patches.Rectangle((-2.0, -1), width=.3, height=3, alpha=.2, facecolor=&#39;red&#39;)
+p2 = patches.Rectangle((1.5, 27), width=.8, height=5, alpha=.2, facecolor=&#39;green&#39;)
+plt.gca().add_patch(p1)
+plt.gca().add_patch(p2)
+
+# Decorate
+plt.title(&#39;Diverging Bars of Car Mileage&#39;, fontdict=&#123;&#39;size&#39;: 20&#125;)
+plt.grid(linestyle=&#39;--&#39;, alpha=0.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/15.png" alt="15"></p>
+<h3 id="【14】面积图（Area-Chart）"><a href="#【14】面积图（Area-Chart）" class="headerlink" title="【14】面积图（Area Chart）"></a><font color=##4876FF>【14】面积图（Area Chart）</font></h3><p>通过对轴和线之间的区域进行着色，面积图不仅强调波峰和波谷，还强调波峰和波谷的持续时间。 高点持续时间越长，线下面积越大。</p>
+<pre><code class="python">import numpy as np
+import pandas as pd
+
+# Prepare Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/economics.csv&quot;, parse_dates=[&#39;date&#39;]).head(100)
+x = np.arange(df.shape[0])
+y_returns = (df.psavert.diff().fillna(0)/df.psavert.shift(1)).fillna(0) * 100
+
+# Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.fill_between(x[1:], y_returns[1:], 0, where=y_returns[1:] &gt;= 0, facecolor=&#39;green&#39;, interpolate=True, alpha=0.7)
+plt.fill_between(x[1:], y_returns[1:], 0, where=y_returns[1:] &lt;= 0, facecolor=&#39;red&#39;, interpolate=True, alpha=0.7)
+
+# Annotate
+plt.annotate(&#39;Peak \n1975&#39;, xy=(94.0, 21.0), xytext=(88.0, 28),
+             bbox=dict(boxstyle=&#39;square&#39;, fc=&#39;firebrick&#39;),
+             arrowprops=dict(facecolor=&#39;steelblue&#39;, shrink=0.05), fontsize=15, color=&#39;white&#39;)
+
+
+# Decorations
+xtickvals = [str(m)[:3].upper()+&quot;-&quot;+str(y) for y, m in zip(df.date.dt.year, df.date.dt.month_name())]
+plt.gca().set_xticks(x[::6])
+plt.gca().set_xticklabels(xtickvals[::6], rotation=90, fontdict=&#123;&#39;horizontalalignment&#39;: &#39;center&#39;, &#39;verticalalignment&#39;: &#39;center_baseline&#39;&#125;)
+plt.ylim(-35, 35)
+plt.xlim(1, 100)
+plt.title(&quot;Month Economics Return %&quot;, fontsize=22)
+plt.ylabel(&#39;Monthly returns %&#39;)
+plt.grid(alpha=0.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/16.png" alt="16"></p>
+<h2 id="【5x00】排序（Ranking）"><a href="#【5x00】排序（Ranking）" class="headerlink" title="【5x00】排序（Ranking）"></a><font color=#FF0000>【5x00】排序（Ranking）</font></h2><h3 id="【15】有序条形图（Ordered-Bar-Chart）"><a href="#【15】有序条形图（Ordered-Bar-Chart）" class="headerlink" title="【15】有序条形图（Ordered Bar Chart）"></a><font color=##4876FF>【15】有序条形图（Ordered Bar Chart）</font></h3><p>有序条形图有效地传达了项目的排序顺序。在图表上方添加度量标准的值，用户就可以从图表本身获得精确的信息。</p>
+<pre><code class="python"># Prepare Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+df = df_raw[[&#39;cty&#39;, &#39;manufacturer&#39;]].groupby(&#39;manufacturer&#39;).apply(lambda x: x.mean())
+df.sort_values(&#39;cty&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+import matplotlib.patches as patches
+
+fig, ax = plt.subplots(figsize=(16,10), facecolor=&#39;white&#39;, dpi= 80)
+ax.vlines(x=df.index, ymin=0, ymax=df.cty, color=&#39;firebrick&#39;, alpha=0.7, linewidth=20)
+
+# Annotate Text
+for i, cty in enumerate(df.cty):
+    ax.text(i, cty+0.5, round(cty, 1), horizontalalignment=&#39;center&#39;)
+
+
+# Title, Label, Ticks and Ylim
+ax.set_title(&#39;Bar Chart for Highway Mileage&#39;, fontdict=&#123;&#39;size&#39;:22&#125;)
+ax.set(ylabel=&#39;Miles Per Gallon&#39;, ylim=(0, 30))
+plt.xticks(df.index, df.manufacturer.str.upper(), rotation=60, horizontalalignment=&#39;right&#39;, fontsize=12)
+
+# Add patches to color the X axis labels
+p1 = patches.Rectangle((.57, -0.005), width=.33, height=.13, alpha=.1, facecolor=&#39;green&#39;, transform=fig.transFigure)
+p2 = patches.Rectangle((.124, -0.005), width=.446, height=.13, alpha=.1, facecolor=&#39;red&#39;, transform=fig.transFigure)
+fig.add_artist(p1)
+fig.add_artist(p2)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/17.png" alt="17"></p>
+<h3 id="【16】棒棒糖图（Lollipop-Chart）"><a href="#【16】棒棒糖图（Lollipop-Chart）" class="headerlink" title="【16】棒棒糖图（Lollipop Chart）"></a><font color=##4876FF>【16】棒棒糖图（Lollipop Chart）</font></h3><p>棒棒糖图表以一种视觉上令人愉悦的方式提供与有序条形图类似的目的。</p>
+<pre><code class="python"># Prepare Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+df = df_raw[[&#39;cty&#39;, &#39;manufacturer&#39;]].groupby(&#39;manufacturer&#39;).apply(lambda x: x.mean())
+df.sort_values(&#39;cty&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+fig, ax = plt.subplots(figsize=(16, 10), dpi=80)
+ax.vlines(x=df.index, ymin=0, ymax=df.cty, color=&#39;firebrick&#39;, alpha=0.7, linewidth=2)
+ax.scatter(x=df.index, y=df.cty, s=75, color=&#39;firebrick&#39;, alpha=0.7)
+
+# Title, Label, Ticks and Ylim
+ax.set_title(&#39;Lollipop Chart for Highway Mileage&#39;, fontdict=&#123;&#39;size&#39;: 22&#125;)
+ax.set_ylabel(&#39;Miles Per Gallon&#39;)
+ax.set_xticks(df.index)
+ax.set_xticklabels(df.manufacturer.str.upper(), rotation=60, fontdict=&#123;&#39;horizontalalignment&#39;: &#39;right&#39;, &#39;size&#39;: 12&#125;)
+ax.set_ylim(0, 30)
+
+# Annotate
+for row in df.itertuples():
+    ax.text(row.Index, row.cty+.5, s=round(row.cty, 2), horizontalalignment=&#39;center&#39;, verticalalignment=&#39;bottom&#39;, fontsize=14)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/18.png" alt="18"></p>
+<h3 id="【17】点图（Dot-Plot）"><a href="#【17】点图（Dot-Plot）" class="headerlink" title="【17】点图（Dot Plot）"></a><font color=##4876FF>【17】点图（Dot Plot）</font></h3><p>点图可以表示项目的排名顺序。由于它是沿水平轴对齐的，所以可以更容易地看到点之间的距离。</p>
+<pre><code class="python"># Prepare Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+df = df_raw[[&#39;cty&#39;, &#39;manufacturer&#39;]].groupby(&#39;manufacturer&#39;).apply(lambda x: x.mean())
+df.sort_values(&#39;cty&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+fig, ax = plt.subplots(figsize=(16, 10), dpi=80)
+ax.hlines(y=df.index, xmin=11, xmax=26, color=&#39;gray&#39;, alpha=0.7, linewidth=1, linestyles=&#39;dashdot&#39;)
+ax.scatter(y=df.index, x=df.cty, s=75, color=&#39;firebrick&#39;, alpha=0.7)
+
+# Title, Label, Ticks and Ylim
+ax.set_title(&#39;Dot Plot for Highway Mileage&#39;, fontdict=&#123;&#39;size&#39;: 22&#125;)
+ax.set_xlabel(&#39;Miles Per Gallon&#39;)
+ax.set_yticks(df.index)
+ax.set_yticklabels(df.manufacturer.str.title(), fontdict=&#123;&#39;horizontalalignment&#39;: &#39;right&#39;&#125;)
+ax.set_xlim(10, 27)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/19.png" alt="19"></p>
+<h3 id="【18】坡度图（Slope-Chart）"><a href="#【18】坡度图（Slope-Chart）" class="headerlink" title="【18】坡度图（Slope Chart）"></a><font color=##4876FF>【18】坡度图（Slope Chart）</font></h3><p>坡度图最适合比较给定人员/项目的“前”和“后”位置。</p>
+<pre><code class="python">import matplotlib.lines as mlines
+
+# Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/gdppercap.csv&quot;)
+
+left_label = [str(c) + &#39;, &#39; + str(round(y)) for c, y in zip(df.continent, df[&#39;1952&#39;])]
+right_label = [str(c) + &#39;, &#39; + str(round(y)) for c, y in zip(df.continent, df[&#39;1957&#39;])]
+klass = [&#39;red&#39; if (y1 - y2) &lt; 0 else &#39;green&#39; for y1, y2 in zip(df[&#39;1952&#39;], df[&#39;1957&#39;])]
+
+
+# draw line
+# https://stackoverflow.com/questions/36470343/how-to-draw-a-line-with-matplotlib/36479941
+def newline(p1, p2, color=&#39;black&#39;):
+    ax = plt.gca()
+    l = mlines.Line2D([p1[0], p2[0]], [p1[1], p2[1]], color=&#39;red&#39; if p1[1] - p2[1] &gt; 0 else &#39;green&#39;, marker=&#39;o&#39;,
+                      markersize=6)
+    ax.add_line(l)
+    return l
+
+
+fig, ax = plt.subplots(1, 1, figsize=(14, 14), dpi=80)
+
+# Vertical Lines
+ax.vlines(x=1, ymin=500, ymax=13000, color=&#39;black&#39;, alpha=0.7, linewidth=1, linestyles=&#39;dotted&#39;)
+ax.vlines(x=3, ymin=500, ymax=13000, color=&#39;black&#39;, alpha=0.7, linewidth=1, linestyles=&#39;dotted&#39;)
+
+# Points
+ax.scatter(y=df[&#39;1952&#39;], x=np.repeat(1, df.shape[0]), s=10, color=&#39;black&#39;, alpha=0.7)
+ax.scatter(y=df[&#39;1957&#39;], x=np.repeat(3, df.shape[0]), s=10, color=&#39;black&#39;, alpha=0.7)
+
+# Line Segmentsand Annotation
+for p1, p2, c in zip(df[&#39;1952&#39;], df[&#39;1957&#39;], df[&#39;continent&#39;]):
+    newline([1, p1], [3, p2])
+    ax.text(1 - 0.05, p1, c + &#39;, &#39; + str(round(p1)), horizontalalignment=&#39;right&#39;, verticalalignment=&#39;center&#39;,
+            fontdict=&#123;&#39;size&#39;: 14&#125;)
+    ax.text(3 + 0.05, p2, c + &#39;, &#39; + str(round(p2)), horizontalalignment=&#39;left&#39;, verticalalignment=&#39;center&#39;,
+            fontdict=&#123;&#39;size&#39;: 14&#125;)
+
+# &#39;Before&#39; and &#39;After&#39; Annotations
+ax.text(1 - 0.05, 13000, &#39;BEFORE&#39;, horizontalalignment=&#39;right&#39;, verticalalignment=&#39;center&#39;,
+        fontdict=&#123;&#39;size&#39;: 18, &#39;weight&#39;: 700&#125;)
+ax.text(3 + 0.05, 13000, &#39;AFTER&#39;, horizontalalignment=&#39;left&#39;, verticalalignment=&#39;center&#39;,
+        fontdict=&#123;&#39;size&#39;: 18, &#39;weight&#39;: 700&#125;)
+
+# Decoration
+ax.set_title(&quot;Slopechart: Comparing GDP Per Capita between 1952 vs 1957&quot;, fontdict=&#123;&#39;size&#39;: 22&#125;)
+ax.set(xlim=(0, 4), ylim=(0, 14000), ylabel=&#39;Mean GDP Per Capita&#39;)
+ax.set_xticks([1, 3])
+ax.set_xticklabels([&quot;1952&quot;, &quot;1957&quot;])
+plt.yticks(np.arange(500, 13000, 2000), fontsize=12)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(.0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.0)
+plt.gca().spines[&quot;right&quot;].set_alpha(.0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.0)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/20.png" alt="20"></p>
+<h3 id="【19】哑铃图（Dumbbell-Plot）"><a href="#【19】哑铃图（Dumbbell-Plot）" class="headerlink" title="【19】哑铃图（Dumbbell Plot）"></a><font color=##4876FF>【19】哑铃图（Dumbbell Plot）</font></h3><p>哑铃图传达了各种项目的“前”和“后”位置以及项目的等级顺序。如果您希望可视化特定项目/计划对不同对象的影响，那么它非常有用。</p>
+<pre><code class="python">import matplotlib.lines as mlines
+
+# Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/health.csv&quot;)
+df.sort_values(&#39;pct_2014&#39;, inplace=True)
+df.reset_index(inplace=True)
+
+
+# Func to draw line segment
+def newline(p1, p2, color=&#39;black&#39;):
+    ax = plt.gca()
+    l = mlines.Line2D([p1[0], p2[0]], [p1[1], p2[1]], color=&#39;skyblue&#39;)
+    ax.add_line(l)
+    return l
+
+
+# Figure and Axes
+fig, ax = plt.subplots(1, 1, figsize=(14, 14), facecolor=&#39;#f7f7f7&#39;, dpi=80)
+
+# Vertical Lines
+ax.vlines(x=.05, ymin=0, ymax=26, color=&#39;black&#39;, alpha=1, linewidth=1, linestyles=&#39;dotted&#39;)
+ax.vlines(x=.10, ymin=0, ymax=26, color=&#39;black&#39;, alpha=1, linewidth=1, linestyles=&#39;dotted&#39;)
+ax.vlines(x=.15, ymin=0, ymax=26, color=&#39;black&#39;, alpha=1, linewidth=1, linestyles=&#39;dotted&#39;)
+ax.vlines(x=.20, ymin=0, ymax=26, color=&#39;black&#39;, alpha=1, linewidth=1, linestyles=&#39;dotted&#39;)
+
+# Points
+ax.scatter(y=df[&#39;index&#39;], x=df[&#39;pct_2013&#39;], s=50, color=&#39;#0e668b&#39;, alpha=0.7)
+ax.scatter(y=df[&#39;index&#39;], x=df[&#39;pct_2014&#39;], s=50, color=&#39;#a3c4dc&#39;, alpha=0.7)
+
+# Line Segments
+for i, p1, p2 in zip(df[&#39;index&#39;], df[&#39;pct_2013&#39;], df[&#39;pct_2014&#39;]):
+    newline([p1, i], [p2, i])
+
+# Decoration
+ax.set_facecolor(&#39;#f7f7f7&#39;)
+ax.set_title(&quot;Dumbell Chart: Pct Change - 2013 vs 2014&quot;, fontdict=&#123;&#39;size&#39;: 22&#125;)
+ax.set(xlim=(0, .25), ylim=(-1, 27), ylabel=&#39;Mean GDP Per Capita&#39;)
+ax.set_xticks([.05, .1, .15, .20])
+ax.set_xticklabels([&#39;5%&#39;, &#39;15%&#39;, &#39;20%&#39;, &#39;25%&#39;])
+ax.set_xticklabels([&#39;5%&#39;, &#39;15%&#39;, &#39;20%&#39;, &#39;25%&#39;])
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/21.png" alt="21"></p>
+<h2 id="【6x00】分布（Distribution）"><a href="#【6x00】分布（Distribution）" class="headerlink" title="【6x00】分布（Distribution）"></a><font color=#FF0000>【6x00】分布（Distribution）</font></h2><h3 id="【20】连续变量的直方图（Histogram-for-Continuous-Variable）"><a href="#【20】连续变量的直方图（Histogram-for-Continuous-Variable）" class="headerlink" title="【20】连续变量的直方图（Histogram for Continuous Variable）"></a><font color=##4876FF>【20】连续变量的直方图（Histogram for Continuous Variable）</font></h3><p>连续变量的直方图显示给定变量的频率分布。下面的图表基于分类变量对频率条进行分组，从而更深入地了解连续变量和分类变量。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare data
+x_var = &#39;displ&#39;
+groupby_var = &#39;class&#39;
+df_agg = df.loc[:, [x_var, groupby_var]].groupby(groupby_var)
+vals = [df[x_var].values.tolist() for i, df in df_agg]
+
+# Draw
+plt.figure(figsize=(16, 9), dpi=80)
+colors = [plt.cm.Spectral(i / float(len(vals) - 1)) for i in range(len(vals))]
+n, bins, patches = plt.hist(vals, 30, stacked=True, density=False, color=colors[:len(vals)])
+
+# Decoration
+plt.legend(&#123;group: col for group, col in zip(np.unique(df[groupby_var]).tolist(), colors[:len(vals)])&#125;)
+plt.title(f&quot;Stacked Histogram of $&#123;x_var&#125;$ colored by $&#123;groupby_var&#125;$&quot;, fontsize=22)
+plt.xlabel(x_var)
+plt.ylabel(&quot;Frequency&quot;)
+plt.ylim(0, 25)
+plt.xticks(ticks=bins[::3], labels=[round(b, 1) for b in bins[::3]])
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/22.png" alt="22"></p>
+<h3 id="【21】分类变量的直方图（Histogram-for-Categorical-Variable）"><a href="#【21】分类变量的直方图（Histogram-for-Categorical-Variable）" class="headerlink" title="【21】分类变量的直方图（Histogram for Categorical Variable）"></a><font color=##4876FF>【21】分类变量的直方图（Histogram for Categorical Variable）</font></h3><p>分类变量的直方图显示该变量的频率分布。通过给条形图上色，您可以将分布与表示颜色的另一个类型变量相关联。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare data
+x_var = &#39;manufacturer&#39;
+groupby_var = &#39;class&#39;
+df_agg = df.loc[:, [x_var, groupby_var]].groupby(groupby_var)
+vals = [df[x_var].values.tolist() for i, df in df_agg]
+
+# Draw
+plt.figure(figsize=(16, 9), dpi=80)
+colors = [plt.cm.Spectral(i / float(len(vals) - 1)) for i in range(len(vals))]
+n, bins, patches = plt.hist(vals, df[x_var].unique().__len__(), stacked=True, density=False, color=colors[:len(vals)])
+
+# Decoration
+plt.legend(&#123;group: col for group, col in zip(np.unique(df[groupby_var]).tolist(), colors[:len(vals)])&#125;)
+plt.title(f&quot;Stacked Histogram of $&#123;x_var&#125;$ colored by $&#123;groupby_var&#125;$&quot;, fontsize=22)
+plt.xlabel(x_var)
+plt.ylabel(&quot;Frequency&quot;)
+plt.ylim(0, 40)
+plt.xticks(ticks=bins, labels=np.unique(df[x_var]).tolist(), rotation=90, horizontalalignment=&#39;left&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/23.png" alt="23"></p>
+<h3 id="【22】密度图（Density-Plot）"><a href="#【22】密度图（Density-Plot）" class="headerlink" title="【22】密度图（Density Plot）"></a><font color=##4876FF>【22】密度图（Density Plot）</font></h3><p>密度图是连续变量分布可视化的常用工具。通过按“response”变量对它们进行分组，您可以检查 X 和 Y 之间的关系。如果出于代表性目的来描述城市里程分布如何随气缸数而变化，请参见下面的情况。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(16, 10), dpi=80)
+sns.kdeplot(df.loc[df[&#39;cyl&#39;] == 4, &quot;cty&quot;], shade=True, color=&quot;g&quot;, label=&quot;Cyl=4&quot;, alpha=.7)
+sns.kdeplot(df.loc[df[&#39;cyl&#39;] == 5, &quot;cty&quot;], shade=True, color=&quot;deeppink&quot;, label=&quot;Cyl=5&quot;, alpha=.7)
+sns.kdeplot(df.loc[df[&#39;cyl&#39;] == 6, &quot;cty&quot;], shade=True, color=&quot;dodgerblue&quot;, label=&quot;Cyl=6&quot;, alpha=.7)
+sns.kdeplot(df.loc[df[&#39;cyl&#39;] == 8, &quot;cty&quot;], shade=True, color=&quot;orange&quot;, label=&quot;Cyl=8&quot;, alpha=.7)
+
+# Decoration
+plt.title(&#39;Density Plot of City Mileage by n_Cylinders&#39;, fontsize=22)
+plt.legend()
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/24.png" alt="24"></p>
+<h3 id="【23】直方图密度曲线（Density-Curves-with-Histogram）"><a href="#【23】直方图密度曲线（Density-Curves-with-Histogram）" class="headerlink" title="【23】直方图密度曲线（Density Curves with Histogram）"></a><font color=##4876FF>【23】直方图密度曲线（Density Curves with Histogram）</font></h3><p>具有直方图的密度曲线将两个图所传达的信息集合在一起，因此您可以将它们都放在一个图形中，而不是放在两个图形中。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(13, 10), dpi=80)
+sns.distplot(df.loc[df[&#39;class&#39;] == &#39;compact&#39;, &quot;cty&quot;], color=&quot;dodgerblue&quot;, label=&quot;Compact&quot;, hist_kws=&#123;&#39;alpha&#39;: .7&#125;,
+             kde_kws=&#123;&#39;linewidth&#39;: 3&#125;)
+sns.distplot(df.loc[df[&#39;class&#39;] == &#39;suv&#39;, &quot;cty&quot;], color=&quot;orange&quot;, label=&quot;SUV&quot;, hist_kws=&#123;&#39;alpha&#39;: .7&#125;,
+             kde_kws=&#123;&#39;linewidth&#39;: 3&#125;)
+sns.distplot(df.loc[df[&#39;class&#39;] == &#39;minivan&#39;, &quot;cty&quot;], color=&quot;g&quot;, label=&quot;minivan&quot;, hist_kws=&#123;&#39;alpha&#39;: .7&#125;,
+             kde_kws=&#123;&#39;linewidth&#39;: 3&#125;)
+plt.ylim(0, 0.35)
+
+# Decoration
+plt.title(&#39;Density Plot of City Mileage by Vehicle Type&#39;, fontsize=22)
+plt.legend()
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/25.png" alt="25"></p>
+<h3 id="【24】山峰叠峦图-欢乐图（Joy-Plot）"><a href="#【24】山峰叠峦图-欢乐图（Joy-Plot）" class="headerlink" title="【24】山峰叠峦图 / 欢乐图（Joy Plot）"></a><font color=##4876FF>【24】山峰叠峦图 / 欢乐图（Joy Plot）</font></h3><p>Joy Plot 允许不同组的密度曲线重叠，这是一种很好的可视化方法，可以直观地显示大量分组之间的关系。它看起来赏心悦目，清楚地传达了正确的信息。它可以使用基于 <code>matplotlib</code> 的 <code>joypy</code> 包轻松构建。</p>
+<p>【译者 TRHX 注：Joy Plot 看起来就像是山峰叠峦，山峦起伏，层次分明，但取名为 Joy，欢乐的意思，所以不太好翻译，在使用该方法时要先安装 joypy 库】</p>
+<pre><code class="python"># !pip install joypy
+# Import Data
+import joypy
+# 原文没有 import joypy，译者 TRHX 添加
+
+mpg = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(16, 10), dpi=80)
+fig, axes = joypy.joyplot(mpg, column=[&#39;hwy&#39;, &#39;cty&#39;], by=&quot;class&quot;, ylim=&#39;own&#39;, figsize=(14, 10))
+
+# Decoration
+plt.title(&#39;Joy Plot of City and Highway Mileage by Class&#39;, fontsize=22)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/26.png" alt="26"></p>
+<h3 id="【25】分布式点图（Distributed-Dot-Plot）"><a href="#【25】分布式点图（Distributed-Dot-Plot）" class="headerlink" title="【25】分布式点图（Distributed Dot Plot）"></a><font color=##4876FF>【25】分布式点图（Distributed Dot Plot）</font></h3><p>分布点图显示按组分割的点的单变量分布。点越暗，数据点在该区域的集中程度就越高。通过对中值进行不同的着色，这些组的真实位置立即变得明显。</p>
+<pre><code class="python">import matplotlib.patches as mpatches
+
+# Prepare Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+cyl_colors = &#123;4: &#39;tab:red&#39;, 5: &#39;tab:green&#39;, 6: &#39;tab:blue&#39;, 8: &#39;tab:orange&#39;&#125;
+df_raw[&#39;cyl_color&#39;] = df_raw.cyl.map(cyl_colors)
+
+# Mean and Median city mileage by make
+df = df_raw[[&#39;cty&#39;, &#39;manufacturer&#39;]].groupby(&#39;manufacturer&#39;).apply(lambda x: x.mean())
+df.sort_values(&#39;cty&#39;, ascending=False, inplace=True)
+df.reset_index(inplace=True)
+df_median = df_raw[[&#39;cty&#39;, &#39;manufacturer&#39;]].groupby(&#39;manufacturer&#39;).apply(lambda x: x.median())
+
+# Draw horizontal lines
+fig, ax = plt.subplots(figsize=(16, 10), dpi=80)
+ax.hlines(y=df.index, xmin=0, xmax=40, color=&#39;gray&#39;, alpha=0.5, linewidth=.5, linestyles=&#39;dashdot&#39;)
+
+# Draw the Dots
+for i, make in enumerate(df.manufacturer):
+    df_make = df_raw.loc[df_raw.manufacturer == make, :]
+    # 原文代码
+    # ax.scatter(y=np.repeat(i, df_make.shape[0]), x=&#39;cty&#39;, data=df_make, s=75, edgecolors=&#39;gray&#39;, c=&#39;w&#39;, alpha=0.5)
+    # 纠正代码
+    ax.scatter(y=list(np.repeat(i, df_make.shape[0])), x=&#39;cty&#39;, data=df_make, s=75, edgecolors=&#39;gray&#39;, c=&#39;w&#39;, alpha=0.5)
+    ax.scatter(y=i, x=&#39;cty&#39;, data=df_median.loc[df_median.index == make, :], s=75, c=&#39;firebrick&#39;)
+
+# Annotate
+ax.text(33, 13, &quot;$red \; dots \; are \; the \: median$&quot;, fontdict=&#123;&#39;size&#39;: 12&#125;, color=&#39;firebrick&#39;)
+
+# Decorations
+red_patch = plt.plot([], [], marker=&quot;o&quot;, ms=10, ls=&quot;&quot;, mec=None, color=&#39;firebrick&#39;, label=&quot;Median&quot;)
+plt.legend(handles=red_patch)
+ax.set_title(&#39;Distribution of City Mileage by Make&#39;, fontdict=&#123;&#39;size&#39;: 22&#125;)
+ax.set_xlabel(&#39;Miles Per Gallon (City)&#39;, alpha=0.7)
+ax.set_yticks(df.index)
+ax.set_yticklabels(df.manufacturer.str.title(), fontdict=&#123;&#39;horizontalalignment&#39;: &#39;right&#39;&#125;, alpha=0.7)
+ax.set_xlim(1, 40)
+plt.xticks(alpha=0.7)
+plt.gca().spines[&quot;top&quot;].set_visible(False)
+plt.gca().spines[&quot;bottom&quot;].set_visible(False)
+plt.gca().spines[&quot;right&quot;].set_visible(False)
+plt.gca().spines[&quot;left&quot;].set_visible(False)
+plt.grid(axis=&#39;both&#39;, alpha=.4, linewidth=.1)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/27.png" alt="27"></p>
+<h3 id="【26】箱形图（Box-Plot）"><a href="#【26】箱形图（Box-Plot）" class="headerlink" title="【26】箱形图（Box Plot）"></a><font color=##4876FF>【26】箱形图（Box Plot）</font></h3><p>箱形图是可视化分布的一种好方法，同时牢记中位数，第 25 个第 75 个四分位数和离群值。 但是，在解释方框的大小时需要小心，这可能会扭曲该组中包含的点数。 因此，手动提供每个框中的观察次数可以帮助克服此缺点。</p>
+<p>例如，左侧的前两个框，尽管它们分别具有 5 和 47 个 obs，但是却具有相同大小， 因此，有必要写下该组中的观察数。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(13, 10), dpi=80)
+sns.boxplot(x=&#39;class&#39;, y=&#39;hwy&#39;, data=df, notch=False)
+
+
+# Add N Obs inside boxplot (optional)
+def add_n_obs(df, group_col, y):
+    medians_dict = &#123;grp[0]: grp[1][y].median() for grp in df.groupby(group_col)&#125;
+    xticklabels = [x.get_text() for x in plt.gca().get_xticklabels()]
+    n_obs = df.groupby(group_col)[y].size().values
+    for (x, xticklabel), n_ob in zip(enumerate(xticklabels), n_obs):
+        plt.text(x, medians_dict[xticklabel] * 1.01, &quot;#obs : &quot; + str(n_ob), horizontalalignment=&#39;center&#39;,
+                 fontdict=&#123;&#39;size&#39;: 14&#125;, color=&#39;white&#39;)
+
+
+add_n_obs(df, group_col=&#39;class&#39;, y=&#39;hwy&#39;)
+
+# Decoration
+plt.title(&#39;Box Plot of Highway Mileage by Vehicle Class&#39;, fontsize=22)
+plt.ylim(10, 40)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/28.png" alt="28"></p>
+<h3 id="【27】点-箱形图（Dot-Box-Plot）"><a href="#【27】点-箱形图（Dot-Box-Plot）" class="headerlink" title="【27】点 + 箱形图（Dot + Box Plot）"></a><font color=##4876FF>【27】点 + 箱形图（Dot + Box Plot）</font></h3><p>点 + 箱形图传达类似于分组的箱形图信息。此外，这些点还提供了每组中有多少数据点的含义。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(13,10), dpi= 80)
+sns.boxplot(x=&#39;class&#39;, y=&#39;hwy&#39;, data=df, hue=&#39;cyl&#39;)
+sns.stripplot(x=&#39;class&#39;, y=&#39;hwy&#39;, data=df, color=&#39;black&#39;, size=3, jitter=1)
+
+for i in range(len(df[&#39;class&#39;].unique())-1):
+    plt.vlines(i+.5, 10, 45, linestyles=&#39;solid&#39;, colors=&#39;gray&#39;, alpha=0.2)
+
+# Decoration
+plt.title(&#39;Box Plot of Highway Mileage by Vehicle Class&#39;, fontsize=22)
+plt.legend(title=&#39;Cylinders&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/29.png" alt="29"></p>
+<h3 id="【28】小提琴图（Violin-Plot）"><a href="#【28】小提琴图（Violin-Plot）" class="headerlink" title="【28】小提琴图（Violin Plot）"></a><font color=##4876FF>【28】小提琴图（Violin Plot）</font></h3><p>小提琴图是箱形图在视觉上令人愉悦的替代品。 小提琴的形状或面积取决于它所持有的观察次数。 但是，小提琴图可能更难以阅读，并且在专业设置中不常用。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(13, 10), dpi=80)
+sns.violinplot(x=&#39;class&#39;, y=&#39;hwy&#39;, data=df, scale=&#39;width&#39;, inner=&#39;quartile&#39;)
+
+# Decoration
+plt.title(&#39;Violin Plot of Highway Mileage by Vehicle Class&#39;, fontsize=22)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/30.png" alt="30"></p>
+<h3 id="【29】人口金字塔图（Population-Pyramid）"><a href="#【29】人口金字塔图（Population-Pyramid）" class="headerlink" title="【29】人口金字塔图（Population Pyramid）"></a><font color=##4876FF>【29】人口金字塔图（Population Pyramid）</font></h3><p>人口金字塔可用于显示按体积排序的组的分布。或者它也可以用于显示人口的逐级过滤，因为它是用来显示有多少人通过一个营销漏斗（Marketing Funnel）的每个阶段。</p>
+<pre><code class="python"># Read data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/email_campaign_funnel.csv&quot;)
+
+# Draw Plot
+plt.figure(figsize=(13, 10), dpi=80)
+group_col = &#39;Gender&#39;
+order_of_bars = df.Stage.unique()[::-1]
+colors = [plt.cm.Spectral(i / float(len(df[group_col].unique()) - 1)) for i in range(len(df[group_col].unique()))]
+
+for c, group in zip(colors, df[group_col].unique()):
+    sns.barplot(x=&#39;Users&#39;, y=&#39;Stage&#39;, data=df.loc[df[group_col] == group, :], order=order_of_bars, color=c, label=group)
+
+# Decorations
+plt.xlabel(&quot;$Users$&quot;)
+plt.ylabel(&quot;Stage of Purchase&quot;)
+plt.yticks(fontsize=12)
+plt.title(&quot;Population Pyramid of the Marketing Funnel&quot;, fontsize=22)
+plt.legend()
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/31.png" alt="31"></p>
+<h3 id="【30】分类图（Categorical-Plots）"><a href="#【30】分类图（Categorical-Plots）" class="headerlink" title="【30】分类图（Categorical Plots）"></a><font color=##4876FF>【30】分类图（Categorical Plots）</font></h3><p>由 <code>seaborn</code> 库提供的分类图可用于可视化彼此相关的两个或更多分类变量的计数分布。</p>
+<pre><code class="python"># Load Dataset
+titanic = sns.load_dataset(&quot;titanic&quot;)
+
+# Plot
+g = sns.catplot(&quot;alive&quot;, col=&quot;deck&quot;, col_wrap=4,
+                data=titanic[titanic.deck.notnull()],
+                kind=&quot;count&quot;, height=3.5, aspect=.8,
+                palette=&#39;tab20&#39;)
+
+# 译者 TRHX 注释掉了这一行代码
+# fig.suptitle(&#39;sf&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/32.png" alt="32"></p>
+<pre><code class="python"># Load Dataset
+titanic = sns.load_dataset(&quot;titanic&quot;)
+
+# Plot
+sns.catplot(x=&quot;age&quot;, y=&quot;embark_town&quot;,
+            hue=&quot;sex&quot;, col=&quot;class&quot;,
+            data=titanic[titanic.embark_town.notnull()],
+            orient=&quot;h&quot;, height=5, aspect=1, palette=&quot;tab10&quot;,
+            kind=&quot;violin&quot;, dodge=True, cut=0, bw=.2)
+
+# 译者 TRHX 添加了这行代码
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/33.png" alt="33"></p>
+<h2 id="【7x00】组成（Composition）"><a href="#【7x00】组成（Composition）" class="headerlink" title="【7x00】组成（Composition）"></a><font color=#FF0000>【7x00】组成（Composition）</font></h2><h3 id="【31】华夫饼图（Waffle-Chart）"><a href="#【31】华夫饼图（Waffle-Chart）" class="headerlink" title="【31】华夫饼图（Waffle Chart）"></a><font color=##4876FF>【31】华夫饼图（Waffle Chart）</font></h3><p>华夫饼图可以使用 <code>pywaffle</code> 包创建，用于显示较大群体中的组的组成。</p>
+<p>【译者 TRHX 注：在使用该方法时要先安装 pywaffle 库】</p>
+<pre><code class="python"># ! pip install pywaffle
+# Reference: https://stackoverflow.com/questions/41400136/how-to-do-waffle-charts-in-python-square-piechart
+from pywaffle import Waffle
+
+# Import
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+df = df_raw.groupby(&#39;class&#39;).size().reset_index(name=&#39;counts&#39;)
+n_categories = df.shape[0]
+colors = [plt.cm.inferno_r(i / float(n_categories)) for i in range(n_categories)]
+
+# Draw Plot and Decorate
+fig = plt.figure(
+    FigureClass=Waffle,
+    plots=&#123;
+        &#39;111&#39;: &#123;
+            &#39;values&#39;: df[&#39;counts&#39;],
+            &#39;labels&#39;: [&quot;&#123;0&#125; (&#123;1&#125;)&quot;.format(n[0], n[1]) for n in df[[&#39;class&#39;, &#39;counts&#39;]].itertuples()],
+            &#39;legend&#39;: &#123;&#39;loc&#39;: &#39;upper left&#39;, &#39;bbox_to_anchor&#39;: (1.05, 1), &#39;fontsize&#39;: 12&#125;,
+            &#39;title&#39;: &#123;&#39;label&#39;: &#39;# Vehicles by Class&#39;, &#39;loc&#39;: &#39;center&#39;, &#39;fontsize&#39;: 18&#125;
+        &#125;,
+    &#125;,
+    rows=7,
+    colors=colors,
+    figsize=(16, 9)
+)
+
+# 译者 TRHX 添加了这行代码
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/34.png" alt="34"></p>
+<pre><code class="python"># ! pip install pywaffle
+from pywaffle import Waffle
+
+# Import
+# 译者 TRHX 取消注释了这行代码
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+# By Class Data
+df_class = df_raw.groupby(&#39;class&#39;).size().reset_index(name=&#39;counts_class&#39;)
+n_categories = df_class.shape[0]
+colors_class = [plt.cm.Set3(i / float(n_categories)) for i in range(n_categories)]
+
+# By Cylinders Data
+df_cyl = df_raw.groupby(&#39;cyl&#39;).size().reset_index(name=&#39;counts_cyl&#39;)
+n_categories = df_cyl.shape[0]
+colors_cyl = [plt.cm.Spectral(i / float(n_categories)) for i in range(n_categories)]
+
+# By Make Data
+df_make = df_raw.groupby(&#39;manufacturer&#39;).size().reset_index(name=&#39;counts_make&#39;)
+n_categories = df_make.shape[0]
+colors_make = [plt.cm.tab20b(i / float(n_categories)) for i in range(n_categories)]
+
+# Draw Plot and Decorate
+fig = plt.figure(
+    FigureClass=Waffle,
+    plots=&#123;
+        &#39;311&#39;: &#123;
+            &#39;values&#39;: df_class[&#39;counts_class&#39;],
+            &#39;labels&#39;: [&quot;&#123;1&#125;&quot;.format(n[0], n[1]) for n in df_class[[&#39;class&#39;, &#39;counts_class&#39;]].itertuples()],
+            &#39;legend&#39;: &#123;&#39;loc&#39;: &#39;upper left&#39;, &#39;bbox_to_anchor&#39;: (1.05, 1), &#39;fontsize&#39;: 12, &#39;title&#39;: &#39;Class&#39;&#125;,
+            &#39;title&#39;: &#123;&#39;label&#39;: &#39;# Vehicles by Class&#39;, &#39;loc&#39;: &#39;center&#39;, &#39;fontsize&#39;: 18&#125;,
+            &#39;colors&#39;: colors_class
+        &#125;,
+        &#39;312&#39;: &#123;
+            &#39;values&#39;: df_cyl[&#39;counts_cyl&#39;],
+            &#39;labels&#39;: [&quot;&#123;1&#125;&quot;.format(n[0], n[1]) for n in df_cyl[[&#39;cyl&#39;, &#39;counts_cyl&#39;]].itertuples()],
+            &#39;legend&#39;: &#123;&#39;loc&#39;: &#39;upper left&#39;, &#39;bbox_to_anchor&#39;: (1.05, 1), &#39;fontsize&#39;: 12, &#39;title&#39;: &#39;Cyl&#39;&#125;,
+            &#39;title&#39;: &#123;&#39;label&#39;: &#39;# Vehicles by Cyl&#39;, &#39;loc&#39;: &#39;center&#39;, &#39;fontsize&#39;: 18&#125;,
+            &#39;colors&#39;: colors_cyl
+        &#125;,
+        &#39;313&#39;: &#123;
+            &#39;values&#39;: df_make[&#39;counts_make&#39;],
+            &#39;labels&#39;: [&quot;&#123;1&#125;&quot;.format(n[0], n[1]) for n in df_make[[&#39;manufacturer&#39;, &#39;counts_make&#39;]].itertuples()],
+            &#39;legend&#39;: &#123;&#39;loc&#39;: &#39;upper left&#39;, &#39;bbox_to_anchor&#39;: (1.05, 1), &#39;fontsize&#39;: 12, &#39;title&#39;: &#39;Manufacturer&#39;&#125;,
+            &#39;title&#39;: &#123;&#39;label&#39;: &#39;# Vehicles by Make&#39;, &#39;loc&#39;: &#39;center&#39;, &#39;fontsize&#39;: 18&#125;,
+            &#39;colors&#39;: colors_make
+        &#125;
+    &#125;,
+    rows=9,
+    figsize=(16, 14)
+)
+
+# 译者 TRHX 添加了这行代码
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/35.png" alt="35"></p>
+<h3 id="【32】饼图（Pie-Chart）"><a href="#【32】饼图（Pie-Chart）" class="headerlink" title="【32】饼图（Pie Chart）"></a><font color=##4876FF>【32】饼图（Pie Chart）</font></h3><p>饼图是显示组成的经典方法。然而，现在一般不宜使用，因为馅饼部分的面积有时会产生误导。因此，如果要使用饼图，强烈建议您显式地记下饼图每个部分的百分比或数字。</p>
+<pre><code class="python"># Import
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+df = df_raw.groupby(&#39;class&#39;).size()
+
+# Make the plot with pandas
+&#39;&#39;&#39;
+原代码：df.plot(kind=&#39;pie&#39;, subplots=True, figsize=(8, 8), dpi=80)
+译者 TRHX 删除了 dpi= 80
+&#39;&#39;&#39;
+df.plot(kind=&#39;pie&#39;, subplots=True, figsize=(8, 8))
+plt.title(&quot;Pie Chart of Vehicle Class - Bad&quot;)
+plt.ylabel(&quot;&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/36.png" alt="36"></p>
+<pre><code class="python"># Import
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+df = df_raw.groupby(&#39;class&#39;).size().reset_index(name=&#39;counts&#39;)
+
+# Draw Plot
+fig, ax = plt.subplots(figsize=(12, 7), subplot_kw=dict(aspect=&quot;equal&quot;), dpi=80)
+
+data = df[&#39;counts&#39;]
+categories = df[&#39;class&#39;]
+explode = [0, 0, 0, 0, 0, 0.1, 0]
+
+
+def func(pct, allvals):
+    absolute = int(pct / 100. * np.sum(allvals))
+    return &quot;&#123;:.1f&#125;% (&#123;:d&#125; )&quot;.format(pct, absolute)
+
+
+wedges, texts, autotexts = ax.pie(data,
+                                  autopct=lambda pct: func(pct, data),
+                                  textprops=dict(color=&quot;w&quot;),
+                                  colors=plt.cm.Dark2.colors,
+                                  startangle=140,
+                                  explode=explode)
+
+# Decoration
+ax.legend(wedges, categories, title=&quot;Vehicle Class&quot;, loc=&quot;center left&quot;, bbox_to_anchor=(1, 0, 0.5, 1))
+plt.setp(autotexts, size=10, weight=700)
+ax.set_title(&quot;Class of Vehicles: Pie Chart&quot;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/37.png" alt="37"></p>
+<h3 id="【33】矩阵树形图（Treemap）"><a href="#【33】矩阵树形图（Treemap）" class="headerlink" title="【33】矩阵树形图（Treemap）"></a><font color=##4876FF>【33】矩阵树形图（Treemap）</font></h3><p>矩阵树形图类似于饼图，它可以更好地完成工作而不会误导每个组的贡献。</p>
+<p>【译者 TRHX 注：在使用该方法时要先安装 squarify 库】</p>
+<pre><code class="python"># pip install squarify
+import squarify
+
+# Import Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+df = df_raw.groupby(&#39;class&#39;).size().reset_index(name=&#39;counts&#39;)
+labels = df.apply(lambda x: str(x[0]) + &quot;\n (&quot; + str(x[1]) + &quot;)&quot;, axis=1)
+sizes = df[&#39;counts&#39;].values.tolist()
+colors = [plt.cm.Spectral(i / float(len(labels))) for i in range(len(labels))]
+
+# Draw Plot
+plt.figure(figsize=(12, 8), dpi=80)
+squarify.plot(sizes=sizes, label=labels, color=colors, alpha=.8)
+
+# Decorate
+plt.title(&#39;Treemap of Vechile Class&#39;)
+plt.axis(&#39;off&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/38.png" alt="38"></p>
+<h3 id="【34】条形图（Bar-Chart）"><a href="#【34】条形图（Bar-Chart）" class="headerlink" title="【34】条形图（Bar Chart）"></a><font color=##4876FF>【34】条形图（Bar Chart）</font></h3><p>条形图是一种基于计数或任何给定度量的可视化项的经典方法。在下面的图表中，我为每个项目使用了不同的颜色，但您通常可能希望为所有项目选择一种颜色，除非您按组对它们进行着色。颜色名称存储在下面代码中的 <code>all_colors</code> 中。您可以通过在 <code>plt.plot()</code> 中设置 <code>color</code> 参数来更改条形的颜色。</p>
+<pre><code class="python">import random
+
+# Import Data
+df_raw = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;)
+
+# Prepare Data
+df = df_raw.groupby(&#39;manufacturer&#39;).size().reset_index(name=&#39;counts&#39;)
+n = df[&#39;manufacturer&#39;].unique().__len__()+1
+all_colors = list(plt.cm.colors.cnames.keys())
+random.seed(100)
+c = random.choices(all_colors, k=n)
+
+# Plot Bars
+plt.figure(figsize=(16,10), dpi= 80)
+plt.bar(df[&#39;manufacturer&#39;], df[&#39;counts&#39;], color=c, width=.5)
+for i, val in enumerate(df[&#39;counts&#39;].values):
+    plt.text(i, val, float(val), horizontalalignment=&#39;center&#39;, verticalalignment=&#39;bottom&#39;, fontdict=&#123;&#39;fontweight&#39;:500, &#39;size&#39;:12&#125;)
+
+# Decoration
+plt.gca().set_xticklabels(df[&#39;manufacturer&#39;], rotation=60, horizontalalignment= &#39;right&#39;)
+plt.title(&quot;Number of Vehicles by Manaufacturers&quot;, fontsize=22)
+plt.ylabel(&#39;# Vehicles&#39;)
+plt.ylim(0, 45)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/39.png" alt="39"></p>
+<h2 id="【8x00】变化（Change）"><a href="#【8x00】变化（Change）" class="headerlink" title="【8x00】变化（Change）"></a><font color=#FF0000>【8x00】变化（Change）</font></h2><h3 id="【35】时间序列图（Time-Series-Plot）"><a href="#【35】时间序列图（Time-Series-Plot）" class="headerlink" title="【35】时间序列图（Time Series Plot）"></a><font color=##4876FF>【35】时间序列图（Time Series Plot）</font></h3><p>时间序列图用于可视化给定指标随时间的变化。在这里你可以看到 1949 年到 1969 年间的航空客运量是如何变化的。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#39;)
+
+# Draw Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.plot(&#39;date&#39;, &#39;traffic&#39;, data=df, color=&#39;tab:red&#39;)
+
+# Decoration
+plt.ylim(50, 750)
+xtick_location = df.index.tolist()[::12]
+xtick_labels = [x[-4:] for x in df.date.tolist()[::12]]
+plt.xticks(ticks=xtick_location, labels=xtick_labels, rotation=0, fontsize=12, horizontalalignment=&#39;center&#39;, alpha=.7)
+plt.yticks(fontsize=12, alpha=.7)
+plt.title(&quot;Air Passengers Traffic (1949 - 1969)&quot;, fontsize=22)
+plt.grid(axis=&#39;both&#39;, alpha=.3)
+
+# Remove borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0.0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(0.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(0.0)
+plt.gca().spines[&quot;left&quot;].set_alpha(0.3)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/40.png" alt="40"></p>
+<h3 id="【36】带波峰和波谷注释的时间序列图（Time-Series-with-Peaks-and-Troughs-Annotated）"><a href="#【36】带波峰和波谷注释的时间序列图（Time-Series-with-Peaks-and-Troughs-Annotated）" class="headerlink" title="【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）"></a><font color=##4876FF>【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</font></h3><p>下面的时间序列绘制了所有的波峰和波谷，并注释了所选特殊事件的发生。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#39;)
+
+# Get the Peaks and Troughs
+data = df[&#39;traffic&#39;].values
+doublediff = np.diff(np.sign(np.diff(data)))
+peak_locations = np.where(doublediff == -2)[0] + 1
+
+doublediff2 = np.diff(np.sign(np.diff(-1 * data)))
+trough_locations = np.where(doublediff2 == -2)[0] + 1
+
+# Draw Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.plot(&#39;date&#39;, &#39;traffic&#39;, data=df, color=&#39;tab:blue&#39;, label=&#39;Air Traffic&#39;)
+plt.scatter(df.date[peak_locations], df.traffic[peak_locations], marker=mpl.markers.CARETUPBASE, color=&#39;tab:green&#39;,
+            s=100, label=&#39;Peaks&#39;)
+plt.scatter(df.date[trough_locations], df.traffic[trough_locations], marker=mpl.markers.CARETDOWNBASE, color=&#39;tab:red&#39;,
+            s=100, label=&#39;Troughs&#39;)
+
+# Annotate
+for t, p in zip(trough_locations[1::5], peak_locations[::3]):
+    plt.text(df.date[p], df.traffic[p] + 15, df.date[p], horizontalalignment=&#39;center&#39;, color=&#39;darkgreen&#39;)
+    plt.text(df.date[t], df.traffic[t] - 35, df.date[t], horizontalalignment=&#39;center&#39;, color=&#39;darkred&#39;)
+
+# Decoration
+plt.ylim(50, 750)
+xtick_location = df.index.tolist()[::6]
+xtick_labels = df.date.tolist()[::6]
+plt.xticks(ticks=xtick_location, labels=xtick_labels, rotation=90, fontsize=12, alpha=.7)
+plt.title(&quot;Peak and Troughs of Air Passengers Traffic (1949 - 1969)&quot;, fontsize=22)
+plt.yticks(fontsize=12, alpha=.7)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(.0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(.0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.legend(loc=&#39;upper left&#39;)
+plt.grid(axis=&#39;y&#39;, alpha=.3)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/41.png" alt="41"></p>
+<h3 id="【37】自相关-ACF-和部分自相关-PACF-图（Autocorrelation-ACF-and-Partial-Autocorrelation-PACF-Plot）"><a href="#【37】自相关-ACF-和部分自相关-PACF-图（Autocorrelation-ACF-and-Partial-Autocorrelation-PACF-Plot）" class="headerlink" title="【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）"></a><font color=##4876FF>【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</font></h3><p>自相关图（ACF图）显示了时间序列与其自身滞后的相关性。 每条垂直线（在自相关图上）表示系列与滞后 0 之间的滞后的相关性。图中的蓝色阴影区域是显著性级别。 那些位于蓝线之上的滞后是显著的滞后。</p>
+<p>那么如何解释呢？</p>
+<p>对于航空乘客来说，我们看到超过 14 个滞后已经越过蓝线，因此意义重大。这意味着，14 年前的航空客运量对今天的交通量产生了影响。 </p>
+<p>另一方面，部分自相关图（PACF）显示了任何给定滞后（时间序列）相对于当前序列的自相关，但消除了中间滞后的贡献。</p>
+<pre><code class="python">from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
+# Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#39;)
+
+# Draw Plot
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), dpi=80)
+plot_acf(df.traffic.tolist(), ax=ax1, lags=50)
+plot_pacf(df.traffic.tolist(), ax=ax2, lags=20)
+
+# Decorate
+# lighten the borders
+ax1.spines[&quot;top&quot;].set_alpha(.3); ax2.spines[&quot;top&quot;].set_alpha(.3)
+ax1.spines[&quot;bottom&quot;].set_alpha(.3); ax2.spines[&quot;bottom&quot;].set_alpha(.3)
+ax1.spines[&quot;right&quot;].set_alpha(.3); ax2.spines[&quot;right&quot;].set_alpha(.3)
+ax1.spines[&quot;left&quot;].set_alpha(.3); ax2.spines[&quot;left&quot;].set_alpha(.3)
+
+# font size of tick labels
+ax1.tick_params(axis=&#39;both&#39;, labelsize=12)
+ax2.tick_params(axis=&#39;both&#39;, labelsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/42.png" alt="42"></p>
+<h3 id="【38】交叉相关图（Cross-Correlation-plot）"><a href="#【38】交叉相关图（Cross-Correlation-plot）" class="headerlink" title="【38】交叉相关图（Cross Correlation plot）"></a><font color=##4876FF>【38】交叉相关图（Cross Correlation plot）</font></h3><p>交叉相关图显示了两个时间序列相互之间的滞后。</p>
+<pre><code class="python">import statsmodels.tsa.stattools as stattools
+
+# Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/mortality.csv&#39;)
+x = df[&#39;mdeaths&#39;]
+y = df[&#39;fdeaths&#39;]
+
+# Compute Cross Correlations
+ccs = stattools.ccf(x, y)[:100]
+nlags = len(ccs)
+
+# Compute the Significance level
+# ref: https://stats.stackexchange.com/questions/3115/cross-correlation-significance-in-r/3128#3128
+conf_level = 2 / np.sqrt(nlags)
+
+# Draw Plot
+plt.figure(figsize=(12, 7), dpi=80)
+
+plt.hlines(0, xmin=0, xmax=100, color=&#39;gray&#39;)  # 0 axis
+plt.hlines(conf_level, xmin=0, xmax=100, color=&#39;gray&#39;)
+plt.hlines(-conf_level, xmin=0, xmax=100, color=&#39;gray&#39;)
+
+plt.bar(x=np.arange(len(ccs)), height=ccs, width=.3)
+
+# Decoration
+plt.title(&#39;$Cross\; Correlation\; Plot:\; mdeaths\; vs\; fdeaths$&#39;, fontsize=22)
+plt.xlim(0, len(ccs))
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/43.png" alt="43"></p>
+<h3 id="【39】时间序列分解图（Time-Series-Decomposition-Plot）"><a href="#【39】时间序列分解图（Time-Series-Decomposition-Plot）" class="headerlink" title="【39】时间序列分解图（Time Series Decomposition Plot）"></a><font color=##4876FF>【39】时间序列分解图（Time Series Decomposition Plot）</font></h3><p>时间序列分解图将时间序列分解为趋势、季节和残差分量。</p>
+<pre><code class="python">from statsmodels.tsa.seasonal import seasonal_decompose
+from dateutil.parser import parse
+
+# Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#39;)
+dates = pd.DatetimeIndex([parse(d).strftime(&#39;%Y-%m-01&#39;) for d in df[&#39;date&#39;]])
+df.set_index(dates, inplace=True)
+
+# Decompose
+result = seasonal_decompose(df[&#39;traffic&#39;], model=&#39;multiplicative&#39;)
+
+# Plot
+plt.rcParams.update(&#123;&#39;figure.figsize&#39;: (10, 10)&#125;)
+result.plot().suptitle(&#39;Time Series Decomposition of Air Passengers&#39;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/44.png" alt="44"></p>
+<h3 id="【40】多重时间序列（Multiple-Time-Series）"><a href="#【40】多重时间序列（Multiple-Time-Series）" class="headerlink" title="【40】多重时间序列（Multiple Time Series）"></a><font color=##4876FF>【40】多重时间序列（Multiple Time Series）</font></h3><p>您可以在同一图表上绘制多个测量相同值的时间序列，如下所示。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/mortality.csv&#39;)
+
+# Define the upper limit, lower limit, interval of Y axis and colors
+y_LL = 100
+y_UL = int(df.iloc[:, 1:].max().max() * 1.1)
+y_interval = 400
+mycolors = [&#39;tab:red&#39;, &#39;tab:blue&#39;, &#39;tab:green&#39;, &#39;tab:orange&#39;]
+
+# Draw Plot and Annotate
+fig, ax = plt.subplots(1, 1, figsize=(16, 9), dpi=80)
+
+columns = df.columns[1:]
+for i, column in enumerate(columns):
+    plt.plot(df.date.values, df[column].values, lw=1.5, color=mycolors[i])
+    plt.text(df.shape[0] + 1, df[column].values[-1], column, fontsize=14, color=mycolors[i])
+
+# Draw Tick lines
+for y in range(y_LL, y_UL, y_interval):
+    plt.hlines(y, xmin=0, xmax=71, colors=&#39;black&#39;, alpha=0.3, linestyles=&quot;--&quot;, lw=0.5)
+
+# Decorations
+plt.tick_params(axis=&quot;both&quot;, which=&quot;both&quot;, bottom=False, top=False,
+                labelbottom=True, left=False, right=False, labelleft=True)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(.3)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(.3)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.title(&#39;Number of Deaths from Lung Diseases in the UK (1974-1979)&#39;, fontsize=22)
+plt.yticks(range(y_LL, y_UL, y_interval), [str(y) for y in range(y_LL, y_UL, y_interval)], fontsize=12)
+plt.xticks(range(0, df.shape[0], 12), df.date.values[::12], horizontalalignment=&#39;left&#39;, fontsize=12)
+plt.ylim(y_LL, y_UL)
+plt.xlim(-2, 80)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/45.png" alt="45"></p>
+<h3 id="【41】使用次要的-Y-轴来绘制不同范围的图形（Plotting-with-different-scales-using-secondary-Y-axis）"><a href="#【41】使用次要的-Y-轴来绘制不同范围的图形（Plotting-with-different-scales-using-secondary-Y-axis）" class="headerlink" title="【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）"></a><font color=##4876FF>【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</font></h3><p>如果要显示在同一时间点测量两个不同数量的两个时间序列，则可以在右侧的次要 Y 轴上再绘制第二个系列。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/economics.csv&quot;)
+
+x = df[&#39;date&#39;]
+y1 = df[&#39;psavert&#39;]
+y2 = df[&#39;unemploy&#39;]
+
+# Plot Line1 (Left Y Axis)
+fig, ax1 = plt.subplots(1, 1, figsize=(16, 9), dpi=80)
+ax1.plot(x, y1, color=&#39;tab:red&#39;)
+
+# Plot Line2 (Right Y Axis)
+ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+ax2.plot(x, y2, color=&#39;tab:blue&#39;)
+
+# Decorations
+# ax1 (left Y axis)
+ax1.set_xlabel(&#39;Year&#39;, fontsize=20)
+ax1.tick_params(axis=&#39;x&#39;, rotation=0, labelsize=12)
+ax1.set_ylabel(&#39;Personal Savings Rate&#39;, color=&#39;tab:red&#39;, fontsize=20)
+ax1.tick_params(axis=&#39;y&#39;, rotation=0, labelcolor=&#39;tab:red&#39;)
+ax1.grid(alpha=.4)
+
+# ax2 (right Y axis)
+ax2.set_ylabel(&quot;# Unemployed (1000&#39;s)&quot;, color=&#39;tab:blue&#39;, fontsize=20)
+ax2.tick_params(axis=&#39;y&#39;, labelcolor=&#39;tab:blue&#39;)
+ax2.set_xticks(np.arange(0, len(x), 60))
+ax2.set_xticklabels(x[::60], rotation=90, fontdict=&#123;&#39;fontsize&#39;: 10&#125;)
+ax2.set_title(&quot;Personal Savings Rate vs Unemployed: Plotting in Secondary Y Axis&quot;, fontsize=22)
+fig.tight_layout()
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/46.png" alt="46"></p>
+<h3 id="【42】带误差带的时间序列（Time-Series-with-Error-Bands）"><a href="#【42】带误差带的时间序列（Time-Series-with-Error-Bands）" class="headerlink" title="【42】带误差带的时间序列（Time Series with Error Bands）"></a><font color=##4876FF>【42】带误差带的时间序列（Time Series with Error Bands）</font></h3><p>如果您有一个时间序列数据集，其中每个时间点（日期/时间戳）有多个观测值，则可以构造具有误差带的时间序列。下面您可以看到一些基于一天中不同时间的订单的示例。还有一个关于45天内到达的订单数量的例子。</p>
+<p>在这种方法中，订单数量的平均值用白线表示。并计算95%的置信区间，并围绕平均值绘制。</p>
+<pre><code class="python">from scipy.stats import sem
+
+# Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/user_orders_hourofday.csv&quot;)
+df_mean = df.groupby(&#39;order_hour_of_day&#39;).quantity.mean()
+df_se = df.groupby(&#39;order_hour_of_day&#39;).quantity.apply(sem).mul(1.96)
+
+# Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.ylabel(&quot;# Orders&quot;, fontsize=16)
+x = df_mean.index
+plt.plot(x, df_mean, color=&quot;white&quot;, lw=2)
+plt.fill_between(x, df_mean - df_se, df_mean + df_se, color=&quot;#3F5D7D&quot;)
+
+# Decorations
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(1)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(1)
+plt.xticks(x[::2], [str(d) for d in x[::2]], fontsize=12)
+plt.title(&quot;User Orders by Hour of Day (95% confidence)&quot;, fontsize=22)
+plt.xlabel(&quot;Hour of Day&quot;)
+
+s, e = plt.gca().get_xlim()
+plt.xlim(s, e)
+
+# Draw Horizontal Tick lines
+for y in range(8, 20, 2):
+    plt.hlines(y, xmin=s, xmax=e, colors=&#39;black&#39;, alpha=0.5, linestyles=&quot;--&quot;, lw=0.5)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/47.png" alt="47"></p>
+<pre><code class="python">&quot;Data Source: https://www.kaggle.com/olistbr/brazilian-ecommerce#olist_orders_dataset.csv&quot;
+from dateutil.parser import parse
+from scipy.stats import sem
+
+# Import Data
+df_raw = pd.read_csv(&#39;https://raw.githubusercontent.com/selva86/datasets/master/orders_45d.csv&#39;,
+                     parse_dates=[&#39;purchase_time&#39;, &#39;purchase_date&#39;])
+
+# Prepare Data: Daily Mean and SE Bands
+df_mean = df_raw.groupby(&#39;purchase_date&#39;).quantity.mean()
+df_se = df_raw.groupby(&#39;purchase_date&#39;).quantity.apply(sem).mul(1.96)
+
+# Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.ylabel(&quot;# Daily Orders&quot;, fontsize=16)
+x = [d.date().strftime(&#39;%Y-%m-%d&#39;) for d in df_mean.index]
+plt.plot(x, df_mean, color=&quot;white&quot;, lw=2)
+plt.fill_between(x, df_mean - df_se, df_mean + df_se, color=&quot;#3F5D7D&quot;)
+
+# Decorations
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(1)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(1)
+plt.xticks(x[::6], [str(d) for d in x[::6]], fontsize=12)
+plt.title(&quot;Daily Order Quantity of Brazilian Retail with Error Bands (95% confidence)&quot;, fontsize=20)
+
+# Axis limits
+s, e = plt.gca().get_xlim()
+plt.xlim(s, e - 2)
+plt.ylim(4, 10)
+
+# Draw Horizontal Tick lines
+for y in range(5, 10, 1):
+    plt.hlines(y, xmin=s, xmax=e, colors=&#39;black&#39;, alpha=0.5, linestyles=&quot;--&quot;, lw=0.5)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/48.png" alt="48"></p>
+<h3 id="【43】堆积面积图（Stacked-Area-Chart）"><a href="#【43】堆积面积图（Stacked-Area-Chart）" class="headerlink" title="【43】堆积面积图（Stacked Area Chart）"></a><font color=##4876FF>【43】堆积面积图（Stacked Area Chart）</font></h3><p>堆积面积图提供了多个时间序列的贡献程度的可视化表示，以便相互比较。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/selva86/datasets/master/nightvisitors.csv&#39;)
+
+# Decide Colors
+mycolors = [&#39;tab:red&#39;, &#39;tab:blue&#39;, &#39;tab:green&#39;, &#39;tab:orange&#39;, &#39;tab:brown&#39;, &#39;tab:grey&#39;, &#39;tab:pink&#39;, &#39;tab:olive&#39;]
+
+# Draw Plot and Annotate
+fig, ax = plt.subplots(1, 1, figsize=(16, 9), dpi=80)
+columns = df.columns[1:]
+labs = columns.values.tolist()
+
+# Prepare data
+x = df[&#39;yearmon&#39;].values.tolist()
+y0 = df[columns[0]].values.tolist()
+y1 = df[columns[1]].values.tolist()
+y2 = df[columns[2]].values.tolist()
+y3 = df[columns[3]].values.tolist()
+y4 = df[columns[4]].values.tolist()
+y5 = df[columns[5]].values.tolist()
+y6 = df[columns[6]].values.tolist()
+y7 = df[columns[7]].values.tolist()
+y = np.vstack([y0, y2, y4, y6, y7, y5, y1, y3])
+
+# Plot for each column
+labs = columns.values.tolist()
+ax = plt.gca()
+ax.stackplot(x, y, labels=labs, colors=mycolors, alpha=0.8)
+
+# Decorations
+ax.set_title(&#39;Night Visitors in Australian Regions&#39;, fontsize=18)
+ax.set(ylim=[0, 100000])
+ax.legend(fontsize=10, ncol=4)
+plt.xticks(x[::5], fontsize=10, horizontalalignment=&#39;center&#39;)
+plt.yticks(np.arange(10000, 100000, 20000), fontsize=10)
+plt.xlim(x[0], x[-1])
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/49.png" alt="49"></p>
+<h3 id="【44】未堆积面积图（Area-Chart-UnStacked）"><a href="#【44】未堆积面积图（Area-Chart-UnStacked）" class="headerlink" title="【44】未堆积面积图（Area Chart UnStacked）"></a><font color=##4876FF>【44】未堆积面积图（Area Chart UnStacked）</font></h3><p>未堆积的面积图用于可视化两个或多个序列彼此之间的进度（起伏）。在下面的图表中，你可以清楚地看到，随着失业持续时间的中位数增加，个人储蓄率是如何下降的。未堆积面积图很好地展示了这一现象。</p>
+<pre><code class="python"># Import Data
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/economics.csv&quot;)
+
+# Prepare Data
+x = df[&#39;date&#39;].values.tolist()
+y1 = df[&#39;psavert&#39;].values.tolist()
+y2 = df[&#39;uempmed&#39;].values.tolist()
+mycolors = [&#39;tab:red&#39;, &#39;tab:blue&#39;, &#39;tab:green&#39;, &#39;tab:orange&#39;, &#39;tab:brown&#39;, &#39;tab:grey&#39;, &#39;tab:pink&#39;, &#39;tab:olive&#39;]
+columns = [&#39;psavert&#39;, &#39;uempmed&#39;]
+
+# Draw Plot
+fig, ax = plt.subplots(1, 1, figsize=(16, 9), dpi=80)
+ax.fill_between(x, y1=y1, y2=0, label=columns[1], alpha=0.5, color=mycolors[1], linewidth=2)
+ax.fill_between(x, y1=y2, y2=0, label=columns[0], alpha=0.5, color=mycolors[0], linewidth=2)
+
+# Decorations
+ax.set_title(&#39;Personal Savings Rate vs Median Duration of Unemployment&#39;, fontsize=18)
+ax.set(ylim=[0, 30])
+ax.legend(loc=&#39;best&#39;, fontsize=12)
+plt.xticks(x[::50], fontsize=10, horizontalalignment=&#39;center&#39;)
+plt.yticks(np.arange(2.5, 30.0, 2.5), fontsize=10)
+plt.xlim(-10, x[-1])
+
+# Draw Tick lines
+for y in np.arange(2.5, 30.0, 2.5):
+    plt.hlines(y, xmin=0, xmax=len(x), colors=&#39;black&#39;, alpha=0.3, linestyles=&quot;--&quot;, lw=0.5)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/50.png" alt="50"></p>
+<h3 id="【45】日历热力图（Calendar-Heat-Map）"><a href="#【45】日历热力图（Calendar-Heat-Map）" class="headerlink" title="【45】日历热力图（Calendar Heat Map）"></a><font color=##4876FF>【45】日历热力图（Calendar Heat Map）</font></h3><p>与时间序列相比，日历地图是另一种基于时间的数据可视化的不太受欢迎的方法。虽然在视觉上很吸引人，但数值并不十分明显。然而，它能很好地描绘极端值和假日效果。</p>
+<p>【译者 TRHX 注：在使用该方法时要先安装 calmap 库】</p>
+<pre><code class="python">import matplotlib as mpl
+import calmap
+
+# Import Data
+df = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/yahoo.csv&quot;, parse_dates=[&#39;date&#39;])
+df.set_index(&#39;date&#39;, inplace=True)
+
+# Plot
+plt.figure(figsize=(16, 10), dpi=80)
+calmap.calendarplot(df[&#39;2014&#39;][&#39;VIX.Close&#39;], fig_kws=&#123;&#39;figsize&#39;: (16, 10)&#125;,
+                    yearlabel_kws=&#123;&#39;color&#39;: &#39;black&#39;, &#39;fontsize&#39;: 14&#125;, subplot_kws=&#123;&#39;title&#39;: &#39;Yahoo Stock Prices&#39;&#125;)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/51.png" alt="51"></p>
+<h3 id="【46】季节图（Seasonal-Plot）"><a href="#【46】季节图（Seasonal-Plot）" class="headerlink" title="【46】季节图（Seasonal Plot）"></a><font color=##4876FF>【46】季节图（Seasonal Plot）</font></h3><p>季节图可用于比较上一季度同一天（年/月/周等）时间序列的表现。</p>
+<pre><code class="python">from dateutil.parser import parse
+
+# Import Data
+df = pd.read_csv(&#39;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#39;)
+
+# Prepare data
+df[&#39;year&#39;] = [parse(d).year for d in df.date]
+df[&#39;month&#39;] = [parse(d).strftime(&#39;%b&#39;) for d in df.date]
+years = df[&#39;year&#39;].unique()
+
+# 译者 TRHX 添加了该行代码
+df.rename(columns=&#123;&#39;value&#39;: &#39;traffic&#39;&#125;, inplace=True)
+
+# Draw Plot
+mycolors = [&#39;tab:red&#39;, &#39;tab:blue&#39;, &#39;tab:green&#39;, &#39;tab:orange&#39;, &#39;tab:brown&#39;, &#39;tab:grey&#39;, &#39;tab:pink&#39;, &#39;tab:olive&#39;,
+            &#39;deeppink&#39;, &#39;steelblue&#39;, &#39;firebrick&#39;, &#39;mediumseagreen&#39;]
+plt.figure(figsize=(16, 10), dpi=80)
+
+for i, y in enumerate(years):
+    plt.plot(&#39;month&#39;, &#39;traffic&#39;, data=df.loc[df.year == y, :], color=mycolors[i], label=y)
+    plt.text(df.loc[df.year == y, :].shape[0] - .9, df.loc[df.year == y, &#39;traffic&#39;][-1:].values[0], y, fontsize=12,
+             color=mycolors[i])
+
+# Decoration
+plt.ylim(50, 750)
+plt.xlim(-0.3, 11)
+plt.ylabel(&#39;$Air Traffic$&#39;)
+plt.yticks(fontsize=12, alpha=.7)
+plt.title(&quot;Monthly Seasonal Plot: Air Passengers Traffic (1949 - 1969)&quot;, fontsize=22)
+plt.grid(axis=&#39;y&#39;, alpha=.3)
+
+# Remove borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0.0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(0.5)
+plt.gca().spines[&quot;right&quot;].set_alpha(0.0)
+plt.gca().spines[&quot;left&quot;].set_alpha(0.5)
+# plt.legend(loc=&#39;upper right&#39;, ncol=2, fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/52.png" alt="52"></p>
+<h2 id="【9x00】分组（-Groups）"><a href="#【9x00】分组（-Groups）" class="headerlink" title="【9x00】分组（ Groups）"></a><font color=#FF0000>【9x00】分组（ Groups）</font></h2><h3 id="【47】树状图（Dendrogram）"><a href="#【47】树状图（Dendrogram）" class="headerlink" title="【47】树状图（Dendrogram）"></a><font color=##4876FF>【47】树状图（Dendrogram）</font></h3><p>树状图根据给定的距离度量将相似的点组合在一起，并根据点的相似性将它们组织成树状链接。</p>
+<pre><code class="python">import scipy.cluster.hierarchy as shc
+
+# Import Data
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/selva86/datasets/master/USArrests.csv&#39;)
+
+# Plot
+plt.figure(figsize=(16, 10), dpi=80)
+plt.title(&quot;USArrests Dendograms&quot;, fontsize=22)
+dend = shc.dendrogram(shc.linkage(df[[&#39;Murder&#39;, &#39;Assault&#39;, &#39;UrbanPop&#39;, &#39;Rape&#39;]], method=&#39;ward&#39;), labels=df.State.values,
+                      color_threshold=100)
+plt.xticks(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/53.png" alt="53"></p>
+<h3 id="【48】聚类图（Cluster-Plot）"><a href="#【48】聚类图（Cluster-Plot）" class="headerlink" title="【48】聚类图（Cluster Plot）"></a><font color=##4876FF>【48】聚类图（Cluster Plot）</font></h3><p>聚类图可以用来划分属于同一个聚类的点。下面是一个基于 USArrests 数据集将美国各州分成 5 组的代表性示例。这个聚类图使用 ‘murder’ 和 ‘assault’ 作为 X 轴和 Y 轴。或者，您可以将第一个主元件用作 X 轴和 Y 轴。</p>
+<p>【译者 TRHX 注：在使用该方法时要先安装 sklearn 库】</p>
+<pre><code class="python">from sklearn.cluster import AgglomerativeClustering
+from scipy.spatial import ConvexHull
+
+# Import Data
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/selva86/datasets/master/USArrests.csv&#39;)
+
+# Agglomerative Clustering
+cluster = AgglomerativeClustering(n_clusters=5, affinity=&#39;euclidean&#39;, linkage=&#39;ward&#39;)
+cluster.fit_predict(df[[&#39;Murder&#39;, &#39;Assault&#39;, &#39;UrbanPop&#39;, &#39;Rape&#39;]])
+
+# Plot
+plt.figure(figsize=(14, 10), dpi=80)
+plt.scatter(df.iloc[:, 0], df.iloc[:, 1], c=cluster.labels_, cmap=&#39;tab10&#39;)
+
+
+# Encircle
+def encircle(x, y, ax=None, **kw):
+    if not ax: ax = plt.gca()
+    p = np.c_[x, y]
+    hull = ConvexHull(p)
+    poly = plt.Polygon(p[hull.vertices,:], **kw)
+    ax.add_patch(poly)
+
+# Draw polygon surrounding vertices
+encircle(df.loc[cluster.labels_ == 0, &#39;Murder&#39;], df.loc[cluster.labels_ == 0, &#39;Assault&#39;], ec=&quot;k&quot;, fc=&quot;gold&quot;, alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 1, &#39;Murder&#39;], df.loc[cluster.labels_ == 1, &#39;Assault&#39;], ec=&quot;k&quot;, fc=&quot;tab:blue&quot;, alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 2, &#39;Murder&#39;], df.loc[cluster.labels_ == 2, &#39;Assault&#39;], ec=&quot;k&quot;, fc=&quot;tab:red&quot;, alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 3, &#39;Murder&#39;], df.loc[cluster.labels_ == 3, &#39;Assault&#39;], ec=&quot;k&quot;, fc=&quot;tab:green&quot;, alpha=0.2, linewidth=0)
+encircle(df.loc[cluster.labels_ == 4, &#39;Murder&#39;], df.loc[cluster.labels_ == 4, &#39;Assault&#39;], ec=&quot;k&quot;, fc=&quot;tab:orange&quot;, alpha=0.2, linewidth=0)
+
+# Decorations
+plt.xlabel(&#39;Murder&#39;); plt.xticks(fontsize=12)
+plt.ylabel(&#39;Assault&#39;); plt.yticks(fontsize=12)
+plt.title(&#39;Agglomerative Clustering of USArrests (5 Groups)&#39;, fontsize=22)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/54.png" alt="54"></p>
+<h3 id="【49】安德鲁斯曲线（Andrews-Curve）"><a href="#【49】安德鲁斯曲线（Andrews-Curve）" class="headerlink" title="【49】安德鲁斯曲线（Andrews Curve）"></a><font color=##4876FF>【49】安德鲁斯曲线（Andrews Curve）</font></h3><p>安德鲁斯曲线有助于可视化是否存在基于给定分组的数值特征的固有分组。如果特征（数据集中的列）不能帮助区分组（cyl），则行将不会像下图所示被很好地分隔开。</p>
+<pre><code class="python">from pandas.plotting import andrews_curves
+
+# Import
+df = pd.read_csv(&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;)
+df.drop([&#39;cars&#39;, &#39;carname&#39;], axis=1, inplace=True)
+
+# Plot
+plt.figure(figsize=(12, 9), dpi=80)
+andrews_curves(df, &#39;cyl&#39;, colormap=&#39;Set1&#39;)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.title(&#39;Andrews Curves of mtcars&#39;, fontsize=22)
+plt.xlim(-3, 3)
+plt.grid(alpha=0.3)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/55.png" alt="55"></p>
+<h3 id="【50】平行坐标图（Parallel-Coordinates）"><a href="#【50】平行坐标图（Parallel-Coordinates）" class="headerlink" title="【50】平行坐标图（Parallel Coordinates）"></a><font color=##4876FF>【50】平行坐标图（Parallel Coordinates）</font></h3><p>平行坐标有助于可视化功能是否有助于有效地隔离组。如果一个分离受到影响，则该特征可能在预测该组时非常有用。</p>
+<pre><code class="python">from pandas.plotting import parallel_coordinates
+
+# Import Data
+df_final = pd.read_csv(&quot;https://raw.githubusercontent.com/selva86/datasets/master/diamonds_filter.csv&quot;)
+
+# Plot
+plt.figure(figsize=(12, 9), dpi=80)
+parallel_coordinates(df_final, &#39;cut&#39;, colormap=&#39;Dark2&#39;)
+
+# Lighten borders
+plt.gca().spines[&quot;top&quot;].set_alpha(0)
+plt.gca().spines[&quot;bottom&quot;].set_alpha(.3)
+plt.gca().spines[&quot;right&quot;].set_alpha(0)
+plt.gca().spines[&quot;left&quot;].set_alpha(.3)
+
+plt.title(&#39;Parallel Coordinated of Diamonds&#39;, fontsize=22)
+plt.grid(alpha=0.3)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A78/56.png" alt="56"></p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本译文首发于 CSDN，作者 Selva Prabhakaran，译者 TRHX。
+本文链接：https://itrhx.blog.csdn.net/article/details/106558131
+原文链接：https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/024/">https://www.itbob.cn/article/024/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/025/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/023/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

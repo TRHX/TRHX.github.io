@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Matplotlib">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/023/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/023/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Matplotlib"> 
+
+    
+        <meta property="article:published_time" content="Mon Jun 08 2020 00:00:08 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jan 22 2022 23:55:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/023/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/023/index.html",
+    "headline": "Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制",
+    "datePublished": "Mon Jun 08 2020 00:00:08 GMT+0800",
+    "dateModified": "Sat Jan 22 2022 23:55:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,数据分析,MatplotlibITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9001x00%E3%80%91%E4%BA%86%E8%A7%A3-mplot3d-Toolkit"><span class="post-toc-number">1.</span> <span class="post-toc-text">【01x00】了解 mplot3d Toolkit</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9001x01%E3%80%91Axes3D-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9AAxes3D-fig"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">【01x01】Axes3D 对象创建方法一：Axes3D(fig)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9001x02%E3%80%91Axes3D-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9Aadd-subplot"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">【01x02】Axes3D 对象创建方法二：add_subplot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9001x03%E3%80%91Axes3D-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95%E4%B8%89%EF%BC%9Agca"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">【01x03】Axes3D 对象创建方法三：gca</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9002x00%E3%80%91cmap-%E4%B8%8E-colorbar"><span class="post-toc-number">2.</span> <span class="post-toc-text">【02x00】cmap 与 colorbar</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9003x00%E3%80%913D-%E7%BA%BF%E6%80%A7%E5%9B%BE%EF%BC%9AAxes3D-plot"><span class="post-toc-number">3.</span> <span class="post-toc-text">【03x00】3D 线性图：Axes3D.plot</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9004x00%E3%80%913D-%E6%95%A3%E7%82%B9%E5%9B%BE%EF%BC%9AAxes3D-scatter"><span class="post-toc-number">4.</span> <span class="post-toc-text">【04x00】3D 散点图：Axes3D.scatter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9005x00%E3%80%913D-%E7%BA%BF%E6%A1%86%E5%9B%BE%EF%BC%9AAxes3D-plot-wireframe"><span class="post-toc-number">5.</span> <span class="post-toc-text">【05x00】3D 线框图：Axes3D.plot_wireframe</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9006x00%E3%80%913D-%E6%9B%B2%E9%9D%A2%E5%9B%BE%EF%BC%9AAxes3D-plot-surface"><span class="post-toc-number">6.</span> <span class="post-toc-text">【06x00】3D 曲面图：Axes3D.plot_surface</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9007x00%E3%80%913D-%E6%9F%B1%E7%8A%B6%E5%9B%BE%EF%BC%9AAxes3D-bar"><span class="post-toc-number">7.</span> <span class="post-toc-text">【07x00】3D 柱状图：Axes3D.bar</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9008x00%E3%80%913D-%E7%AE%AD%E5%A4%B4%E5%9B%BE%EF%BC%9AAxes3D-quiver"><span class="post-toc-number">8.</span> <span class="post-toc-text">【08x00】3D 箭头图：Axes3D.quiver</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9009x00%E3%80%913D-%E7%AD%89%E9%AB%98%E7%BA%BF%E5%9B%BE%EF%BC%9AAxes3D-contour"><span class="post-toc-number">9.</span> <span class="post-toc-text">【09x00】3D 等高线图：Axes3D.contour</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9010x00%E3%80%913D-%E7%AD%89%E9%AB%98%E7%BA%BF%E5%A1%AB%E5%85%85%E5%9B%BE%EF%BC%9AAxes3D-contourf"><span class="post-toc-number">10.</span> <span class="post-toc-text">【10x00】3D 等高线填充图：Axes3D.contourf</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9011x00%E3%80%913D-%E4%B8%89%E8%A7%92%E6%9B%B2%E9%9D%A2%E5%9B%BE%EF%BC%9AAxes3D-plot-trisurf"><span class="post-toc-number">11.</span> <span class="post-toc-text">【11x00】3D 三角曲面图：Axes3D.plot_trisurf</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9012x00%E3%80%91%E5%B0%86-2D-%E5%9B%BE%E5%83%8F%E8%81%9A%E5%90%88%E5%88%B0-3D-%E5%9B%BE%E5%83%8F%E4%B8%AD%EF%BC%9AAxes3D-add-collection3d"><span class="post-toc-number">12.</span> <span class="post-toc-text">【12x00】将 2D 图像聚合到 3D 图像中：Axes3D.add_collection3d</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9013x00%E3%80%913D-%E5%9B%BE%E6%B7%BB%E5%8A%A0%E6%96%87%E6%9C%AC%E6%8F%8F%E8%BF%B0%EF%BC%9AAxes3D-text"><span class="post-toc-number">13.</span> <span class="post-toc-text">【13x00】3D 图添加文本描述：Axes3D.text</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>6月 08, 2020</span> -->
+        <span>2020-06-08 00:00:08</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZklEQVR42u3aS47cMAwFwL7/pSfbAJN2HkmLbTTKK8PwR6UFKVN8/Xz18cLDw8PDw8PDw3sY7xUf7576xwcur/e+UngKDw8Pb4X3n1D75sPJlb+v/z6//npzbHh4eHiLvHcBN7nn+p1JuL9+NrkfDw8P7/m8cpmg+GY8PDy8b+LljLwwkSQYPDw8vKfxkh/+pJBaTQz50I/XWvDw8PBiXr7JtH++ur+Hh4eHF/B6BYXJJtYkDUQjxMPDwzvMywPxvPTQA5fHg4eHh7fCy1+RLLivW7LyJtfk/aM/Bjw8PLybeBPMJLXc1b6Ah4eHt8PLXzEZaDKV8+U+Hh4e3g4vCfFVZDXZVEeCh4eH91le8qufnOeBvpoMkhYuPDw8vM/yqkWH6jJ6XiZuFiPw8PDwDvOqgXtSbqguu2/rjMDDw8Nr8aoL617hIC9eVBfWeHh4ePu8vAjbC/G9wnF16vHw8PB2eEmjwLyNoFqiHaUZPDw8vBVeTp0Uf/NnJ4UJPDw8vB1etUEqKWdMmgny6zfnPTw8PLziBljvaG7wxxtp5QnCw8PDW+flG2DNwD1oKYgKx3h4eHiLvGYgHrcd9BbWUTECDw8Pb4V3ogk1mcReiyoeHh7ePm9SesiX45NkUN02w8PDwzvN6wXl+aI5mbLkPCpG4OHh4R3g5QXTZgvpTYkh+S4eHh7eJq8aoPPUklN7JQk8PDy85/OSz1ebqKqTeDAx4OHh4R1bc+Yhfp5g8t8APDw8vE1eUoyYPJXfkycGPDw8vE/xqgvlfIO/Ss2n8u11PDw8vMO87zvw8PDw8PDw8PAecPwB1i+vW6w8WDUAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;5.9k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;27 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/023/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制&url=https://www.itbob.cn/article/023/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制&url=https://www.itbob.cn/article/023/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/023/index.html&text=Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/023/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/023/index.html&title=Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/023/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/10/A68-Matplotlib-01/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/12/A69-Matplotlib-02/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/14/A70-Matplotlib-03/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/16/A71-Matplotlib-04/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/18/A72-Matplotlib-05/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/21/A73-Matplotlib-06/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/24/A74-Matplotlib-07/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/04/30/A75-Matplotlib-08/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/03/A76-Matplotlib-09/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/08/A77-Matplotlib-10/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/09/A78-Matplotlib-11/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106558131
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【01x00】了解-mplot3d-Toolkit"><a href="#【01x00】了解-mplot3d-Toolkit" class="headerlink" title="【01x00】了解 mplot3d Toolkit"></a><font color=#FF0000>【01x00】了解 mplot3d Toolkit</font></h2><p>mplot3d Toolkit 即 mplot3d 工具包，在 matplotlib 中使用 mplot3d 工具包可以绘制 3D 图。</p>
+<p>mplot3d 官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/toolkits/mplot3d.html">https://matplotlib.org/tutorials/toolkits/mplot3d.html</a></p>
+<p>在 matplotlib 中，figure 为画布，axes 为绘图区，<code>fig.add_subplot()</code>、<code>plt.subplot()</code> 方法均可以创建子图，在绘制 3D 图时，某些 2D 图的参数也适用于 3D 图，在本文的示例中，可能会用到的一些没有具体解释的函数或者参数，其用法均可在前面的系列文章中找到：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105638122">《Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件》</a> </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></p>
+</li>
+</ul>
+<p><font color=#FF0000><strong>绘制 3D 图的步骤：创建 Axes3D 对象，然后调用 Axes3D 的不同方法来绘制不同类型的 3D 图。以下介绍三种 Axes3D 对象创建的方法。</strong></font></p>
+<h3 id="【01x01】Axes3D-对象创建方法一：Axes3D-fig"><a href="#【01x01】Axes3D-对象创建方法一：Axes3D-fig" class="headerlink" title="【01x01】Axes3D 对象创建方法一：Axes3D(fig)"></a><font color=##4876FF>【01x01】Axes3D 对象创建方法一：Axes3D(fig)</font></h3><p>在 Matplotlib 1.0.0 版本中，绘制 3D 图需要先导入 Axes3D 包，获取 figure 画布对象 fig 后，通过 Axes3D(fig) 方法来创建 Axes3D 对象，具体方法如下：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# 获取 figure 画布并创建 Axes3D 对象
+fig = plt.figure()
+ax = Axes3D(fig)
+
+# 数据坐标
+z = np.linspace(0, 15, 1000)
+x = np.sin(z)
+y = np.cos(z)
+
+# 绘制线性图
+ax.plot(x, y, z)
+plt.show()
+</code></pre>
+<h3 id="【01x02】Axes3D-对象创建方法二：add-subplot"><a href="#【01x02】Axes3D-对象创建方法二：add-subplot" class="headerlink" title="【01x02】Axes3D 对象创建方法二：add_subplot"></a><font color=##4876FF>【01x02】Axes3D 对象创建方法二：add_subplot</font></h3><p>在 Matplotlib 3.2.0 版本中，绘制 3D 图可以通过创建子图，然后指定 projection 参数 为 3d 即可，返回的 ax 为 Axes3D 对象，以下两种方法均可：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+# 数据坐标
+z = np.linspace(0, 15, 1000)
+x = np.sin(z)
+y = np.cos(z)
+
+# 绘制线性图
+ax.plot(x, y, z)
+plt.show()
+</code></pre>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+# 通过子图创建 Axes3D 对象
+ax = plt.subplot(111, projection=&#39;3d&#39;)
+
+# 数据坐标
+z = np.linspace(0, 15, 1000)
+x = np.sin(z)
+y = np.cos(z)
+
+# 绘制线性图
+ax.plot(x, y, z)
+plt.show()
+</code></pre>
+<h3 id="【01x03】Axes3D-对象创建方法三：gca"><a href="#【01x03】Axes3D-对象创建方法三：gca" class="headerlink" title="【01x03】Axes3D 对象创建方法三：gca"></a><font color=##4876FF>【01x03】Axes3D 对象创建方法三：gca</font></h3><p>除了以上两种方法以外，还可以先获取画布对象 fig，再通过 <code>fig.gca()</code> 方法获取当前绘图区（gca = Get Current Axes），然后指定 projection 参数 为 3d 即可，返回的 ax 为 Axes3D 对象。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+# 依次获取画布和绘图区并创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+# 数据坐标
+z = np.linspace(0, 15, 1000)
+x = np.sin(z)
+y = np.cos(z)
+
+# 绘制线性图
+ax.plot(x, y, z)
+plt.show()
+</code></pre>
+<p>以上三种方法运行结果均为下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/01.png" alt="01"></p>
+<h2 id="【02x00】cmap-与-colorbar"><a href="#【02x00】cmap-与-colorbar" class="headerlink" title="【02x00】cmap 与 colorbar"></a><font color=#FF0000>【02x00】cmap 与 colorbar</font></h2><p>默认情况下，散点图、线性图、曲面图等将以纯色着色，但可以通过提供 cmap 参数支持颜色映射。cmap 参数用于设置一些特殊的颜色组合，如渐变色等，参数取值通常为 Colormap 中的值，具体取值可参见下图：</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/colors/colormaps.html">https://matplotlib.org/tutorials/colors/colormaps.html</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/02.png" alt="02"></p>
+<p>如果使用了 cmap 参数，则可以使用 <code>pyplot.colorbar()</code> 函数来绘制一个色条，即颜色对照条。</p>
+<p>基本语法：<code>matplotlib.pyplot.colorbar([mappable=None, cax=None, ax=None, **kw])</code></p>
+<p>部分参数解释如下表，其他参数，如长度，宽度等请参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a>。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mappable</td>
+<td>要设置色条的图像对象，该参数对于 <code>Figure.colorbar</code> 方法是必需的，但对于 <code>pyplot.colorbar</code> 函数是可选的</td>
+</tr>
+<tr>
+<td>cax</td>
+<td>可选项，要绘制色条的轴</td>
+</tr>
+<tr>
+<td>ax</td>
+<td>可选项，设置色条的显示位置，通常在一个画布上有多个子图时使用</td>
+</tr>
+<tr>
+<td>**kw</td>
+<td>可选项，其他关键字参数，参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a></td>
+</tr>
+</tbody></table>
+<h2 id="【03x00】3D-线性图：Axes3D-plot"><a href="#【03x00】3D-线性图：Axes3D-plot" class="headerlink" title="【03x00】3D 线性图：Axes3D.plot"></a><font color=#FF0000>【03x00】3D 线性图：Axes3D.plot</font></h2><p>基本方法：<code>Axes3D.plot(xs, ys[, zs, zdir=&#39;z&#39;, *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xs</td>
+<td>一维数组，点的 x 轴坐标</td>
+</tr>
+<tr>
+<td>ys</td>
+<td>一维数组，点的 y 轴坐标</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>一维数组，可选项，点的 z 轴坐标</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html">matplotlib.axes.Axes.plot</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+# 设置中文显示
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 依次获取画布和绘图区并创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+# 第一条3D线性图数据
+theta = np.linspace(-4 * np.pi, 4 * np.pi, 100)
+z1 = np.linspace(-2, 2, 100)
+r = z1**2 + 1
+x1 = r * np.sin(theta)
+y1 = r * np.cos(theta)
+
+# 第二条3D线性图数据
+z2 = np.linspace(-3, 3, 100)
+x2 = np.sin(z2)
+y2 = np.cos(z2)
+
+# 绘制3D线性图
+ax.plot(x1, y1, z1, color=&#39;b&#39;, label=&#39;3D 线性图一&#39;)
+ax.plot(x2, y2, z2, color=&#39;r&#39;, label=&#39;3D 线性图二&#39;)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel、plt.legend...
+ax.set_title(&#39;绘制 3D 线性图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;, color=&#39;r&#39;, fontsize=&#39;12&#39;)
+ax.set_ylabel(&#39;y 轴&#39;, color=&#39;g&#39;, fontsize=&#39;12&#39;)
+ax.set_zlabel(&#39;z 轴&#39;, color=&#39;b&#39;, fontsize=&#39;12&#39;)
+ax.legend()
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/03.png" alt="03"></p>
+<h2 id="【04x00】3D-散点图：Axes3D-scatter"><a href="#【04x00】3D-散点图：Axes3D-scatter" class="headerlink" title="【04x00】3D 散点图：Axes3D.scatter"></a><font color=#FF0000>【04x00】3D 散点图：Axes3D.scatter</font></h2><p>基本方法：<code>Axes3D.scatter(xs, ys[, zs=0, zdir=&#39;z&#39;, s=20, c=None, depthshade=True, *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xs</td>
+<td>一维数组，点的 x 轴坐标</td>
+</tr>
+<tr>
+<td>ys</td>
+<td>一维数组，点的 y 轴坐标</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>一维数组，可选项，点的 z 轴坐标</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>s</td>
+<td>标量或数组类型，可选项，标记的大小，默认 20</td>
+</tr>
+<tr>
+<td>c</td>
+<td>标记的颜色，可选项，可以是单个颜色或者一个颜色列表<br>支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>depthshade</td>
+<td>bool 值，可选项，默认 True，是否为散点标记着色以提供深度外观</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.scatter.html">scatter</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 依次获取画布和绘图区并创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+n = 100
+
+
+def randrange(n, vmin, vmax):
+    return (vmax - vmin)*np.random.rand(n) + vmin
+
+
+&#39;&#39;&#39;
+定义绘制 n 个随机点，设置每一组数据点的样式和范围
+x轴数据位于[23，32]区间，y轴数据位于[0，100]区间，z轴数据位于[zlow，zhigh]区间
+&#39;&#39;&#39;
+for m, zlow, zhigh in [(&#39;o&#39;, -50, -25), (&#39;^&#39;, -30, -5)]:
+    xs = randrange(n, 23, 32)
+    ys = randrange(n, 0, 100)
+    zs = randrange(n, zlow, zhigh)
+    ax.scatter(xs, ys, zs, marker=m)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 散点图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;, color=&#39;b&#39;)
+ax.set_ylabel(&#39;y 轴&#39;, color=&#39;b&#39;)
+ax.set_zlabel(&#39;z 轴&#39;, color=&#39;b&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/04.png" alt="04"></p>
+<h2 id="【05x00】3D-线框图：Axes3D-plot-wireframe"><a href="#【05x00】3D-线框图：Axes3D-plot-wireframe" class="headerlink" title="【05x00】3D 线框图：Axes3D.plot_wireframe"></a><font color=#FF0000>【05x00】3D 线框图：Axes3D.plot_wireframe</font></h2><p>基本方法：<code>Axes3D.plot_wireframe(X, Y, Z[, *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td>二维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>二维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>二维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，如线条样式颜色等，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Line3DCollection.html">Line3DCollection</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+
+# 定义Z轴坐标的生成方法
+def f(m, n):
+    return np.sin(np.sqrt(m ** 2 + n ** 2))
+
+
+# 设置3D线框图数据
+x = np.linspace(-6, 6, 30)
+y = np.linspace(-6, 6, 30)
+# 生成网格点坐标矩阵，该方法在系列文章八中有具体介绍
+X, Y = np.meshgrid(x, y)
+Z = f(X, Y)
+
+# 绘制3D线框图
+ax.plot_wireframe(X, Y, Z, color=&#39;c&#39;)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 线框图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/05.png" alt="05"></p>
+<h2 id="【06x00】3D-曲面图：Axes3D-plot-surface"><a href="#【06x00】3D-曲面图：Axes3D-plot-surface" class="headerlink" title="【06x00】3D 曲面图：Axes3D.plot_surface"></a><font color=#FF0000>【06x00】3D 曲面图：Axes3D.plot_surface</font></h2><p>基本方法：<code>Axes3D.plot_surface(X, Y, Z[, *args, vmin=None, vmax=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td>二维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>二维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>二维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>vmin / vmax</td>
+<td>规定数据界限</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，如线条样式颜色等，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Line3DCollection.html">Line3DCollection</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+# 设置3D曲面图数据
+X = np.arange(-5, 5, 0.25)
+Y = np.arange(-5, 5, 0.25)
+# 生成网格点坐标矩阵，该方法在系列文章八中有具体介绍
+X, Y = np.meshgrid(X, Y)
+R = np.sqrt(X**2 + Y**2)
+Z = np.sin(R)
+
+# 绘制3D曲面图并添加色条（长度0.8）
+surface = ax.plot_surface(X, Y, Z, cmap=&#39;rainbow&#39;, antialiased=False)
+fig.colorbar(surface, shrink=0.8)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 曲面图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+# 调整观察角度和方位角，俯仰角25度，方位角40度
+ax.view_init(25, 40)
+# 设置Z轴刻度界限
+ax.set_zlim(-2, 2)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/06.png" alt="06"></p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106558131
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【07x00】3D-柱状图：Axes3D-bar"><a href="#【07x00】3D-柱状图：Axes3D-bar" class="headerlink" title="【07x00】3D 柱状图：Axes3D.bar"></a><font color=#FF0000>【07x00】3D 柱状图：Axes3D.bar</font></h2><p>基本方法：<code>Axes3D.bar(left, height, zs=0, zdir=&#39;z&#39;, *args, **kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>left</td>
+<td>一维数组，柱状图最左侧位置的 x 坐标</td>
+</tr>
+<tr>
+<td>height</td>
+<td>一维数组，柱状图的高度（y 坐标）</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>第 i 个多边形将出现在平面 y=zs[i] 上</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.bar.html">matplotlib.axes.Axes.bar</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+colors = [&#39;r&#39;, &#39;g&#39;, &#39;b&#39;, &#39;y&#39;]
+yticks = [3, 2, 1, 0]
+
+# 设置3D柱状图数据并绘制图像
+for c, k in zip(colors, yticks):
+    xs = np.arange(20)
+    ys = np.random.rand(20)
+    cs = [c] * len(xs)
+    ax.bar(xs, ys, zs=k, zdir=&#39;y&#39;, color=cs, alpha=0.8)
+
+# 设置图像标题、坐标标签以及范围
+ax.set_title(&#39;绘制 3D 柱状图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;X 轴&#39;)
+ax.set_ylabel(&#39;Y 轴&#39;)
+ax.set_zlabel(&#39;Z 轴&#39;)
+ax.set_yticks(yticks)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/07.png" alt="07"></p>
+<h2 id="【08x00】3D-箭头图：Axes3D-quiver"><a href="#【08x00】3D-箭头图：Axes3D-quiver" class="headerlink" title="【08x00】3D 箭头图：Axes3D.quiver"></a><font color=#FF0000>【08x00】3D 箭头图：Axes3D.quiver</font></h2><p>基本方法：<code>Axes3D.quiver(X, Y, Z, U, V, W, length=1, arrow_length_ratio=0.3, pivot=&#39;tail&#39;, normalize=False, **kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X, Y, Z</td>
+<td>数组形式，箭头位置的 x、y 和 z 轴坐标（默认为箭头尾部）</td>
+</tr>
+<tr>
+<td>U, V, W</td>
+<td>数组形式，箭头向量的 x、y 和 z 轴分量</td>
+</tr>
+<tr>
+<td>length</td>
+<td>float 类型，每个箭筒的长度，默认为 1.0</td>
+</tr>
+<tr>
+<td>arrow_length_ratio</td>
+<td>float 类型，箭头相对于箭身的比率，默认为 0.3</td>
+</tr>
+<tr>
+<td>pivot</td>
+<td>箭头在网格点上的位置；箭头围绕该点旋转，因此命名为 pivot，默认为 ‘tail’<br>可选项：<code>&#39;tail&#39;</code>：尾部；<code>&#39;middle&#39;</code>：中间；<code>&#39;tip&#39;</code>：尖端</td>
+</tr>
+<tr>
+<td>normalize</td>
+<td>bool 类型，如果为 True，则所有箭头的长度都将相同<br>默认为 False，即箭头的长度取决于 U、V、W 的值</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection">LineCollection</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 依次获取画布和绘图区并创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+# 设置箭头位置
+x, y, z = np.meshgrid(np.arange(-0.8, 1, 0.2),
+                      np.arange(-0.8, 1, 0.2),
+                      np.arange(-0.8, 1, 0.8))
+
+# 设置箭头数据
+u = np.sin(np.pi * x) * np.cos(np.pi * y) * np.cos(np.pi * z)
+v = -np.cos(np.pi * x) * np.sin(np.pi * y) * np.cos(np.pi * z)
+w = (np.sqrt(2.0 / 3.0) * np.cos(np.pi * x) * np.cos(np.pi * y) * np.sin(np.pi * z))
+
+# 绘制 3D 箭头图
+ax.quiver(x, y, z, u, v, w, length=0.1, normalize=True)
+
+# 设置图像标题、坐标标签
+ax.set_title(&#39;绘制 3D 箭头图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;X 轴&#39;)
+ax.set_ylabel(&#39;Y 轴&#39;)
+ax.set_zlabel(&#39;Z 轴&#39;)
+
+# 调整观察角度，俯仰角20度
+ax.view_init(20)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/08.png" alt="08"></p>
+<h2 id="【09x00】3D-等高线图：Axes3D-contour"><a href="#【09x00】3D-等高线图：Axes3D-contour" class="headerlink" title="【09x00】3D 等高线图：Axes3D.contour"></a><font color=#FF0000>【09x00】3D 等高线图：Axes3D.contour</font></h2><p>基本方法：<code>Axes3D.contour(X, Y, Z[, *args, extend3d=False, stride=5, zdir=&#39;z&#39;, offset=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>extend3d</td>
+<td>bool 值，可选项，是否以 3D 延伸轮廓，默认 False</td>
+</tr>
+<tr>
+<td>stride</td>
+<td>int 类型，可选项，用于延伸轮廓的步长</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>标量，可选项，如果指定，则在垂直于 zdir 的平面上的位置绘制轮廓线的投影</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html">matplotlib.axes.Axes.contour</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure(figsize=(8, 4.8))
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+# 设置等高线数据
+X = np.arange(-2.0, 2.0, 0.01)
+Y = np.arange(-2.0, 2.0, 0.01)
+# 生成网格点坐标矩阵
+m, n = np.meshgrid(X, Y)
+
+
+# 指定一个函数用于计算每个点的高度，也可以直接使用二维数组储存每个点的高度
+def f(a, b):
+    return (1 - b ** 5 + a ** 5) * np.exp(-a ** 2 - b ** 2)
+
+
+# 绘制3D等高线图并添加色条图（长度0.8）
+contour = ax.contour(X, Y, f(m, n), cmap=&#39;rainbow&#39;)
+fig.colorbar(contour, shrink=0.8)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 等高线图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/09.png" alt="09"></p>
+<h2 id="【10x00】3D-等高线填充图：Axes3D-contourf"><a href="#【10x00】3D-等高线填充图：Axes3D-contourf" class="headerlink" title="【10x00】3D 等高线填充图：Axes3D.contourf"></a><font color=#FF0000>【10x00】3D 等高线填充图：Axes3D.contourf</font></h2><p>基本语法：<code>Axes3D.contourf(X, Y, Z[, *args, zdir=&#39;z&#39;, offset=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>标量，可选项，如果指定，则在垂直于 zdir 的平面上的位置绘制轮廓线的投影</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html">matplotlib.axes.Axes.contourf</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure(figsize=(8, 4.8))
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+# 设置等高线数据
+X = np.arange(-2.0, 2.0, 0.01)
+Y = np.arange(-2.0, 2.0, 0.01)
+# 生成网格点坐标矩阵
+m, n = np.meshgrid(X, Y)
+
+
+# 指定一个函数用于计算每个点的高度，也可以直接使用二维数组储存每个点的高度
+def f(a, b):
+    return (1 - b ** 5 + a ** 5) * np.exp(-a ** 2 - b ** 2)
+
+
+# 绘制3D等高线图并添加色条图（长度0.8）
+contourf = ax.contourf(X, Y, f(m, n), cmap=&#39;rainbow&#39;)
+fig.colorbar(contourf, shrink=0.8)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 等高线填充图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/10.png" alt="10"></p>
+<h2 id="【11x00】3D-三角曲面图：Axes3D-plot-trisurf"><a href="#【11x00】3D-三角曲面图：Axes3D-plot-trisurf" class="headerlink" title="【11x00】3D 三角曲面图：Axes3D.plot_trisurf"></a><font color=#FF0000>【11x00】3D 三角曲面图：Axes3D.plot_trisurf</font></h2><p>基本方法：<code>Axes3D.plot_trisurf(X, Y, Z[, *args, color=None, vmin=None, vmax=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>color</td>
+<td>曲面表面的颜色</td>
+</tr>
+<tr>
+<td>vmin / vmax</td>
+<td>规定数据界限</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>可选项，其他关键字参数，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Poly3DCollection.html">Poly3DCollection</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 获取 figure 画布并通过子图创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+
+n_radii = 8
+n_angles = 36
+
+radii = np.linspace(0.125, 1.0, n_radii)
+angles = np.linspace(0, 2*np.pi, n_angles, endpoint=False)[..., np.newaxis]
+x = np.append(0, (radii*np.cos(angles)).flatten())
+y = np.append(0, (radii*np.sin(angles)).flatten())
+z = np.sin(-x*y)
+
+# 绘制3D三角曲面图并添加色条（长度0.8）
+trisurf = ax.plot_trisurf(x, y, z, cmap=&#39;rainbow&#39;)
+fig.colorbar(trisurf, shrink=0.8)
+
+# 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...
+ax.set_title(&#39;绘制 3D 三角曲面图示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/11.png" alt="11"></p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.tri as mtri
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+fig = plt.figure(figsize=(15, 6))
+
+# ============ 第一个示例图 ============ #
+
+ax = fig.add_subplot(1, 2, 1, projection=&#39;3d&#39;)
+
+u = np.linspace(0, 2.0 * np.pi, endpoint=True, num=50)
+v = np.linspace(-0.5, 0.5, endpoint=True, num=10)
+u, v = np.meshgrid(u, v)
+u, v = u.flatten(), v.flatten()
+
+x = (1 + 0.5 * v * np.cos(u / 2.0)) * np.cos(u)
+y = (1 + 0.5 * v * np.cos(u / 2.0)) * np.sin(u)
+z = 0.5 * v * np.sin(u / 2.0)
+
+tri = mtri.Triangulation(u, v)
+
+trisurf_1 = ax.plot_trisurf(x, y, z, triangles=tri.triangles, cmap=&#39;cool&#39;)
+fig.colorbar(trisurf_1, shrink=0.8)
+ax.set_zlim(-1, 1)
+
+ax.set_title(&#39;绘制 3D 三角曲面图示例一&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+# ============ 第二个示例图 ============ #
+
+ax = fig.add_subplot(1, 2, 2, projection=&#39;3d&#39;)
+
+n_angles = 36
+n_radii = 8
+min_radius = 0.25
+radii = np.linspace(min_radius, 0.95, n_radii)
+
+angles = np.linspace(0, 2*np.pi, n_angles, endpoint=False)
+angles = np.repeat(angles[..., np.newaxis], n_radii, axis=1)
+angles[:, 1::2] += np.pi/n_angles
+
+x = (radii*np.cos(angles)).flatten()
+y = (radii*np.sin(angles)).flatten()
+z = (np.cos(radii)*np.cos(3*angles)).flatten()
+
+triang = mtri.Triangulation(x, y)
+
+xmid = x[triang.triangles].mean(axis=1)
+ymid = y[triang.triangles].mean(axis=1)
+mask = xmid**2 + ymid**2 &lt; min_radius**2
+triang.set_mask(mask)
+
+trisurf_2 = ax.plot_trisurf(triang, z, cmap=&#39;hsv&#39;)
+fig.colorbar(trisurf_2, shrink=0.8)
+
+ax.set_title(&#39;绘制 3D 三角曲面图示例二&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;x 轴&#39;)
+ax.set_ylabel(&#39;y 轴&#39;)
+ax.set_zlabel(&#39;z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/12.png" alt="12"></p>
+<h2 id="【12x00】将-2D-图像聚合到-3D-图像中：Axes3D-add-collection3d"><a href="#【12x00】将-2D-图像聚合到-3D-图像中：Axes3D-add-collection3d" class="headerlink" title="【12x00】将 2D 图像聚合到 3D 图像中：Axes3D.add_collection3d"></a><font color=#FF0000>【12x00】将 2D 图像聚合到 3D 图像中：Axes3D.add_collection3d</font></h2><p>基本方法：<code>Axes3D.add_collection3d(col, zs=0, zdir=&#39;z&#39;)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>col</td>
+<td><a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=polycollection#matplotlib.collections.PolyCollection">PolyCollection</a> / <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=linecollection#matplotlib.collections.LineCollection">LineCollection</a> / <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=patchcollection#matplotlib.collections.PatchCollection">PatchCollection</a> 对象</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>第 i 个多边形将出现在平面 y=zs[i] 上</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+</tbody></table>
+<p>该函数一般用来向图形中添加 3D 集合对象，以下用一个示例来展示某个地区在不同年份和不同月份的降水量：</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.collections import PolyCollection
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+np.random.seed(59)
+month = np.arange(0, 13)
+years = [2017, 2018, 2019, 2020]
+
+precipitation = []
+for year in years:
+    value = np.random.rand(len(month)) * 300
+    value[0], value[-1] = 0, 0
+    precipitation.append(list(zip(month, value)))
+
+poly = PolyCollection(precipitation, facecolors=[&#39;r&#39;, &#39;g&#39;, &#39;b&#39;, &#39;y&#39;], alpha=.6)
+ax.add_collection3d(poly, zs=years, zdir=&#39;y&#39;)
+
+ax.set_title(&#39;2D 图像聚合到 3D 图像示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;月份&#39;)
+ax.set_ylabel(&#39;年份&#39;)
+ax.set_zlabel(&#39;降水量&#39;)
+ax.set_xlim3d(0, 12)
+ax.set_ylim3d(2016, 2021)
+ax.set_zlim3d(0, 300)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/13.png" alt="13"></p>
+<p>此外，该方法也常被用于绘制 3D 多边形图，即多边体，示例如下：</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+# 六面体顶点和面
+verts = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (0, 1, 1), (1, 1, 1), (1, 0, 1)]
+faces = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [0, 3, 7, 4]]
+
+# 获取每个面的顶点
+poly3d = [[verts[vert_id] for vert_id in face] for face in faces]
+
+# 绘制顶点
+x, y, z = zip(*verts)
+ax.scatter(x, y, z)
+# 绘制多边形面
+ax.add_collection3d(Poly3DCollection(poly3d, facecolors=&#39;w&#39;, linewidths=1, alpha=0.5))
+# 绘制多边形的边
+ax.add_collection3d(Line3DCollection(poly3d, colors=&#39;k&#39;, linewidths=0.5, linestyles=&#39;:&#39;))
+
+# 设置图像标题、坐标标签以及范围
+ax.set_title(&#39;绘制多边体示例&#39;, pad=15, fontsize=&#39;12&#39;)
+ax.set_xlabel(&#39;X 轴&#39;)
+ax.set_ylabel(&#39;Y 轴&#39;)
+ax.set_zlabel(&#39;Z 轴&#39;)
+ax.set_xlim3d(-0.5, 1.5)
+ax.set_ylim3d(-0.5, 1.5)
+ax.set_zlim3d(-0.5, 1.5)
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/14.png" alt="14"></p>
+<h2 id="【13x00】3D-图添加文本描述：Axes3D-text"><a href="#【13x00】3D-图添加文本描述：Axes3D-text" class="headerlink" title="【13x00】3D 图添加文本描述：Axes3D.text"></a><font color=#FF0000>【13x00】3D 图添加文本描述：Axes3D.text</font></h2><p>基本方法：<code>Axes3D.text(x, y, z, s[, zdir=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x, y, z</td>
+<td>文本位置的 x、y、z 轴坐标</td>
+</tr>
+<tr>
+<td>s</td>
+<td>要添加的文本</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，若将 zdir 设置为 ‘y’，文本将会被投影到 x-z 轴平面上，默认为 None</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html">matplotlib.text</a></td>
+</tr>
+</tbody></table>
+<pre><code class="python">import matplotlib.pyplot as plt
+
+plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+
+# 依次获取画布和绘图区并创建 Axes3D 对象
+fig = plt.figure()
+ax = fig.gca(projection=&#39;3d&#39;)
+
+# Demo 1: zdir 参数用法
+zdirs = (None, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, (1, 1, 0), (1, 1, 1))
+xs = (1, 4, 4, 9, 4, 1)
+ys = (2, 5, 8, 10, 1, 2)
+zs = (10, 3, 8, 9, 1, 8)
+
+for zdir, x, y, z in zip(zdirs, xs, ys, zs):
+    label = &#39;(%d, %d, %d), dir=%s&#39; % (x, y, z, zdir)
+    ax.text(x, y, z, label, zdir)
+
+# Demo 2：设置颜色
+ax.text(9, 0, 0, &quot;red&quot;, color=&#39;red&#39;)
+
+# Demo 3: text2D，位置(0，0)为左下角，(1，1)为右上角。
+ax.text2D(0.05, 0.95, &quot;2D Text&quot;, transform=ax.transAxes)
+
+# 设置坐标轴界限和标签
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 10)
+ax.set_zlim(0, 10)
+ax.set_xlabel(&#39;X 轴&#39;)
+ax.set_ylabel(&#39;Y 轴&#39;)
+ax.set_zlabel(&#39;Z 轴&#39;)
+
+plt.show()
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A77/15.png" alt="15"></p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106558131
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/023/">https://www.itbob.cn/article/023/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/024/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/022/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

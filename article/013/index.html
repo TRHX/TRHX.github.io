@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,NumPy,数据分析">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/013/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/013/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="NumPy"> <meta property="og:article:tag" content="数据分析"> 
+
+    
+        <meta property="article:published_time" content="Fri Apr 17 2020 22:51:11 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jan 22 2022 23:45:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/013/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/013/index.html",
+    "headline": "Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作",
+    "datePublished": "Fri Apr 17 2020 22:51:11 GMT+0800",
+    "dateModified": "Sat Jan 22 2022 23:45:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,NumPy,数据分析ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%901x00%E3%80%91NumPy-%E7%9F%A9%E9%98%B5%E5%BA%93"><span class="post-toc-number">1.</span> <span class="post-toc-text">【1x00】NumPy 矩阵库</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x01%E3%80%91numpy-mat"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">【1x01】numpy.mat()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x02%E3%80%91numpy-asmatrix"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">【1x02】numpy.asmatrix()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x03%E3%80%91numpy-matrix"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">【1x03】numpy.matrix()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x04%E3%80%91mat-asmatrix-matrix-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">【1x04】mat() &#x2F; asmatrix() &#x2F; matrix() 的区别</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x05%E3%80%91numpy-bmat"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">【1x05】numpy.bmat()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x06%E3%80%91numpy-matlib-empty"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">【1x06】numpy.matlib.empty()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x07%E3%80%91numpy-matlib-zeros"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">【1x07】numpy.matlib.zeros()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x08%E3%80%91numpy-matlib-ones"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">【1x08】numpy.matlib.ones()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x09%E3%80%91numpy-matlib-eye"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">【1x09】numpy.matlib.eye()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x10%E3%80%91numpy-matlib-identity"><span class="post-toc-number">1.10.</span> <span class="post-toc-text">【1x10】numpy.matlib.identity()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x11%E3%80%91numpy-matlib-repmat"><span class="post-toc-number">1.11.</span> <span class="post-toc-text">【1x11】numpy.matlib.repmat()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x12%E3%80%91numpy-matlib-rand"><span class="post-toc-number">1.12.</span> <span class="post-toc-text">【1x12】numpy.matlib.rand()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%901x13%E3%80%91numpy-matlib-randn"><span class="post-toc-number">1.13.</span> <span class="post-toc-text">【1x13】numpy.matlib.randn()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902x00%E3%80%91NumPy-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%BA%93"><span class="post-toc-number">2.</span> <span class="post-toc-text">【2x00】NumPy 线性代数库</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x01%E3%80%91numpy-dot"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">【2x01】numpy.dot()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x02%E3%80%91numpy-vdot"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">【2x02】numpy.vdot()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x03%E3%80%91numpy-inner"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">【2x03】numpy.inner()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x04%E3%80%91numpy-outer"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">【2x04】numpy.outer()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x05%E3%80%91numpy-matmul"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">【2x05】numpy.matmul()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x06%E3%80%91numpy-tensordot"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">【2x06】numpy.tensordot()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x07%E3%80%91numpy-linalg-det"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">【2x07】numpy.linalg.det()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x08%E3%80%91numpy-linalg-solve"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">【2x08】numpy.linalg.solve()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x09%E3%80%91numpy-linalg-inv"><span class="post-toc-number">2.9.</span> <span class="post-toc-text">【2x09】numpy.linalg.inv()</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903x00%E3%80%91NumPy-IO-%E6%93%8D%E4%BD%9C"><span class="post-toc-number">3.</span> <span class="post-toc-text">【3x00】NumPy IO 操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x01%E3%80%91numpy-save"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【3x01】numpy.save()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x02%E3%80%91numpy-load"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【3x02】numpy.load()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x03%E3%80%91numpy-savez"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【3x03】numpy.savez()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x04%E3%80%91numpy-savetxt"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【3x04】numpy.savetxt()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x05%E3%80%91numpy-loadtxt"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">【3x05】numpy.loadtxt()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x06%E3%80%91numpy-genfromtxt"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">【3x06】numpy.genfromtxt()</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>4月 17, 2020</span> -->
+        <span>2020-04-17 22:51:11</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACa0lEQVR42u3aQa7jIBQEwNz/0jPbL83Ev/thiBWVVxZJDOUFkH68/nz19cLDw8PDw8PDw3sY7xVf/3nQqD3vZTY2PDw8vDO8X6baNx0nLT/b/72/7n04Njw8PLyDvHcTbnJ//cxkuk/6uv4+Hh4e3pN5ybR+vaVOlgo8PDy8b+K1ocPKd/Dw8PCezEv+8Ochb74w5EPfnrXg4eHhxby8yHT+/mh9Dw8PDy/g1Uea1ifuhWUgGiEeHh7eZl4+EScb5btKYkvjwcPDw9vMa8taScnq+khWfsg1eX60pcbDw8O7lTc7IDWLD2YxcfJa8fDw8E7ykh/kBbM2hE0WhvbF4eHh4Z3h7S5crZfciu07Hh4e3mZeXoJqD1q1U3+9dcbDw8N7GK+Na1cObyXLRlFsw8PDwzvOyyODtvukZRZk4OHh4Z3nrZe48vLVymIQbdzx8PDwjvBm8UQ+xSehRhvp4uHh4X2KtzKUvITWRrRLywweHh7eZl5Rko+Dg/w5USzbHt7Cw8PDO8jLC2Arxf58KUra6xgXDw8P71Zeuy2elcFmRxOK8eDh4eEd4eXdzzCz5WEYHOPh4eEd5K0EryvHDmYb6yKMwMPDw9vMa6f+tiUfdLs1x8PDwzvDa6+VoGG2GLRlMzw8PLzdvPVJeYaZbceTqAIPDw/vDC8PTPOjVHWIMDp6hYeHh/dZXjtBt6WyWTmtLrDh4eHhPZLXBr7tcpK8lJtTajw8PLzNvOswIv80j0XyvwF4eHh4J3lJGLHyq/w7+cKAh4eH9yleHgG0Bf6Wmr/KIsbFw8PDu5X3fRceHh4eHh4eHt4Drr/Pw85KVUeCCgAAAABJRU5ErkJggg==">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/NumPy/" rel="tag">NumPy</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;7.3k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;33 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/013/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作&url=https://www.itbob.cn/article/013/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作&url=https://www.itbob.cn/article/013/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/013/index.html&text=Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/013/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/013/index.html&title=Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/013/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>NumPy 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/20/A62-NumPy-01/">Python 数据分析三剑客之 NumPy（一）：理解 NumPy / 数组基础</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/22/A63-NumPy-02/">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/24/A64-NumPy-03/">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/26/A65-NumPy-04/">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/28/A66-NumPy-05/">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/03/30/A67-NumPy-06/">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a></li>
+</ul>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105511641
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【1x00】NumPy-矩阵库"><a href="#【1x00】NumPy-矩阵库" class="headerlink" title="【1x00】NumPy 矩阵库"></a><font color=#FF0000>【1x00】NumPy 矩阵库</font></h2><p><code>numpy.matlib</code> 模块是 NumPy 的矩阵库，该矩阵库包含多种函数，函数返回的是一个矩阵，而不是 Ndarray 对象。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/routines.matlib.html">https://numpy.org/doc/1.18/reference/routines.matlib.html</a></p>
+<h3 id="【1x01】numpy-mat"><a href="#【1x01】numpy-mat" class="headerlink" title="【1x01】numpy.mat()"></a><font color=#1BC3FB>【1x01】numpy.mat()</font></h3><p><code>numpy.mat()</code> 函数将输入数组转换为为矩阵。</p>
+<p>基本语法：<code>numpy.mat(data[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>data</td>
+<td>输入数据，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.mat([1, 2, 3])
+&gt;&gt;&gt; a
+matrix([[1, 2, 3]])
+&gt;&gt;&gt; a[0]
+matrix([[1, 2, 3]])
+&gt;&gt;&gt; a[0,1]
+2
+</code></pre>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt; a
+array([[1, 2],
+       [3, 4]])
+&gt;&gt;&gt; b = np.mat(a)
+&gt;&gt;&gt; b
+matrix([[1, 2],
+        [3, 4]])
+</code></pre>
+<h3 id="【1x02】numpy-asmatrix"><a href="#【1x02】numpy-asmatrix" class="headerlink" title="【1x02】numpy.asmatrix()"></a><font color=#1BC3FB>【1x02】numpy.asmatrix()</font></h3><p><code>numpy.asmatrix()</code> 函数将输入数组转换为为矩阵。</p>
+<p>基本语法：<code>numpy.asmatrix(data[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>data</td>
+<td>输入数据，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt; np.asmatrix(a)
+matrix([[1, 2],
+        [3, 4]])
+</code></pre>
+<h3 id="【1x03】numpy-matrix"><a href="#【1x03】numpy-matrix" class="headerlink" title="【1x03】numpy.matrix()"></a><font color=#1BC3FB>【1x03】numpy.matrix()</font></h3><p><code>numpy.matrix()</code> 函数从类似数组的对象或数据字符串中返回一个矩阵。</p>
+<p><font color=#FF0000><strong>注意：此函数已经不建议再使用，在未来的版本当中可能会被删除。</strong></font></p>
+<p>基本语法：<code>class numpy.matrix(data[, dtype=None, copy=True])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>data</td>
+<td>数组或者字符串，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>是否复制数据到一个新矩阵，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.matrix(&#39;1 2; 3 4&#39;)
+&gt;&gt;&gt; a
+matrix([[1, 2],
+        [3, 4]])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; b = np.matrix([[1, 2], [3, 4]])
+&gt;&gt;&gt; b
+matrix([[1, 2],
+        [3, 4]])
+</code></pre>
+<h3 id="【1x04】mat-asmatrix-matrix-的区别"><a href="#【1x04】mat-asmatrix-matrix-的区别" class="headerlink" title="【1x04】mat() / asmatrix() / matrix() 的区别"></a><font color=#1BC3FB>【1x04】mat() / asmatrix() / matrix() 的区别</font></h3><p>如果输入已经是一个矩阵或一个数组，则 <code>mat()</code> 和 <code>asmatrix()</code> 函数不会执行复制操作，相当于 <code>matrix(data, copy=False)</code></p>
+<p>对比举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt; b = np.mat(a)
+&gt;&gt;&gt; c = np.matrix(a)
+&gt;&gt;&gt; d = np.asmatrix(a)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a
+array([[1, 2],
+       [3, 4]])
+&gt;&gt;&gt; b
+matrix([[1, 2],
+        [3, 4]])
+&gt;&gt;&gt; c
+matrix([[1, 2],
+        [3, 4]])
+&gt;&gt;&gt; d
+matrix([[1, 2],
+        [3, 4]])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a[1][1] = 0
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a
+array([[1, 2],
+       [3, 0]])
+&gt;&gt;&gt; b
+matrix([[1, 2],
+        [3, 0]])
+&gt;&gt;&gt; c              # matrix() 函数默认执行 copy 操作，所以数据不变
+matrix([[1, 2],
+        [3, 4]])
+&gt;&gt;&gt; d
+matrix([[1, 2],
+        [3, 0]])
+</code></pre>
+<h3 id="【1x05】numpy-bmat"><a href="#【1x05】numpy-bmat" class="headerlink" title="【1x05】numpy.bmat()"></a><font color=#1BC3FB>【1x05】numpy.bmat()</font></h3><p><code>numpy.bmat()</code> 函数用于从字符串、嵌套序列或数组生成矩阵对象，一般用于创建复合矩阵。</p>
+<p>基本语法：<code>numpy.bmat(obj[, ldict=None, gdict=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>obj</td>
+<td>数组或者字符串，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>ldict</td>
+<td>字典，用于替换当前帧中的本地操作数。如果 obj 不是字符串或 gdict 为 None，则将被忽略</td>
+</tr>
+<tr>
+<td>gdict</td>
+<td>字典，用于替换当前帧中的全局操作数。如果 obj 不是字符串则忽略</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.mat(&#39;1 1; 1 1&#39;)
+&gt;&gt;&gt; b = np.mat(&#39;2 2; 2 2&#39;)
+&gt;&gt;&gt; c = np.mat(&#39;3 4; 5 6&#39;)
+&gt;&gt;&gt; d = np.mat(&#39;7 8; 9 0&#39;)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; np.bmat([[a, b], [c, d]])
+matrix([[1, 1, 2, 2],
+        [1, 1, 2, 2],
+        [3, 4, 7, 8],
+        [5, 6, 9, 0]])
+&gt;&gt;&gt; np.bmat(np.r_[np.c_[a, b], np.c_[c, d]])
+matrix([[1, 1, 2, 2],
+        [1, 1, 2, 2],
+        [3, 4, 7, 8],
+        [5, 6, 9, 0]])
+&gt;&gt;&gt; np.bmat(&#39;a,b; c,d&#39;)
+matrix([[1, 1, 2, 2],
+        [1, 1, 2, 2],
+        [3, 4, 7, 8],
+        [5, 6, 9, 0]])
+</code></pre>
+<h3 id="【1x06】numpy-matlib-empty"><a href="#【1x06】numpy-matlib-empty" class="headerlink" title="【1x06】numpy.matlib.empty()"></a><font color=#1BC3FB>【1x06】numpy.matlib.empty()</font></h3><p><code>numpy.matlib.empty()</code> 函数用于创建一个给定形状和数据类型的新矩阵。</p>
+<p>基本语法：<code>numpy.matlib.empty(shape[, dtype=None, order=&#39;C&#39;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; print(np.matlib.empty((2, 2)))
+[[9.90263869e+067 8.01304531e+262]
+ [2.60799828e-310 0.00000000e+000]]
+&gt;&gt;&gt; print(np.matlib.empty((2, 2), dtype=int))
+[[ -793016358  -243407933]
+ [ -959331519 -2060787213]]
+</code></pre>
+<h3 id="【1x07】numpy-matlib-zeros"><a href="#【1x07】numpy-matlib-zeros" class="headerlink" title="【1x07】numpy.matlib.zeros()"></a><font color=#1BC3FB>【1x07】numpy.matlib.zeros()</font></h3><p><code>numpy.matlib.zeros()</code> 函数创建一个以 0 填充的给定形状和类数据型的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.zeros(shape[, dtype=None, order=&#39;C&#39;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; np.matlib.zeros((2, 3))
+matrix([[0., 0., 0.],
+        [0., 0., 0.]])
+</code></pre>
+<h3 id="【1x08】numpy-matlib-ones"><a href="#【1x08】numpy-matlib-ones" class="headerlink" title="【1x08】numpy.matlib.ones()"></a><font color=#1BC3FB>【1x08】numpy.matlib.ones()</font></h3><p><code>numpy.matlib.ones()</code> 函数创建一个以 1 填充的给定形状和类数据型的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.ones(shape[, dtype=None, order=&#39;C&#39;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; np.matlib.ones((2, 3))
+matrix([[1., 1., 1.],
+        [1., 1., 1.]])
+</code></pre>
+<h3 id="【1x09】numpy-matlib-eye"><a href="#【1x09】numpy-matlib-eye" class="headerlink" title="【1x09】numpy.matlib.eye()"></a><font color=#1BC3FB>【1x09】numpy.matlib.eye()</font></h3><p><code>numpy.matlib.eye()</code> 函数创建一个对角线元素为 1，其他位置为零的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.eye(n[, M=None, k=0, dtype=&lt;class &#39;float&#39;&gt;, order=&#39;C&#39;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>n</td>
+<td>返回的矩阵的行数，int 类型</td>
+</tr>
+<tr>
+<td>M</td>
+<td>返回的矩阵的列数，int 类型，可选项，默认为 n</td>
+</tr>
+<tr>
+<td>k</td>
+<td>对角线索引，可选项，0 表示主对角线，正值表示上对角线，负值表示下对角线，该对角线上元素的值将会是 1</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>返回矩阵的数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; print(np.matlib.eye(n=3, k=1))
+[[0. 1. 0.]
+ [0. 0. 1.]
+ [0. 0. 0.]]
+&gt;&gt;&gt; print(np.matlib.eye(n=3, k=-1))
+[[0. 0. 0.]
+ [1. 0. 0.]
+ [0. 1. 0.]]
+&gt;&gt;&gt; print(np.matlib.eye(n=3, M=4, k=0, dtype=int))
+[[1 0 0 0]
+ [0 1 0 0]
+ [0 0 1 0]]
+</code></pre>
+<h3 id="【1x10】numpy-matlib-identity"><a href="#【1x10】numpy-matlib-identity" class="headerlink" title="【1x10】numpy.matlib.identity()"></a><font color=#1BC3FB>【1x10】numpy.matlib.identity()</font></h3><p><code>numpy.matlib.identity()</code> 函数创建一个给定大小的单位矩阵。</p>
+<p>单位矩阵：在矩阵的乘法中，有一种矩阵起着特殊的作用，如同数的乘法中的1，这种矩阵被称为单位矩阵。它是个方阵，从左上角到右下角的对角线（称为主对角线）上的元素均为1。除此以外全都为0。</p>
+<p>基本语法：<code>numpy.matlib.identity(n[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>n</td>
+<td>返回的单位矩阵的大小，int 类型</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，返回的单位矩阵的数据类型</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; print(np.matlib.identity(3, dtype=int))
+[[1 0 0]
+ [0 1 0]
+ [0 0 1]]
+</code></pre>
+<h3 id="【1x11】numpy-matlib-repmat"><a href="#【1x11】numpy-matlib-repmat" class="headerlink" title="【1x11】numpy.matlib.repmat()"></a><font color=#1BC3FB>【1x11】numpy.matlib.repmat()</font></h3><p><code>numpy.matlib.repmat()</code> 函数用于重复数组或矩阵 m*n 次。</p>
+<p>基本语法：<code>numpy.matlib.repmat(a, m, n)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>m,n</td>
+<td>沿第一轴和第二轴重复的次数</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array(1)
+&gt;&gt;&gt; b = np.arange(4)
+&gt;&gt;&gt; a
+array(1)
+&gt;&gt;&gt; b
+array([0, 1, 2, 3])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(np.matlib.repmat(a, 2, 3))
+[[1 1 1]
+ [1 1 1]]
+&gt;&gt;&gt; print(np.matlib.repmat(b, 2, 2))
+[[0 1 2 3 0 1 2 3]
+ [0 1 2 3 0 1 2 3]]
+</code></pre>
+<h3 id="【1x12】numpy-matlib-rand"><a href="#【1x12】numpy-matlib-rand" class="headerlink" title="【1x12】numpy.matlib.rand()"></a><font color=#1BC3FB>【1x12】numpy.matlib.rand()</font></h3><p><code>numpy.matlib.rand()</code> 函数创建一个给定大小的矩阵，其中的数据在 <code>[0, 1)</code> 区间随机取值来填充。</p>
+<p>基本语法：<code>numpy.matlib.rand(*args)</code></p>
+<p>参数解释：<code>*args</code>：输出矩阵的形状，如果给定为 N 个整数，则每个整数指定一维的大小，如果以元组形式给出，则该元组表示输出矩阵完整的形状。</p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; print(np.matlib.rand(2, 3))
+[[0.27957871 0.48748368 0.0970184 ]
+ [0.71062224 0.92503824 0.72415015]]
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(np.matlib.rand((2, 3)))
+[[0.08814715 0.0307317  0.77775332]
+ [0.81158748 0.09173265 0.77497881]]
+&gt;&gt;&gt;
+&gt;&gt;&gt; print(np.matlib.rand(2, 3), 4)     # 如果第一个参数是元组，则其他参数将被忽略
+[[0.53407924 0.56006372 0.63903716]
+ [0.56132381 0.90300814 0.44074964]] 4
+</code></pre>
+<h3 id="【1x13】numpy-matlib-randn"><a href="#【1x13】numpy-matlib-randn" class="headerlink" title="【1x13】numpy.matlib.randn()"></a><font color=#1BC3FB>【1x13】numpy.matlib.randn()</font></h3><p><code>numpy.matlib.randn()</code> 函数创建一个标准正态分布的随机矩阵。</p>
+<p>标准正态分布，是一个在数学、物理及工程等领域都非常重要的概率分布，在统计学的许多方面有着重大的影响力。期望值<code>μ=0</code>，即曲线图象对称轴为Y轴，标准差 <code>σ=1</code> 条件下的正态分布，记为 <code>N（0，1）</code>。</p>
+<p>标准正态分布又称为 u 分布，是以 0 为均数、以 1 为标准差的正态分布，记为 <code>N（0，1）</code></p>
+<p>基本语法：<code>numpy.matlib.randn(*args)</code></p>
+<p>参数解释：<code>*args</code>：输出矩阵的形状，如果给定为 N 个整数，则每个整数指定一维的大小，如果以元组形式给出，则该元组表示输出矩阵完整的形状。</p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; print(np.matlib.randn(2, 3))
+[[ 0.82976978 -0.9798698   0.71262414]
+ [ 2.31211127 -0.5090537   1.12357032]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(2.5 * np.matlib.randn((2, 4)) + 3)         # 2 x 4 矩阵 N(3, 6.25)
+[[-0.66974538  4.9354863   2.46138048  7.05576713]
+ [ 0.80688217  1.79017491  3.78979646 -1.99071372]]
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105511641
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h2 id="【2x00】NumPy-线性代数库"><a href="#【2x00】NumPy-线性代数库" class="headerlink" title="【2x00】NumPy 线性代数库"></a><font color=#FF0000>【2x00】NumPy 线性代数库</font></h2><p>线性代数是数学的一个分支，它的研究对象是向量，向量空间（或称线性空间），线性变换和有限维的线性方程组。NumPy 中也提供了线性代数函数库 <code>numpy.linalg</code>。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/routines.linalg.html">https://numpy.org/doc/1.18/reference/routines.linalg.html</a></p>
+<h3 id="【2x01】numpy-dot"><a href="#【2x01】numpy-dot" class="headerlink" title="【2x01】numpy.dot()"></a><font color=#1BC3FB>【2x01】numpy.dot()</font></h3><p><code>numpy.dot()</code> 函数用于计算两个数组的点积。</p>
+<p>基本语法：<code>numpy.dot(a, b[, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>第一个数组</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第二个数组</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组</td>
+</tr>
+</tbody></table>
+<ul>
+<li>如果 a 和 b 均为一维数组，计算的是这两个数组对应下标元素的乘积和（数学上称之为内积）；</li>
+<li>如果 a 和 b 均为二维数组，计算的是两个数组的矩阵乘积；</li>
+<li>如果 a 和 b 均为多维数组，它的通用计算公式为：<code>dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])</code>，即结果数组中的每个元素都是数组 a 的最后一维上的所有元素与数组 b 的倒数第二维上的所有元素的乘积和。</li>
+</ul>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,2],[3,4]])
+&gt;&gt;&gt; b = np.array([[11,12],[13,14]])
+&gt;&gt;&gt; print(np.dot(a,b))     # [[1*11+2*13, 1*12+2*14],[3*11+4*13, 3*12+4*14]]
+[[37 40]
+ [85 92]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; c = np.arange(3*4*5*6).reshape((3,4,5,6))
+&gt;&gt;&gt; d = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
+&gt;&gt;&gt; print(np.dot(c, d)[2,3,2,1,2,2])
+499128
+&gt;&gt;&gt; print(sum(c[2,3,2,:] * d[1,2,:,2]))
+499128
+</code></pre>
+<h3 id="【2x02】numpy-vdot"><a href="#【2x02】numpy-vdot" class="headerlink" title="【2x02】numpy.vdot()"></a><font color=#1BC3FB>【2x02】numpy.vdot()</font></h3><p><code>numpy.vdot()</code> 函数返回两个向量的点积，如果第一个参数是复数，那么它的共轭复数会用于计算。 如果参数是多维数组，它会被展开。</p>
+<p>共轭复数：两个实部相等，虚部互为相反数的复数互为共轭复数。</p>
+<p>基本语法：<code>numpy.vdot(a, b)</code></p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([1+2j, 3+4j])
+&gt;&gt;&gt; b = np.array([5+6j, 7+8j])
+&gt;&gt;&gt; print(np.vdot(a, b))       # a 的共轭复数用于计算：(1-2j) * (5+6j) + (3-4j) * (7+8j)
+(70-8j)
+&gt;&gt;&gt; print(np.vdot(b, a))       # b 的共轭复数用于计算：(1+2j) * (5-6j) + (3+4j) * (7-8j)
+(70+8j)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; c = np.array([[1, 4], [5, 6]])
+&gt;&gt;&gt; d = np.array([[4, 1], [2, 2]])
+&gt;&gt;&gt; print(np.vdot(c, d))              # 1*4 + 4*1 + 5*2 + 6*2
+30
+</code></pre>
+<h3 id="【2x03】numpy-inner"><a href="#【2x03】numpy-inner" class="headerlink" title="【2x03】numpy.inner()"></a><font color=#1BC3FB>【2x03】numpy.inner()</font></h3><p><code>numpy.inner()</code> 函数计算一维数组的点积，对于其他维度，返回最后一个轴上的和的乘积。</p>
+<p>基本语法：<code>numpy.inner(a, b)</code></p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,2],[3,4]])
+&gt;&gt;&gt; b = np.array([[11,12],[13,14]])
+&gt;&gt;&gt; print(np.inner(a,b))       # [[1*11+2*12, 1*13+2*14], [3*11+4*12, 3*13+4*14]]
+[[35 41]
+ [81 95]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; c = np.array([1,2,3])
+&gt;&gt;&gt; d = np.array([0,1,0])
+&gt;&gt;&gt; print(np.inner(c,d))      # 1*0+2*1+3*0
+2
+</code></pre>
+<h3 id="【2x04】numpy-outer"><a href="#【2x04】numpy-outer" class="headerlink" title="【2x04】numpy.outer()"></a><font color=#1BC3FB>【2x04】numpy.outer()</font></h3><p><code>numpy.outer()</code> 函数计算两个向量的外积。</p>
+<p>基本语法：<code>numpy.outer(a, b[, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>第一个向量，如果不是一维的则在计算前会将其展平</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第一个向量，如果不是一维的则在计算前会将其展平</td>
+</tr>
+<tr>
+<td>out</td>
+<td>结果存储的位置，可选项，类似于 (M, N) 结构的 Ndarray 对象</td>
+</tr>
+</tbody></table>
+<p>外积一般指两个向量的向量积，若两向量：<code>a = [a0, a1, ..., aM]</code>  <code>b = [b0, b1, ..., bN]</code>，外积如下：</p>
+<pre><code>[[a0*b0  a0*b1 ... a0*bN ]
+ [a1*b0    .
+ [ ...          .
+ [aM*b0            aM*bN ]]
+</code></pre>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([1, 2, 3, 4])
+&gt;&gt;&gt; b = np.array([5, 6, 7, 8])
+&gt;&gt;&gt; print(np.outer(a, b))
+[[ 5  6  7  8]
+ [10 12 14 16]
+ [15 18 21 24]
+ [20 24 28 32]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; c = np.array([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], dtype=object)
+&gt;&gt;&gt; print(np.outer(c, [1, 2, 3]))
+[[&#39;a&#39; &#39;aa&#39; &#39;aaa&#39;]
+ [&#39;b&#39; &#39;bb&#39; &#39;bbb&#39;]
+ [&#39;c&#39; &#39;cc&#39; &#39;ccc&#39;]]
+</code></pre>
+<h3 id="【2x05】numpy-matmul"><a href="#【2x05】numpy-matmul" class="headerlink" title="【2x05】numpy.matmul()"></a><font color=#1BC3FB>【2x05】numpy.matmul()</font></h3><p><code>numpy.matmul()</code> 函数计算两个矩阵的乘积。</p>
+<p>矩阵的乘积运算：</p>
+<p>设 A 为 <code>m x p</code> 的矩阵，B 为 <code>p x n</code> 的矩阵，那么称 <code>m x n</code> 的矩阵 C 为矩阵 A 与 B 的乘积，记作 C = AB，其中矩阵 C 中的第 i 行第 j 列元素可以表示为：</p>
+<p>$$ (AB)<em>{ij} = \sum</em>{k=1}^p a_{ik}b_{kj} = a_{i1}b_{1j} + a_{i2}b_{2j} + … + a_{ip}b_{pj} $$</p>
+<hr>
+<p>$$<br>A =<br>\left[<br>\begin{matrix}<br>a_{1,1} &amp; a_{1,2} &amp; a_{1,3} \<br>a_{2,1} &amp; a_{2,2} &amp; a_{2,3}<br>\end{matrix}<br>\right]<br>\qquad\qquad\qquad\qquad\qquad\qquad B =<br>\left[<br>\begin{matrix}<br>b_{1,1} &amp; b_{1,2} \<br>b_{2,1} &amp; b_{2,2} \<br>b_{3,1} &amp; b_{3,2}<br>\end{matrix}<br>\right]<br>$$</p>
+<p>$$<br>C = AB =<br>\left[<br>\begin{matrix}<br>a_{1,1}b_{1,1} &amp; a_{1,2}b_{2,1} &amp; a_{1,3}b_{3,1}, &amp; a_{1,1}b_{1,2} &amp; a_{1,2}b_{2,2} &amp; a_{1,3}b_{3,2} \<br>a_{2,1}b_{1,1} &amp; a_{2,2}b_{2,1} &amp; a_{2,3}b_{3,1}, &amp; a_{2,1}b_{1,2} &amp; a_{2,2}b_{2,2} &amp; a_{2,3}b_{3,2}<br>\end{matrix}<br>\right]<br>$$</p>
+<hr>
+<p>矩阵相乘的条件：</p>
+<ul>
+<li>当矩阵 A 的列数（column）等于矩阵 B 的行数（row）时，A 与 B 可以相乘；</li>
+<li>矩阵 C 的行数等于矩阵 A 的行数，C 的列数等于 B 的列数；</li>
+<li>乘积 C 的第 m 行第 n 列的元素等于矩阵 A 的第 m 行的元素与矩阵 B 的第 n 列对应元素乘积之和。</li>
+</ul>
+<hr>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,0], [0,1]])
+&gt;&gt;&gt; b = np.array([[4,1], [2,2]])
+&gt;&gt;&gt; print(np.matmul(a, b))
+[[4 1]
+ [2 2]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; c = np.array([[1,0], [0,1]])
+&gt;&gt;&gt; d = np.array([1,2])
+&gt;&gt;&gt; print(np.matmul(c, d))
+[1 2]
+&gt;&gt;&gt; print(np.matmul(d, c))
+[1 2]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; e = np.arange(8).reshape(2,2,2)
+&gt;&gt;&gt; f = np.arange(4).reshape(2,2)
+&gt;&gt;&gt; print(np.matmul(e, f))
+[[[ 2  3]
+  [ 6 11]]
+
+ [[10 19]
+  [14 27]]]
+</code></pre>
+<h3 id="【2x06】numpy-tensordot"><a href="#【2x06】numpy-tensordot" class="headerlink" title="【2x06】numpy.tensordot()"></a><font color=#1BC3FB>【2x06】numpy.tensordot()</font></h3><p><code>numpy.tensordot()</code> 函数计算两个不同维度矩阵的乘积。</p>
+<p>基本语法：<code>numpy.tensordot(a, b, axes=2)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>第一个矩阵</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第二个矩阵</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定收缩的轴<br>如果是一个整型 m，表示指定数组 a 的后 m 个轴和数组 b 的前 m 个轴分别进行内积，即对应位置元素相乘、再整体求和<br>如果是一个列表 [m, n]，那么表示 a 的第 m+1 个 (索引为m) 轴和 b 的第 n+1 (索引为n) 个轴进行内积</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.random.randint(0, 9, (3, 4))
+&gt;&gt;&gt; b = np.random.randint(0, 9, (4, 5))
+&gt;&gt;&gt; a
+array([[4, 0, 3, 6],
+       [1, 3, 2, 2],
+       [6, 1, 3, 4]])
+&gt;&gt;&gt; b
+array([[1, 0, 0, 7, 6],
+       [3, 8, 7, 5, 0],
+       [4, 7, 0, 8, 0],
+       [3, 8, 5, 0, 1]])
+&gt;&gt;&gt; print(np.tensordot(a, b, 1))
+[[34 69 30 52 30]
+ [24 54 31 38  8]
+ [33 61 27 71 40]]
+&gt;&gt;&gt;
+&gt;&gt;&gt; c = np.array(range(1, 9)).reshape(2, 2, 2)
+&gt;&gt;&gt; d = np.array((&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;), dtype=object).reshape(2, 2)
+&gt;&gt;&gt; c
+array([[[1, 2],
+        [3, 4]],
+
+       [[5, 6],
+        [7, 8]]])
+&gt;&gt;&gt; d
+array([[&#39;a&#39;, &#39;b&#39;],
+       [&#39;c&#39;, &#39;d&#39;]], dtype=object)
+&gt;&gt;&gt; print(np.tensordot(c, d))
+[&#39;abbcccdddd&#39; &#39;aaaaabbbbbbcccccccdddddddd&#39;]
+</code></pre>
+<h3 id="【2x07】numpy-linalg-det"><a href="#【2x07】numpy-linalg-det" class="headerlink" title="【2x07】numpy.linalg.det()"></a><font color=#1BC3FB>【2x07】numpy.linalg.det()</font></h3><p><code>numpy.linalg.det()</code> 函数计算矩阵的行列式。</p>
+<p>阵行列式是指矩阵的全部元素构成的行列式，设 A=(a<sub>ij</sub>) 是数域 P 上的一个 n 阶矩阵，则所有 A=(a<sub>ij</sub>) 中的元素组成的行列式称为矩阵 A 的行列式，记为 <code>|A|</code> 或 <code>det(A)</code></p>
+<p>一个 2×2 矩阵的行列式可表示如下：</p>
+<p>$$ det = \left[ \begin{matrix} a &amp; b \ c &amp; d \end{matrix} \right] = ad - bc $$</p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt; print(np.linalg.det(a))
+-2.0000000000000004
+</code></pre>
+<h3 id="【2x08】numpy-linalg-solve"><a href="#【2x08】numpy-linalg-solve" class="headerlink" title="【2x08】numpy.linalg.solve()"></a><font color=#1BC3FB>【2x08】numpy.linalg.solve()</font></h3><p><code>numpy.linalg.solve()</code> 函数求解线性矩阵方程或线性标量方程组。</p>
+<hr>
+<p>$$<br>\left {<br>\begin{aligned}<br>3x+y=9 \<br>x+2y=8<br>\end{aligned}<br>\right.<br>\qquad用矩阵可表示为：\qquad<br>\left[<br>\begin{matrix}<br>3 &amp; 1 \<br>1 &amp; 2<br>\end{matrix}<br>\right]<br>\left[<br>\begin{matrix}<br>x &amp; y<br>\end{matrix}<br>\right]<br>= \left[<br>\begin{matrix}<br>9 &amp; 8<br>\end{matrix}<br>\right]<br>$$</p>
+<hr>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[3,1], [1,2]])
+&gt;&gt;&gt; b = np.array([9,8])
+&gt;&gt;&gt; print(np.linalg.solve(a, b))
+[2. 3.]
+</code></pre>
+<h3 id="【2x09】numpy-linalg-inv"><a href="#【2x09】numpy-linalg-inv" class="headerlink" title="【2x09】numpy.linalg.inv()"></a><font color=#1BC3FB>【2x09】numpy.linalg.inv()</font></h3><p><code>numpy.linalg.inv()</code> 函数计算矩阵的逆矩阵。</p>
+<p>设 A 是数域上的一个 n 阶矩阵，若在相同数域上存在另一个 n 阶矩阵 B，使得：AB = BA = E，则我们称 B 是 A 的逆矩阵，而 A 则被称为可逆矩阵。注：E 为单位矩阵。</p>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt; b = np.linalg.inv(a)
+&gt;&gt;&gt; print(b)
+[[-2.   1. ]
+ [ 1.5 -0.5]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a * b == b * a
+array([[ True,  True],
+       [ True,  True]])
+</code></pre>
+<h2 id="【3x00】NumPy-IO-操作"><a href="#【3x00】NumPy-IO-操作" class="headerlink" title="【3x00】NumPy IO 操作"></a><font color=#FF0000>【3x00】NumPy IO 操作</font></h2><p>NumPy IO 操作即读写磁盘上的文本数据或二进制数据，在 NumPy 中有专门的 <code>.npy</code> / <code>npy</code> 文件，<code>.npy</code> 文件用于储存单个 Ndarray 对象；<code>.npz</code> 文件用于储存多个 Ndarray 对象。</p>
+<h3 id="【3x01】numpy-save"><a href="#【3x01】numpy-save" class="headerlink" title="【3x01】numpy.save()"></a><font color=#1BC3FB>【3x01】numpy.save()</font></h3><p><code>numpy.save()</code> 函数将数组保存到二进制文件（<code>.npy</code> 文件）中。</p>
+<p>基本语法：<code>numpy.save(file, arr[, allow_pickle=True, fix_imports=True])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file</td>
+<td>要保存的文件名，可以带路径，文件后缀为 <code>.npy</code>，若路径末尾没有后缀，则会默认加上 <code>.npy</code> 后缀</td>
+</tr>
+<tr>
+<td>arr</td>
+<td>要保存的数组</td>
+</tr>
+<tr>
+<td>allow_pickle</td>
+<td>bool 值，可选项，是否允许使用 Python pickle 保存数组对象<br>Python pickle 用于在保存到磁盘文件或从磁盘文件读取之前，对对象进行序列化和反序列化<br>pickle 序列化后的数据，可读性差，人一般无法识别</td>
+</tr>
+<tr>
+<td>fix_imports</td>
+<td>bool 值，可选项，强制以 Python 2 兼容方式对 Python 3 上的数组对象进行处理<br>如果 fix_imports 为True，则 pickle 将尝试将新的 Python 3 名称映射到 Python 2 中使用的旧模块名称，以便 pickle 数据流可被 Python 2 读取</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,2,3], [4,5,6]])
+&gt;&gt;&gt; np.save(&#39;D:\\file\\outfile.npy&#39;, a)
+</code></pre>
+<h3 id="【3x02】numpy-load"><a href="#【3x02】numpy-load" class="headerlink" title="【3x02】numpy.load()"></a><font color=#1BC3FB>【3x02】numpy.load()</font></h3><p><code>numpy.load()</code> 函数用于读取 <code>.npy</code> / <code>npz</code> 文件里面的内容。</p>
+<p>基本语法：<code>numpy.load(file[, mmap_mode=None, allow_pickle=False, fix_imports=True, encoding=&#39;ASCII&#39;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file</td>
+<td>要读取的 <code>npy</code> 文件对象</td>
+</tr>
+<tr>
+<td>mmap_mode</td>
+<td>可选项，读取文件的模式，可选参数  <code>r+</code> <code>r</code> <code>w+</code> <code>c</code>，与 Python 读取文件模式类似，模式含义参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/generated/numpy.memmap.html">numpy.memmap</a></td>
+</tr>
+<tr>
+<td>allow_pickle</td>
+<td>bool 值，可选项，是否允许使用 Python pickle 保存数组对象<br>Python pickle 用于在保存到磁盘文件或从磁盘文件读取之前，对对象进行序列化和反序列化<br>pickle 序列化后的数据，可读性差，人一般无法识别</td>
+</tr>
+<tr>
+<td>fix_imports</td>
+<td>bool 值，可选项，强制以 Python 2 兼容方式对 Python 3 上的数组对象进行处理<br>如果 fix_imports 为True，则 pickle 将尝试将新的 Python 3 名称映射到 Python 2 中使用的旧模块名称，以便 pickle 数据流可被 Python 2 读取</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，读取 Python2 字符串时使用什么编码<br>仅当在 Python3 中加载 Python 2 生成的 pickled 文件（包括包含对象数组的 npy/npz 文件）时才有用<br>不允许使用 <code>latin1</code>、<code>ASCII</code> 和 <code>bytes</code> 以外的值，因为它们可能损坏数字数据。默认值为 <code>ASCII</code></td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,2,3], [4,5,6]])
+&gt;&gt;&gt; np.save(&#39;D:\\file\\outfile.npy&#39;, a)
+&gt;&gt;&gt; np.load(&#39;D:\\file\\outfile.npy&#39;)
+array([[1, 2, 3],
+       [4, 5, 6]])
+</code></pre>
+<h3 id="【3x03】numpy-savez"><a href="#【3x03】numpy-savez" class="headerlink" title="【3x03】numpy.savez()"></a><font color=#1BC3FB>【3x03】numpy.savez()</font></h3><p><code>numpy.savez()</code> 函数将多个数组保存到二进制文件（<code>.npz</code> 文件）中。</p>
+<p>基本语法：<code>numpy.savez(file, *args[, **kwds])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file</td>
+<td>要保存的文件名，可以带路径，文件后缀为 <code>.npz</code>，若路径末尾没有后缀，则会默认加上 <code>.npz</code> 后缀</td>
+</tr>
+<tr>
+<td>args</td>
+<td>保存的数组，由于 Python 不知道外面 savez 的数组的名称，因此将使用 <code>arr_0</code>，<code>arr_1</code> 等名称保存数组，这些参数可以是任何表达式</td>
+</tr>
+<tr>
+<td>kwds</td>
+<td>关键字参数，可选项，数组将与关键字名称一起保存在文件中</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([[1,2,3],[4,5,6]])
+&gt;&gt;&gt; b = np.arange(0, 1.0, 0.1)
+&gt;&gt;&gt; c = np.sin(b)           # c 使用关键字参数 sin_array
+&gt;&gt;&gt; np.savez(&#39;D:\\file\\outfile.npz&#39;, a, b, sin_array=c)
+&gt;&gt;&gt; r = np.load(&#39;D:\\file\\outfile.npz&#39;)
+&gt;&gt;&gt; print(r.files)         # 查看各个数组名称
+[&#39;sin_array&#39;, &#39;arr_0&#39;, &#39;arr_1&#39;]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(r[&#39;arr_0&#39;])      # 数组 a
+[[1 2 3]
+ [4 5 6]]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(r[&#39;arr_1&#39;])      # 数组 b
+[0.  0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(r[&#39;sin_array&#39;])  # 数组 c
+[0.         0.09983342 0.19866933 0.29552021 0.38941834 0.47942554
+ 0.56464247 0.64421769 0.71735609 0.78332691]
+</code></pre>
+<h3 id="【3x04】numpy-savetxt"><a href="#【3x04】numpy-savetxt" class="headerlink" title="【3x04】numpy.savetxt()"></a><font color=#1BC3FB>【3x04】numpy.savetxt()</font></h3><p><code>numpy.savetxt()</code> 函数将数组保存到文本文件中（txt）。</p>
+<p>基本语法：<code>numpy.savetxt(fname, X[, fmt=&#39;%.18e&#39;, delimiter=&#39; &#39;, newline=&#39;n&#39;, header=&#39;&#39;, footer=&#39;&#39;, comments=&#39;# &#39;, encoding=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fname</td>
+<td>要保存的文件名，可以带路径，如果文件后缀为 <code>.gz</code>，则文件将自动以压缩格式 <code>gzip</code> 保存</td>
+</tr>
+<tr>
+<td>X</td>
+<td>要保存的数组</td>
+</tr>
+<tr>
+<td>fmt</td>
+<td>格式序列或多格式字符串，可选项</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>指定各种分隔符、针对特定列的转换器函数、需要跳过的行数等，可选项</td>
+</tr>
+<tr>
+<td>newline</td>
+<td>字符串或字符分隔线，可选项</td>
+</tr>
+<tr>
+<td>header</td>
+<td>写入文件开头的字符串，可选项</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>写入文件末尾的字符串，可选项</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>注释，在 header 和 footer 字符串之前添加的字符串，可选项</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>对输出文件进行编码，可选项</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([1,2,3,4,5])
+&gt;&gt;&gt; np.savetxt(&#39;D:\\file\\outfile.txt&#39;, a)
+&gt;&gt;&gt; np.loadtxt(&#39;D:\\file\\outfile.txt&#39;)
+array([1., 2., 3., 4., 5.])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; b = np.arange(0,10,0.5).reshape(4,-1)
+&gt;&gt;&gt; np.savetxt(&#39;D:\\file\\outfile2.txt&#39;, b, fmt=&quot;%d&quot;, delimiter=&#39;,&#39;)  # 保存为整数，以逗号分隔
+&gt;&gt;&gt; np.loadtxt(&#39;D:\\file\\outfile2.txt&#39;, delimiter=&#39;,&#39;)               # 读取数据时也要指定相同的分隔符
+array([[0., 0., 1., 1., 2.],
+       [2., 3., 3., 4., 4.],
+       [5., 5., 6., 6., 7.],
+       [7., 8., 8., 9., 9.]])
+</code></pre>
+<h3 id="【3x05】numpy-loadtxt"><a href="#【3x05】numpy-loadtxt" class="headerlink" title="【3x05】numpy.loadtxt()"></a><font color=#1BC3FB>【3x05】numpy.loadtxt()</font></h3><p><code>numpy.loadtxt()</code> 函数用于读取文本文件（txt）里面的内容。</p>
+<p>基本语法：<code>numpy.loadtxt(fname[, dtype=&lt;class &#39;float&#39;&gt;, comments=&#39;#&#39;, delimiter=None, converters=None, skiprows=0, usecols=None, unpack=False, ndmin=0, encoding=&#39;bytes&#39;, max_rows=None])</code></p>
+<p>重要参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fname</td>
+<td>要读取的文件，文件名或生成器。如果文件扩展名是 <code>.gz</code> 或 <code>.bz2</code>，则首先将文件解压缩，注意，生成器应返回字节字符串</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，结果数组的数据类型</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>str 或 str 序列，可选项，用于指示注释开始的字符或字符列表</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>str 类型，可选项，指定分隔符</td>
+</tr>
+<tr>
+<td>skiprows</td>
+<td>int 类型，可选项，跳过前 n 行，一般用于跳过第一行表头</td>
+</tr>
+<tr>
+<td>usecols</td>
+<td>int 类型的索引值，读取指定的列</td>
+</tr>
+<tr>
+<td>unpack</td>
+<td>bool 值，可选项，如果为True，则会对返回的数组进行转置</td>
+</tr>
+<tr>
+<td>ndmin</td>
+<td>int 类型，可选项，返回的数组将至少具有 ndmin 维度，否则一维轴将被压缩</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，用于解码输入文件的编码</td>
+</tr>
+<tr>
+<td>max_rows</td>
+<td>int 类型，可选项，读取 skiprows 行之后的最大行内容。默认值是读取所有行</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([1,2,3,4,5])
+&gt;&gt;&gt; np.savetxt(&#39;D:\\file\\outfile.txt&#39;, a)
+&gt;&gt;&gt; np.loadtxt(&#39;D:\\file\\outfile.txt&#39;)
+array([1., 2., 3., 4., 5.])
+</code></pre>
+<h3 id="【3x06】numpy-genfromtxt"><a href="#【3x06】numpy-genfromtxt" class="headerlink" title="【3x06】numpy.genfromtxt()"></a><font color=#1BC3FB>【3x06】numpy.genfromtxt()</font></h3><p><code>numpy.genfromtxt()</code> 函数同样用于读取文本文件（txt）里面的内容。该函数比 <code>loadtxt()</code> 函数功能更加强大，<code>genfromtxt()</code> 主要面向结构数组和缺失数据处理。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/generated/numpy.genfromtxt.html">https://numpy.org/doc/1.18/reference/generated/numpy.genfromtxt.html</a></p>
+<p>推荐文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Simplelee/p/8975763.html">https://www.cnblogs.com/Simplelee/p/8975763.html</a></p>
+<p>主要语法：<code>numpy.genfromtxt(fname[, dtype=&lt;class &#39;float&#39;&gt;, comments=&#39;#&#39;, delimiter=None, skip_header=0, skip_footer=0, converters=None, missing_values=None, filling_values=None, usecols=None, encoding=&#39;bytes&#39;])</code></p>
+<p>主要参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fname</td>
+<td>要读取的文件，文件名或生成器。如果文件扩展名是 <code>.gz</code> 或 <code>.bz2</code>，则首先将文件解压缩，注意，生成器应返回字节字符串</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，结果数组的数据类型</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>str 或 str 序列，可选项，用于指示注释开始的字符或字符列表</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>str 类型，可选项，指定分隔符</td>
+</tr>
+<tr>
+<td>skip_header</td>
+<td>int 类型，可选项，文件开头要跳过的行数</td>
+</tr>
+<tr>
+<td>skip_footer</td>
+<td>int 类型，可选项，文件末尾要跳过的行数</td>
+</tr>
+<tr>
+<td>converters</td>
+<td>变量，可选项，将列的数据转换为值的一组函数<br>还可以为丢失的数据提供默认值：<code>converters = &#123;3: lambda s: float(s or 0)&#125;</code></td>
+</tr>
+<tr>
+<td>missing_values</td>
+<td>变量，可选项，与缺少的数据相对应的字符串集，默认情况下使用空格表示缺失</td>
+</tr>
+<tr>
+<td>filling_values</td>
+<td>变量，可选项，缺少数据时用作默认值的一组值</td>
+</tr>
+<tr>
+<td>usecols</td>
+<td>序列，可选项，读取指定的列</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，用于解码输入文件的编码</td>
+</tr>
+</tbody></table>
+<p>应用举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; a = np.array([1,2,3,4,5])
+&gt;&gt;&gt; np.savetxt(&#39;D:\\file\\outfile.txt&#39;, a)
+&gt;&gt;&gt; np.genfromtxt(&#39;D:\\file\\outfile.txt&#39;)
+array([1., 2., 3., 4., 5.])
+&gt;&gt;&gt;
+&gt;&gt;&gt; b = np.arange(0,10,0.5).reshape(4,-1)
+&gt;&gt;&gt; np.savetxt(&#39;D:\\file\\outfile2.txt&#39;, b, fmt=&quot;%d&quot;, delimiter=&quot;,&quot;)
+&gt;&gt;&gt; np.genfromtxt(&#39;D:\\file\\outfile2.txt&#39;, delimiter=&#39;,&#39;)
+array([[0., 0., 1., 1., 2.],
+       [2., 3., 3., 4., 4.],
+       [5., 5., 6., 6., 7.],
+       [7., 8., 8., 9., 9.]])
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/105511641
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/013/">https://www.itbob.cn/article/013/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/014/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/012/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

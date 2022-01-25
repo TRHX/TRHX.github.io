@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1"/>
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Pandas">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/style.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/prettify/atelier-forest-light.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: ZCOOL XiaoWei, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/material-icons.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/jquery.min.js", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/026/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/026/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Pandas"> 
+
+    
+        <meta property="article:published_time" content="Sat Jun 13 2020 22:19:53 GMT+0800">
+        <meta property="article:modified_time" content="Sat Jan 22 2022 23:58:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/026/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/026/index.html",
+    "headline": "Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作",
+    "datePublished": "Sat Jun 13 2020 22:19:53 GMT+0800",
+    "dateModified": "Sat Jan 22 2022 23:58:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png"
+        }
+    },
+    "keywords": ",Python,数据分析,PandasITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head -->
+    
+
+    <!-- fancybox support -->
+    
+        <!-- for theme: default is false -->
+        <!-- for page: default is true -->
+        
+            <script>lsloader.load("fancybox_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/fancybox.min.js", true)</script>
+            <script>lsloader.load("wrap_image_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/wrapImage.js", true)</script>
+            <style id="fancybox_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("fancybox_css","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/css/fancybox.min.css",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E3%80%901%E3%80%91Index-%E7%B4%A2%E5%BC%95%E5%AF%B9%E8%B1%A1"><span class="post-toc-number">1.</span> <span class="post-toc-text">【1】Index 索引对象</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E3%80%902%E3%80%91Pandas-%E4%B8%80%E8%88%AC%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">【2】Pandas 一般索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902-1%E3%80%91Series-%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">【2.1】Series 索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-1-1%E3%80%91head-tail"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">【2.1.1】head() &#x2F; tail()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-1-2%E3%80%91%E8%A1%8C%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">【2.1.2】行索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-1-3%E3%80%91%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.1.3.</span> <span class="post-toc-text">【2.1.3】切片索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-1-4%E3%80%91%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.1.4.</span> <span class="post-toc-text">【2.1.4】花式索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-1-5%E3%80%91%E5%B8%83%E5%B0%94%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.1.5.</span> <span class="post-toc-text">【2.1.5】布尔索引</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902-2%E3%80%91DataFrame-%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">【2.2】DataFrame 索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-2-1%E3%80%91head-tail"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">【2.2.1】head() &#x2F; tail()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-2-2%E3%80%91%E5%88%97%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">【2.2.2】列索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-2-3%E3%80%91%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.2.3.</span> <span class="post-toc-text">【2.2.3】切片索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-2-4%E3%80%91%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.2.4.</span> <span class="post-toc-text">【2.2.4】花式索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902-2-5%E3%80%91%E5%B8%83%E5%B0%94%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.2.5.</span> <span class="post-toc-text">【2.2.5】布尔索引</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E3%80%903%E3%80%91%E7%B4%A2%E5%BC%95%E5%99%A8%EF%BC%9Aloc-%E5%92%8C-iloc"><span class="post-toc-number">3.</span> <span class="post-toc-text">【3】索引器：loc 和 iloc</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903-1%E3%80%91loc-%E6%A0%87%E7%AD%BE%E7%B4%A2%E5%BC%95"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【3.1】loc 标签索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903-1-1%E3%80%91Series-loc"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">【3.1.1】Series.loc</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903-1-2%E3%80%91DataFrame-loc"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">【3.1.2】DataFrame.loc</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903-2%E3%80%91iloc-%E4%BD%8D%E7%BD%AE%E7%B4%A2%E5%BC%95"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【3.2】iloc 位置索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903-2-1%E3%80%91Series-iloc"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">【3.2.1】Series.iloc</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903-2-2%E3%80%91DataFrame-iloc"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">【3.2.2】DataFrame.iloc</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E3%80%904%E3%80%91Pandas-%E9%87%8D%E6%96%B0%E7%B4%A2%E5%BC%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">【4】Pandas 重新索引</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 71 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', 'https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>6月 13, 2020</span> -->
+        <span>2020-06-13 22:19:53</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZklEQVR42u3aQXKDMAwF0Nz/0u22My30y8IKYR4rhiaxHwvL/dbr69HXCw8PDw8PDw8P72a8V3wdfeuPAU6fr41S+BYeHh7eCO+fpfZg4OTJz+e/789HX5wbHh4e3iDvaMFN7s9/M1nuk7HOP4+Hh4f3Wbx8Ec9LBR4eHt5TeUefTwKLPNTAw8PDuycv+Yc/HyYvDP3fxMPDw5vn5YdM8/ej53t4eHh4Aa/c0tSIdPulpdx0hYeHh7eBly/EyUb5qiOx1nzw8PDwRngdTNJK1S8hySEZHh4e3gyvuv1Npr72yqqHcIevCQ8PD2+El0w92UBXQ9hkrOqLw8PDw5vh5ZvdfjyxduRW2L7j4eHhbebl8Wse2iYLfbUYFIoZHh4e3ggvCU/XFvdqo8BakcDDw8O7D28ybqi+vnJnBB4eHt6lvOR4PgfkZaDTjlDujMDDw8O7iFcNYTsRcB7L5lQ8PDy89/LyJqd8od9xkFbYUuPh4eFt5iXIfnBQjmWLcTAeHh7ebt7aQVenYFSP36pj4eHh4U3y8iKRb8GTkCKPbqMneHh4eOO8TgFIYt9OS0EUHOPh4eEN8s4ZebtAXjDyDXQyFh4eHt48LykM/aU/n3R1a46Hh4c3w6te1QW9XwyqYQceHh7ebt7aolz9a7+5arHpCg8PD28bL98id5b1fmFoNV3h4eHhbeBVo9i8gaAa+1YjCTw8PLxP4eVTSZqoqlHv9sKAh4eHdykvLxgdQPJSthQGPDw8vEtzzjxUXfvlamHAw8PDexevsznuH1nl2+7oOR4eHt5m3vMuPDw8PDw8PDy8G1zfGpM+2rzt5uIAAAAASUVORK5CYII=">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;6.5k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;34 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&url=https://www.itbob.cn/article/026/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作&url=https://www.itbob.cn/article/026/index.html&pic=https://www.itbob.cnhttps://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作&url=https://www.itbob.cn/article/026/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/026/index.html&text=Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/026/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/026/index.html&title=Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/026/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Pandas 系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/11/A79-Pandas-01/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/13/A80-Pandas-02/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/14/A81-Pandas-03/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/15/A82-Pandas-04/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/16/A83-Pandas-05/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/17/A84-Pandas-06/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/21/A85-Pandas-07/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/22/A86-Pandas-08/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/25/A87-Pandas-09/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.itrhx.com/2020/06/26/A88-Pandas-10/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/NumPy/">NumPy 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Pandas/">Pandas 专栏</a>】【<a target="_blank" rel="noopener" href="https://www.itrhx.com/categories/Python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/Matplotlib/">Matplotlib 专栏</a>】</p>
+<p>推荐学习资料与网站：</p>
+<p>【<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">NumPy 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">Pandas 中文网</a>】【<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">Matplotlib 中文网</a>】【<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">NumPy、Matplotlib、Pandas 速查表</a>】</p>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106698307
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h1 id="【1】Index-索引对象"><a href="#【1】Index-索引对象" class="headerlink" title="【1】Index 索引对象"></a><font color=#FF0000>【1】Index 索引对象</font></h1><p> Series 和 DataFrame 中的索引都是 Index 对象，为了保证数据的安全，索引对象是不可变的，如果尝试更改索引就会报错；常见的 Index 种类有：索引（Index），整数索引（Int64Index），层级索引（MultiIndex），时间戳类型（DatetimeIndex）。</p>
+<p>一下代码演示了 Index 索引对象和其不可变的性质：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj.index
+Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt; type(obj.index)
+&lt;class &#39;pandas.core.indexes.base.Index&#39;&gt;
+&gt;&gt;&gt; obj.index[0] = &#39;e&#39;
+Traceback (most recent call last):
+  File &quot;&lt;pyshell#28&gt;&quot;, line 1, in &lt;module&gt;
+    obj.index[0] = &#39;e&#39;
+  File &quot;C:\Users\...\base.py&quot;, line 3909, in __setitem__
+    raise TypeError(&quot;Index does not support mutable operations&quot;)
+TypeError: Index does not support mutable operations
+</code></pre>
+<table><tr><td bgcolor="#FFA500"><font size="5" color="#fff">index 索引对象常用属性</font></td></tr></table>
+
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.html">https://pandas.pydata.org/docs/reference/api/pandas.Index.html</a></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T</td>
+<td>转置</td>
+</tr>
+<tr>
+<td>array</td>
+<td>index 的数组形式，常见<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.array.html">官方文档</a></td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>返回基础数据的 dtype 对象</td>
+</tr>
+<tr>
+<td>hasnans</td>
+<td>是否有 NaN（缺失值）</td>
+</tr>
+<tr>
+<td>inferred_type</td>
+<td>返回一个字符串，表示 index 的类型</td>
+</tr>
+<tr>
+<td>is_monotonic</td>
+<td>判断 index 是否是递增的</td>
+</tr>
+<tr>
+<td>is_monotonic_decreasing</td>
+<td>判断 index 是否单调递减</td>
+</tr>
+<tr>
+<td>is_monotonic_increasing</td>
+<td>判断 index 是否单调递增</td>
+</tr>
+<tr>
+<td>is_unique</td>
+<td>index 是否没有重复值</td>
+</tr>
+<tr>
+<td>nbytes</td>
+<td>返回 index 中的字节数</td>
+</tr>
+<tr>
+<td>ndim</td>
+<td>index 的维度</td>
+</tr>
+<tr>
+<td>nlevels</td>
+<td>Number of levels.</td>
+</tr>
+<tr>
+<td>shape</td>
+<td>返回一个元组，表示 index 的形状</td>
+</tr>
+<tr>
+<td>size</td>
+<td>index 的大小</td>
+</tr>
+<tr>
+<td>values</td>
+<td>返回 index 中的值 / 数组</td>
+</tr>
+</tbody></table>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj.index
+Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.array
+&lt;PandasArray&gt;
+[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+Length: 4, dtype: object
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.dtype
+dtype(&#39;O&#39;)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.hasnans
+False
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.index.inferred_type
+&#39;string&#39;
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.is_monotonic
+True
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.index.is_monotonic_decreasing
+False
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.is_monotonic_increasing
+True
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.is_unique
+True
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.nbytes
+16
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.index.ndim
+1
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.index.nlevels
+1
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.index.shape
+(4,)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.size
+4
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.index.values
+array([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=object)
+</code></pre>
+<table><tr><td bgcolor="#FFA500"><font size="5" color="#fff">index 索引对象常用方法</font></td></tr></table>
+
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.html">https://pandas.pydata.org/docs/reference/api/pandas.Index.html</a></p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all(self, *args, **kwargs)</td>
+<td>判断所有元素是否为真，有 0 会被视为 False</td>
+</tr>
+<tr>
+<td>any(self, *args, **kwargs)</td>
+<td>判断是否至少有一个元素为真，均为 0 会被视为 False</td>
+</tr>
+<tr>
+<td>append(self, other)</td>
+<td>连接另一个 index，产生一个新的 index</td>
+</tr>
+<tr>
+<td>argmax(self[, axis, skipna])</td>
+<td>返回 index 中最大值的索引值</td>
+</tr>
+<tr>
+<td>argmin(self[, axis, skipna])</td>
+<td>返回 index 中最小值的索引值</td>
+</tr>
+<tr>
+<td>argsort(self, *args, **kwargs)</td>
+<td>对 index 从小到大排序，返回排序后的元素在原 index 中的索引值</td>
+</tr>
+<tr>
+<td>delete(self, loc)</td>
+<td>删除指定索引位置的元素，返回删除后的新 index</td>
+</tr>
+<tr>
+<td>difference(self, other[, sort])</td>
+<td>在第一个 index 中删除第二个 index 中的元素，即差集</td>
+</tr>
+<tr>
+<td>drop(self, labels[, errors])</td>
+<td>在原 index 中删除传入的值</td>
+</tr>
+<tr>
+<td>drop_duplicates(self[, keep])</td>
+<td>删除重复值，keep 参数可选值如下：<br><code>‘first’</code>：保留第一次出现的重复项；<br><code>‘last’</code>：保留最后一次出现的重复项；<br><code>False</code>：不保留重复项</td>
+</tr>
+<tr>
+<td>duplicated(self[, keep])</td>
+<td>判断是否为重复值，keep 参数可选值如下：<br><code>‘first’</code>：第一次重复的为 False，其他为 True；<br><code>‘last’</code>：最后一次重复的为 False，其他为 True；<br><code>False</code>：所有重复的均为 True</td>
+</tr>
+<tr>
+<td>dropna(self[, how])</td>
+<td>删除缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>fillna(self[, value, downcast])</td>
+<td>用指定值填充缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>equals(self, other)</td>
+<td>判断两个  index 是否相同</td>
+</tr>
+<tr>
+<td>insert(self, loc, item)</td>
+<td>将元素插入到指定索引处，返回新的 index</td>
+</tr>
+<tr>
+<td>intersection(self, other[, sort])</td>
+<td>返回两个 index 的交集</td>
+</tr>
+<tr>
+<td>isna(self)</td>
+<td>检测 index 元素是否为缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>isnull(self)</td>
+<td>检测 index 元素是否为缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>max(self[, axis, skipna])</td>
+<td>返回 index 的最大值</td>
+</tr>
+<tr>
+<td>min(self[, axis, skipna])</td>
+<td>返回 index 的最小值</td>
+</tr>
+<tr>
+<td>union(self, other[, sort])</td>
+<td>返回两个 index 的并集</td>
+</tr>
+<tr>
+<td>unique(self[, level])</td>
+<td>返回 index 中的唯一值，相当于去除重复值</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p><code>all(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.all.html">官方文档</a>】</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([1, 2, 3]).all()
+True
+&gt;&gt;&gt;
+&gt;&gt;&gt; pd.Index([0, 1, 2]).all()
+False
+</code></pre>
+</li>
+<li><p><code>any(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.any.html">官方文档</a>】</p>
+</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([0, 0, 1]).any()
+True
+&gt;&gt;&gt;
+&gt;&gt;&gt; pd.Index([0, 0, 0]).any()
+False
+</code></pre>
+<ul>
+<li><code>append(self, other)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.append.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]).append(pd.Index([1, 2, 3]))
+Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, 1, 2, 3], dtype=&#39;object&#39;)
+</code></pre>
+<ul>
+<li><code>argmax(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argmax.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).argmax()
+3
+</code></pre>
+<ul>
+<li><code>argmin(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argmin.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).argmin()
+4
+</code></pre>
+<ul>
+<li><code>argsort(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argsort.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).argsort()
+array([4, 1, 2, 0, 3], dtype=int32)
+</code></pre>
+<ul>
+<li><code>delete(self, loc)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.delete.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).delete(0)
+Int64Index([2, 3, 9, 1], dtype=&#39;int64&#39;)
+</code></pre>
+<ul>
+<li><code>difference(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.difference.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx1 = pd.Index([2, 1, 3, 4])
+&gt;&gt;&gt; idx2 = pd.Index([3, 4, 5, 6])
+&gt;&gt;&gt; idx1.difference(idx2)
+Int64Index([1, 2], dtype=&#39;int64&#39;)
+&gt;&gt;&gt; idx1.difference(idx2, sort=False)
+Int64Index([2, 1], dtype=&#39;int64&#39;)
+</code></pre>
+<ul>
+<li><code>drop(self, labels[, errors])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.drop.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).drop([2, 1])
+Int64Index([5, 3, 9], dtype=&#39;int64&#39;)
+</code></pre>
+<ul>
+<li><code>drop_duplicates(self[, keep])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.drop_duplicates.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx = pd.Index([&#39;lama&#39;, &#39;cow&#39;, &#39;lama&#39;, &#39;beetle&#39;, &#39;lama&#39;, &#39;hippo&#39;])
+&gt;&gt;&gt; idx.drop_duplicates(keep=&#39;first&#39;)
+Index([&#39;lama&#39;, &#39;cow&#39;, &#39;beetle&#39;, &#39;hippo&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt; idx.drop_duplicates(keep=&#39;last&#39;)
+Index([&#39;cow&#39;, &#39;beetle&#39;, &#39;lama&#39;, &#39;hippo&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt; idx.drop_duplicates(keep=False)
+Index([&#39;cow&#39;, &#39;beetle&#39;, &#39;hippo&#39;], dtype=&#39;object&#39;)
+</code></pre>
+<ul>
+<li>duplicated(self[, keep]) 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.duplicated.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx = pd.Index([&#39;lama&#39;, &#39;cow&#39;, &#39;lama&#39;, &#39;beetle&#39;, &#39;lama&#39;])
+&gt;&gt;&gt; idx.duplicated()
+array([False, False,  True, False,  True])
+&gt;&gt;&gt; idx.duplicated(keep=&#39;first&#39;)
+array([False, False,  True, False,  True])
+&gt;&gt;&gt; idx.duplicated(keep=&#39;last&#39;)
+array([ True, False,  True, False, False])
+&gt;&gt;&gt; idx.duplicated(keep=False)
+array([ True, False,  True, False,  True])
+</code></pre>
+<ul>
+<li><code>dropna(self[, how])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.dropna.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([2, 5, np.NaN, 6, np.NaN, np.NaN]).dropna()
+Float64Index([2.0, 5.0, 6.0], dtype=&#39;float64&#39;)
+</code></pre>
+<ul>
+<li><code>fillna(self[, value, downcast])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.fillna.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([2, 5, np.NaN, 6, np.NaN, np.NaN]).fillna(5)
+Float64Index([2.0, 5.0, 5.0, 6.0, 5.0, 5.0], dtype=&#39;float64&#39;)
+</code></pre>
+<ul>
+<li><code>equals(self, other)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.equals.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx1 = pd.Index([5, 2, 3, 9, 1])
+&gt;&gt;&gt; idx2 = pd.Index([5, 2, 3, 9, 1])
+&gt;&gt;&gt; idx1.equals(idx2)
+True
+&gt;&gt;&gt; 
+&gt;&gt;&gt; idx1 = pd.Index([5, 2, 3, 9, 1])
+&gt;&gt;&gt; idx2 = pd.Index([5, 2, 4, 9, 1])
+&gt;&gt;&gt; idx1.equals(idx2)
+False
+</code></pre>
+<ul>
+<li><code>intersection(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.intersection.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx1 = pd.Index([1, 2, 3, 4])
+&gt;&gt;&gt; idx2 = pd.Index([3, 4, 5, 6])
+&gt;&gt;&gt; idx1.intersection(idx2)
+Int64Index([3, 4], dtype=&#39;int64&#39;)
+</code></pre>
+<ul>
+<li><code>insert(self, loc, item)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).insert(2, &#39;A&#39;)
+Index([5, 2, &#39;A&#39;, 3, 9, 1], dtype=&#39;object&#39;)
+</code></pre>
+<ul>
+<li><code>isna(self)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.isna.html">官方文档</a>】、<code>isnull(self)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.isnull.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([2, 5, np.NaN, 6, np.NaN, np.NaN]).isna()
+array([False, False,  True, False,  True,  True])
+&gt;&gt;&gt; pd.Index([2, 5, np.NaN, 6, np.NaN, np.NaN]).isnull()
+array([False, False,  True, False,  True,  True])
+</code></pre>
+<ul>
+<li><code>max(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.max.html">官方文档</a>】、<code>min(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.min.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).max()
+9
+&gt;&gt;&gt; pd.Index([5, 2, 3, 9, 1]).min()
+1
+</code></pre>
+<ul>
+<li><code>union(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.union.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; idx1 = pd.Index([1, 2, 3, 4])
+&gt;&gt;&gt; idx2 = pd.Index([3, 4, 5, 6])
+&gt;&gt;&gt; idx1.union(idx2)
+Int64Index([1, 2, 3, 4, 5, 6], dtype=&#39;int64&#39;)
+</code></pre>
+<ul>
+<li><code>unique(self[, level])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.unique.html">官方文档</a>】</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; pd.Index([5, 1, 3, 5, 1]).unique()
+Int64Index([5, 1, 3], dtype=&#39;int64&#39;)
+</code></pre>
+<h1 id="【2】Pandas-一般索引"><a href="#【2】Pandas-一般索引" class="headerlink" title="【2】Pandas 一般索引"></a><font color=#FF0000>【2】Pandas 一般索引</font></h1><p>由于在 Pandas 中，由于有一些更高级的索引操作，比如重新索引，层级索引等，因此将一般的切片索引、花式索引、布尔索引等归纳为一般索引。</p>
+<h2 id="【2-1】Series-索引"><a href="#【2-1】Series-索引" class="headerlink" title="【2.1】Series 索引"></a><font color=#4876FF>【2.1】Series 索引</font></h2><h3 id="【2-1-1】head-tail"><a href="#【2-1-1】head-tail" class="headerlink" title="【2.1.1】head() / tail()"></a><font color=#FFA500>【2.1.1】head() / tail()</font></h3><p><code>Series.head()</code> 和 <code>Series.tail()</code> 方法可以获取的前五行和后五行数据，如果向 head() / tail() 里面传入参数，则会获取指定行：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; obj = pd.Series(np.random.randn(8))
+&gt;&gt;&gt; obj
+0   -0.643437
+1   -0.365652
+2   -0.966554
+3   -0.036127
+4    1.046095
+5   -2.048362
+6   -1.865551
+7    1.344728
+dtype: float64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.head()
+0   -0.643437
+1   -0.365652
+2   -0.966554
+3   -0.036127
+4    1.046095
+dtype: float64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.head(3)
+0   -0.643437
+1   -0.365652
+2   -0.966554
+dtype: float64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.tail()
+3    1.221221
+4   -1.373496
+5    1.032843
+6    0.029734
+7   -1.861485
+dtype: float64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.tail(3)
+5    1.032843
+6    0.029734
+7   -1.861485
+dtype: float64
+</code></pre>
+<h3 id="【2-1-2】行索引"><a href="#【2-1-2】行索引" class="headerlink" title="【2.1.2】行索引"></a><font color=#FFA500>【2.1.2】行索引</font></h3><p>Pandas 中可以按照位置进行索引，也可以按照索引名（index）进行索引，也可以用 Python 字典的表达式和方法来获取值：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+dtype: int64
+&gt;&gt;&gt; obj[&#39;c&#39;]
+-8
+&gt;&gt;&gt; obj[2]
+-8
+&gt;&gt;&gt; &#39;b&#39; in obj
+True
+&gt;&gt;&gt; obj.keys()
+Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt; list(obj.items())
+[(&#39;a&#39;, 1), (&#39;b&#39;, 5), (&#39;c&#39;, -8), (&#39;d&#39;, 2)]
+</code></pre>
+<h3 id="【2-1-3】切片索引"><a href="#【2-1-3】切片索引" class="headerlink" title="【2.1.3】切片索引"></a><font color=#FFA500>【2.1.3】切片索引</font></h3><p>切片的方法有两种：按位置切片和按索引名（index）切片，注意：按位置切片时，<font color=#FF0000><strong>不包含</strong></font>终止索引；按索引名（index）切片时，<font color=#FF0000><strong>包含</strong></font>终止索引。</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+dtype: int64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[1:3]
+b    5
+c   -8
+dtype: int64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[0:3:2]
+a    1
+c   -8
+dtype: int64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[&#39;b&#39;:&#39;d&#39;]
+b    5
+c   -8
+d    2
+dtype: int64
+</code></pre>
+<h3 id="【2-1-4】花式索引"><a href="#【2-1-4】花式索引" class="headerlink" title="【2.1.4】花式索引"></a><font color=#FFA500>【2.1.4】花式索引</font></h3><p>所谓的花式索引，就是间隔索引、不连续的索引，传递一个由索引名（index）或者位置参数组成的<font color=#FF0000><strong>列表</strong></font>来一次性获得多个元素：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[[0, 2]]
+a    1
+c   -8
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[[&#39;a&#39;, &#39;c&#39;, &#39;d&#39;]]
+a    1
+c   -8
+d    2
+dtype: int64
+</code></pre>
+<h3 id="【2-1-5】布尔索引"><a href="#【2-1-5】布尔索引" class="headerlink" title="【2.1.5】布尔索引"></a><font color=#FFA500>【2.1.5】布尔索引</font></h3><p>可以通过一个布尔数组来索引目标数组，即通过布尔运算（如：比较运算符）来获取符合指定条件的元素的数组。</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2, -3], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+e   -3
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[obj &gt; 0]
+a    1
+b    5
+d    2
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj &gt; 0
+a     True
+b     True
+c    False
+d     True
+e    False
+dtype: bool
+</code></pre>
+<h2 id="【2-2】DataFrame-索引"><a href="#【2-2】DataFrame-索引" class="headerlink" title="【2.2】DataFrame 索引"></a><font color=#4876FF>【2.2】DataFrame 索引</font></h2><h3 id="【2-2-1】head-tail"><a href="#【2-2-1】head-tail" class="headerlink" title="【2.2.1】head() / tail()"></a><font color=#FFA500>【2.2.1】head() / tail()</font></h3><p>和 Series 一样，<code>DataFrame.head()</code> 和 <code>DataFrame.tail()</code> 方法同样可以获取 DataFrame 的前五行和后五行数据，如果向 head() / tail() 里面传入参数，则会获取指定行：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; obj = pd.DataFrame(np.random.randn(8,4), columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+          a         b         c         d
+0 -1.399390  0.521596 -0.869613  0.506621
+1 -0.748562 -0.364952  0.188399 -1.402566
+2  1.378776 -1.476480  0.361635  0.451134
+3 -0.206405 -1.188609  3.002599  0.563650
+4  0.993289  1.133748  1.177549 -2.562286
+5 -0.482157  1.069293  1.143983 -1.303079
+6 -1.199154  0.220360  0.801838 -0.104533
+7 -1.359816 -2.092035  2.003530 -0.151812
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.head()
+          a         b         c         d
+0 -1.399390  0.521596 -0.869613  0.506621
+1 -0.748562 -0.364952  0.188399 -1.402566
+2  1.378776 -1.476480  0.361635  0.451134
+3 -0.206405 -1.188609  3.002599  0.563650
+4  0.993289  1.133748  1.177549 -2.562286
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.head(3)
+          a         b         c         d
+0 -1.399390  0.521596 -0.869613  0.506621
+1 -0.748562 -0.364952  0.188399 -1.402566
+2  1.378776 -1.476480  0.361635  0.451134
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.tail()
+          a         b         c         d
+3 -0.206405 -1.188609  3.002599  0.563650
+4  0.993289  1.133748  1.177549 -2.562286
+5 -0.482157  1.069293  1.143983 -1.303079
+6 -1.199154  0.220360  0.801838 -0.104533
+7 -1.359816 -2.092035  2.003530 -0.151812
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.tail(3)
+          a         b         c         d
+5 -0.482157  1.069293  1.143983 -1.303079
+6 -1.199154  0.220360  0.801838 -0.104533
+7 -1.359816 -2.092035  2.003530 -0.151812
+</code></pre>
+<h3 id="【2-2-2】列索引"><a href="#【2-2-2】列索引" class="headerlink" title="【2.2.2】列索引"></a><font color=#FFA500>【2.2.2】列索引</font></h3><p>DataFrame 可以按照列标签（columns）来进行列索引：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; obj = pd.DataFrame(np.random.randn(7,2), columns = [&#39;a&#39;, &#39;b&#39;])
+&gt;&gt;&gt; obj
+          a         b
+0 -1.198795  0.928378
+1 -2.878230  0.014650
+2  2.267475  0.370952
+3  0.639340 -1.301041
+4 -1.953444  0.148934
+5 -0.445225  0.459632
+6  0.097109 -2.592833
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[&#39;a&#39;]
+0   -1.198795
+1   -2.878230
+2    2.267475
+3    0.639340
+4   -1.953444
+5   -0.445225
+6    0.097109
+Name: a, dtype: float64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[[&#39;a&#39;]]
+          a
+0 -1.198795
+1 -2.878230
+2  2.267475
+3  0.639340
+4 -1.953444
+5 -0.445225
+6  0.097109
+&gt;&gt;&gt; 
+&gt;&gt;&gt; type(obj[&#39;a&#39;])
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+&gt;&gt;&gt; type(obj[[&#39;a&#39;]])
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+</code></pre>
+<h3 id="【2-2-3】切片索引"><a href="#【2-2-3】切片索引" class="headerlink" title="【2.2.3】切片索引"></a><font color=#FFA500>【2.2.3】切片索引</font></h3><p>DataFrame 中的切片索引是针对行来操作的，切片的方法有两种：按位置切片和按索引名（index）切片，注意：按位置切片时，不包含终止索引；按索引名（index）切片时，包含终止索引。</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; data = np.random.randn(5,4)
+&gt;&gt;&gt; index = [&#39;I1&#39;, &#39;I2&#39;, &#39;I3&#39;, &#39;I4&#39;, &#39;I5&#39;]
+&gt;&gt;&gt; columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+&gt;&gt;&gt; obj = pd.DataFrame(data, index, columns)
+&gt;&gt;&gt; obj
+           a         b         c         d
+I1  0.828676 -1.663337  1.753632  1.432487
+I2  0.368138  0.222166  0.902764 -1.436186
+I3  2.285615 -2.415175 -1.344456 -0.502214
+I4  3.224288 -0.500268  1.293596 -1.235549
+I5 -0.938833 -0.804433 -0.170047 -0.566766
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[0:3]
+           a         b         c         d
+I1  0.828676 -1.663337  1.753632  1.432487
+I2  0.368138  0.222166  0.902764 -1.436186
+I3  2.285615 -2.415175 -1.344456 -0.502214
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[0:4:2]
+           a         b         c         d
+I1 -0.042168  1.437354 -1.114545  0.830790
+I3  0.241506  0.018984 -0.499151 -1.190143
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj[&#39;I2&#39;:&#39;I4&#39;]
+           a         b         c         d
+I2  0.368138  0.222166  0.902764 -1.436186
+I3  2.285615 -2.415175 -1.344456 -0.502214
+I4  3.224288 -0.500268  1.293596 -1.235549
+</code></pre>
+<h3 id="【2-2-4】花式索引"><a href="#【2-2-4】花式索引" class="headerlink" title="【2.2.4】花式索引"></a><font color=#FFA500>【2.2.4】花式索引</font></h3><p>和 Series 一样，所谓的花式索引，就是间隔索引、不连续的索引，传递一个由列名（columns）组成的<font color=#FF0000><strong>列表</strong></font>来一次性获得多列元素：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; data = np.random.randn(5,4)
+&gt;&gt;&gt; index = [&#39;I1&#39;, &#39;I2&#39;, &#39;I3&#39;, &#39;I4&#39;, &#39;I5&#39;]
+&gt;&gt;&gt; columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+&gt;&gt;&gt; obj = pd.DataFrame(data, index, columns)
+&gt;&gt;&gt; obj
+           a         b         c         d
+I1 -1.083223 -0.182874 -0.348460 -1.572120
+I2 -0.205206 -0.251931  1.180131  0.847720
+I3 -0.980379  0.325553 -0.847566 -0.882343
+I4 -0.638228 -0.282882 -0.624997 -0.245980
+I5 -0.229769  1.002930 -0.226715 -0.916591
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[[&#39;a&#39;, &#39;d&#39;]]
+           a         d
+I1 -1.083223 -1.572120
+I2 -0.205206  0.847720
+I3 -0.980379 -0.882343
+I4 -0.638228 -0.245980
+I5 -0.229769 -0.916591
+</code></pre>
+<h3 id="【2-2-5】布尔索引"><a href="#【2-2-5】布尔索引" class="headerlink" title="【2.2.5】布尔索引"></a><font color=#FFA500>【2.2.5】布尔索引</font></h3><p>可以通过一个布尔数组来索引目标数组，即通过布尔运算（如：比较运算符）来获取符合指定条件的元素的数组。</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; data = np.random.randn(5,4)
+&gt;&gt;&gt; index = [&#39;I1&#39;, &#39;I2&#39;, &#39;I3&#39;, &#39;I4&#39;, &#39;I5&#39;]
+&gt;&gt;&gt; columns = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+&gt;&gt;&gt; obj = pd.DataFrame(data, index, columns)
+&gt;&gt;&gt; obj
+           a         b         c         d
+I1 -0.602984 -0.135716  0.999689 -0.339786
+I2  0.911130 -0.092485 -0.914074 -0.279588
+I3  0.849606 -0.420055 -1.240389 -0.179297
+I4  0.249986 -1.250668  0.329416 -1.105774
+I5 -0.743816  0.430647 -0.058126 -0.337319
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj[obj &gt; 0]
+           a         b         c   d
+I1       NaN       NaN  0.999689 NaN
+I2  0.911130       NaN       NaN NaN
+I3  0.849606       NaN       NaN NaN
+I4  0.249986       NaN  0.329416 NaN
+I5       NaN  0.430647       NaN NaN
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj &gt; 0
+        a      b      c      d
+I1  False  False   True  False
+I2   True  False  False  False
+I3   True  False  False  False
+I4   True  False   True  False
+I5  False   True  False  False
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106698307
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+<h1 id="【3】索引器：loc-和-iloc"><a href="#【3】索引器：loc-和-iloc" class="headerlink" title="【3】索引器：loc 和 iloc"></a><font color=#FF0000>【3】索引器：loc 和 iloc</font></h1><p>loc 是标签索引、iloc 是位置索引，注意：在 Pandas1.0.0 之前还有 ix 方法（即可按标签也可按位置索引），在 Pandas1.0.0 之后已被移除。</p>
+<h2 id="【3-1】loc-标签索引"><a href="#【3-1】loc-标签索引" class="headerlink" title="【3.1】loc 标签索引"></a><font color=#4876FF>【3.1】loc 标签索引</font></h2><p>loc 标签索引，即根据 index 和 columns 来选择数据。</p>
+<h3 id="【3-1-1】Series-loc"><a href="#【3-1-1】Series-loc" class="headerlink" title="【3.1.1】Series.loc"></a><font color=#FFA500>【3.1.1】Series.loc</font></h3><p>在 Series 中，允许输入：</p>
+<ul>
+<li>单个标签，例如 <code>5</code> 或 <code>&#39;a&#39;</code>，（注意，<code>5</code> 是 index 的名称，而不是位置索引）；</li>
+<li>标签列表或数组，例如 <code>[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</code>；</li>
+<li>带有标签的切片对象，例如 <code>&#39;a&#39;:&#39;f&#39;</code>。</li>
+</ul>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.loc.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.loc.html</a></p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as np
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[&#39;a&#39;]
+1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[&#39;a&#39;:&#39;c&#39;]
+a    1
+b    5
+c   -8
+dtype: int64
+&gt;&gt;&gt;
+&gt;&gt;&gt; obj.loc[[&#39;a&#39;, &#39;d&#39;]]
+a    1
+d    2
+dtype: int64
+</code></pre>
+<h3 id="【3-1-2】DataFrame-loc"><a href="#【3-1-2】DataFrame-loc" class="headerlink" title="【3.1.2】DataFrame.loc"></a><font color=#FFA500>【3.1.2】DataFrame.loc</font></h3><p>在 DataFrame 中，第一个参数索引<font color=#FF0000><strong>行</strong></font>，第二个参数是索引<font color=#FF0000><strong>列</strong></font>，允许输入的格式和 Series 大同小异。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html</a></p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.DataFrame([[1, 2, 3], [4, 5, 6], [7, 8, 9]], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], columns=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;])
+&gt;&gt;&gt; obj
+   A  B  C
+a  1  2  3
+b  4  5  6
+c  7  8  9
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[&#39;a&#39;]
+A    1
+B    2
+C    3
+Name: a, dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[&#39;a&#39;:&#39;c&#39;]
+   A  B  C
+a  1  2  3
+b  4  5  6
+c  7  8  9
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[[&#39;a&#39;, &#39;c&#39;]]
+   A  B  C
+a  1  2  3
+c  7  8  9
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.loc[&#39;b&#39;, &#39;B&#39;]
+5
+&gt;&gt;&gt; obj.loc[&#39;b&#39;, &#39;A&#39;:&#39;C&#39;]
+A    4
+B    5
+C    6
+Name: b, dtype: int64
+</code></pre>
+<h2 id="【3-2】iloc-位置索引"><a href="#【3-2】iloc-位置索引" class="headerlink" title="【3.2】iloc 位置索引"></a><font color=#4876FF>【3.2】iloc 位置索引</font></h2><p>作用和 loc 一样，不过是基于索引的编号来索引，即根据 index 和 columns 的位置编号来选择数据。</p>
+<h3 id="【3-2-1】Series-iloc"><a href="#【3-2-1】Series-iloc" class="headerlink" title="【3.2.1】Series.iloc"></a><font color=#FFA500>【3.2.1】Series.iloc</font></h3><p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.iloc.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.iloc.html</a></p>
+<p>在 Series 中，允许输入：</p>
+<ul>
+<li>整数，例如 <code>5</code>；</li>
+<li>整数列表或数组，例如 <code>[4, 3, 0]</code>；</li>
+<li>具有整数的切片对象，例如 <code>1:7</code>。</li>
+</ul>
+<pre><code class="python">&gt;&gt;&gt; import pandas as np
+&gt;&gt;&gt; obj = pd.Series([1, 5, -8, 2], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj
+a    1
+b    5
+c   -8
+d    2
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[1]
+5
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[0:2]
+a    1
+b    5
+dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[[0, 1, 3]]
+a    1
+b    5
+d    2
+dtype: int64
+</code></pre>
+<h3 id="【3-2-2】DataFrame-iloc"><a href="#【3-2-2】DataFrame-iloc" class="headerlink" title="【3.2.2】DataFrame.iloc"></a><font color=#FFA500>【3.2.2】DataFrame.iloc</font></h3><p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html</a></p>
+<p>在 DataFrame 中，第一个参数索引<font color=#FF0000><strong>行</strong></font>，第二个参数是索引<font color=#FF0000><strong>列</strong></font>，允许输入的格式和 Series 大同小异：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.DataFrame([[1, 2, 3], [4, 5, 6], [7, 8, 9]], index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;], columns=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;])
+&gt;&gt;&gt; obj
+   A  B  C
+a  1  2  3
+b  4  5  6
+c  7  8  9
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[1]
+A    4
+B    5
+C    6
+Name: b, dtype: int64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[0:2]
+   A  B  C
+a  1  2  3
+b  4  5  6
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[[0, 2]]
+   A  B  C
+a  1  2  3
+c  7  8  9
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[1, 2]
+6
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj.iloc[1, 0:2]
+A    4
+B    5
+Name: b, dtype: int64
+</code></pre>
+<h1 id="【4】Pandas-重新索引"><a href="#【4】Pandas-重新索引" class="headerlink" title="【4】Pandas 重新索引"></a><font color=#FF0000>【4】Pandas 重新索引</font></h1><p>Pandas 对象的一个重要方法是 reindex，其作用是创建一个新对象，它的数据符合新的索引。以 <code>DataFrame.reindex</code> 为例（Series 类似），基本语法如下：</p>
+<p><code>DataFrame.reindex(self, labels=None, index=None, columns=None, axis=None, method=None, copy=True, level=None, fill_value=nan, limit=None, tolerance=None)</code></p>
+<p>部分参数描述如下：（完整参数解释参见<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reindex.html">官方文档</a>）</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>index</td>
+<td>用作索引的新序列，既可以是 index 实例，也可以是其他序列型的 Python 数据结构</td>
+</tr>
+<tr>
+<td>method</td>
+<td>插值（填充）方式，取值如下：<br><code>None</code>：不填补空白；<br><code>pad / ffill</code>：将上一个有效的观测值向前传播到下一个有效的观测值；<br><code>backfill / bfill</code>：使用下一个有效观察值来填补空白；<br><code>nearest</code>：使用最近的有效观测值来填补空白。</td>
+</tr>
+<tr>
+<td>fill_value</td>
+<td>在重新索引的过程中，需要引入缺失值时使用的替代值</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>前向或后向填充时的最大填充量</td>
+</tr>
+<tr>
+<td>tolerance</td>
+<td>向前或向后填充时，填充不准确匹配项的最大间距（绝对值距离）</td>
+</tr>
+<tr>
+<td>level</td>
+<td>在 Multilndex 的指定级别上匹配简单索引，否则选其子集</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>默认为 True，无论如何都复制；如果为 False，则新旧相等就不复制</td>
+</tr>
+</tbody></table>
+<p>reindex 将会根据新索引进行重排。如果某个索引值当前不存在，就引入缺失值：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([4.5, 7.2, -5.3, 3.6], index=[&#39;d&#39;, &#39;b&#39;, &#39;a&#39;, &#39;c&#39;])
+&gt;&gt;&gt; obj
+d    4.5
+b    7.2
+a   -5.3
+c    3.6
+dtype: float64
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2 = obj.reindex([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;])
+&gt;&gt;&gt; obj2
+a   -5.3
+b    7.2
+c    3.6
+d    4.5
+e    NaN
+dtype: float64
+</code></pre>
+<p>对于时间序列这样的有序数据，重新索引时可能需要做一些插值处理。method 选项即可达到此目的，例如，使用 ffill 可以实现前向值填充：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; obj = pd.Series([&#39;blue&#39;, &#39;purple&#39;, &#39;yellow&#39;], index=[0, 2, 4])
+&gt;&gt;&gt; obj
+0      blue
+2    purple
+4    yellow
+dtype: object
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2 = obj.reindex(range(6), method=&#39;ffill&#39;)
+&gt;&gt;&gt; obj2
+0      blue
+1      blue
+2    purple
+3    purple
+4    yellow
+5    yellow
+dtype: object
+</code></pre>
+<p>借助 DataFrame，reindex可以修改（行）索引和列。只传递一个序列时，会重新索引结果的行：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; obj = pd.DataFrame(np.arange(9).reshape((3, 3)), index=[&#39;a&#39;, &#39;c&#39;, &#39;d&#39;], columns=[&#39;Ohio&#39;, &#39;Texas&#39;, &#39;California&#39;])
+&gt;&gt;&gt; obj
+   Ohio  Texas  California
+a     0      1           2
+c     3      4           5
+d     6      7           8
+&gt;&gt;&gt; 
+&gt;&gt;&gt; obj2 = obj.reindex([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; obj2
+   Ohio  Texas  California
+a   0.0    1.0         2.0
+b   NaN    NaN         NaN
+c   3.0    4.0         5.0
+d   6.0    7.0         8.0
+</code></pre>
+<p>列可以用 columns 关键字重新索引：</p>
+<pre><code class="python">&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; obj = pd.DataFrame(np.arange(9).reshape((3, 3)), index=[&#39;a&#39;, &#39;c&#39;, &#39;d&#39;], columns=[&#39;Ohio&#39;, &#39;Texas&#39;, &#39;California&#39;])
+&gt;&gt;&gt; obj
+   Ohio  Texas  California
+a     0      1           2
+c     3      4           5
+d     6      7           8
+&gt;&gt;&gt; 
+&gt;&gt;&gt; states = [&#39;Texas&#39;, &#39;Utah&#39;, &#39;California&#39;]
+&gt;&gt;&gt; obj.reindex(columns=states)
+   Texas  Utah  California
+a      1   NaN           2
+c      4   NaN           5
+d      7   NaN           8
+</code></pre>
+<hr>
+<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
+本文原创首发于 CSDN，作者 TRHX。
+博客首页：https://itrhx.blog.csdn.net/
+本文链接：https://itrhx.blog.csdn.net/article/details/106698307
+未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
+</code></pre>
+<hr>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/026/">https://www.itbob.cn/article/026/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/027/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/025/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        admin@itbob.cn
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/timeline" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/tags" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/gallery" title="照片墙">
+                
+                    <i class="material-icons sidebar-material-icons">collections</i>
+                
+                照片墙
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">38</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">197.4k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+
+            
+                <div class="itbob-footer-text">
+                    
+                        <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/icp.png" alt="ICP"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/img/moeicp.png" alt="MOE ICP"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>
+                    
+                </div>
+            
+
+            Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB'S BLOG丨
+
+            <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date(); 
+                function createtime() { 
+                    var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime()+250); 
+                    days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+                    hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+                    if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+                    mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+                    seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+                    snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 "+dnum+" 天 "; 
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+                } 
+            setInterval("createtime()",250);
+            </script>
+
+
+        </div>
+
+        <!-- All Site UV -->
+        <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">197.4k</span>
+        
+        </div> -->
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">PV</span>
+                    <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Powered</span>
+                    <span class="badge-value bg-blue">Hexo</span>
+                </div>
+            </div>
+            <div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">UV</span>
+                    <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                </div>
+                <div class="itbob-github-badge">
+                    <span class="badge-subject">Theme</span>
+                    <span class="badge-value bg-orange">Material</span>
+                </div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/lazyload.min.js", true)</script>
+
+
+
+    <script>lsloader.load("js_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/js.min.js", true)</script>
+
+
+
+    <script>lsloader.load("np_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/nprogress.js", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+        document.write('
+<link rel="stylesheet" href="/css/uc.css">
+');
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Blog Title JS -->
+
+    
+        <script>lsloader.load("binft","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/binft.js", true)</script>
+        
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/prettify.min.js", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
