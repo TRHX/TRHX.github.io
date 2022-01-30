@@ -64,12 +64,14 @@ bszTag = {
         this.bszs.map(function(b) {
             var c = document.getElementById("busuanzi_value_" + b);
             // 自定义初始值，原 www.itrhx.com 数据也给加上
-            var bob_site_pv = 287500,
-                bob_site_uv = 163400,
-                bsz_site_pv = a["site_pv"],
-                bsz_site_uv = a["site_uv"];
-            a["site_pv"] = bob_site_pv + bsz_site_pv
-            a["site_uv"] = bob_site_uv + bsz_site_uv
+            if (b == "site_pv") {
+                var bsz_site_pv = a["site_pv"];
+                a["site_pv"] = 287500 + bsz_site_pv
+            }
+            if (b == "site_uv") {
+                var bsz_site_uv = a["site_uv"];
+                a["site_uv"] = 163400 + bsz_site_uv
+            }
             c && (c.innerHTML = a[b])
         })
     },
