@@ -16,6 +16,6 @@
 
 > 业精于勤，荒于嬉；行成于思，毁于随。求知若饥，虚心若愚，好记性不如烂笔头，记录学习过程！
 
-> Hexo 博客交流群（924812033）：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=4bb493ed9bd2ff3682bed3389fbb9ff0963528688d8f5ac5dadc1f1dc735b9fb"><img border="0" src="https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.1.1/images/qqgroup.png" alt="Hexo 博客交流群" title="Hexo 博客交流群"></a>
+> Hexo 博客交流群（924812033）：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=4bb493ed9bd2ff3682bed3389fbb9ff0963528688d8f5ac5dadc1f1dc735b9fb"><img border="0" src="https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.1.1/images/qqgroup.png" alt="Hexo 博客交流群" title="Hexo 博客交流群"></a>
 
-> ![hexogroup](https://cdn.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.1.1/images/hexogroup.jpg)
+> ![hexogroup](https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@3.1.1/images/hexogroup.jpg)
