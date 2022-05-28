@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
+
+    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫,算法">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+    body,
+    html {
+        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        overflow-x: hidden !important;
+    }
+    
+    code {
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    
+    a {
+        color: #00838F;
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge {
+        background-color: #0097A7 !important;
+    }
+    /* Sidebar User Drop Down Menu Text Color */
+    
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+        color: #0097A7 !important;
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover>a,
+    .sidebar-colored .sidebar-nav li:hover>a i,
+    .sidebar-colored .sidebar-nav li>a:hover,
+    .sidebar-colored .sidebar-nav li>a:hover i,
+    .sidebar-colored .sidebar-nav li>a:focus i,
+    .sidebar-colored .sidebar-nav>.open>a,
+    .sidebar-colored .sidebar-nav>.open>a:hover,
+    .sidebar-colored .sidebar-nav>.open>a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+        color: #0097A7 !important;
+    }
+    
+    .toTop {
+        background: #757575 !important;
+    }
+    
+    .material-layout .material-post>.material-nav,
+    .material-layout .material-index>.material-nav,
+    .material-nav a {
+        color: #757575;
+    }
+    
+    #scheme-Paradox .MD-burger-layer {
+        background-color: #757575;
+    }
+    
+    #scheme-Paradox #post-toc-trigger-btn {
+        color: #757575;
+    }
+    
+    .post-toc a:hover {
+        color: #00838F;
+        text-decoration: underline;
+    }
+</style>
+
+
+<!-- Theme Background Related-->
+
+        <style>
+            body {
+                background-color: #F5F5F5;
+            }
+            /* blog_info bottom background */
+            
+            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
+                background-color: #fff;
+            }
+        </style>
+        
+
+
+
+                <!-- Fade Effect -->
+                
+                    <style>
+                        .fade {
+                            transition: all 800ms linear;
+                            -webkit-transform: translate3d(0, 0, 0);
+                            -moz-transform: translate3d(0, 0, 0);
+                            -ms-transform: translate3d(0, 0, 0);
+                            -o-transform: translate3d(0, 0, 0);
+                            transform: translate3d(0, 0, 0);
+                            opacity: 1;
+                        }
+                        
+                        .fade.out {
+                            opacity: 0;
+                        }
+                    </style>
+                    
+
+                        <!-- Import Font -->
+                        <!-- Import Roboto -->
+
+    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
+    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+    
+    <!-- 枫叶飘落 -->
+    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/045/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/045/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> <meta property="og:article:tag" content="算法"> 
+
+    
+        <meta property="article:published_time" content="Thu Jan 13 2022 17:40:00 GMT+0800">
+        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/045/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/045/index.html",
+    "headline": "CTF&爬虫：掌握这些特征，一秒识别密文加密方式",
+    "datePublished": "Thu Jan 13 2022 17:40:00 GMT+0800",
+    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",JS 逆向,爬虫,算法ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
+</script>
+    
+    
+        <script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BC%96%E7%A0%81%E7%B3%BB%E5%88%97"><span class="post-toc-number">2.</span> <span class="post-toc-text">编码系列</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Base-%E7%B3%BB%E5%88%97%E7%BC%96%E7%A0%81"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Base 系列编码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Unicode-%E7%BC%96%E7%A0%81"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Unicode 编码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Escape-%E7%BC%96%E7%A0%81"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Escape 编码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#URL-Hex-%E7%BC%96%E7%A0%81"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">URL &#x2F; Hex 编码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">加密算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MD5"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">MD5</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SHA-%E7%B3%BB%E5%88%97"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">SHA 系列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#HMAC-%E7%B3%BB%E5%88%97"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">HMAC 系列</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RSA"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">RSA</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AES%E3%80%81DES%E3%80%813DES%E3%80%81RC4%E3%80%81Rabbit-%E7%AD%89"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">AES、DES、3DES、RC4、Rabbit 等</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SM-%E7%B3%BB%E5%88%97"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">SM 系列</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B7%B7%E6%B7%86%E7%B3%BB%E5%88%97"><span class="post-toc-number">4.</span> <span class="post-toc-text">混淆系列</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Obfuscator"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Obfuscator</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JJEncode"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">JJEncode</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AAEncode"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">AAEncode</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JSFuck"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">JSFuck</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Jother"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">Jother</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Brainfuck"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">Brainfuck</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Ook"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">Ook!</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Trivial-brainfuck-substitution"><span class="post-toc-number">4.8.</span> <span class="post-toc-text">Trivial brainfuck substitution</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96"><span class="post-toc-number">5.</span> <span class="post-toc-text">其他</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%81%BA%E6%92%92%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">恺撒密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A0%85%E6%A0%8F%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">栅栏密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%8C%AA%E5%9C%88%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">猪圈密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%91%A9%E6%96%AF%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">摩斯密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9F%B9%E6%A0%B9%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">培根密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">维吉尼亚密码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%8E%E4%BD%9B%E8%AE%BA%E7%A6%85"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">与佛论禅</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BD%93%E9%93%BA%E5%AF%86%E7%A0%81"><span class="post-toc-number">5.8.</span> <span class="post-toc-text">当铺密码</span></a></li></ol></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 100 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                CTF&爬虫：掌握这些特征，一秒识别密文加密方式
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>1月 13, 2022</span> -->
+        <span>2022-01-13 17:40:00</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaElEQVR42u3awY6rMAwF0P7/T89sn/SmcG9MA6oOqwq1hJOFndp+/Xz19cLDw8PDw8PDw3sY7xVf7371xwKH99dWKX6Fh4eHt4V3EmrfLJzc+ff+/5+PV198Nzw8PLyNvHcBN/l8/Mwk3CdrHX8fDw8P78m8ZJnjI3WSKvDw8PC+idcWHSbfwcPDw3syL/nDnxRS28QwTzZ4eHh4+3l5k2n/5639PTw8PLyAV480DUq683JGPXSFh4eH9wFeHojb4/KkJTZ5Hzw8PLw9vOLHQcvqeCRrLYUkTTI8PDy8u3hJs+riUD4YX6gTAx4eHt5FvKvGAtoibJIY2o3Dw8PD28NLAv21WzBJNifHdzw8PLwtvOSomhdtk0DfJoP8HfDw8PDu4uUtq0nZIi98FKUTPDw8vFt5bStrUm5Y2yY8PDy8u3htASJPDMeMtYLIyZbh4eHhbeFdNSDVjlK1La7ouI+Hh4e3hZcvlmMmJdpRmsHDw8P7MO+qYm7R2m/LsmVJAg8PD+/TvATTJonJQTwpc5ysgoeHh7eF9xNcyRa04T4vJRcbhIeHh7eRtxb68zJBmx7a5+Dh4eHt57Vl2bXkkY92teUPPDw8vLt4STNsEvrzl26P5nh4eHh7eO3VBvR5MmiLHXh4eHif5s2D8hpmrQkX/Q3Aw8PD28LLj8iTsD5PDNFm4eHh4W3kTQaw1o7ObWoZDV3h4eHhPYDXPmEyglCMNeDh4eE9kteG+HkbrBh3wMPDw9vIm4wCtC9xciyOEwMeHh7eXby2BNC2qXJqvk1FMQIPDw/vUt73XXh4eHh4eHh4eA+4fgFvymejhl9mOQAAAABJRU5ErkJggg==">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;6.6k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;29 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/045/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式&url=https://www.itbob.cn/article/045/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式&url=https://www.itbob.cn/article/045/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/045/index.html&text=CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/045/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/045/index.html&title=CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/045/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>爬虫工程师在做加密参数逆向的时候，经常会遇到各种各样的加密算法、编码、混淆，每个算法都有其对应的特征，对于一些较小的网站，往往直接引用这些官方算法，没有进行魔改等其他操作，这种情况下，如果我们能熟悉常见算法的特征，通过密文就能猜测出使用的哪种算法、编码、混淆，将会大大提高工作效率！在 CTF 中通常也会有密码类的题目，掌握一些常见密文特征也是 CTFer 们必备的技能！</p>
+<p>本文将介绍以下编码和加密算法的特征：</p>
+<ul>
+<li>编码：Base 系列、Unicode、Escape、URL、Hex；</li>
+<li>算法：MD5、SHA 系列、HMAC 系列、RSA、AES、DES、3DES、RC4、Rabbit、SM 系列；</li>
+<li>混淆：Obfuscator、JJEncode、AAEncode、JSFuck、Jother、Brainfuck、Ook!、Trivial brainfuck substitution；</li>
+<li>其他：恺撒密码、栅栏密码、猪圈密码、摩斯密码、培根密码、维吉尼亚密码、与佛论禅、当铺密码。</li>
+</ul>
+<p>PS：常见加密算法原理以及在 Python 和 JavaScript 中的实现方法可参见以前的文章：<a href="https://www.itbob.cn/article/039/">爬虫常见加密解密算法总结</a></p>
+<h2 id="编码系列"><a href="#编码系列" class="headerlink" title="编码系列"></a>编码系列</h2><h3 id="Base-系列编码"><a href="#Base-系列编码" class="headerlink" title="Base 系列编码"></a>Base 系列编码</h3><p>Base64 是我们最常见的编码，除此之外，其实还有 Base16、Base32、Base58、Base85、Base100 等，他们之间最明显的区别就是使用了不同数量的可打印字符对任意字节数据进行编码，比如 Base64 使用了64个可打印字符（A-Z、a-z、0-9、+、/），Base16 使用了16个可打印字符（A-F、0-9），这里主要讲怎么快速识别，其具体原理可自行百度，Base 系列主要特征如下：</p>
+<ul>
+<li>Base16：结尾没有等号，数字要多于字母；</li>
+<li>Base32：字母要多于数字，明文数量超过10个，结尾可能会有很多等号；</li>
+<li>Base58：结尾没有等号，字母要多于数字；</li>
+<li>Base64：一般情况下结尾都会有1个或者2个等号，明文很少的时候可能没有；</li>
+<li>Base85：等号一般出现在字符串中间，含有一些奇怪的字符；</li>
+<li>Base100：密文由 Emoji 表情组成。</li>
+</ul>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th align="left">编码类型</th>
+<th align="left">示例一</th>
+<th>示例二</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">明文</td>
+<td align="left">01234567890</td>
+<td>administrators</td>
+</tr>
+<tr>
+<td align="left">Base16</td>
+<td align="left"><code>3031323334353637383930</code></td>
+<td><code>61646D696E6973747261746F7273</code></td>
+</tr>
+<tr>
+<td align="left">Base32</td>
+<td align="left"><code>GAYTEMZUGU3DOOBZGA======</code></td>
+<td><code>MFSG22LONFZXI4TBORXXE4Y=</code></td>
+</tr>
+<tr>
+<td align="left">Base58</td>
+<td align="left"><code>cX8j8pvGzppMKVb</code></td>
+<td><code>BNF5dFLUTN5XwM1yLoF</code></td>
+</tr>
+<tr>
+<td align="left">Base64</td>
+<td align="left"><code>MDEyMzQ1Njc4OTA=</code></td>
+<td><code>YWRtaW5pc3RyYXRvcnM=</code></td>
+</tr>
+<tr>
+<td align="left">Base85</td>
+<td align="left"><code>0JP==1c70M3&amp;rY</code></td>
+<td><code>@:X4hDJ=06Eaa&#39;.EcV</code></td>
+</tr>
+<tr>
+<td align="left">Base100</td>
+<td align="left"><code>🐧🐨🐩🐪🐫🐬🐭🐮🐯🐰🐧</code></td>
+<td><code>👘👛👤👠👥👠👪👫👩👘👫👦👩👪</code></td>
+</tr>
+</tbody></table>
+<h3 id="Unicode-编码"><a href="#Unicode-编码" class="headerlink" title="Unicode 编码"></a>Unicode 编码</h3><p>Unicode 又称为统一码、万国码、单一码，是一种在计算机上使用的字符编码。Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，以满足跨语言、跨平台进行文本转换、处理的要求。其主要特征如下：</p>
+<ul>
+<li>以 <code>\u</code>、<code>&amp;#</code> 或 <code>&amp;#x</code> 开头，后面是数字加字母组合</li>
+</ul>
+<p>PS：<code>\u</code> 开头和 <code>&amp;#x</code> 开头是一样的，都是16进制 Unicode 字符的不同写法，<code>&amp;#</code> 则是 Unicode 字符10进制的写法，此外，<code>&amp;#</code> 和 <code>&amp;#x</code> 开头的，也称为 HTML 字符实体转换，字符实体是用一个编号写入 HTML 代码中来代替一个字符，在 HTML 中，某些字符是预留的，如果希望正确地显示预留字符，就必须在 HTML 源代码中使用字符实体。</p>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例一</th>
+<th>示例二</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td>12345</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>Unicode</td>
+<td><code>\u0031\u0032\u0033\u0034\u0035</code></td>
+<td><code>\u0061\u0064\u006d\u0069\u006e</code></td>
+</tr>
+</tbody></table>
+<h3 id="Escape-编码"><a href="#Escape-编码" class="headerlink" title="Escape 编码"></a>Escape 编码</h3><p>Escape 编码又叫 %u 编码，Escape 编码就是字符对应 UTF-16BE 表示方式前面加 %u，Escape 不会对 ASCII 字母和数字进行编码，也不会对下面这些 ASCII 标点符号进行编码： <code>* @ - _ + . / </code>，其他所有的字符都会被转义序列替换。其主要特征如下：</p>
+<ul>
+<li>以 <code>%u</code> 开头，后面是数字加字母组合</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例一</th>
+<th>示例二</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td>爬虫</td>
+<td>我爱Python</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td><code>%u722C%u866B</code></td>
+<td><code>%u6211%u7231Python</code></td>
+</tr>
+</tbody></table>
+<h3 id="URL-Hex-编码"><a href="#URL-Hex-编码" class="headerlink" title="URL / Hex 编码"></a>URL / Hex 编码</h3><p>URL 和 Hex 编码的结果是一样的，不同的是当你用 URL 编码网址时是不会把 <code>http</code>、<code>https</code> 关键字和 <code>/</code>、<code>?</code>、<code>&amp;</code>、<code>=</code> 等连接符进行编码的，而 Hex 编码则全部转化了，其主要特征如下：</p>
+<ul>
+<li>以 <code>%</code> 开头，后面是数字加字母组合</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td><a target="_blank" rel="noopener" href="https://www.kuaidaili.com/">https://www.kuaidaili.com/</a></td>
+</tr>
+<tr>
+<td>Unicode</td>
+<td><code>https://%77%77%77%2E%6B%75%61%69%64%61%69%6C%69%2E%63%6F%6D/</code></td>
+</tr>
+<tr>
+<td>Hex</td>
+<td><code>%68%74%74%70%73%3a%2f%2f%77%77%77%2e%6b%75%61%69%64%61%69%6c%69%2e%63%6f%6d%2f</code></td>
+</tr>
+</tbody></table>
+<h2 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h2><h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><p>MD5 实质是一种消息摘要算法，一个数据的 MD5 值是唯一的，同一个数据不可能计算出多个不同的 MD5 值，但是，不同数据计算出来的 MD5 值是有可能一样的，知道一个 MD5 值，理论上是无法还原出它的原始数据的，MD5 是最容易辨别的，主要特征如下：</p>
+<ul>
+<li>密文一般为 16 位或者 32 位，其中 16 位是取的 32 位第 9~25 位的值；</li>
+<li>组成方式为字母（a-f）和数字（0-9）混合，字母可以全部是大写或者小写。</li>
+</ul>
+<p>除了通过密文特征来判断以外，我们还可以搜索源代码，标准 MD5 的源码里是包含了一些特定的值的，没有这些特定值，就无法实现 MD5：</p>
+<ul>
+<li><code>0123456789ABCDEF</code>、<code>0123456789abcdef</code></li>
+<li><code>1732584193</code>、<code>-271733879</code>、<code>-1732584194</code>、<code>271733878</code></li>
+</ul>
+<p>PS：某些特殊情况下，密文的长度也有可能不止 16 位或者 32 位，有可能是在官方算法上有一些魔改，通常也是在 16 位的基础上，左右填充了一些随机字符串。</p>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例一</th>
+<th>示例二</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td>123456</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>MD5（16位小写）</td>
+<td><code>49ba59abbe56e057</code></td>
+<td><code>7a57a5a743894a0e</code></td>
+</tr>
+<tr>
+<td>MD5（16位大写）</td>
+<td><code>49BA59ABBE56E057</code></td>
+<td><code>7A57A5A743894A0E</code></td>
+</tr>
+<tr>
+<td>MD5（32位小写）</td>
+<td><code>e10adc3949ba59abbe56e057f20f883e</code></td>
+<td><code>21232f297a57a5a743894a0e4a801fc3</code></td>
+</tr>
+<tr>
+<td>MD5（32位大写）</td>
+<td><code>E10ADC3949BA59ABBE56E057F20F883E</code></td>
+<td><code>21232F297A57A5A743894A0E4A801FC3</code></td>
+</tr>
+</tbody></table>
+<h3 id="SHA-系列"><a href="#SHA-系列" class="headerlink" title="SHA 系列"></a>SHA 系列</h3><p>SHA 是比 MD5 更安全一点的摘要算法，SHA 通常指 SHA 家族算法，分别是 SHA-1、SHA-2、SHA-3，其中 SHA-2 是 SHA-224、SHA-256、SHA-384、SHA-512 的并称，SHA-3 是 SHA3-224、SHA3-256、SHA3-384、SHA3-512、SHAKE128、SHAKE256 的并称，其名字的后缀的数字就代表了结果的大小（bit），注意，SHAKE 算法结果的大小并不是固定的，其他算法特征如下：</p>
+<ul>
+<li>SHA-1：字母（a-f）和数字（0-9）混合，固定位数 40 位；</li>
+<li>SHA-224/SHA3-224：字母（a-f）和数字（0-9）混合，固定位数 56 位；</li>
+<li>SHA-256/SHA3-256：字母（a-f）和数字（0-9）混合，固定位数 64 位；</li>
+<li>SHA-384/SHA3-384：字母（a-f）和数字（0-9）混合，固定位数 96 位；</li>
+<li>SHA-512/SHA3-512：字母（a-f）和数字（0-9）混合，固定位数 128 位。</li>
+</ul>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td>123456</td>
+</tr>
+<tr>
+<td>SHA-1</td>
+<td><code>7c4a8d09ca3762af61e59520943dc26494f8941b</code></td>
+</tr>
+<tr>
+<td>SHA-256</td>
+<td><code>8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92</code></td>
+</tr>
+<tr>
+<td>SHA3-256</td>
+<td><code>c888c9ce9e098d5864d3ded6ebcc140a12142263bace3a23a36f9905f12bd64a</code></td>
+</tr>
+</tbody></table>
+<h3 id="HMAC-系列"><a href="#HMAC-系列" class="headerlink" title="HMAC 系列"></a>HMAC 系列</h3><p>HMAC 这种算法就是在 MD5、SHA 两种加密的基础上引入了秘钥，其密文也和 MD5、SHA 类似，密文的长度和使用的 MD5、SHA 算法对应密文的长度是一样的。特征如下：</p>
+<ul>
+<li>HMAC-MD5：字母（a-f）和数字（0-9）混合，位数一般为 32 位；</li>
+<li>HMAC-SHA-1：字母（a-f）和数字（0-9）混合，固定位数 40 位；</li>
+<li>HMAC-SHA-224 / HMAC-SHA3-224：字母（a-f）和数字（0-9）混合，固定位数 56 位；</li>
+<li>HMAC-SHA-256 / HMAC-SHA3-256：字母（a-f）和数字（0-9）混合，固定位数 64 位；</li>
+<li>HMAC-SHA-384 / HMAC-SHA3-384：字母（a-f）和数字（0-9）混合，固定位数 96 位；</li>
+<li>HMAC-SHA-512 / HMAC-SHA3-512：字母（a-f）和数字（0-9）混合，固定位数 128 位。</li>
+</ul>
+<p>HMAC 和 SHA、MD5 的密文都很像，当无法确定是否为 HMAC 时，可以通过其名称搜索到加密方法，如果传入了密钥 key，说明就是 HMAC，当然你也可以直接当做是 SHA 或 MD5 来解，解密失败时就得考虑是否有密钥，是否为 HMAC 了，在 JS 中，通常一个 HMAC 加密方法是这样写的：</p>
+<pre><code class="javascript">function HmacSHA1Encrypt(word, key) &#123;
+    return CryptoJS.HmacSHA1(word, key).toString();
+&#125;
+</code></pre>
+<p>示例（密钥 123456abcde）：</p>
+<table>
+<thead>
+<tr>
+<th>编码类型</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>明文</td>
+<td>123456</td>
+</tr>
+<tr>
+<td>HMAC-MD5</td>
+<td><code>432bb95bb00005ddce4a1c757488ed95</code></td>
+</tr>
+<tr>
+<td>HMAC-SHA-1</td>
+<td><code>37a04076b7736c44460d330ee0d00014428b175e</code></td>
+</tr>
+<tr>
+<td>HMAC-SHA-256</td>
+<td><code>50cb1345366df11140fb91b43caaf69627e3f5529705ddf6b0d0cae67986e585</code></td>
+</tr>
+<tr>
+<td>HMAC-SHA3-256</td>
+<td><code>b808ed9f66436e89fba527a01d1d6044318fea8599d9f39bfb6bec4843964bf3</code></td>
+</tr>
+</tbody></table>
+<h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><p>RSA 加密算法是一种非对称加密算法，通过公钥加密结果，必须私钥解密。 同样私钥加密结果，公钥可以解密，应用非常广泛，在网站中通常使用 JSEncrypt 库来实现，其最大的特征就是有一个设置公钥的过程，我们可以通过以下方法来快速初步判断是否为 RSA 算法：</p>
+<ul>
+<li><p>搜索关键词 <code>new JSEncrypt()</code>，<code>JSEncrypt</code> 等，一般会使用 JSEncrypt 库，会有 new 一个实例对象的操作；</p>
+</li>
+<li><p>搜索关键词 <code>setPublicKey</code>、<code>setKey</code>、<code>setPrivateKey</code>、<code>getPublicKey</code> 等，一般实现的代码里都含有设置密钥的过程；</p>
+</li>
+<li><p>RSA 的私钥、公钥、明文、密文长度也有一定对应关系，也可以从这方面初步判断：</p>
+<table>
+<thead>
+<tr>
+<th align="left">私钥长度（Base64）</th>
+<th align="left">公钥长度（Base64）</th>
+<th align="left">明文长度</th>
+<th align="left">密文长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">428</td>
+<td align="left">128</td>
+<td align="left">1~53</td>
+<td align="left">88</td>
+</tr>
+<tr>
+<td align="left">812</td>
+<td align="left">216</td>
+<td align="left">1~117</td>
+<td align="left">172</td>
+</tr>
+<tr>
+<td align="left">1588</td>
+<td align="left">392</td>
+<td align="left">1~245</td>
+<td align="left">344</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="AES、DES、3DES、RC4、Rabbit-等"><a href="#AES、DES、3DES、RC4、Rabbit-等" class="headerlink" title="AES、DES、3DES、RC4、Rabbit 等"></a>AES、DES、3DES、RC4、Rabbit 等</h3><p>AES、DES、3DES、RC4、Rabbit 等加密算法的密文通常没有固定的长度，他们通常使用 crypto-js 来实现，比如 AES 加解密示例如下：</p>
+<pre><code class="javascript">CryptoJS = require(&quot;crypto-js&quot;)
+
+var key = CryptoJS.enc.Utf8.parse(&quot;0123456789abcdef&quot;);
+var iv = CryptoJS.enc.Utf8.parse(&quot;0123456789abcdef&quot;);
+
+function AESEncrypt(word) &#123;
+    var srcs = CryptoJS.enc.Utf8.parse(word);
+    var encrypted = CryptoJS.AES.encrypt(srcs, key, &#123;
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    &#125;);
+    return encrypted.toString();
+&#125;
+
+function AESDecrypt(word) &#123;
+    var srcs = word;
+    var decrypt = CryptoJS.AES.decrypt(srcs, key, &#123;
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    &#125;);
+    return decrypt.toString(CryptoJS.enc.Utf8);
+&#125;
+
+console.log(AESEncrypt(&quot;K哥爬虫&quot;))
+console.log(AESDecrypt(&quot;nSk3wCd92s08sQ9N+VHNvA==&quot;))
+</code></pre>
+<p>在 crypto-js 中，也有一些特定的关键字，我们可以通过搜索这些关键字来快速定位到 crypto-js：</p>
+<ul>
+<li><p><code>CryptoJS</code>、<code>crypto-js</code>、<code>iv</code>、<code>mode</code>、<code>padding</code>、<code>createEncryptor</code>、<code>createDecryptor</code></p>
+</li>
+<li><p><code>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=</code>、<code>0xffffffff</code>、<code>0xffff</code></p>
+</li>
+</ul>
+<p>定位到 CryptoJS 后，观察加密方法，比如 AES 就是 <code>CryptoJS.AES.encrypt</code>，DES 就是 <code>CryptoJS.DES.encrypt</code>，3DES 就是 <code>CryptoJS.TripleDES.encrypt</code>，注意他的 iv、mode、padding，拿下来就可以本地复现了。</p>
+<h3 id="SM-系列"><a href="#SM-系列" class="headerlink" title="SM 系列"></a>SM 系列</h3><p>SM 代表商密，即商业密码，是我国发布的一系列国产加密算法，SM 系列包括：SM1、SM2、SM3 、SM4、SM7、SM9，其中 SM1 和 SM7 的算法不公开，SM 系列算法在我国一些 gov 网站上有应用，有关国产加密算法前期文章有介绍：<a href="https://www.itbob.cn/article/041/">《认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法》</a>，本文不再赘述。</p>
+<p>在 SM 的 JavaScript 代码中一般会存在以下关键字，可以通过搜索关键字定位：</p>
+<ul>
+<li><code>SM2</code>、<code>SM3</code>、<code>SM4</code></li>
+<li><code>FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF</code></li>
+<li><code>FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC</code></li>
+<li><code>28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93</code></li>
+<li><code>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</code></li>
+<li><code>getPublicKeyFromPrivateKey</code>、<code>doEncrypt</code>、<code>doDecrypt</code>、<code>doSignature</code></li>
+</ul>
+<h2 id="混淆系列"><a href="#混淆系列" class="headerlink" title="混淆系列"></a>混淆系列</h2><h3 id="Obfuscator"><a href="#Obfuscator" class="headerlink" title="Obfuscator"></a>Obfuscator</h3><p>Obfuscator 就是混淆的意思，简称 OB 混淆，实战可参考以前的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/121719631">【JS 逆向百例】W店UA，OB反混淆，抓包替换CORS跨域错误分析</a>，OB 混淆具有以下特征：</p>
+<ul>
+<li>一般由一个大数组或者含有大数组的函数、一个自执行函数、解密函数和加密后的函数四部分组成；</li>
+<li>函数名和变量名通常以 <code>_0x</code> 或者 <code>0x</code> 开头，后接 1~6 位数字或字母组合；</li>
+<li>自执行函数，进行移位操作，有明显的 push、shift 关键字；</li>
+</ul>
+<p>一段正常的代码如下：</p>
+<pre><code class="javascript">function hi() &#123;
+  console.log(&quot;Hello World!&quot;);
+&#125;
+hi();
+</code></pre>
+<p>经过 OB 混淆后的结果：</p>
+<pre><code class="javascript">function _0x3f26() &#123;
+    var _0x2dad75 = [&#39;5881925kTCKCP&#39;, &#39;Hello\x20World!&#39;, &#39;600mDvfGa&#39;, &#39;699564jYNxbu&#39;, &#39;1083271cEvuvT&#39;, &#39;log&#39;, &#39;18sKjcFY&#39;, &#39;214857eMgFSU&#39;, &#39;77856FUKcuE&#39;, &#39;736425OzpdFI&#39;, &#39;737172JqcGMg&#39;];
+    _0x3f26 = function () &#123;
+        return _0x2dad75;
+    &#125;;
+    return _0x3f26();
+&#125;
+
+(function (_0x307c88, _0x4f8223) &#123;
+    var _0x32807d = _0x1fe9, _0x330c58 = _0x307c88();
+    while (!![]) &#123;
+        try &#123;
+            var _0x5d6354 = parseInt(_0x32807d(0x6f)) / 0x1 + parseInt(_0x32807d(0x6e)) / 0x2 + parseInt(_0x32807d(0x70)) / 0x3 + -parseInt(_0x32807d(0x69)) / 0x4 + parseInt(_0x32807d(0x71)) / 0x5 + parseInt(_0x32807d(0x6c)) / 0x6 * (parseInt(_0x32807d(0x6a)) / 0x7) + -parseInt(_0x32807d(0x73)) / 0x8 * (parseInt(_0x32807d(0x6d)) / 0x9);
+            if (_0x5d6354 === _0x4f8223) break; else _0x330c58[&#39;push&#39;](_0x330c58[&#39;shift&#39;]());
+        &#125; catch (_0x3f18e4) &#123;
+            _0x330c58[&#39;push&#39;](_0x330c58[&#39;shift&#39;]());
+        &#125;
+    &#125;
+&#125;(_0x3f26, 0xaa023));
+
+function _0x1fe9(_0xa907e7, _0x410a46) &#123;
+    var _0x3f261f = _0x3f26();
+    return _0x1fe9 = function (_0x1fe950, _0x5a08da) &#123;
+        _0x1fe950 = _0x1fe950 - 0x69;
+        var _0x82a06 = _0x3f261f[_0x1fe950];
+        return _0x82a06;
+    &#125;, _0x1fe9(_0xa907e7, _0x410a46);
+&#125;
+
+function hi() &#123;
+    var _0x12a222 = _0x1fe9;
+    console[_0x12a222(0x6b)](_0x12a222(0x72));
+&#125;
+
+hi();
+</code></pre>
+<h3 id="JJEncode"><a href="#JJEncode" class="headerlink" title="JJEncode"></a>JJEncode</h3><p>JJEncode、AAEncode、JSFuck 都是同一个作者，实战可参考以前的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/121920783">【JS 逆向百例】网洛者反爬练习平台第二题：JJEncode 加密</a>，JJEncode 具有以下特征：</p>
+<ul>
+<li>大量 <code>$</code>、<code>_</code> 符号，大量重复的自定义变量；</li>
+<li>仅由 18 个符号组成：<code>[]()!+,\&quot;$.:;_&#123;&#125;~=</code></li>
+</ul>
+<p>正常的一段 JS 代码：</p>
+<pre><code class="javascript">alert(&quot;Hello, JavaScript&quot; )
+</code></pre>
+<p>经过 JJEncode 混淆（自定义变量名为 $）之后的代码：</p>
+<pre><code class="javascript">$=~[];$=&#123;___:++$,$$$$:(![]+&quot;&quot;)[$],__$:++$,$_$_:(![]+&quot;&quot;)[$],_$_:++$,$_$$:(&#123;&#125;+&quot;&quot;)[$],$$_$:($[$]+&quot;&quot;)[$],_$$:++$,$$$_:(!&quot;&quot;+&quot;&quot;)[$],$__:++$,$_$:++$,$$__:(&#123;&#125;+&quot;&quot;)[$],$$_:++$,$$$:++$,$___:++$,$__$:++$&#125;;$.$_=($.$_=$+&quot;&quot;)[$.$_$]+($._$=$.$_[$.__$])+($.$$=($.$+&quot;&quot;)[$.__$])+((!$)+&quot;&quot;)[$._$$]+($.__=$.$_[$.$$_])+($.$=(!&quot;&quot;+&quot;&quot;)[$.__$])+($._=(!&quot;&quot;+&quot;&quot;)[$._$_])+$.$_[$.$_$]+$.__+$._$+$.$;$.$$=$.$+(!&quot;&quot;+&quot;&quot;)[$._$$]+$.__+$._+$.$+$.$$;$.$=($.___)[$.$_][$.$_];$.$($.$($.$$+&quot;\&quot;&quot;+$.$_$_+(![]+&quot;&quot;)[$._$_]+$.$$$_+&quot;\\&quot;+$.__$+$.$$_+$._$_+$.__+&quot;(\\\&quot;\\&quot;+$.__$+$.__$+$.___+$.$$$_+(![]+&quot;&quot;)[$._$_]+(![]+&quot;&quot;)[$._$_]+$._$+&quot;,\\&quot;+$.$__+$.___+&quot;\\&quot;+$.__$+$.__$+$._$_+$.$_$_+&quot;\\&quot;+$.__$+$.$$_+$.$$_+$.$_$_+&quot;\\&quot;+$.__$+$._$_+$._$$+$.$$__+&quot;\\&quot;+$.__$+$.$$_+$._$_+&quot;\\&quot;+$.__$+$.$_$+$.__$+&quot;\\&quot;+$.__$+$.$$_+$.___+$.__+&quot;\\\&quot;\\&quot;+$.$__+$.___+&quot;)&quot;+&quot;\&quot;&quot;)())();
+</code></pre>
+<h3 id="AAEncode"><a href="#AAEncode" class="headerlink" title="AAEncode"></a>AAEncode</h3><p>JJEncode、AAEncode、JSFuck 都是同一个作者，实战可参考以前的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/121920864">【JS 逆向百例】网洛者反爬练习平台第三题：AAEncode 加密</a>，AAEncode 具有以下特征：</p>
+<ul>
+<li>仅由日式表情符号组成</li>
+</ul>
+<p>正常的一段 JS 代码：</p>
+<pre><code class="javascript">alert(&quot;Hello, JavaScript&quot;)
+</code></pre>
+<p>经过 AAEncode 混淆之后的代码：</p>
+<pre><code class="javascript">ﾟωﾟﾉ= /｀ｍ´）ﾉ ~┻━┻   //*´∇｀*/ [&#39;_&#39;]; o=(ﾟｰﾟ)  =_=3; c=(ﾟΘﾟ) =(ﾟｰﾟ)-(ﾟｰﾟ); (ﾟДﾟ) =(ﾟΘﾟ)= (o^_^o)/ (o^_^o);(ﾟДﾟ)=&#123;ﾟΘﾟ: &#39;_&#39; ,ﾟωﾟﾉ : ((ﾟωﾟﾉ==3) +&#39;_&#39;) [ﾟΘﾟ] ,ﾟｰﾟﾉ :(ﾟωﾟﾉ+ &#39;_&#39;)[o^_^o -(ﾟΘﾟ)] ,ﾟДﾟﾉ:((ﾟｰﾟ==3) +&#39;_&#39;)[ﾟｰﾟ] &#125;; (ﾟДﾟ) [ﾟΘﾟ] =((ﾟωﾟﾉ==3) +&#39;_&#39;) [c^_^o];(ﾟДﾟ) [&#39;c&#39;] = ((ﾟДﾟ)+&#39;_&#39;) [ (ﾟｰﾟ)+(ﾟｰﾟ)-(ﾟΘﾟ) ];(ﾟДﾟ) [&#39;o&#39;] = ((ﾟДﾟ)+&#39;_&#39;) [ﾟΘﾟ];(ﾟoﾟ)=(ﾟДﾟ) [&#39;c&#39;]+(ﾟДﾟ) [&#39;o&#39;]+(ﾟωﾟﾉ +&#39;_&#39;)[ﾟΘﾟ]+ ((ﾟωﾟﾉ==3) +&#39;_&#39;) [ﾟｰﾟ] + ((ﾟДﾟ) +&#39;_&#39;) [(ﾟｰﾟ)+(ﾟｰﾟ)]+ ((ﾟｰﾟ==3) +&#39;_&#39;) [ﾟΘﾟ]+((ﾟｰﾟ==3) +&#39;_&#39;) [(ﾟｰﾟ) - (ﾟΘﾟ)]+(ﾟДﾟ) [&#39;c&#39;]+((ﾟДﾟ)+&#39;_&#39;) [(ﾟｰﾟ)+(ﾟｰﾟ)]+ (ﾟДﾟ) [&#39;o&#39;]+((ﾟｰﾟ==3) +&#39;_&#39;) [ﾟΘﾟ];(ﾟДﾟ) [&#39;_&#39;] =(o^_^o) [ﾟoﾟ] [ﾟoﾟ];(ﾟεﾟ)=((ﾟｰﾟ==3) +&#39;_&#39;) [ﾟΘﾟ]+ (ﾟДﾟ) .ﾟДﾟﾉ+((ﾟДﾟ)+&#39;_&#39;) [(ﾟｰﾟ) + (ﾟｰﾟ)]+((ﾟｰﾟ==3) +&#39;_&#39;) [o^_^o -ﾟΘﾟ]+((ﾟｰﾟ==3) +&#39;_&#39;) [ﾟΘﾟ]+ (ﾟωﾟﾉ +&#39;_&#39;) [ﾟΘﾟ]; (ﾟｰﾟ)+=(ﾟΘﾟ); (ﾟДﾟ)[ﾟεﾟ]=&#39;\\&#39;; (ﾟДﾟ).ﾟΘﾟﾉ=(ﾟДﾟ+ ﾟｰﾟ)[o^_^o -(ﾟΘﾟ)];(oﾟｰﾟo)=(ﾟωﾟﾉ +&#39;_&#39;)[c^_^o];(ﾟДﾟ) [ﾟoﾟ]=&#39;\&quot;&#39;;(ﾟДﾟ) [&#39;_&#39;] ( (ﾟДﾟ) [&#39;_&#39;] (ﾟεﾟ+(ﾟДﾟ)[ﾟoﾟ]+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ (ﾟΘﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ ((o^_^o) - (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+((ﾟｰﾟ) + (ﾟΘﾟ))+ (c^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟｰﾟ)+ ((o^_^o) - (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟΘﾟ)+ (c^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ ((ﾟｰﾟ) + (o^_^o))+ (ﾟДﾟ)[ﾟεﾟ]+((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟｰﾟ)+ (c^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟΘﾟ)+ ((o^_^o) - (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ (ﾟΘﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ ((o^_^o) +(o^_^o))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ (ﾟΘﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) - (ﾟΘﾟ))+ (o^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ (ﾟｰﾟ)+ (o^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ ((o^_^o) - (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟΘﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ (c^_^o)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟΘﾟ)+ ((o^_^o) +(o^_^o))+ (ﾟｰﾟ)+ (ﾟДﾟ)[ﾟεﾟ]+(ﾟｰﾟ)+ ((o^_^o) - (ﾟΘﾟ))+ (ﾟДﾟ)[ﾟεﾟ]+((ﾟｰﾟ) + (ﾟΘﾟ))+ (ﾟΘﾟ)+ (ﾟДﾟ)[ﾟoﾟ]) (ﾟΘﾟ)) (&#39;_&#39;);
+</code></pre>
+<h3 id="JSFuck"><a href="#JSFuck" class="headerlink" title="JSFuck"></a>JSFuck</h3><p>JJEncode、AAEncode、JSFuck 都是同一个作者，实战可参考以前的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/122057377">【JS 逆向百例】网洛者反爬练习平台第四题：JSFuck 加密</a>，JSFuck 具有以下特征：</p>
+<ul>
+<li>仅由 6 个符号组成：<code>[]()!+</code></li>
+</ul>
+<p>正常的一段 JS 代码：</p>
+<pre><code class="javascript">alert(1)
+</code></pre>
+<p>经过 JSFuck 混淆之后的代码类似于：</p>
+<pre><code class="javascript">[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]][([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]((!![]+[])[+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+([][[]]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+!+[]]+(+[![]]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]+(+(!+[]+!+[]+!+[]+[+!+[]]))[(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([]+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]][([][[]]+[])[+!+[]]+(![]+[])[+!+[]]+((+[])[([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+([][[]]+[])[+!+[]]+(![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[])[+!+[]]+([][[]]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+[]]+(!![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[+!+[]+[+[]]]+(!![]+[])[+!+[]]]+[])[+!+[]+[+!+[]]]+(!![]+[])[!+[]+!+[]+!+[]]]](!+[]+!+[]+!+[]+[!+[]+!+[]])+(![]+[])[+!+[]]+(![]+[])[!+[]+!+[]])()((![]+[])[+!+[]]+(![]+[])[!+[]+!+[]]+(!![]+[])[!+[]+!+[]+!+[]]+(!![]+[])[+!+[]]+(!![]+[])[+[]]+([][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]]+[])[+!+[]+[!+[]+!+[]+!+[]]]+[+!+[]]+([+[]]+![]+[][(![]+[])[+[]]+(![]+[])[!+[]+!+[]]+(![]+[])[+!+[]]+(!![]+[])[+[]]])[!+[]+!+[]+[+[]]])
+</code></pre>
+<h3 id="Jother"><a href="#Jother" class="headerlink" title="Jother"></a>Jother</h3><p>Jother 混淆和 JSFuck 有点儿类似，唯一的区别就是密文比 JSFuck 多了 <code>&#123;&#125;</code>，其解密方式和 JSFuck 是一样的，Jother 混淆现在不太常见了，也很难找到在线混淆之类的工具了，原作者有个在线页面也关闭了，不过仍然可以了解一下，Jother 混淆具有以下特征：</p>
+<ul>
+<li>仅由 8 个符号组成：<code>[]()!+&#123;&#125;</code></li>
+</ul>
+<p>正常的一段代码：</p>
+<pre><code class="javascript">function anonymous(
+) &#123;
+return location
+&#125;
+</code></pre>
+<p>经过 Jother 混淆之后的代码类似于：</p>
+<pre><code class="javascript">[][(![]+[])[!![]+!![]+!![]]+(&#123;&#125;+[])[+!![]]+(!![]+[])[+!![]]+(!![]+[])[+[]]][(&#123;&#125;+[])[!![]+!![]+!![]+!![]+!![]]+(&#123;&#125;+[])[+!![]]+(&#123;&#125;[[]]+[])[+!![]]+(![]+[])[!![]+!![]+!![]]+(!![]+[])[+[]]+(!![]+[])[+!![]]+(&#123;&#125;[[]]+[])[+[]]+(&#123;&#125;+[])[!![]+!![]+!![]+!![]+!![]]+(!![]+[])[+[]]+(&#123;&#125;+[])[+!![]]+(!![]+[])[+!![]]]((!![]+[])[+!![]]+(!![]+[])[!![]+!![]+!![]]+(!![]+[])[+[]]+(&#123;&#125;[[]]+[])[+[]]+(!![]+[])[+!![]]+(&#123;&#125;[[]]+[])[+!![]]+(&#123;&#125;+[])[!![]+!![]+!![]+!![]+!![]+!![]+!![]]+(![]+[])[!![]+!![]]+(&#123;&#125;+[])[+!![]]+(&#123;&#125;+[])[!![]+!![]+!![]+!![]+!![]]+(![]+[])[+!![]]+(!![]+[])[+[]]+(&#123;&#125;[[]]+[])[!![]+!![]+!![]+!![]+!![]]+(&#123;&#125;+[])[+!![]]+(&#123;&#125;[[]]+[])[+!![]])()
+</code></pre>
+<h3 id="Brainfuck"><a href="#Brainfuck" class="headerlink" title="Brainfuck"></a>Brainfuck</h3><p>Brainfuck 实际上是一种极小化的计算机语言，又称为 BF 语言，该语言以其极简主义着称，仅包含八个简单的命令、一个数据指针和一个指令指针，这种语言在爬虫领域也可以是一种反爬手段，可以视为一种混淆方式，虽然不常见🤔，这里给一个在线体验的网址：<a target="_blank" rel="noopener" href="https://copy.sh/brainfuck/text.html">https://copy.sh/brainfuck/text.html</a> ，感兴趣的同志可以深入研究一下，Brainfuck 具有以下特征：</p>
+<ul>
+<li>仅由 <code>&lt;&gt;+-.[]</code> 组成；</li>
+<li>大量的 <code>+-</code> 符号。</li>
+</ul>
+<p>正常的一段代码：</p>
+<pre><code class="javascript">alert(&quot;Hello, Brainfuck&quot;)
+</code></pre>
+<p>经过 Brainfuck 混淆之后的代码类似于：</p>
+<pre><code class="javascript">--[-----&gt;+&lt;]&gt;-----.+++++++++++.-------.+++++++++++++.++.+[---&gt;+&lt;]&gt;+.------.++[-&gt;++&lt;]&gt;.-[-&gt;+++++&lt;]&gt;++.+++++++..+++.[-&gt;+++++&lt;]&gt;+.------------.+[-&gt;++&lt;]&gt;.---[-----&gt;+&lt;]&gt;-.+++[-&gt;+++&lt;]&gt;++.++++++++.+++++.--------.-[---&gt;+&lt;]&gt;--.+[-&gt;+++&lt;]&gt;+.++++++++.+[++&gt;---&lt;]&gt;.+++++++.
+</code></pre>
+<h3 id="Ook"><a href="#Ook" class="headerlink" title="Ook!"></a>Ook!</h3><p>Ook! 和 Brainfuck 的原理都是类似的，只不过符号有差异，同样的，这种语言在爬虫领域也可以是一种反爬手段，可以视为一种混淆方式，虽然不常见🤔，在线体验的网址：<a target="_blank" rel="noopener" href="https://www.splitbrain.org/services/ook">https://www.splitbrain.org/services/ook</a> ，Ook! 具有以下特征：</p>
+<ul>
+<li>完整 Ook!：仅由 3 种符号组成 <code>Ook.</code>、<code>Ook?</code>、<code>Ook!</code></li>
+<li>Short Ook!：仅由 3 种符号组成 <code>.!?</code></li>
+</ul>
+<p>正常的一段代码：</p>
+<pre><code class="javascript">alert(&quot;Hello, Ook!&quot;)
+</code></pre>
+<p>经过 Ook! 混淆之后的代码类似于：</p>
+<pre><code class="javascript">Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook. Ook? Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook? Ook. Ook? Ook! Ook. Ook? Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook! Ook. Ook. Ook. Ook! Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. 
+</code></pre>
+<h3 id="Trivial-brainfuck-substitution"><a href="#Trivial-brainfuck-substitution" class="headerlink" title="Trivial brainfuck substitution"></a>Trivial brainfuck substitution</h3><p>Trivial brainfuck substitution 不是一种单一的编程语言，而是一大类编程语言，成员超过 20 个，前面提到的 Brainfuck、Ook! 都是其中的一员，在爬虫领域中，说实话这种稀奇古怪的混淆其实并不常见，但是在一些 CTF 中有可能会出现，作为爬虫工程师也可以了解了解😎，具体可以参考：<a target="_blank" rel="noopener" href="https://esolangs.org/wiki/Trivial_brainfuck_substitution">https://esolangs.org/wiki/Trivial_brainfuck_substitution</a></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="恺撒密码"><a href="#恺撒密码" class="headerlink" title="恺撒密码"></a>恺撒密码</h3><p>恺撒密码（Caesar cipher）又称为恺撒加密、恺撒变换、变换加密，它是一种替换加密的技术，明文中的所有字母都在字母表上向后（或向前）按照一个固定数目进行偏移后被替换成密文。例如，当偏移量是 3 的时候，所有的字母 A 将被替换成 D，B 变成 E，以此类推。这个加密方法是以罗马共和时期恺撒的名字命名的，当年恺撒曾用此方法与其将军们进行联系。</p>
+<p>根据偏移量的不同，还存在若干特定的恺撒密码名称：偏移量为10：Avocat（A→K）；偏移量为13：ROT13；偏移量为-5：Cassis (K 6)；偏移量为-6：Cassette (K 7)</p>
+<p>示例（偏移量 3）：</p>
+<ul>
+<li><p>明文字母表：ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+</li>
+<li><p>密文字母表：DEFGHIJKLMNOPQRSTUVWXYZABC</p>
+</li>
+</ul>
+<h3 id="栅栏密码"><a href="#栅栏密码" class="headerlink" title="栅栏密码"></a>栅栏密码</h3><p>栅栏密码就是把要加密的明文分成 N 个一组，然后把每组的第 1 个字连起来，形成一段无规律的话。栅栏密码本身有一个潜规则，就是组成栅栏的字母一般不会太多，一般不超过 30 个。</p>
+<p>示例：明文为 THE LONGEST DAY MUST HAVE AN END。加密时，把将要传递的信息中的字母交替排成上下两行：</p>
+<p>T E O G S D Y U T A E N N</p>
+<p>H L N E T A M S H V A E D</p>
+<p>将下面一行字母排在上面一行的后边组合成密文：</p>
+<p>TEOGSDYUTAENN HLNETAMSHVAED</p>
+<p>栅栏密码还有一种变种，称为栅栏密码 W 型，它会先把明文类似 W 形状进行排列，然后再按栏目顺序 1-N，取每一栏的所有字符值，组成加密后密文，比如字符串 123456789，采用栏目数为 3 时，明文将采用如下排列：<br>1—5—9<br>-2-4-6-8-<br>–3—7–<br>取每一栏所有字符串，组成加密后密文：159246837</p>
+<h3 id="猪圈密码"><a href="#猪圈密码" class="headerlink" title="猪圈密码"></a>猪圈密码</h3><p>猪圈密码也称为朱高密码、共济会暗号、共济会密码或共济会员密码，是一种以格子为基础的简单替代式密码。只能对字母加解密并且符号无法复制，粘贴后会直接显示明文，即使使用符号，也不会影响密码分析，亦可用在其它替代式的方法。曾经是美国内战时盟军使用的密码，目前仅在密码教学、各种竞赛中使用。</p>
+<p><img src="https://img-blog.csdnimg.cn/3f805384f17840368db5e1611a54c9a2.gif#pic_center" alt="01.gif"></p>
+<h3 id="摩斯密码"><a href="#摩斯密码" class="headerlink" title="摩斯密码"></a>摩斯密码</h3><p>摩斯密码（Morse code），又称为摩尔斯电码、摩斯电码，是一种时通时断的信号代码，这种信号代码通过不同的排列顺序来表达不同的英文字母、数字和标点符号等。</p>
+<p>26个字母的摩斯密码表</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">A</td>
+<td align="left"><code>．━</code></td>
+<td align="left">B</td>
+<td align="left"><code>━ ．．．</code></td>
+<td>C</td>
+<td><code>━ ．━ ．</code></td>
+<td>D</td>
+<td><code>━ ．．</code></td>
+</tr>
+<tr>
+<td align="left">E</td>
+<td align="left"><code>．</code></td>
+<td align="left">F</td>
+<td align="left"><code>．．━ ．</code></td>
+<td>G</td>
+<td><code>━ ━ ．</code></td>
+<td>H</td>
+<td><code>．．．．</code></td>
+</tr>
+<tr>
+<td align="left">I</td>
+<td align="left"><code>．．</code></td>
+<td align="left">J</td>
+<td align="left"><code>．━ ━ ━</code></td>
+<td>K</td>
+<td><code>━ ．━</code></td>
+<td>L</td>
+<td><code>．━ ．．</code></td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="left"><code>━ ━</code></td>
+<td align="left">N</td>
+<td align="left"><code>━ ．</code></td>
+<td>O</td>
+<td><code>━ ━ ━</code></td>
+<td>P</td>
+<td><code>．━ ━ ．</code></td>
+</tr>
+<tr>
+<td align="left">Q</td>
+<td align="left"><code>━ ━ ．━</code></td>
+<td align="left">R</td>
+<td align="left"><code>．━ ．</code></td>
+<td>S</td>
+<td><code>．．．</code></td>
+<td>T</td>
+<td><code>━</code></td>
+</tr>
+<tr>
+<td align="left">U</td>
+<td align="left"><code>．．━</code></td>
+<td align="left">V</td>
+<td align="left"><code>．．．━</code></td>
+<td>W</td>
+<td><code>．━ ━</code></td>
+<td>X</td>
+<td><code>━ ．．━</code></td>
+</tr>
+<tr>
+<td align="left">Y</td>
+<td align="left"><code>━ ．━ ━</code></td>
+<td align="left">Z</td>
+<td align="left"><code>━ ━ ．．</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>10个数字的摩斯密码表</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left"><code>━ ━ ━ ━ ━</code></td>
+<td align="left">1</td>
+<td align="left"><code>．━ ━ ━ ━</code></td>
+<td>2</td>
+<td><code>．．━ ━ ━</code></td>
+<td>3</td>
+<td><code>．．．━ ━</code></td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><code>．．．．━</code></td>
+<td align="left">5</td>
+<td align="left"><code>．．．．．</code></td>
+<td>6</td>
+<td><code>━ ．．．．</code></td>
+<td>7</td>
+<td><code>━ ━ ．．．</code></td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left"><code>━ ━ ━ ．．</code></td>
+<td align="left">9</td>
+<td align="left"><code>━ ━ ━ ━ ．</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>标点符号的摩斯密码表</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th align="left">字符</th>
+<th align="left">摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+<th>字符</th>
+<th>摩斯码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.</td>
+<td align="left"><code>．━ ．━ ．━</code></td>
+<td align="left">:</td>
+<td align="left"><code>━ ━ ━ ．．．</code></td>
+<td>,</td>
+<td><code>━ ━ ．．━ ━</code></td>
+<td>;</td>
+<td><code>━ ．━ ．━ ．</code></td>
+</tr>
+<tr>
+<td align="left">?</td>
+<td align="left"><code>．．━ ━ ．．</code></td>
+<td align="left">=</td>
+<td align="left"><code>━ ．．．━</code></td>
+<td>‘</td>
+<td><code>．━ ━ ━ ━ ．</code></td>
+<td>/</td>
+<td><code>━ ．．━ ．</code></td>
+</tr>
+<tr>
+<td align="left">!</td>
+<td align="left"><code>━ ．━ ．━ ━</code></td>
+<td align="left">━</td>
+<td align="left"><code>━ ．．．．━</code></td>
+<td>_</td>
+<td><code>．．━ ━ ．━</code></td>
+<td>“</td>
+<td><code>．━ ．．━ ．</code></td>
+</tr>
+<tr>
+<td align="left">(</td>
+<td align="left"><code>━ ．━ ━ ．</code></td>
+<td align="left">)</td>
+<td align="left"><code>━ ．━ ━ ．━</code></td>
+<td>$</td>
+<td><code>．．．━ ．．━</code></td>
+<td>&amp;</td>
+<td><code>． ．．．</code></td>
+</tr>
+<tr>
+<td align="left">@</td>
+<td align="left"><code>．━ ━ ．━ ．</code></td>
+<td align="left"></td>
+<td align="left"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="培根密码"><a href="#培根密码" class="headerlink" title="培根密码"></a>培根密码</h3><p>培根密码，又名倍康尼密码（Bacon’s cipher）是由法兰西斯·培根发明的一种隐写术，它是一种本质上用二进制数设计的，没有用通常的0和1来表示，而是采用a和b，看到一串的a和b，并且五个一组，那么就是培根加密了。</p>
+<p>第一种方式：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>aaaaa</td>
+<td>H</td>
+<td>aabbb</td>
+<td>O</td>
+<td>abbba</td>
+<td>V</td>
+<td>babab</td>
+</tr>
+<tr>
+<td>B</td>
+<td>aaaab</td>
+<td>I</td>
+<td>abaaa</td>
+<td>P</td>
+<td>abbbb</td>
+<td>W</td>
+<td>babba</td>
+</tr>
+<tr>
+<td>C</td>
+<td>aaaba</td>
+<td>J</td>
+<td>abaab</td>
+<td>Q</td>
+<td>baaaa</td>
+<td>X</td>
+<td>babbb</td>
+</tr>
+<tr>
+<td>D</td>
+<td>aaabb</td>
+<td>K</td>
+<td>ababa</td>
+<td>R</td>
+<td>baaab</td>
+<td>Y</td>
+<td>bbaaa</td>
+</tr>
+<tr>
+<td>E</td>
+<td>aabaa</td>
+<td>L</td>
+<td>ababb</td>
+<td>S</td>
+<td>baaba</td>
+<td>Z</td>
+<td>bbaab</td>
+</tr>
+<tr>
+<td>F</td>
+<td>aabab</td>
+<td>M</td>
+<td>abbaa</td>
+<td>T</td>
+<td>baabb</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>G</td>
+<td>aabba</td>
+<td>N</td>
+<td>abbab</td>
+<td>U</td>
+<td>babaa</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>第二种方式：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+<th>字符</th>
+<th>培根密码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>AAAAA</td>
+<td>h</td>
+<td>AABBB</td>
+<td>p</td>
+<td>ABBBA</td>
+<td>x</td>
+<td>BABAB</td>
+</tr>
+<tr>
+<td>b</td>
+<td>AAAAB</td>
+<td>i-j</td>
+<td>ABAAA</td>
+<td>q</td>
+<td>ABBBB</td>
+<td>y</td>
+<td>BABBA</td>
+</tr>
+<tr>
+<td>c</td>
+<td>AAABA</td>
+<td>k</td>
+<td>ABAAB</td>
+<td>r</td>
+<td>BAAAA</td>
+<td>z</td>
+<td>BABBB</td>
+</tr>
+<tr>
+<td>d</td>
+<td>AAABB</td>
+<td>l</td>
+<td>ABABA</td>
+<td>s</td>
+<td>BAAAB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>e</td>
+<td>AABAA</td>
+<td>m</td>
+<td>ABABB</td>
+<td>t</td>
+<td>BAABA</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>f</td>
+<td>AABAB</td>
+<td>n</td>
+<td>ABBAA</td>
+<td>u-v</td>
+<td>BAABB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>g</td>
+<td>AABBA</td>
+<td>o</td>
+<td>ABBAB</td>
+<td>w</td>
+<td>BABAA</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<ul>
+<li>明文：kuaidaili</li>
+<li>密文：ABABABABAAAAAAAABAAAAAABBAAAAAABAAAABABBABAAA</li>
+</ul>
+<h3 id="维吉尼亚密码"><a href="#维吉尼亚密码" class="headerlink" title="维吉尼亚密码"></a>维吉尼亚密码</h3><p>维吉尼亚密码是在凯撒密码基础上产生的一种加密方法，它将凯撒密码的全部25种位移排序为一张表，与原字母序列共同组成26行及26列的字母表。另外，维吉尼亚密码必须有一个密钥，这个密钥由字母组成，最少一个，最多可与明文字母数量相等。维吉尼亚密码表如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/f2d77e1fbf392a531272954ec46a4aa2.png" alt="02.png"></p>
+<p>示例：</p>
+<ul>
+<li>明文：I’ve got it.</li>
+<li>密钥：ok</li>
+<li>密文：W’fs qcd wd.</li>
+</ul>
+<p>首先，密钥长度需要与明文长度相同，如果少于明文长度，则重复拼接直到相同。示例的明文长度为8个字母（非字母均被忽略），密钥会被程序补全为 <code>okokokok</code>，然后根据维吉尼亚密码表进行加密：明文第一个字母是 <code>I</code>，密钥第一个字母是 <code>o</code>，在表格中找到 <code>I</code> 列与 <code>o</code> 行相交点，字母 <code>W</code> 就是密文第一个字母，同理，<code>v</code> 列与 <code>k</code> 行交点字母是 <code>F</code>，<code>e</code> 列与 <code>o</code> 行交点字母是 <code>S</code>，以此类推。注意：维吉尼亚密码只对字母进行加密，不区分大小写，若文本中出现非字母字符会原样保留，如果输入多行文本，每行是单独加密的。</p>
+<h3 id="与佛论禅"><a href="#与佛论禅" class="headerlink" title="与佛论禅"></a>与佛论禅</h3><p>字符串转换后，是一些佛语，在线体验：<a target="_blank" rel="noopener" href="https://keyfc.net/bbs/tools/tudoucode.aspx">https://keyfc.net/bbs/tools/tudoucode.aspx</a></p>
+<p>示例：</p>
+<ul>
+<li>明文：爬虫</li>
+<li>密文：佛曰：俱曳栗羅。諳故大多罰顛冥有諳姪帝罰知俱薩心俱智伊</li>
+</ul>
+<h3 id="当铺密码"><a href="#当铺密码" class="headerlink" title="当铺密码"></a>当铺密码</h3><p>当铺密码在 CTF 比赛题目中出现过。该加密算法是根据当前汉字有多少笔画出头，对应的明文就是数字几。</p>
+<p>示例：</p>
+<ul>
+<li>明文：王夫 井工 夫口 由中人 井中 夫夫 由中大</li>
+<li>密文：67 84 70 123 82 77 125</li>
+</ul>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/045/">https://www.itbob.cn/article/045/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 Gitalk -->
+<div id="gitalk-comment">
+    <!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script>
+    var gitalk = new Gitalk({
+            clientID: 'd19a84b9d9a2ddb2c6b9',
+            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+            repo: 'trhx.github.io',
+            owner: 'TRHX',
+            admin: ['TRHX'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false
+        })
+   gitalk.render('gitalk-container')
+</script>
+</div>
+<style>
+    #gitalk-comment {
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/046/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/043/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        YWRtaW5AaXRib2IuY24=
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags/" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/timeline/" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends/" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/comments/" title="关于我 &amp; 留言板">
+                
+                    <i class="material-icons sidebar-material-icons">chat</i>
+                
+                关于我 &amp; 留言板
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives/">
+                文章总数
+                <span class="sidebar-badge">52</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">257.5k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+            <!--Copyright-->
+            <div id="copyright">
+
+                
+                    <div class="itbob-footer-text">
+                        
+                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
+                                        
+                    </div>
+                    
+
+                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
+
+                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+                        <script>
+                            var now = new Date();
+
+                            function createtime() {
+                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                                now.setTime(now.getTime() + 250);
+                                days = (now - grt) / 1000 / 60 / 60 / 24;
+                                dnum = Math.floor(days);
+                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                                hnum = Math.floor(hours);
+                                if (String(hnum).length == 1) {
+                                    hnum = "0" + hnum;
+                                }
+                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                                mnum = Math.floor(minutes);
+                                if (String(mnum).length == 1) {
+                                    mnum = "0" + mnum;
+                                }
+                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                                snum = Math.round(seconds);
+                                if (String(snum).length == 1) {
+                                    snum = "0" + snum;
+                                }
+                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                            }
+                            setInterval("createtime()", 250);
+                        </script>
+
+
+            </div>
+
+            <!-- All Site UV -->
+            <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
+        
+        </div> -->
+            <!-- Paradox Footer Right Section -->
+
+            <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+            <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+            <div class="mdl-mini-footer--right-section">
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">PV</span>
+                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Powered</span>
+                        <span class="badge-value bg-blue">Hexo</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">UV</span>
+                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Theme</span>
+                        <span class="badge-value bg-orange">Material</span>
+                    </div>
+                </div>
+            </div>
+            
+</footer>
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="/js/busuanzi.pure.mini.js"></script>
+
+
+
+   <!-- GitTalk -->
+
+
+
+
+
+<!-- Browser Check -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+    // UC
+	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
+        /* document.write('
+<link rel="stylesheet" href="/css/uc.css">
+'); */
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+	}
+    // IE
+    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
+        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+    };
+    // IE 11
+    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
+        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+    }
+</script>
+
+<!-- Blog Title JS -->
+
+    
+            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
+    
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

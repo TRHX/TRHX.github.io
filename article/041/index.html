@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <meta charset="utf-8">
+    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
+    <!--
+        © Material Theme
+        https://github.com/bollnh/hexo-theme-material
+        Version: 1.5.6 -->
+    <script>
+        window.materialVersion = "1.5.6"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0',
+            '1.5.2',
+            '1.5.5'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
+
+
+
+
+
+    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
+
+    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
+
+
+
+    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法 | 
+        
+        ITBOB&#39;S BLOG
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+    body,
+    html {
+        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        overflow-x: hidden !important;
+    }
+    
+    code {
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    
+    a {
+        color: #00838F;
+    }
+    
+    .mdl-card__media,
+    #search-label,
+    #search-form-label:after,
+    #scheme-Paradox .hot_tags-count,
+    #scheme-Paradox .sidebar_archives-count,
+    #scheme-Paradox .sidebar-colored .sidebar-header,
+    #scheme-Paradox .sidebar-colored .sidebar-badge {
+        background-color: #0097A7 !important;
+    }
+    /* Sidebar User Drop Down Menu Text Color */
+    
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+        color: #0097A7 !important;
+    }
+    
+    #post_entry-right-info,
+    .sidebar-colored .sidebar-nav li:hover>a,
+    .sidebar-colored .sidebar-nav li:hover>a i,
+    .sidebar-colored .sidebar-nav li>a:hover,
+    .sidebar-colored .sidebar-nav li>a:hover i,
+    .sidebar-colored .sidebar-nav li>a:focus i,
+    .sidebar-colored .sidebar-nav>.open>a,
+    .sidebar-colored .sidebar-nav>.open>a:hover,
+    .sidebar-colored .sidebar-nav>.open>a:focus,
+    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+        color: #0097A7 !important;
+    }
+    
+    .toTop {
+        background: #757575 !important;
+    }
+    
+    .material-layout .material-post>.material-nav,
+    .material-layout .material-index>.material-nav,
+    .material-nav a {
+        color: #757575;
+    }
+    
+    #scheme-Paradox .MD-burger-layer {
+        background-color: #757575;
+    }
+    
+    #scheme-Paradox #post-toc-trigger-btn {
+        color: #757575;
+    }
+    
+    .post-toc a:hover {
+        color: #00838F;
+        text-decoration: underline;
+    }
+</style>
+
+
+<!-- Theme Background Related-->
+
+        <style>
+            body {
+                background-color: #F5F5F5;
+            }
+            /* blog_info bottom background */
+            
+            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
+                background-color: #fff;
+            }
+        </style>
+        
+
+
+
+                <!-- Fade Effect -->
+                
+                    <style>
+                        .fade {
+                            transition: all 800ms linear;
+                            -webkit-transform: translate3d(0, 0, 0);
+                            -moz-transform: translate3d(0, 0, 0);
+                            -ms-transform: translate3d(0, 0, 0);
+                            -o-transform: translate3d(0, 0, 0);
+                            transform: translate3d(0, 0, 0);
+                            opacity: 1;
+                        }
+                        
+                        .fade.out {
+                            opacity: 0;
+                        }
+                    </style>
+                    
+
+                        <!-- Import Font -->
+                        <!-- Import Roboto -->
+
+    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
+    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+    
+    <!-- 枫叶飘落 -->
+    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ITBOB&#39;S BLOG">
+    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/041/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+        
+            <link rel=alternate type="application/atom+xml" href="/atom.xml">
+        
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="https://www.itbob.cn/article/041/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法 | ITBOB&#39;S BLOG">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
+    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> 
+
+    
+        <meta property="article:published_time" content="Thu Nov 04 2021 12:39:00 GMT+0800">
+        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="https://www.itbob.cn/article/041/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "https://www.itbob.cn/article/041/index.html",
+    "headline": "认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法",
+    "datePublished": "Thu Nov 04 2021 12:39:00 GMT+0800",
+    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "BOB",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/BOB.png"
+        },
+        "description": "Hi, nice to meet you"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "ITBOB&#39;S BLOG",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",JS 逆向,爬虫ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
+    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+        <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
+</script>
+    
+    
+        <script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+    
+    
+
+    <!-- Custom Head -->
+    
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span id="MD-burger-id" class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="post-toc-number">2.</span> <span class="post-toc-text">算法概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="post-toc-number">3.</span> <span class="post-toc-text">算法详解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SM1-%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">SM1 分组加密算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">椭圆曲线公钥加密算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">杂凑算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">分组加密算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E7%BB%84%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95-1"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">分组加密算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A0%87%E8%AF%86%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">标识加密算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E7%A5%96%E5%86%B2%E4%B9%8B%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">祖冲之算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">4.</span> <span class="post-toc-text">编程语言实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Python-%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Python 语言实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#JavaScript-%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">JavaScript 语言实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E4%BB%A5%E5%8F%8A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">其他语言实现以及参考资料</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%99%84%EF%BC%9AGM-T-%E5%AF%86%E7%A0%81%E8%A1%8C%E4%B8%9A%E6%A0%87%E5%87%86"><span class="post-toc-number">5.</span> <span class="post-toc-text">附：GM&#x2F;T 密码行业标准</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 100 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>BOB</strong>
+        <!-- <span>11月 04, 2021</span> -->
+        <span>2021-11-04 12:39:00</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+        <i class="material-icons" role="presentation">favorite</i>
+        <span class="visuallyhidden">favorites</span>
+    </button> -->
+   
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
+    
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACYUlEQVR42u3aQW7DMAwEwPz/0+21QFB3SUqyG4xOQWLYGh0sZcnX10ePFx4eHh4eHh4e3sN4r3i8X//zm/fPv93//ddfJ1qcGx4eHt5J3h+v2kvANeN6afLn5tfg4eHhneTNp5gDkq2iOjc8PDy8Z/KSF3dyHJ8sKx4eHt7/4iXXJ79Wowo8PDy8Z/IWhwJx8FoNPjZmLXh4eHgxr1oAO/n5hvoeHh4e3iWv2dhUHKvKXdF98PDw8DbzqkfhvN1qUhLrBRN4eHh4J3nVRtJ5sb8XUkRX4uHh4W3mJZh8CartWdfgXiiMh4eHt5s3f0HnJavqltBrSsDDw8M7yZuEtnlZa9XWMvrHgIeHhzfm5Q/Lo9heoNAj4eHh4Z3nVaeVLEoeN/SarvDw8PDu5a0taOV3S+aQLBweHh7eeV71dVzFTBoO8i0BDw8P7wxvMuYH5er2E20qeHh4eEd4vSNsdVPJj+PVbQMPDw/vJG9+aE4i4ORIXV24chiBh4eHt5Q3Kji1guA8lq2GHXh4eHgneXnbU170SuKMXuFt1DqAh4eHt4jXK31NDuL5N4Vn4eHh4R3kJbeujkL8Gl9fjnHx8PDwNvCaN0pC1Va8my9ZoacMDw8PbxGv12iVR669zWD0XDw8PLzNvN7huNpMEL3QW61XeHh4eHfx5pvBvpAiXzg8PDy887z8td6Leqslt2oUgoeHh/dkXjUIrka61UM8Hh4e3pN5+eSq20l1+bZsDHh4eHitpqu8zJ9Esb1rehEzHh4e3knezcFr/MRoifHw8PA28z5v4OHh4eHh4eHhPWB8A6uXr1s9FR9/AAAAAElFTkSuQmCC">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    <!-- Leancloud Views -->
+    <!--  -->
+    
+    
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">本文字数&nbsp;3k 字</span>
+        </li>
+    </a>
+    <a class="post_share-link" href="#">
+        <li class="mdl-menu__item">
+            <span class="post-count">阅读时长&nbsp;11 分</span>
+        </li>
+    </a>
+    
+    <!-- Busuanzi Views -->
+    
+        
+            <a class="post_share-link" href="#">
+                <li class="mdl-menu__item">
+                    <span id="busuanzi_container_page_pv">
+                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
+                    </span>
+                </li>
+            </a>
+        
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/041/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法&url=https://www.itbob.cn/article/041/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法&url=https://www.itbob.cn/article/041/index.html&via=BOB" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/041/index.html&text=认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/041/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/041/index.html&title=认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 LinkedIn
+            </li>
+        </a>
+    
+
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/041/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a><font color=#B01B15>简介</font></h2><p>国密即国家密码局认定的国产加密算法，爬虫工程师在做 JS 逆向的时候，会遇到各种各样的加密算法，其中 RSA、AES、SHA 等算法是最常见的，这些算法都是国外的，在我以前的文章里也有介绍：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/119250052">《史上最全总结！爬虫常见加密解密算法》</a></p>
+<p>事实上从 2010 年开始，我国国家密码管理局就已经开始陆续发布了一系列国产加密算法，这其中就包括 SM1、SM2、SM3 、SM4、SM7、SM9、ZUC（祖冲之加密算法）等，SM 代表商密，即商业密码，是指用于商业的、不涉及国家秘密的密码技术。<strong>SM1 和 SM7 的算法不公开</strong>，其余算法都已成为 ISO/IEC 国际标准。</p>
+<p>在这些国产加密算法中，**<font color=#B01B15>SM2、SM3、SM4 三种加密算法是比较常见的</font>**，在爬取部分 gov 网站时，也可能会遇到这些算法，所以作为爬虫工程师是有必要了解一下这些算法的，如下图所示某 gov 网站就使用了 SM2 和 SM4 加密算法：</p>
+<p><img src="https://img-blog.csdnimg.cn/758cb19d1fbc4ec5ad7cc33781c2f34e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAVFJIWCDigKIg6bKN5YuD,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center"></p>
+<hr>
+<h2 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a><font color=#B01B15>算法概述</font></h2><table>
+<thead>
+<tr>
+<th align="center">算法名称</th>
+<th align="center">算法类别</th>
+<th align="center">应用领域</th>
+<th align="center">特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SM1</td>
+<td align="center">对称（分组）加密算法</td>
+<td align="center">芯片</td>
+<td align="center">分组长度、密钥长度均为 128 比特</td>
+</tr>
+<tr>
+<td align="center">SM2</td>
+<td align="center">非对称（基于椭圆曲线 ECC）加密算法</td>
+<td align="center">数据加密</td>
+<td align="center">ECC 椭圆曲线密码机制 256 位，相比 RSA 处理速度快，消耗更少</td>
+</tr>
+<tr>
+<td align="center">SM3</td>
+<td align="center">散列（hash）函数算法</td>
+<td align="center">完整性校验</td>
+<td align="center">安全性及效率与 SHA-256 相当，压缩函数更复杂</td>
+</tr>
+<tr>
+<td align="center">SM4</td>
+<td align="center">对称（分组）加密算法</td>
+<td align="center">数据加密和局域网产品</td>
+<td align="center">分组长度、密钥长度均为 128 比特，计算轮数多</td>
+</tr>
+<tr>
+<td align="center">SM7</td>
+<td align="center">对称（分组）加密算法</td>
+<td align="center">非接触式 IC 卡</td>
+<td align="center">分组长度、密钥长度均为 128 比特</td>
+</tr>
+<tr>
+<td align="center">SM9</td>
+<td align="center">标识加密算法（IBE）</td>
+<td align="center">端对端离线安全通讯</td>
+<td align="center">加密强度等同于 3072 位密钥的 RSA 加密算法</td>
+</tr>
+<tr>
+<td align="center">ZUC</td>
+<td align="center">对称（序列）加密算法</td>
+<td align="center">移动通信 4G 网络</td>
+<td align="center">流密码</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a><font color=#B01B15>算法详解</font></h2><h3 id="SM1-分组加密算法"><a href="#SM1-分组加密算法" class="headerlink" title="SM1 分组加密算法"></a>SM1 分组加密算法</h3><p>SM1 为分组加密算法，对称加密，分组长度和密钥长度都为 128 位，故对消息进行加解密时，若消息长度过长，需要进行分组，要消息长度不足，则要进行填充。算法安全保密强度及相关软硬件实现性能与 AES 相当，该算法不公开，仅以 IP 核的形式存在于芯片中，调用该算法时，需要通过加密芯片的接口进行调用，采用该算法已经研制了系列芯片、智能 IC 卡、智能密码钥匙、加密卡、加密机等安全产品，广泛应用于电子政务、电子商务及国民经济的各个应用领域（包括国家政务通、警务通等重要领域），一般了解的人比较少，爬虫工程师也不会遇到这种加密算法。</p>
+<h3 id="椭圆曲线公钥加密算法"><a href="#椭圆曲线公钥加密算法" class="headerlink" title="椭圆曲线公钥加密算法"></a>椭圆曲线公钥加密算法</h3><p>SM2 为椭圆曲线（ECC）公钥加密算法，非对称加密，SM2 算法和 RSA 算法都是公钥加密算法，SM2 算法是一种更先进安全的算法，在我们国家商用密码体系中被用来替换 RSA 算法，在不少 gov 网站会见到此类加密算法。我国学者对椭圆曲线密码的研究从 20 世纪 80 年代开始，目前已取得不少成果，SM2 椭圆曲线公钥密码算法比 RSA 算法有以下优势：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">SM2</th>
+<th align="center">RSA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">安全性</td>
+<td align="center">256 位 SM2 强度已超过 RSA-2048</td>
+<td align="center">一般</td>
+</tr>
+<tr>
+<td align="center">算法结构</td>
+<td align="center">基本椭圆曲线（ECC）</td>
+<td align="center">基于特殊的可逆模幂运算</td>
+</tr>
+<tr>
+<td align="center">计算复杂度</td>
+<td align="center">完全指数级</td>
+<td align="center">亚指数级</td>
+</tr>
+<tr>
+<td align="center">存储空间（密钥长度）</td>
+<td align="center">192-256 bit</td>
+<td align="center">2048-4096 bit</td>
+</tr>
+<tr>
+<td align="center">秘钥生成速度</td>
+<td align="center">较 RSA 算法快百倍以上</td>
+<td align="center">慢</td>
+</tr>
+<tr>
+<td align="center">解密加密速度</td>
+<td align="center">较快</td>
+<td align="center">一般</td>
+</tr>
+</tbody></table>
+<h3 id="杂凑算法"><a href="#杂凑算法" class="headerlink" title="杂凑算法"></a>杂凑算法</h3><p>SM3 为密码杂凑算法，采用密码散列（hash）函数标准，用于替代 MD5/SHA-1/SHA-2 等国际算法，是在 SHA-256 基础上改进实现的一种算法，消息分组长度为 512 位，摘要值长度为 256 位，其中使用了异或、模、模加、移位、与、或、非运算，由填充、迭代过程、消息扩展和压缩函数所构成。在商用密码体系中，SM3 主要用于数字签名及验证、消息认证码生成及验证、随机数生成等。据国家密码管理局表示，其安全性及效率要高于 MD5 算法和 SHA-1 算法，与 SHA-256 相当。</p>
+<h3 id="分组加密算法"><a href="#分组加密算法" class="headerlink" title="分组加密算法"></a>分组加密算法</h3><p>SM4 为无线局域网标准的分组加密算法，对称加密，用于替代 DES/AES 等国际算法，SM4 算法与 AES 算法具有相同的密钥长度和分组长度，均为 128 位，故对消息进行加解密时，若消息长度过长，需要进行分组，要消息长度不足，则要进行填充。加密算法与密钥扩展算法都采用 32 轮非线性迭代结构，解密算法与加密算法的结构相同，只是轮密钥的使用顺序相反，解密轮密钥是加密轮密钥的逆序。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SM4</th>
+<th>DES</th>
+<th>AES</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计算轮数</td>
+<td>32</td>
+<td>16（3DES 为 16*3）</td>
+<td>10/12/14</td>
+</tr>
+<tr>
+<td>密码部件</td>
+<td>S 盒、非线性变换、线性变换、合成变换</td>
+<td>标准算术和逻辑运算、先替换后置换，不含线性变换</td>
+<td>S 盒、行移位变换、列混合变换、圈密钥加变换（AddRoundKey）</td>
+</tr>
+</tbody></table>
+<h3 id="分组加密算法-1"><a href="#分组加密算法-1" class="headerlink" title="分组加密算法"></a>分组加密算法</h3><p>SM7 为分组加密算法，对称加密，该算法不公开，应用包括身份识别类应用（非接触式 IC 卡、门禁卡、工作证、参赛证等），票务类应用（大型赛事门票、展会门票等），支付与通卡类应用（积分消费卡、校园一卡通、企业一卡通等）。爬虫工程师基本上不会遇到此类算法。</p>
+<h3 id="标识加密算法"><a href="#标识加密算法" class="headerlink" title="标识加密算法"></a>标识加密算法</h3><p>SM9 为标识加密算法（Identity-Based Cryptography），非对称加密，标识加密将用户的标识（如微信号、邮件地址、手机号码、QQ 号等）作为公钥，省略了交换数字证书和公钥过程，使得安全系统变得易于部署和管理，适用于互联网应用的各种新兴应用的安全保障，如基于云技术的密码服务、电子邮件安全、智能终端保护、物联网安全、云存储安全等等。这些安全应用可采用手机号码或邮件地址作为公钥，实现数据加密、身份认证、通话加密、通道加密等。在商用密码体系中，SM9 主要用于用户的身份认证，据新华网公开报道，SM9 的加密强度等同于 3072 位密钥的 RSA 加密算法。</p>
+<h3 id="祖冲之算法"><a href="#祖冲之算法" class="headerlink" title="祖冲之算法"></a>祖冲之算法</h3><p>ZUC 为流密码算法，对称加密，该机密性算法可适用于 3GPP LTE 通信中的加密和解密，该算法包括祖冲之算法（ZUC）、机密性算法（128-EEA3）和完整性算法（128-EIA3）三个部分。已经被国际组织 3GPP 推荐为 4G 无线通信的第三套国际加密和完整性标准的候选算法。</p>
+<hr>
+<h2 id="编程语言实现"><a href="#编程语言实现" class="headerlink" title="编程语言实现"></a><font color=#B01B15>编程语言实现</font></h2><h3 id="Python-语言实现"><a href="#Python-语言实现" class="headerlink" title="Python 语言实现"></a>Python 语言实现</h3><p>在 Python 里面并没有比较官方的库来实现国密算法，这里仅列出了其中两个较为完善的第三方库，需要注意的是，SM1 和 SM7 算法不公开，目前大多库仅实现了 SM2、SM3、SM4 三种密算法。</p>
+<ul>
+<li>snowland-smx-python：<a target="_blank" rel="noopener" href="https://gitee.com/snowlandltd/snowland-smx-python">https://gitee.com/snowlandltd/snowland-smx-python</a></li>
+<li>gmssl：<a target="_blank" rel="noopener" href="https://github.com/duanhongyi/gmssl">https://github.com/duanhongyi/gmssl</a></li>
+<li>gmssl-python：<a target="_blank" rel="noopener" href="https://github.com/gongxian-ding/gmssl-python">https://github.com/gongxian-ding/gmssl-python</a></li>
+</ul>
+<p>其中 gmssl-python 是 gmssl 的改进版，gmssl-python 新增支持了 SM9 算法，不过截止本文编写时，gmssl-python 并未发布 pypi，也未 PR 到 gmssl，使用 <code>pip install gmssl</code> 安装的 gmssl 不支持 SM9 算法。若要使用 SM9 算法，可下载 gmssl-python 源码手动安装。</p>
+<p>以 gmssl 的 SM2 算法为例，实现如下（其他算法和详细用法可参考其官方文档）：</p>
+<p>SM2 加密（encrypt）和解密（decrypt）：</p>
+<pre><code class="python">from gmssl import sm2
+
+
+# 16 进制的公钥和私钥
+private_key = &#39;00B9AB0B828FF68872F21A837FC303668428DEA11DCD1B24429D0C99E24EED83D5&#39;
+public_key = &#39;B9C9A6E04E9C91F7BA880429273747D7EF5DDEB0BB2FF6317EB00BEF331A83081A6994B8993F3F5D6EADDDB81872266C87C018FB4162F5AF347B483E24620207&#39;
+sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+
+# 待加密数据和加密后数据为 bytes 类型
+data = b&quot;this is the data to be encrypted&quot;
+enc_data = sm2_crypt.encrypt(data)
+dec_data = sm2_crypt.decrypt(enc_data)
+
+print(&#39;enc_data: &#39;, enc_data.hex())
+print(&#39;dec_data: &#39;, dec_data)
+
+# enc_data:  3cb96dd2e0b6c24df8e22a5da3951d061a6ee6ce99f46a446426feca83e501073288b1553ca8d91fad79054e26696a27c982492466dafb5ed06a573fb09947f2aed8dfae243b095ab88115c584bb6f0814efe2f338a00de42b244c99698e81c7913c1d82b7609557677a36681dd10b646229350ad0261b51ca5ed6030d660947
+# dec_data:  b&#39;this is the data to be encrypted&#39;
+</code></pre>
+<p>SM2 签名（sign）和校验（verify）：</p>
+<pre><code class="python">from gmssl import sm2, func
+
+
+# 16 进制的公钥和私钥
+private_key = &#39;00B9AB0B828FF68872F21A837FC303668428DEA11DCD1B24429D0C99E24EED83D5&#39;
+public_key = &#39;B9C9A6E04E9C91F7BA880429273747D7EF5DDEB0BB2FF6317EB00BEF331A83081A6994B8993F3F5D6EADDDB81872266C87C018FB4162F5AF347B483E24620207&#39;
+sm2_crypt = sm2.CryptSM2(public_key=public_key, private_key=private_key)
+
+# 待签名数据为 bytes 类型
+data = b&quot;this is the data to be signed&quot;
+random_hex_str = func.random_hex(sm2_crypt.para_len)
+
+#  16 进制
+sign = sm2_crypt.sign(data, random_hex_str)
+verify = sm2_crypt.verify(sign, data)
+
+print(&#39;sign: &#39;, sign)
+print(&#39;verify: &#39;, verify)
+
+# sign:  45cfe5306b1a87cf5d0034ef6712babdd1d98547e75bcf89a17f3bcb617150a3f111ab05597601bab8c41e2b980754b74ebe9a169a59db37d549569910ae273a
+# verify:  True
+</code></pre>
+<h3 id="JavaScript-语言实现"><a href="#JavaScript-语言实现" class="headerlink" title="JavaScript 语言实现"></a>JavaScript 语言实现</h3><p>在 JavaScript 中已有比较成熟的实现库，这里推荐 sm-crypto，目前支持 SM2、SM3 和 SM4，需要注意的是，SM2 非对称加密的结果由 C1、C2、C3 三部分组成，其中 C1 是生成随机数的计算出的椭圆曲线点，C2 是密文数据，C3 是 SM3 的摘要值，最开始的国密标准的结果是按 C1C2C3 顺序的，新标准的是按 C1C3C2 顺序存放的，sm-crypto 支持设置 cipherMode，也就是 C1C2C3 的排列顺序。</p>
+<p>sm-crypto：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/sm-crypto">https://www.npmjs.com/package/sm-crypto</a></p>
+<p>以 SM2 算法为例，实现如下（其他算法和详细用法可参考其官方文档）：</p>
+<p>SM2 加密（encrypt）和解密（decrypt）：</p>
+<pre><code class="javascript">const sm2 = require(&#39;sm-crypto&#39;).sm2
+
+// 1 - C1C3C2，0 - C1C2C3，默认为1
+const cipherMode = 1
+
+// 获取密钥对
+let keypair = sm2.generateKeyPairHex()
+let publicKey = keypair.publicKey   // 公钥
+let privateKey = keypair.privateKey // 私钥
+
+let msgString = &quot;this is the data to be encrypted&quot;
+let encryptData = sm2.doEncrypt(msgString, publicKey, cipherMode)    // 加密结果
+let decryptData = sm2.doDecrypt(encryptData, privateKey, cipherMode) // 解密结果
+
+console.log(&quot;encryptData: &quot;, encryptData)
+console.log(&quot;decryptData: &quot;, decryptData)
+
+// encryptData:  ddf261103fae06d0efe20ea0fe0d82bcc170e8efd8eeae24e9559b3835993f0ed2acb8ba6782fc21941ee74ca453d77664a5cb7dbb91517e6a3b0c27db7ce587ae7af54f8df48d7fa822b7062e2af66c112aa57de94d12ba28e5ba96bf4439d299b41da4a5282d054696adc64156d248049d1eb1d0af28d76b542fe8a95d427e
+// decryptData:  this is the data to be encrypted
+</code></pre>
+<p>SM2 签名（sign）和校验（verify）：</p>
+<pre><code class="javascript">const sm2 = require(&#39;sm-crypto&#39;).sm2
+
+// 获取密钥对
+let keypair = sm2.generateKeyPairHex()
+let publicKey = keypair.publicKey   // 公钥
+let privateKey = keypair.privateKey // 私钥
+
+// 纯签名 + 生成椭圆曲线点
+let msgString = &quot;this is the data to be signed&quot;
+let sigValueHex = sm2.doSignature(msgString, privateKey)                    // 签名
+let verifyResult = sm2.doVerifySignature(msgString, sigValueHex, publicKey) // 验签结果
+
+console.log(&quot;sigValueHex: &quot;, sigValueHex)
+console.log(&quot;verifyResult: &quot;, verifyResult)
+
+// sigValueHex:  924cbb9f2b5adb554ef77129ff1e3a00b2da42017ad3ec2f806d824a77646987ba8c8c4fb94576c38bc11ae69cc98ebbb40b5d47715171ec7dcea913dfc6ccc1
+// verifyResult:  true
+</code></pre>
+<h3 id="其他语言实现以及参考资料"><a href="#其他语言实现以及参考资料" class="headerlink" title="其他语言实现以及参考资料"></a>其他语言实现以及参考资料</h3><ul>
+<li>Java 语言实现：<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/bcgit/bc-csharp">https://github.com/bcgit/bc-csharp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/xjfuuu/SM2_SM3_SM4Encrypt">https://github.com/xjfuuu/SM2_SM3_SM4Encrypt</a></li>
+</ul>
+</li>
+<li>Go 语言实现：<a target="_blank" rel="noopener" href="https://github.com/tjfoc/gmsm">https://github.com/tjfoc/gmsm</a></li>
+<li>开源国密算法工具箱：<a target="_blank" rel="noopener" href="http://gmssl.org/">http://gmssl.org/</a></li>
+<li>国密算法源代码下载：<a target="_blank" rel="noopener" href="http://www.scctc.org.cn/templates/Download/index.aspx?nodeid=71">http://www.scctc.org.cn/templates/Download/index.aspx?nodeid=71</a></li>
+<li>国家密码管理局：<a target="_blank" rel="noopener" href="https://www.sca.gov.cn/">https://www.sca.gov.cn/</a></li>
+<li>密码标准委员会：<a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/">http://www.gmbz.org.cn/</a></li>
+</ul>
+<hr>
+<h2 id="附：GM-T-密码行业标准"><a href="#附：GM-T-密码行业标准" class="headerlink" title="附：GM/T 密码行业标准"></a><font color=#B01B15>附：GM/T 密码行业标准</font></h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180117202410524608.html">GM/T 0001.1-2012：祖冲之序列密码算法：第1部分：算法描述</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180107233806310781.html">GM/T 0001.2-2012：祖冲之序列密码算法：第2部分：基于祖冲之算法的机密性算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180107234058336917.html">GM/T 0001.3-2012：祖冲之序列密码算法：第3部分：基于祖冲之算法的完整性算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108015515787986.html">GM/T 0003.1-2012：SM2 椭圆曲线公钥密码算法第1部分：总则</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108023346264349.html">GM/T 0003.2-2012：SM2 椭圆曲线公钥密码算法第2部分：数字签名算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108023456003485.html">GM/T 0003.3-2012：SM2 椭圆曲线公钥密码算法第3部分：密钥交换协议</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108023602687857.html">GM/T 0003.4-2012：SM2 椭圆曲线公钥密码算法第4部分：公钥加密算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/2018010802371372251.html">GM/T 0003.5-2012：SM2 椭圆曲线公钥密码算法第5部分：参数定义</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108023812835219.html">GM/T 0004-2012：SM3 密码杂凑算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180108015408199368.html">GM/T 0002-2012：SM4 分组密码算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/2018011002473633053.html">GM/T 0044.1-2016：SM9 标识密码算法 第1部分：总则</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180110024900801385.html">GM/T 0044.2-2016：SM9 标识密码算法 第2部分：数字签名算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180110025010004565.html">GM/T 0044.3-2016：SM9 标识密码算法 第3部分：密钥交换协议</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180110025115084846.html">GM/T 0044.4-2016：SM9 标识密码算法 第4部分：密钥封装机制和公钥加密算法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180110025229918536.html">GM/T 0044.5-2016：SM9 标识密码算法 第5部分：参数定义</a></li>
+</ul>
+
+        
+                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
+                    <p>
+                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/041/">https://www.itbob.cn/article/041/</a>
+                        <br>
+                        <strong>
+                             
+                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
+                            
+                        </strong>
+                    </p>
+                </blockquote>
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+    <!-- 使用 Gitalk -->
+<div id="gitalk-comment">
+    <!-- Gitalk 评论框 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script>
+    var gitalk = new Gitalk({
+            clientID: 'd19a84b9d9a2ddb2c6b9',
+            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+            repo: 'trhx.github.io',
+            owner: 'TRHX',
+            admin: ['TRHX'],
+            // facebook-like distraction free mode
+            distractionFreeMode: false
+        })
+   gitalk.render('gitalk-container')
+</script>
+</div>
+<style>
+    #gitalk-comment {
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/article/042/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/article/040/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/BOB.png" alt="BOB's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        YWRtaW5AaXRib2IuY24=
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        邮件联系我
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
+                        
+                        关注 CSDN
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
+                        
+                        关注 GitHub
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags/" title="标签云">
+                
+                    <i class="material-icons sidebar-material-icons">local_offer</i>
+                
+                标签云
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/timeline/" title="时光机">
+                
+                    <i class="material-icons sidebar-material-icons">send</i>
+                
+                时光机
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/friends/" title="友人帐">
+                
+                    <i class="material-icons sidebar-material-icons">group_add</i>
+                
+                友人帐
+            </a>
+        </li>
+        
+    
+        <li>
+            <a href="/comments/" title="关于我 &amp; 留言板">
+                
+                    <i class="material-icons sidebar-material-icons">chat</i>
+                
+                关于我 &amp; 留言板
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives/">
+                文章总数
+                <span class="sidebar-badge">52</span>
+            </a>
+        </li>
+        
+    
+
+    <!-- Article Wordcount  -->
+    
+        <li>
+            <a href="">
+                字数统计
+                <span class="sidebar-badge">257.5k</span>
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- QQ Group -->
+
+    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            爬虫逆向交流群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流一群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            Hexo 博客交流二群
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Github -->
+    
+        <a href="https://github.com/TRHX" target="_blank" title="Github">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- CSDN -->
+    
+        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
+                <span class="visuallyhidden">CSDN</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Zhihu -->
+    
+        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
+                <span class="visuallyhidden">Zhihu</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Email -->
+    
+        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
+                <span class="visuallyhidden">Email</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- QQ -->
+    
+        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
+                <span class="visuallyhidden">QQ</span>
+            </button><!--
+        --></a>
+    
+
+    <!-- Twitter -->
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+
+    <!-- V2EX -->
+    
+
+    <!-- Segmentfault -->
+    
+</div>
+
+
+            <!--Copyright-->
+            <div id="copyright">
+
+                
+                    <div class="itbob-footer-text">
+                        
+                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
+                                        
+                    </div>
+                    
+
+                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
+
+                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+                        <script>
+                            var now = new Date();
+
+                            function createtime() {
+                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                                now.setTime(now.getTime() + 250);
+                                days = (now - grt) / 1000 / 60 / 60 / 24;
+                                dnum = Math.floor(days);
+                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                                hnum = Math.floor(hours);
+                                if (String(hnum).length == 1) {
+                                    hnum = "0" + hnum;
+                                }
+                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                                mnum = Math.floor(minutes);
+                                if (String(mnum).length == 1) {
+                                    mnum = "0" + mnum;
+                                }
+                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                                snum = Math.round(seconds);
+                                if (String(snum).length == 1) {
+                                    snum = "0" + snum;
+                                }
+                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                            }
+                            setInterval("createtime()", 250);
+                        </script>
+
+
+            </div>
+
+            <!-- All Site UV -->
+            <!-- 
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
+        
+        </div> -->
+            <!-- Paradox Footer Right Section -->
+
+            <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+            <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+            <div class="mdl-mini-footer--right-section">
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">PV</span>
+                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Powered</span>
+                        <span class="badge-value bg-blue">Hexo</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">UV</span>
+                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Theme</span>
+                        <span class="badge-value bg-orange">Material</span>
+                    </div>
+                </div>
+            </div>
+            
+</footer>
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+    <!-- Busuanzi -->
+    <script src="/js/busuanzi.pure.mini.js"></script>
+
+
+
+   <!-- GitTalk -->
+
+
+
+
+
+<!-- Browser Check -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+    // UC
+	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
+        /* document.write('
+<link rel="stylesheet" href="/css/uc.css">
+'); */
+        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+	}
+    // IE
+    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
+        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+    };
+    // IE 11
+    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
+        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
+    }
+</script>
+
+<!-- Blog Title JS -->
+
+    
+            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
+    
+
+
+<!-- Import prettify js  -->
+
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    var copyrightNow = new Date().getFullYear();
+    var textContent = document.querySelector('span[year]')
+
+    copyrightSince = 2018;
+    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
+        textContent.textContent = copyrightNow
+    } else {
+        textContent.textContent = copyrightSince + ' - ' + copyrightNow
+    }
+
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
+console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
