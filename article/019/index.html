@@ -1,590 +1,140 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,Matplotlib,数据分析">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/019/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/019/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="Matplotlib"> <meta property="og:article:tag" content="数据分析"> 
-
-    
-        <meta property="article:published_time" content="Sat May 09 2020 01:02:25 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:31:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/019/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/019/index.html",
-    "headline": "Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制",
-    "datePublished": "Sat May 09 2020 01:02:25 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:31:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",Python,Matplotlib,数据分析ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%901x00%E3%80%91%E7%9B%B4%E6%96%B9%E5%9B%BE-%E6%9F%B1%E7%8A%B6%E5%9B%BE-%E6%9D%A1%E5%BD%A2%E5%9B%BE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="post-toc-number">1.</span> <span class="post-toc-text">【1x00】直方图 &#x2F; 柱状图 &#x2F; 条形图的区别</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%902x00%E3%80%91%E7%9B%B4%E6%96%B9%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">【2x00】直方图的绘制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x01%E3%80%91%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D-matplotlib-pyplot-hist"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">【2x01】函数介绍 matplotlib.pyplot.hist()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x02%E3%80%91%E7%AE%80%E5%8D%95%E7%9B%B4%E6%96%B9%E5%9B%BE%E7%A4%BA%E4%BE%8B"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">【2x02】简单直方图示例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x03%E3%80%91%E5%A0%86%E7%A7%AF%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">【2x03】堆积的直方图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%902x04%E3%80%91%E5%A1%AB%E5%85%85%E5%85%B6%E4%BB%96%E6%A0%B7%E5%BC%8F"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">【2x04】填充其他样式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%903x00%E3%80%91%E6%9F%B1%E7%8A%B6%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6"><span class="post-toc-number">3.</span> <span class="post-toc-text">【3x00】柱状图的绘制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x01%E3%80%91%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D-matplotlib-pyplot-bar"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【3x01】函数介绍 matplotlib.pyplot.bar()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x02%E3%80%91%E7%AE%80%E5%8D%95%E6%9F%B1%E7%8A%B6%E5%9B%BE%E7%A4%BA%E4%BE%8B"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【3x02】简单柱状图示例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x03%E3%80%91%E6%B7%BB%E5%8A%A0%E4%B8%8E%E6%A0%87%E5%87%86%E5%B7%AE%E7%9A%84%E8%AF%AF%E5%B7%AE%E7%BA%BF"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【3x03】添加与标准差的误差线</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x04%E3%80%91%E5%A4%9A%E5%BA%8F%E5%88%97%E6%9F%B1%E7%8A%B6%E5%9B%BE"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【3x04】多序列柱状图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x05%E3%80%91%E5%A0%86%E7%A7%AF%E7%9A%84%E6%9F%B1%E7%8A%B6%E5%9B%BE"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">【3x05】堆积的柱状图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x06%E3%80%91%E5%A1%AB%E5%85%85%E5%85%B6%E4%BB%96%E6%A0%B7%E5%BC%8F"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">【3x06】填充其他样式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%903x07%E3%80%91%E6%B7%BB%E5%8A%A0%E6%96%87%E5%AD%97%E6%8F%8F%E8%BF%B0"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">【3x07】添加文字描述</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%904x00%E3%80%91%E6%9D%A1%E5%BD%A2%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6"><span class="post-toc-number">4.</span> <span class="post-toc-text">【4x00】条形图的绘制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x01%E3%80%91%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D-matplotlib-pyplot-barh"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">【4x01】函数介绍 matplotlib.pyplot.barh()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x02%E3%80%91%E7%AE%80%E5%8D%95%E6%9D%A1%E5%BD%A2%E5%9B%BE%E7%A4%BA%E4%BE%8B"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">【4x02】简单条形图示例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x03%E3%80%91%E6%B7%BB%E5%8A%A0%E4%B8%8E%E6%A0%87%E5%87%86%E5%B7%AE%E7%9A%84%E8%AF%AF%E5%B7%AE%E7%BA%BF"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">【4x03】添加与标准差的误差线</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x04%E3%80%91%E5%A4%9A%E5%BA%8F%E5%88%97%E6%9D%A1%E5%BD%A2%E5%9B%BE"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">【4x04】多序列条形图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x05%E3%80%91%E5%A0%86%E7%A7%AF%E7%9A%84%E6%9D%A1%E5%BD%A2%E5%9B%BE"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">【4x05】堆积的条形图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x06%E3%80%91%E5%A1%AB%E5%85%85%E5%85%B6%E4%BB%96%E6%A0%B7%E5%BC%8F"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">【4x06】填充其他样式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%904x07%E3%80%91%E6%B7%BB%E5%8A%A0%E6%96%87%E5%AD%97%E6%8F%8F%E8%BF%B0"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">【4x07】添加文字描述</span></a></li></ol></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>5月 09, 2020</span> -->
-        <span>2020-05-09 01:02:25</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACYUlEQVR42u3aQY7jMAwEwPz/0zvXAXbiNElLMoLyKTASW6WDxLT4+vfV1wsPDw8PDw8PD+9hvFd8/fGg1v38Lb2x4eHh4e3hfVhq37w4ufP7/v+fr9/eHBseHh7eRt67BXcyrHy5v/5t8n08PDy8J/OaMUFx4vDw8PC+j3f9/STIyMMOPDw8vGfy8hI5eU2+McyfiYeHh7eflx8y7f+89XwPDw8PL+D1AoVeWTzfWqIR4uHh4S3m5QtxtVyeHIlNxoOHh4e3h1f4cVBwX7dk9baQ5JAMDw8Pbw8vGdaHP//zpfzWxi88PDy81bzJgdOEev3bycTh4eHh7eHlB1159FDdbKotXHh4eHhneYW/+sVgd3Inn0Q8PDy8U7xqeFo9ssrD3OomgYeHh3eKNz/KmsQN1bK72RmBh4eHt6wrKWFX26fubUcYdUbg4eHhDXjVELYaUlSnoErFw8PDO8vLy+tqK1U1oh1tM3h4eHiLefOyOCmv81aqajCBh4eHd4qXRwy9V1ZbB0YlOx4eHt4WXj6gagmexBl5yY6Hh4f3NN4kPE2mo7o9VJ+Dh4eHd4rXe02v7aBXQH/4LR4eHt5GXh49TJb+fNDNJgY8PDy8xbzqVS2s55tBNezAw8PDW83rLcq9AjovypOY+O3T8PDw8LbwqptBb1mfbww39JTh4eHh3crrLdDV8CKJfXtNXXh4eHhP5uXDSraTXtRbTqnx8PDwjvLyg64JIJmU5fseHh4e3jiMmNxJnlzdGPDw8PBO8fIIoHrAX6Xm01SIcfHw8PBu5X3fhYeHh4eHh4eH94DrBy35FhH/fvIpAAAAAElFTkSuQmCC">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/Matplotlib/" rel="tag">Matplotlib</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;6.2k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;28 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/019/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制&url=https://www.itbob.cn/article/019/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制&url=https://www.itbob.cn/article/019/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/019/index.html&text=Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/019/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/019/index.html&title=Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/019/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2020-05-09 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <p>Matplotlib 系列文章：</p>
+                    
+                        <a href="/tags/Python/" class="post-tag">
+                            #Python</a>
+                    
+                        <a href="/tags/Matplotlib/" class="post-tag">
+                            #Matplotlib</a>
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            #数据分析</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Matplotlib 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
 <li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
@@ -612,24 +162,29 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/105952856
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="【1x00】直方图-柱状图-条形图的区别"><a href="#【1x00】直方图-柱状图-条形图的区别" class="headerlink" title="【1x00】直方图 / 柱状图 / 条形图的区别"></a><font color=#FF0000>【1x00】直方图 / 柱状图 / 条形图的区别</font></h2><ul>
-<li><p>直方图：直方图（Histogram）又称质量分布图，是一种统计报告图，由一系列高度不等的纵向条纹或线段表示数据分布的情况。<font color=##0000FF><strong>一般用于描述连续型数据的分布关系</strong></font>，用横轴表示数据类型，纵轴表示分布情况。直方图是用面积表示各组频数的多少，矩形的高度表示每一组的频数或频率，宽度则表示各组的组距，因此其<font color=##32CD32><strong>高度与宽度均有意义</strong></font>。其次，由于分组数据具有连续性，<font color=##32CD32><strong>直方图的各矩形通常是连续排列。</strong></font></p>
+<h2 id="font-color-FF0000-【1x00】直方图-柱状图-条形图的区别-font"><font color=#FF0000>【1x00】直方图 / 柱状图 / 条形图的区别</font></h2>
+<ul>
+<li>
+<p>直方图：直方图（Histogram）又称质量分布图，是一种统计报告图，由一系列高度不等的纵向条纹或线段表示数据分布的情况。<font color=##0000FF><strong>一般用于描述连续型数据的分布关系</strong></font>，用横轴表示数据类型，纵轴表示分布情况。直方图是用面积表示各组频数的多少，矩形的高度表示每一组的频数或频率，宽度则表示各组的组距，因此其<font color=##32CD32><strong>高度与宽度均有意义</strong></font>。其次，由于分组数据具有连续性，<font color=##32CD32><strong>直方图的各矩形通常是连续排列。</strong></font></p>
 </li>
-<li><p>柱状图：柱状图（bar chart）又称条图、长条图、柱状统计图、条状图、棒形图，是一种以长方形的长度为变量的统计图表。<font color=##0000FF><strong>一般用于描述离散型分类数据的对比</strong></font>，长条图用来比较两个或以上的价值（不同时间或者不同条件），只有一个变量，通常利用于较小的数据集分析。柱状图亦可横向排列，或用多维方式表达。<font color=##32CD32><strong>柱状图各矩形的宽度固定，矩形之间分开排列，会有间距。</strong></font></p>
+<li>
+<p>柱状图：柱状图（bar chart）又称条图、长条图、柱状统计图、条状图、棒形图，是一种以长方形的长度为变量的统计图表。<font color=##0000FF><strong>一般用于描述离散型分类数据的对比</strong></font>，长条图用来比较两个或以上的价值（不同时间或者不同条件），只有一个变量，通常利用于较小的数据集分析。柱状图亦可横向排列，或用多维方式表达。<font color=##32CD32><strong>柱状图各矩形的宽度固定，矩形之间分开排列，会有间距。</strong></font></p>
 </li>
-<li><p>条形图：通常情况下<font color=#FF0000><strong>条形图 = 柱状图</strong></font>，也可以<font color=#FF0000><strong>将横向排列的柱状图称为条形图</strong></font>。在本文中会将条形图视为后者。</p>
+<li>
+<p>条形图：通常情况下<font color=#FF0000><strong>条形图 = 柱状图</strong></font>，也可以<font color=#FF0000><strong>将横向排列的柱状图称为条形图</strong></font>。在本文中会将条形图视为后者。</p>
 </li>
 </ul>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
-<h2 id="【2x00】直方图的绘制"><a href="#【2x00】直方图的绘制" class="headerlink" title="【2x00】直方图的绘制"></a><font color=#FF0000>【2x00】直方图的绘制</font></h2><h3 id="【2x01】函数介绍-matplotlib-pyplot-hist"><a href="#【2x01】函数介绍-matplotlib-pyplot-hist" class="headerlink" title="【2x01】函数介绍 matplotlib.pyplot.hist()"></a><font color=##4876FF>【2x01】函数介绍 matplotlib.pyplot.hist()</font></h3><p><code>matplotlib.pyplot.hist()</code> 函数用于绘制直方图。</p>
-<p>基本语法：<code>matplotlib.pyplot.hist(x[, bins=None, range=None, density=False, bottom=None, histtype=&#39;bar&#39;, align=&#39;mid&#39;, orientation=&#39;vertical&#39;, rwidth=None, log=False, color=None, label=None, stacked=False, \*\*kwargs])</code></p>
+<h2 id="font-color-FF0000-【2x00】直方图的绘制-font"><font color=#FF0000>【2x00】直方图的绘制</font></h2>
+<h3 id="font-color-4876FF-【2x01】函数介绍-matplotlib-pyplot-hist-font"><font color=##4876FF>【2x01】函数介绍 matplotlib.pyplot.hist()</font></h3>
+<p><code>matplotlib.pyplot.hist()</code> 函数用于绘制直方图。</p>
+<p>基本语法：<code>matplotlib.pyplot.hist(x[, bins=None, range=None, density=False, bottom=None, histtype='bar', align='mid', orientation='vertical', rwidth=None, log=False, color=None, label=None, stacked=False, \*\*kwargs])</code></p>
 <p>基本参数：</p>
 <table>
 <thead>
@@ -638,7 +193,8 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>x</td>
 <td>数据集，数组或数组序列</td>
 </tr>
@@ -660,11 +216,11 @@
 </tr>
 <tr>
 <td>histtype</td>
-<td>矩形的样式，有四种类型可选：<br><code>&#39;bar&#39;</code>：默认值，传统的条形直方图，如果给出多个数据，则条形图并排排列<br><code>&#39;barstacked&#39;</code>：当数据为 1 个时，和 bar 结果一样，当数据为多个时，则进行垂直堆叠<br><code>&#39;step&#39;</code>：未填充的线条形式；<code>&#39;stepfilled&#39;</code>：填充的线条形式，效果与 bar 差不多</td>
+<td>矩形的样式，有四种类型可选：<br><code>'bar'</code>：默认值，传统的条形直方图，如果给出多个数据，则条形图并排排列<br><code>'barstacked'</code>：当数据为 1 个时，和 bar 结果一样，当数据为多个时，则进行垂直堆叠<br><code>'step'</code>：未填充的线条形式；<code>'stepfilled'</code>：填充的线条形式，效果与 bar 差不多</td>
 </tr>
 <tr>
 <td>align</td>
-<td>矩形的中心位于 bins（x 轴） 的位置，<code>&#39;left&#39;</code>：左；<code>&#39;mid&#39;</code>：中；<code>&#39;right&#39;</code>：右</td>
+<td>矩形的中心位于 bins（x 轴） 的位置，<code>'left'</code>：左；<code>'mid'</code>：中；<code>'right'</code>：右</td>
 </tr>
 <tr>
 <td>orientation</td>
@@ -690,7 +246,8 @@
 <td>stacked</td>
 <td>是否为堆积状图（当两个数据相似时，堆积在一起就会把第一个数据的显示相对缩小一点）</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>其他参数：</p>
 <table>
 <thead>
@@ -699,7 +256,8 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>facecolor</td>
 <td>标量或数组类型，每个矩形的颜色，与 color 作用相同，指定一个即可，如果两者都指定，则取 facecolor 的值</td>
 </tr>
@@ -721,7 +279,7 @@
 </tr>
 <tr>
 <td>linestyle / ls</td>
-<td>线条样式，此处指矩形边缘线条样式<br><code>&#39;-&#39;</code> or <code>&#39;solid&#39;</code>, <code>&#39;--&#39;</code> or <code>&#39;dashed&#39;</code>, <code>&#39;-.&#39;</code> or <code>&#39;dashdot&#39;</code> or <code>&#39;:&#39;</code> or <code>&#39;dotted&#39;</code>, <code>&#39;none&#39;</code> or <code>&#39; &#39;</code> or <code>&#39;&#39;</code></td>
+<td>线条样式，此处指矩形边缘线条样式<br><code>'-'</code> or <code>'solid'</code>, <code>'--'</code> or <code>'dashed'</code>, <code>'-.'</code> or <code>'dashdot'</code> or <code>':'</code> or <code>'dotted'</code>, <code>'none'</code> or <code>' '</code> or <code>''</code></td>
 </tr>
 <tr>
 <td>linewidth / lw</td>
@@ -729,71 +287,74 @@
 </tr>
 <tr>
 <td>hatch</td>
-<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, `’</td>
+<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>'/'</code>, <code>'\'</code>, `’</td>
 </tr>
-</tbody></table>
-<h3 id="【2x02】简单直方图示例"><a href="#【2x02】简单直方图示例" class="headerlink" title="【2x02】简单直方图示例"></a><font color=##4876FF>【2x02】简单直方图示例</font></h3><pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【2x02】简单直方图示例-font"><font color=##4876FF>【2x02】简单直方图示例</font></h3>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]  # 设置中文显示
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]  <span class="hljs-comment"># 设置中文显示</span>
 
-x = np.random.randint(0, 101, 100)  # 数据集
-bins = np.arange(0, 101, 10)        # 分布区间 [0,10)、[10,20)...[90,100]
+x = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">101</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># 数据集</span>
+bins = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">101</span>, <span class="hljs-number">10</span>)        <span class="hljs-comment"># 分布区间 [0,10)、[10,20)...[90,100]</span>
 
-plt.hist(x, bins=bins, linewidth=0.5, edgecolor=&#39;k&#39;)  # 边缘线宽0.5，颜色为黑色
-plt.xlim(0, 100)                    # x 轴刻度范围       
-plt.title(&#39;简单直方图示例&#39;)         # 标题
-plt.xlabel(&#39;x axis label&#39;)         # x 轴标签
-plt.ylabel(&#39;y axis label&#39;)         # y 轴标签
+plt.hist(x, bins=bins, linewidth=<span class="hljs-number">0.5</span>, edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>)  <span class="hljs-comment"># 边缘线宽0.5，颜色为黑色</span>
+plt.xlim(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>)                    <span class="hljs-comment"># x 轴刻度范围       </span>
+plt.title(<span class="hljs-string">&#x27;简单直方图示例&#x27;</span>)         <span class="hljs-comment"># 标题</span>
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)         <span class="hljs-comment"># x 轴标签</span>
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <span class="hljs-comment"># y 轴标签</span>
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/01.png" alt="01"></p>
-<h3 id="【2x03】堆积的直方图"><a href="#【2x03】堆积的直方图" class="headerlink" title="【2x03】堆积的直方图"></a><font color=##4876FF>【2x03】堆积的直方图</font></h3><p>参数 <code>stacked</code> 决定了将两份数据进行堆积显示。注意，有可能两个数据相似（y 轴的值相似），但是堆积在一起的时候，会把第一个数据的显示相对缩小一点。</p>
-<pre><code class="python">import matplotlib.pyplot as plt
-import numpy as np
+plt.show()</code></pre>
+<p><img src="/img/article/019/01.png" alt="01"></p>
+<h3 id="font-color-4876FF-【2x03】堆积的直方图-font"><font color=##4876FF>【2x03】堆积的直方图</font></h3>
+<p>参数 <code>stacked</code> 决定了将两份数据进行堆积显示。注意，有可能两个数据相似（y 轴的值相似），但是堆积在一起的时候，会把第一个数据的显示相对缩小一点。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-hist1 = np.random.randint(0, 100, 100)
-hist2 = np.random.randint(0, 100, 100)
+hist1 = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)
+hist2 = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)
 x = [hist1, hist2]
-colors = [&#39;orchid&#39;, &#39;deepskyblue&#39;]
-labels = [&#39;hist1&#39;, &#39;hist2&#39;]
-bins = range(0, 101, 10)
+colors = [<span class="hljs-string">&#x27;orchid&#x27;</span>, <span class="hljs-string">&#x27;deepskyblue&#x27;</span>]
+labels = [<span class="hljs-string">&#x27;hist1&#x27;</span>, <span class="hljs-string">&#x27;hist2&#x27;</span>]
+bins = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">101</span>, <span class="hljs-number">10</span>)
 
-# 绘制两份数据的直方图，数据集等其他参数可以使用列表形式传递，也可以使用两次 hist 函数单独传递
-plt.hist(x, bins=bins, color=colors, stacked=True, label=labels)
-plt.title(&#39;堆积的直方图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
-plt.legend(loc=&quot;upper left&quot;)
+<span class="hljs-comment"># 绘制两份数据的直方图，数据集等其他参数可以使用列表形式传递，也可以使用两次 hist 函数单独传递</span>
+plt.hist(x, bins=bins, color=colors, stacked=<span class="hljs-literal">True</span>, label=labels)
+plt.title(<span class="hljs-string">&#x27;堆积的直方图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
+plt.legend(loc=<span class="hljs-string">&quot;upper left&quot;</span>)
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/02.png" alt="02"></p>
-<h3 id="【2x04】填充其他样式"><a href="#【2x04】填充其他样式" class="headerlink" title="【2x04】填充其他样式"></a><font color=##4876FF>【2x04】填充其他样式</font></h3><p><code>hatch</code> 参数可以让直方图的矩形填充其他样式，可选值有：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, <code>&#39;|&#39;</code>, <code>&#39;-&#39;</code>, <code>&#39;+&#39;</code>, <code>&#39;x&#39;</code>, <code>&#39;o&#39;</code>, <code>&#39;O&#39;</code>, <code>&#39;.&#39;</code>, <code>&#39;*&#39;</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/02.png" alt="02"></p>
+<h3 id="font-color-4876FF-【2x04】填充其他样式-font"><font color=##4876FF>【2x04】填充其他样式</font></h3>
+<p><code>hatch</code> 参数可以让直方图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]  # 设置中文显示
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]  <span class="hljs-comment"># 设置中文显示</span>
 
-x = np.random.randint(0, 101, 100)  # 数据集
-bins = np.arange(0, 101, 10)        # 分布区间 [0,10)、[10,20)...[90,100]
+x = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">101</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># 数据集</span>
+bins = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">101</span>, <span class="hljs-number">10</span>)        <span class="hljs-comment"># 分布区间 [0,10)、[10,20)...[90,100]</span>
 
-# 矩形颜色为白色，使用 / 填充，边缘线宽0.5，颜色为黑色
-plt.hist(x, bins=bins, color=&#39;w&#39;, hatch=&#39;///&#39;, linewidth=0.5, edgecolor=&#39;k&#39;)
-plt.xlim(0, 100)                   # x 轴刻度范围
-plt.title(&#39;直方图图案填充示例&#39;)     # 标题
-plt.xlabel(&#39;x axis label&#39;)         # x 轴标签
-plt.ylabel(&#39;y axis label&#39;)         # y 轴标签
+<span class="hljs-comment"># 矩形颜色为白色，使用 / 填充，边缘线宽0.5，颜色为黑色</span>
+plt.hist(x, bins=bins, color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;///&#x27;</span>, linewidth=<span class="hljs-number">0.5</span>, edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>)
+plt.xlim(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>)                   <span class="hljs-comment"># x 轴刻度范围</span>
+plt.title(<span class="hljs-string">&#x27;直方图图案填充示例&#x27;</span>)     <span class="hljs-comment"># 标题</span>
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)         <span class="hljs-comment"># x 轴标签</span>
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <span class="hljs-comment"># y 轴标签</span>
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/03.png" alt="03"></p>
+plt.show()</code></pre>
+<p><img src="/img/article/019/03.png" alt="03"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
-<h2 id="【3x00】柱状图的绘制"><a href="#【3x00】柱状图的绘制" class="headerlink" title="【3x00】柱状图的绘制"></a><font color=#FF0000>【3x00】柱状图的绘制</font></h2><h3 id="【3x01】函数介绍-matplotlib-pyplot-bar"><a href="#【3x01】函数介绍-matplotlib-pyplot-bar" class="headerlink" title="【3x01】函数介绍 matplotlib.pyplot.bar()"></a><font color=##4876FF>【3x01】函数介绍 matplotlib.pyplot.bar()</font></h3><p><code>matplotlib.pyplot.bar()</code> 函数用于绘制柱状图。</p>
-<p>基本语法：<code>matplotlib.pyplot.bar(x, height[, width=0.8, bottom=None, align=&#39;center&#39;, \*\*kwargs])</code></p>
+<h2 id="font-color-FF0000-【3x00】柱状图的绘制-font"><font color=#FF0000>【3x00】柱状图的绘制</font></h2>
+<h3 id="font-color-4876FF-【3x01】函数介绍-matplotlib-pyplot-bar-font"><font color=##4876FF>【3x01】函数介绍 matplotlib.pyplot.bar()</font></h3>
+<p><code>matplotlib.pyplot.bar()</code> 函数用于绘制柱状图。</p>
+<p>基本语法：<code>matplotlib.pyplot.bar(x, height[, width=0.8, bottom=None, align='center', \*\*kwargs])</code></p>
 <p>基本参数：</p>
 <table>
 <thead>
@@ -802,7 +363,8 @@ plt.show()
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>x</td>
 <td>标量序列，每个矩形对应的 x 轴刻度</td>
 </tr>
@@ -820,9 +382,10 @@ plt.show()
 </tr>
 <tr>
 <td>align</td>
-<td>矩形与 x 轴刻度对齐的位置，<code>&#39;center&#39;</code>：中；<code>&#39;edge&#39;</code>：左边缘</td>
+<td>矩形与 x 轴刻度对齐的位置，<code>'center'</code>：中；<code>'edge'</code>：左边缘</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>其他参数：</p>
 <table>
 <thead>
@@ -831,7 +394,8 @@ plt.show()
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>color</td>
 <td>标量或数组类型，每个矩形的颜色，与 facecolor 作用相同，指定一个即可，如果两者都指定，则取 facecolor 的值</td>
 </tr>
@@ -877,7 +441,7 @@ plt.show()
 </tr>
 <tr>
 <td>linestyle / ls</td>
-<td>线条样式，此处指矩形边缘线条样式<br><code>&#39;-&#39;</code> or <code>&#39;solid&#39;</code>, <code>&#39;--&#39;</code> or <code>&#39;dashed&#39;</code>, <code>&#39;-.&#39;</code> or <code>&#39;dashdot&#39;</code> or <code>&#39;:&#39;</code> or <code>&#39;dotted&#39;</code>, <code>&#39;none&#39;</code> or <code>&#39; &#39;</code> or <code>&#39;&#39;</code></td>
+<td>线条样式，此处指矩形边缘线条样式<br><code>'-'</code> or <code>'solid'</code>, <code>'--'</code> or <code>'dashed'</code>, <code>'-.'</code> or <code>'dashdot'</code> or <code>':'</code> or <code>'dotted'</code>, <code>'none'</code> or <code>' '</code> or <code>''</code></td>
 </tr>
 <tr>
 <td>linewidth / lw</td>
@@ -885,186 +449,188 @@ plt.show()
 </tr>
 <tr>
 <td>hatch</td>
-<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, `’</td>
+<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>'/'</code>, <code>'\'</code>, `’</td>
 </tr>
-</tbody></table>
-<h3 id="【3x02】简单柱状图示例"><a href="#【3x02】简单柱状图示例" class="headerlink" title="【3x02】简单柱状图示例"></a><font color=##4876FF>【3x02】简单柱状图示例</font></h3><pre><code class="python">import matplotlib.pyplot as plt
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【3x02】简单柱状图示例-font"><font color=##4876FF>【3x02】简单柱状图示例</font></h3>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = [1, 2, 3, 4, 5]
-height = [5, 7, 4, 3, 1]
+x = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+height = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>]
 
-# 设置 x 轴的标签，也可以用 plt.xticks 方法来设置
-tick_label = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-# 设置颜色序列
-color = [&#39;red&#39;, &#39;yellow&#39;, &#39;peru&#39;, &#39;orchid&#39;, &#39;deepskyblue&#39;]
-# 绘制柱状图，边缘线宽度为1，颜色为黑色，样式为 --
-plt.bar(x, height, tick_label=tick_label, color=color, edgecolor=&#39;k&#39;, linewidth=1, linestyle=&#39;--&#39;)
+<span class="hljs-comment"># 设置 x 轴的标签，也可以用 plt.xticks 方法来设置</span>
+tick_label = [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>]
+<span class="hljs-comment"># 设置颜色序列</span>
+color = [<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-string">&#x27;peru&#x27;</span>, <span class="hljs-string">&#x27;orchid&#x27;</span>, <span class="hljs-string">&#x27;deepskyblue&#x27;</span>]
+<span class="hljs-comment"># 绘制柱状图，边缘线宽度为1，颜色为黑色，样式为 --</span>
+plt.bar(x, height, tick_label=tick_label, color=color, edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>, linewidth=<span class="hljs-number">1</span>, linestyle=<span class="hljs-string">&#x27;--&#x27;</span>)
 
-plt.title(&#39;简单柱状图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.title(<span class="hljs-string">&#x27;简单柱状图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/04.png" alt="04"></p>
-<h3 id="【3x03】添加与标准差的误差线"><a href="#【3x03】添加与标准差的误差线" class="headerlink" title="【3x03】添加与标准差的误差线"></a><font color=##4876FF>【3x03】添加与标准差的误差线</font></h3><p>首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
-<pre><code class="python">import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/04.png" alt="04"></p>
+<h3 id="font-color-4876FF-【3x03】添加与标准差的误差线-font"><font color=##4876FF>【3x03】添加与标准差的误差线</font></h3>
+<p>首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = [1, 2, 3, 4, 5]
-height = [5, 7, 4, 3, 2]
-std = [0.5, 0.1, 1.2, 0.3, 1.0]   # 标准差
+x = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+height = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+std = [<span class="hljs-number">0.5</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">1.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">1.0</span>]   <span class="hljs-comment"># 标准差</span>
 
-tick_label = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]  # 设置 x 轴的标签，也可以用 plt.xticks 方法来设置
-color = [&#39;red&#39;, &#39;yellow&#39;, &#39;peru&#39;, &#39;orchid&#39;, &#39;deepskyblue&#39;]  # 设置颜色序列
+tick_label = [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>]  <span class="hljs-comment"># 设置 x 轴的标签，也可以用 plt.xticks 方法来设置</span>
+color = [<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-string">&#x27;peru&#x27;</span>, <span class="hljs-string">&#x27;orchid&#x27;</span>, <span class="hljs-string">&#x27;deepskyblue&#x27;</span>]  <span class="hljs-comment"># 设置颜色序列</span>
 plt.bar(
     x,
     height,
     tick_label=tick_label,
     color=color,
-    yerr=std,              # 指定对应标准差
-    # error_kw=&#123;
-    #     &#39;ecolor&#39;: &#39;k&#39;,   # 指定误差线的颜色
-    #     &#39;capsize&#39;: 6     # 指定误差线两头横线的宽度
-    # &#125;,
-    ecolor=&#39;k&#39;,
-    capsize=6,
-    edgecolor=&#39;k&#39;,         # 指定边缘线颜色
-    linewidth=1            # 指定边缘线宽度
+    yerr=std,              <span class="hljs-comment"># 指定对应标准差</span>
+    <span class="hljs-comment"># error_kw=&#123;</span>
+    <span class="hljs-comment">#     &#x27;ecolor&#x27;: &#x27;k&#x27;,   # 指定误差线的颜色</span>
+    <span class="hljs-comment">#     &#x27;capsize&#x27;: 6     # 指定误差线两头横线的宽度</span>
+    <span class="hljs-comment"># &#125;,</span>
+    ecolor=<span class="hljs-string">&#x27;k&#x27;</span>,
+    capsize=<span class="hljs-number">6</span>,
+    edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>,         <span class="hljs-comment"># 指定边缘线颜色</span>
+    linewidth=<span class="hljs-number">1</span>            <span class="hljs-comment"># 指定边缘线宽度</span>
 )
 
-plt.title(&#39;柱状图添加误差线示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.title(<span class="hljs-string">&#x27;柱状图添加误差线示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/05.png" alt="05"></p>
-<h3 id="【3x04】多序列柱状图"><a href="#【3x04】多序列柱状图" class="headerlink" title="【3x04】多序列柱状图"></a><font color=##4876FF>【3x04】多序列柱状图</font></h3><p>在绘制多序列的柱状图时，只需要多次调用 <code>matplotlib.pyplot.bar()</code> 函数即可，指定一个较小的宽度值（偏移量），绘制不同数据时设置不同的 x 位置刻度即可。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/05.png" alt="05"></p>
+<h3 id="font-color-4876FF-【3x04】多序列柱状图-font"><font color=##4876FF>【3x04】多序列柱状图</font></h3>
+<p>在绘制多序列的柱状图时，只需要多次调用 <code>matplotlib.pyplot.bar()</code> 函数即可，指定一个较小的宽度值（偏移量），绘制不同数据时设置不同的 x 位置刻度即可。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = np.arange(5)
-height1 = np.array([5, 7, 4, 3, 2])
-height2 = np.array([2, 4, 6, 7, 3])
-height3 = np.array([3, 1, 7, 5, 2])
+x = np.arange(<span class="hljs-number">5</span>)
+height1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+height2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+height3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-# 设置宽度值（偏移量）
-width = 0.3
-# 绘制不同数据时，x 轴依次增加一个偏移量
-plt.bar(x, height1, width, label=&#39;bar1&#39;)
-plt.bar(x + width, height2, width, label=&#39;bar2&#39;)
-plt.bar(x + width * 2, height3, width, label=&#39;bar3&#39;)
+<span class="hljs-comment"># 设置宽度值（偏移量）</span>
+width = <span class="hljs-number">0.3</span>
+<span class="hljs-comment"># 绘制不同数据时，x 轴依次增加一个偏移量</span>
+plt.bar(x, height1, width, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.bar(x + width, height2, width, label=<span class="hljs-string">&#x27;bar2&#x27;</span>)
+plt.bar(x + width * <span class="hljs-number">2</span>, height3, width, label=<span class="hljs-string">&#x27;bar3&#x27;</span>)
 
-# 设置 x 轴刻度的标签
-plt.xticks(x + width, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;多序列柱状图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+<span class="hljs-comment"># 设置 x 轴刻度的标签</span>
+plt.xticks(x + width, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;多序列柱状图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/06.png" alt="06"></p>
-<h3 id="【3x05】堆积的柱状图"><a href="#【3x05】堆积的柱状图" class="headerlink" title="【3x05】堆积的柱状图"></a><font color=##4876FF>【3x05】堆积的柱状图</font></h3><p>所谓堆积图，就是将多序列数据堆积到一个矩形上显示，在柱状图中要实现堆积图，只需要改变 <code>bottom</code> 参数即可，<code>bottom</code> 参数用于设置 y 轴基线，即柱状图的底边在 y 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>bottom=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>bottom=data1+data2</code>，以此类推。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/06.png" alt="06"></p>
+<h3 id="font-color-4876FF-【3x05】堆积的柱状图-font"><font color=##4876FF>【3x05】堆积的柱状图</font></h3>
+<p>所谓堆积图，就是将多序列数据堆积到一个矩形上显示，在柱状图中要实现堆积图，只需要改变 <code>bottom</code> 参数即可，<code>bottom</code> 参数用于设置 y 轴基线，即柱状图的底边在 y 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>bottom=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>bottom=data1+data2</code>，以此类推。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = np.arange(5)
-height1 = np.array([5, 7, 4, 3, 2])
-height2 = np.array([2, 4, 6, 7, 3])
-height3 = np.array([3, 1, 7, 5, 2])
+x = np.arange(<span class="hljs-number">5</span>)
+height1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+height2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+height3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-plt.bar(x, height1, label=&#39;bar1&#39;)
-plt.bar(x, height2, label=&#39;bar2&#39;, bottom=height1)
-plt.bar(x, height3, label=&#39;bar3&#39;, bottom=(height2+height1))
+plt.bar(x, height1, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.bar(x, height2, label=<span class="hljs-string">&#x27;bar2&#x27;</span>, bottom=height1)
+plt.bar(x, height3, label=<span class="hljs-string">&#x27;bar3&#x27;</span>, bottom=(height2+height1))
 
-plt.xticks(x, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;堆积的柱状图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.xticks(x, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;堆积的柱状图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/07.png" alt="07"></p>
-<h3 id="【3x06】填充其他样式"><a href="#【3x06】填充其他样式" class="headerlink" title="【3x06】填充其他样式"></a><font color=##4876FF>【3x06】填充其他样式</font></h3><p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, <code>&#39;|&#39;</code>, <code>&#39;-&#39;</code>, <code>&#39;+&#39;</code>, <code>&#39;x&#39;</code>, <code>&#39;o&#39;</code>, <code>&#39;O&#39;</code>, <code>&#39;.&#39;</code>, <code>&#39;*&#39;</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/07.png" alt="07"></p>
+<h3 id="font-color-4876FF-【3x06】填充其他样式-font"><font color=##4876FF>【3x06】填充其他样式</font></h3>
+<p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = np.arange(5)
-height1 = np.array([5, 7, 4, 3, 2])
-height2 = np.array([2, 4, 6, 7, 3])
-height3 = np.array([3, 1, 7, 5, 2])
+x = np.arange(<span class="hljs-number">5</span>)
+height1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+height2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+height3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-plt.bar(x, height1, label=&#39;bar1&#39;, color=&#39;w&#39;, hatch=&#39;///&#39;)
-plt.bar(x, height2, label=&#39;bar2&#39;, bottom=height1, color=&#39;w&#39;, hatch=&#39;xxx&#39;)
-plt.bar(x, height3, label=&#39;bar3&#39;, bottom=(height2+height1), color=&#39;w&#39;, hatch=&#39;|||&#39;)
+plt.bar(x, height1, label=<span class="hljs-string">&#x27;bar1&#x27;</span>, color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;///&#x27;</span>)
+plt.bar(x, height2, label=<span class="hljs-string">&#x27;bar2&#x27;</span>, bottom=height1, color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;xxx&#x27;</span>)
+plt.bar(x, height3, label=<span class="hljs-string">&#x27;bar3&#x27;</span>, bottom=(height2+height1), color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;|||&#x27;</span>)
 
-plt.xticks(x, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;柱状图图案填充示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.xticks(x, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;柱状图图案填充示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/08.png" alt="08"></p>
-<h3 id="【3x07】添加文字描述"><a href="#【3x07】添加文字描述" class="headerlink" title="【3x07】添加文字描述"></a><font color=##4876FF>【3x07】添加文字描述</font></h3><p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在柱状图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/08.png" alt="08"></p>
+<h3 id="font-color-4876FF-【3x07】添加文字描述-font"><font color=##4876FF>【3x07】添加文字描述</font></h3>
+<p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在柱状图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-x = np.arange(5)
-height1 = np.array([5, 7, 4, 3, 2])
-height2 = np.array([2, 4, 6, 7, 3])
-height3 = np.array([3, 1, 7, 5, 2])
+x = np.arange(<span class="hljs-number">5</span>)
+height1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+height2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+height3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-width = 0.3
-# 绘制不同数据时，x 轴依次增加一个偏移量
-plt.bar(x, height1, width, label=&#39;bar1&#39;)
-plt.bar(x + width, height2, width, label=&#39;bar2&#39;)
-plt.bar(x + width * 2, height3, width, label=&#39;bar3&#39;)
+width = <span class="hljs-number">0.3</span>
+<span class="hljs-comment"># 绘制不同数据时，x 轴依次增加一个偏移量</span>
+plt.bar(x, height1, width, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.bar(x + width, height2, width, label=<span class="hljs-string">&#x27;bar2&#x27;</span>)
+plt.bar(x + width * <span class="hljs-number">2</span>, height3, width, label=<span class="hljs-string">&#x27;bar3&#x27;</span>)
 
-# 依次添加每条数据的标签
-for a, b in zip(x, height1):
-    plt.text(a, b, b, ha=&#39;center&#39;, va=&#39;bottom&#39;)
-for c, d in zip(x, height2):
-    plt.text(c + width, d, d, ha=&#39;center&#39;, va=&#39;bottom&#39;)
-for e, f in zip(x, height3):
-    plt.text(e + width * 2, f, f, ha=&#39;center&#39;, va=&#39;bottom&#39;)
+<span class="hljs-comment"># 依次添加每条数据的标签</span>
+<span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(x, height1):
+    plt.text(a, b, b, ha=<span class="hljs-string">&#x27;center&#x27;</span>, va=<span class="hljs-string">&#x27;bottom&#x27;</span>)
+<span class="hljs-keyword">for</span> c, d <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(x, height2):
+    plt.text(c + width, d, d, ha=<span class="hljs-string">&#x27;center&#x27;</span>, va=<span class="hljs-string">&#x27;bottom&#x27;</span>)
+<span class="hljs-keyword">for</span> e, f <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(x, height3):
+    plt.text(e + width * <span class="hljs-number">2</span>, f, f, ha=<span class="hljs-string">&#x27;center&#x27;</span>, va=<span class="hljs-string">&#x27;bottom&#x27;</span>)
 
-# 设置 x 轴刻度的标签
-plt.xticks(x + width, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;柱状图添加文字描述示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+<span class="hljs-comment"># 设置 x 轴刻度的标签</span>
+plt.xticks(x + width, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;柱状图添加文字描述示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/09.png" alt="09"></p>
+plt.show()</code></pre>
+<p><img src="/img/article/019/09.png" alt="09"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/105952856
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="【4x00】条形图的绘制"><a href="#【4x00】条形图的绘制" class="headerlink" title="【4x00】条形图的绘制"></a><font color=#FF0000>【4x00】条形图的绘制</font></h2><h3 id="【4x01】函数介绍-matplotlib-pyplot-barh"><a href="#【4x01】函数介绍-matplotlib-pyplot-barh" class="headerlink" title="【4x01】函数介绍 matplotlib.pyplot.barh()"></a><font color=##4876FF>【4x01】函数介绍 matplotlib.pyplot.barh()</font></h3><p><code>matplotlib.pyplot.barh()</code> 函数用于绘制条形图（水平排列的柱状图）。</p>
-<p>基本语法：<code>matplotlib.pyplot.barh(y, width[, height=0.8, left=None, align=&#39;center&#39;, color, \*\*kwargs])</code></p>
+<h2 id="font-color-FF0000-【4x00】条形图的绘制-font"><font color=#FF0000>【4x00】条形图的绘制</font></h2>
+<h3 id="font-color-4876FF-【4x01】函数介绍-matplotlib-pyplot-barh-font"><font color=##4876FF>【4x01】函数介绍 matplotlib.pyplot.barh()</font></h3>
+<p><code>matplotlib.pyplot.barh()</code> 函数用于绘制条形图（水平排列的柱状图）。</p>
+<p>基本语法：<code>matplotlib.pyplot.barh(y, width[, height=0.8, left=None, align='center', color, \*\*kwargs])</code></p>
 <table>
 <thead>
 <tr>
@@ -1072,7 +638,8 @@ plt.show()
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>y</td>
 <td>标量或数组类型，每个矩形对应的 y 轴刻度</td>
 </tr>
@@ -1090,9 +657,10 @@ plt.show()
 </tr>
 <tr>
 <td>align</td>
-<td>矩形的底边与 y 轴刻度对齐的位置，<code>&#39;center&#39;</code>：中；<code>&#39;edge&#39;</code>：底边</td>
+<td>矩形的底边与 y 轴刻度对齐的位置，<code>'center'</code>：中；<code>'edge'</code>：底边</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>其他参数：</p>
 <table>
 <thead>
@@ -1101,7 +669,8 @@ plt.show()
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>color</td>
 <td>标量或数组类型，每个矩形的颜色，与 facecolor 作用相同，指定一个即可，如果两者都指定，则取 facecolor 的值</td>
 </tr>
@@ -1147,7 +716,7 @@ plt.show()
 </tr>
 <tr>
 <td>linestyle / ls</td>
-<td>线条样式，此处指矩形边缘线条样式<br><code>&#39;-&#39;</code> or <code>&#39;solid&#39;</code>, <code>&#39;--&#39;</code> or <code>&#39;dashed&#39;</code>, <code>&#39;-.&#39;</code> or <code>&#39;dashdot&#39;</code> or <code>&#39;:&#39;</code> or <code>&#39;dotted&#39;</code>, <code>&#39;none&#39;</code> or <code>&#39; &#39;</code> or <code>&#39;&#39;</code></td>
+<td>线条样式，此处指矩形边缘线条样式<br><code>'-'</code> or <code>'solid'</code>, <code>'--'</code> or <code>'dashed'</code>, <code>'-.'</code> or <code>'dashdot'</code> or <code>':'</code> or <code>'dotted'</code>, <code>'none'</code> or <code>' '</code> or <code>''</code></td>
 </tr>
 <tr>
 <td>linewidth / lw</td>
@@ -1155,898 +724,317 @@ plt.show()
 </tr>
 <tr>
 <td>hatch</td>
-<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, `’</td>
+<td>矩形的填充图案，可以是组合形式，如果有相同的图案，则会增加填充的密度<br>取值可以是：<code>'/'</code>, <code>'\'</code>, `’</td>
 </tr>
-</tbody></table>
-<h3 id="【4x02】简单条形图示例"><a href="#【4x02】简单条形图示例" class="headerlink" title="【4x02】简单条形图示例"></a><font color=##4876FF>【4x02】简单条形图示例</font></h3><pre><code class="python">import matplotlib.pyplot as plt
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【4x02】简单条形图示例-font"><font color=##4876FF>【4x02】简单条形图示例</font></h3>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = [1, 2, 3, 4, 5]
-width = [5, 7, 4, 3, 1]
+y = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+width = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>]
 
-tick_label = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-color = [&#39;red&#39;, &#39;yellow&#39;, &#39;peru&#39;, &#39;orchid&#39;, &#39;deepskyblue&#39;]
-plt.barh(y, width, tick_label=tick_label, color=color, edgecolor=&#39;k&#39;, linewidth=1, linestyle=&#39;--&#39;)
+tick_label = [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>]
+color = [<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-string">&#x27;peru&#x27;</span>, <span class="hljs-string">&#x27;orchid&#x27;</span>, <span class="hljs-string">&#x27;deepskyblue&#x27;</span>]
+plt.barh(y, width, tick_label=tick_label, color=color, edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>, linewidth=<span class="hljs-number">1</span>, linestyle=<span class="hljs-string">&#x27;--&#x27;</span>)
 
-plt.title(&#39;简单条形图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.title(<span class="hljs-string">&#x27;简单条形图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/10.png" alt="10"></p>
-<h3 id="【4x03】添加与标准差的误差线"><a href="#【4x03】添加与标准差的误差线" class="headerlink" title="【4x03】添加与标准差的误差线"></a><font color=##4876FF>【4x03】添加与标准差的误差线</font></h3><p>与柱状图一样，首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
-<pre><code class="python">import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/10.png" alt="10"></p>
+<h3 id="font-color-4876FF-【4x03】添加与标准差的误差线-font"><font color=##4876FF>【4x03】添加与标准差的误差线</font></h3>
+<p>与柱状图一样，首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = [1, 2, 3, 4, 5]
-width = [5, 7, 4, 3, 2]
-std = [0.5, 0.1, 1.2, 0.3, 1.0]  # 标准差
+y = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+width = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+std = [<span class="hljs-number">0.5</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">1.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">1.0</span>]  <span class="hljs-comment"># 标准差</span>
 
-tick_label = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]   # 设置 x 轴的标签，也可以用 plt.xticks 方法来设置
-color = [&#39;red&#39;, &#39;yellow&#39;, &#39;peru&#39;, &#39;orchid&#39;, &#39;deepskyblue&#39;]  # 颜色序列
+tick_label = [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>]   <span class="hljs-comment"># 设置 x 轴的标签，也可以用 plt.xticks 方法来设置</span>
+color = [<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-string">&#x27;peru&#x27;</span>, <span class="hljs-string">&#x27;orchid&#x27;</span>, <span class="hljs-string">&#x27;deepskyblue&#x27;</span>]  <span class="hljs-comment"># 颜色序列</span>
 plt.barh(
     y,
     width,
     tick_label=tick_label,
     color=color,
-    xerr=std,               # 指定对应标准差
-    # error_kw=&#123;
-    #     &#39;ecolor&#39;: &#39;k&#39;,    # 指定误差线的颜色
-    #     &#39;capsize&#39;: 6      # 指定误差线两头横线的宽度
-    # &#125;,
-    ecolor=&#39;k&#39;,
-    capsize=6,
-    edgecolor=&#39;k&#39;,          # 指定边缘线颜色
-    linewidth=1             # 指定边缘线宽度
+    xerr=std,               <span class="hljs-comment"># 指定对应标准差</span>
+    <span class="hljs-comment"># error_kw=&#123;</span>
+    <span class="hljs-comment">#     &#x27;ecolor&#x27;: &#x27;k&#x27;,    # 指定误差线的颜色</span>
+    <span class="hljs-comment">#     &#x27;capsize&#x27;: 6      # 指定误差线两头横线的宽度</span>
+    <span class="hljs-comment"># &#125;,</span>
+    ecolor=<span class="hljs-string">&#x27;k&#x27;</span>,
+    capsize=<span class="hljs-number">6</span>,
+    edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>,          <span class="hljs-comment"># 指定边缘线颜色</span>
+    linewidth=<span class="hljs-number">1</span>             <span class="hljs-comment"># 指定边缘线宽度</span>
 )
 
-plt.title(&#39;条形图添加误差线示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.title(<span class="hljs-string">&#x27;条形图添加误差线示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/11.png" alt="11"></p>
-<h3 id="【4x04】多序列条形图"><a href="#【4x04】多序列条形图" class="headerlink" title="【4x04】多序列条形图"></a><font color=##4876FF>【4x04】多序列条形图</font></h3><p>与多序列柱状图类似，在绘制多序列的条形图时，只需要多次调用 <code>matplotlib.pyplot.barh()</code> 函数即可，指定一个较小的高度值（偏移量），绘制不同数据时设置不同的 y 位置刻度即可。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/11.png" alt="11"></p>
+<h3 id="font-color-4876FF-【4x04】多序列条形图-font"><font color=##4876FF>【4x04】多序列条形图</font></h3>
+<p>与多序列柱状图类似，在绘制多序列的条形图时，只需要多次调用 <code>matplotlib.pyplot.barh()</code> 函数即可，指定一个较小的高度值（偏移量），绘制不同数据时设置不同的 y 位置刻度即可。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = np.arange(5)
-width1 = np.array([5, 7, 4, 3, 2])
-width2 = np.array([2, 4, 6, 7, 3])
-width3 = np.array([3, 1, 7, 5, 2])
+y = np.arange(<span class="hljs-number">5</span>)
+width1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+width2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+width3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-# 设置高度值（偏移量）
-height = 0.3
-# 绘制不同数据时，y 轴依次增加一个偏移量
-plt.barh(y, width1, height, label=&#39;bar1&#39;)
-plt.barh(y + height, width2, height, label=&#39;bar2&#39;)
-plt.barh(y + height * 2, width3, height, label=&#39;bar3&#39;)
+<span class="hljs-comment"># 设置高度值（偏移量）</span>
+height = <span class="hljs-number">0.3</span>
+<span class="hljs-comment"># 绘制不同数据时，y 轴依次增加一个偏移量</span>
+plt.barh(y, width1, height, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.barh(y + height, width2, height, label=<span class="hljs-string">&#x27;bar2&#x27;</span>)
+plt.barh(y + height * <span class="hljs-number">2</span>, width3, height, label=<span class="hljs-string">&#x27;bar3&#x27;</span>)
 
-# 设置 y 轴刻度的标签
-plt.yticks(y + height, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;多序列条形图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+<span class="hljs-comment"># 设置 y 轴刻度的标签</span>
+plt.yticks(y + height, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;多序列条形图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/12.png" alt="12"></p>
-<h3 id="【4x05】堆积的条形图"><a href="#【4x05】堆积的条形图" class="headerlink" title="【4x05】堆积的条形图"></a><font color=##4876FF>【4x05】堆积的条形图</font></h3><p>堆积图就是将多序列数据堆积到一个矩形上显示，和堆积的柱状图类似，在条形图中要实现堆积图，只需要改变 <code>left</code> 参数即可，<code>left</code> 参数用于设置 x 轴基线，即柱状图的底边在 x 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>left=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>left=data1+data2</code>，以此类推。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/12.png" alt="12"></p>
+<h3 id="font-color-4876FF-【4x05】堆积的条形图-font"><font color=##4876FF>【4x05】堆积的条形图</font></h3>
+<p>堆积图就是将多序列数据堆积到一个矩形上显示，和堆积的柱状图类似，在条形图中要实现堆积图，只需要改变 <code>left</code> 参数即可，<code>left</code> 参数用于设置 x 轴基线，即柱状图的底边在 x 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>left=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>left=data1+data2</code>，以此类推。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = np.arange(5)
-width1 = np.array([5, 7, 4, 3, 2])
-width2 = np.array([2, 4, 6, 7, 3])
-width3 = np.array([3, 1, 7, 5, 2])
+y = np.arange(<span class="hljs-number">5</span>)
+width1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+width2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+width3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-plt.barh(y, width1, label=&#39;bar1&#39;)
-plt.barh(y, width2, label=&#39;bar2&#39;, left=width1)
-plt.barh(y, width3, label=&#39;bar3&#39;, left=(width1+width2))
+plt.barh(y, width1, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.barh(y, width2, label=<span class="hljs-string">&#x27;bar2&#x27;</span>, left=width1)
+plt.barh(y, width3, label=<span class="hljs-string">&#x27;bar3&#x27;</span>, left=(width1+width2))
 
-plt.yticks(y, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;堆积的条形图示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.yticks(y, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;堆积的条形图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/13.png" alt="13"></p>
-<h3 id="【4x06】填充其他样式"><a href="#【4x06】填充其他样式" class="headerlink" title="【4x06】填充其他样式"></a><font color=##4876FF>【4x06】填充其他样式</font></h3><p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>&#39;/&#39;</code>, <code>&#39;\&#39;</code>, <code>&#39;|&#39;</code>, <code>&#39;-&#39;</code>, <code>&#39;+&#39;</code>, <code>&#39;x&#39;</code>, <code>&#39;o&#39;</code>, <code>&#39;O&#39;</code>, <code>&#39;.&#39;</code>, <code>&#39;*&#39;</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/13.png" alt="13"></p>
+<h3 id="font-color-4876FF-【4x06】填充其他样式-font"><font color=##4876FF>【4x06】填充其他样式</font></h3>
+<p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = np.arange(5)
-width1 = np.array([5, 7, 4, 3, 2])
-width2 = np.array([2, 4, 6, 7, 3])
-width3 = np.array([3, 1, 7, 5, 2])
+y = np.arange(<span class="hljs-number">5</span>)
+width1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+width2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+width3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-plt.barh(y, width1, label=&#39;bar1&#39;, color=&#39;w&#39;, hatch=&#39;///&#39;)
-plt.barh(y, width2, label=&#39;bar2&#39;, left=width1, color=&#39;w&#39;, hatch=&#39;xxx&#39;)
-plt.barh(y, width3, label=&#39;bar3&#39;, left=(width1+width2), color=&#39;w&#39;, hatch=&#39;|||&#39;)
+plt.barh(y, width1, label=<span class="hljs-string">&#x27;bar1&#x27;</span>, color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;///&#x27;</span>)
+plt.barh(y, width2, label=<span class="hljs-string">&#x27;bar2&#x27;</span>, left=width1, color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;xxx&#x27;</span>)
+plt.barh(y, width3, label=<span class="hljs-string">&#x27;bar3&#x27;</span>, left=(width1+width2), color=<span class="hljs-string">&#x27;w&#x27;</span>, hatch=<span class="hljs-string">&#x27;|||&#x27;</span>)
 
-plt.yticks(y, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;条形图图案填充示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+plt.yticks(y, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;条形图图案填充示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/14.png" alt="14"></p>
-<h3 id="【4x07】添加文字描述"><a href="#【4x07】添加文字描述" class="headerlink" title="【4x07】添加文字描述"></a><font color=##4876FF>【4x07】添加文字描述</font></h3><p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在条形图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
-<pre><code class="python">import numpy as np
-import matplotlib.pyplot as plt
+plt.show()</code></pre>
+<p><img src="/img/article/019/14.png" alt="14"></p>
+<h3 id="font-color-4876FF-【4x07】添加文字描述-font"><font color=##4876FF>【4x07】添加文字描述</font></h3>
+<p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在条形图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
-plt.rcParams[&#39;font.sans-serif&#39;] = [&#39;Microsoft YaHei&#39;]
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
 
-y = np.arange(5)
-width1 = np.array([5, 7, 4, 3, 2])
-width2 = np.array([2, 4, 6, 7, 3])
-width3 = np.array([3, 1, 7, 5, 2])
+y = np.arange(<span class="hljs-number">5</span>)
+width1 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+width2 = np.array([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>])
+width3 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>])
 
-height = 0.3
-# 绘制不同数据时，y 轴依次增加一个偏移量
-plt.barh(y, width1, height, label=&#39;bar1&#39;)
-plt.barh(y + height, width2, height, label=&#39;bar2&#39;)
-plt.barh(y + height * 2, width3, height, label=&#39;bar3&#39;)
+height = <span class="hljs-number">0.3</span>
+<span class="hljs-comment"># 绘制不同数据时，y 轴依次增加一个偏移量</span>
+plt.barh(y, width1, height, label=<span class="hljs-string">&#x27;bar1&#x27;</span>)
+plt.barh(y + height, width2, height, label=<span class="hljs-string">&#x27;bar2&#x27;</span>)
+plt.barh(y + height * <span class="hljs-number">2</span>, width3, height, label=<span class="hljs-string">&#x27;bar3&#x27;</span>)
 
-# 依次添加每条数据的标签
-for a, b in zip(width1, y):
-    plt.text(a, b-0.05, a)
-for c, d in zip(width2, y):
-    plt.text(c, d+0.20, c)
-for e, f in zip(width3, y):
-    plt.text(e, f+0.50, e)
+<span class="hljs-comment"># 依次添加每条数据的标签</span>
+<span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(width1, y):
+    plt.text(a, b-<span class="hljs-number">0.05</span>, a)
+<span class="hljs-keyword">for</span> c, d <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(width2, y):
+    plt.text(c, d+<span class="hljs-number">0.20</span>, c)
+<span class="hljs-keyword">for</span> e, f <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(width3, y):
+    plt.text(e, f+<span class="hljs-number">0.50</span>, e)
 
-# 设置 y 轴刻度的标签
-plt.yticks(y + height, [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-plt.title(&#39;条形图添加文字描述示例&#39;)
-plt.xlabel(&#39;x axis label&#39;)
-plt.ylabel(&#39;y axis label&#39;)
+<span class="hljs-comment"># 设置 y 轴刻度的标签</span>
+plt.yticks(y + height, [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+plt.title(<span class="hljs-string">&#x27;条形图添加文字描述示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
-plt.show()
-</code></pre>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A73/15.png" alt="15"></p>
+plt.show()</code></pre>
+<p><img src="/img/article/019/15.png" alt="15"></p>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/105952856
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/019/">https://www.itbob.cn/article/019/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/020/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/018/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/020/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/018/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-    <script src="https://fastly.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

@@ -1,629 +1,180 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/052/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/052/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> 
-
-    
-        <meta property="article:published_time" content="Wed May 25 2022 14:01:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/052/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/052/index.html",
-    "headline": "【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析",
-    "datePublished": "Wed May 25 2022 14:01:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",JS 逆向,爬虫ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A3%B0%E6%98%8E"><span class="post-toc-number">1.</span> <span class="post-toc-text">声明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%80%86%E5%90%91%E7%9B%AE%E6%A0%87"><span class="post-toc-number">2.</span> <span class="post-toc-text">逆向目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B7%A5%E5%85%B7"><span class="post-toc-number">3.</span> <span class="post-toc-text">第三方工具</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90"><span class="post-toc-number">4.</span> <span class="post-toc-text">抓包分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%8A%A0%E5%AF%86%E5%AE%9A%E4%BD%8D"><span class="post-toc-number">5.</span> <span class="post-toc-text">加密定位</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AST-%E8%84%B1%E6%B7%B7%E6%B7%86"><span class="post-toc-number">6.</span> <span class="post-toc-text">AST 脱混淆</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">文件结构</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%A7%A3%E5%AF%86%E5%87%BD%E6%95%B0%E8%BF%98%E5%8E%9F"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">解密函数还原</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E5%AF%B9%E8%B1%A1%E8%BF%98%E5%8E%9F"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">大对象还原</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BF%98%E5%8E%9F"><span class="post-toc-number">6.3.1.</span> <span class="post-toc-text">字符串还原</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8C%E9%A1%B9%E5%BC%8F%E8%AE%A1%E7%AE%97%E6%9B%BF%E6%8D%A2"><span class="post-toc-number">6.3.2.</span> <span class="post-toc-text">二项式计算替换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E8%BF%98%E5%8E%9F"><span class="post-toc-number">6.3.3.</span> <span class="post-toc-text">方法调用还原</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#switch-case-%E5%8F%8D%E6%8E%A7%E5%88%B6%E6%B5%81%E5%B9%B3%E5%9D%A6%E5%8C%96"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">switch-case 反控制流平坦化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%86%E8%8A%82%E8%BF%98%E5%8E%9F"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">其他细节还原</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="post-toc-number">7.</span> <span class="post-toc-text">完整代码</span></a></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>5月 25, 2022</span> -->
-        <span>2022-05-25 14:01:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACXUlEQVR42u3aQXKDMBAEQP//08kDEvCMNgjiak4uCge1D9rNrF5fH3298PDw8PDw8PDwHsZ7xdfRt355wen9tbcU38LDw8Pbwnuz1QaM5Cf4+fn87Wtrw8PDw9vJO9pwzxkTdv6u5Hk8PDy85/PW2HmpwMPDw/ts3vnWP3kGDw8P78m8vEVOFpcXhnzpl2cteHh4eDEvHzLt/7x1voeHh4cX8OojTUvtddJM5wXmzQrx8PDwLublG3HbLk9GYpP14OHh4V3NayOGZGR1BJiUkGRIhoeHh3cXrx0+/cFWvjSEO/yZ8PDw8C7mTQ5OJQWgiF8Hfw0PDw9vP6/d+tvB1XzkVrTveHh4eBt5SUCQN7jzO8na8PDw8O7i5eFpu4m3BwXWigQeHh7eXbx61FS+PrmzFmTg4eHh7ee1AcRacJBHw21jjYeHh7efd8UBqeTJdsQVlSs8PDy8i3ltg5scLJhHtKMyg4eHh3cxr92452FrHcuWcTAeHh7eHt5koFUErGXDvVic8PDw8Lbw8n/1kxLSxq95dBvdwcPDw7uJNxmJ5YFFe6Qgik7w8PDwNvLOo9g2MsgjjLXG+vAZPDw8vJt450ucbPT5ovOQFw8PD28nr73aV86LQdvE4+Hh4V3Nm2/Ka43vWjsehct4eHh4W3h5YJpv3HWIMDh6hYeHh3cXr92gk8F/S81LFB4eHt7/4q01we2wrW278fDw8J7Ma7f4+Rgs/zcADw8PbycvCSMm38qfyQsDHh4e3l28NgJow9ycmv+URRiBh4eH96e8z7vw8PDw8PDw8PAecH0DdH6vW4Tow/0AAAAASUVORK5CYII=">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;4.4k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;18 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/052/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析&url=https://www.itbob.cn/article/052/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析&url=https://www.itbob.cn/article/052/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/052/index.html&text=【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/052/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/052/index.html&title=【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/052/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">【JS 逆向】AST 脱混淆实战，某 ICP 备案号查询接口 jsjiami v6 分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-05-25 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p><strong>本文章中所有内容仅供学习交流，抓包内容、敏感网址、数据接口均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关，若有侵权，请在公众号联系我立即删除！</strong></p>
-<h2 id="逆向目标"><a href="#逆向目标" class="headerlink" title="逆向目标"></a>逆向目标</h2><ul>
+                    
+                        <a href="/tags/JS-%E9%80%86%E5%90%91/" class="post-tag">
+                            #JS 逆向</a>
+                    
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            #爬虫</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="声明">声明</h2>
+<p><strong>本文章中所有内容仅供学习交流，抓包内容、敏感网址、数据接口均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关，若有侵权，请在公众号联系我立即删除！</strong></p>
+<h2 id="逆向目标">逆向目标</h2>
+<ul>
 <li>目标：站 Z 之家网站 ICP 备案号查询</li>
 <li>主页：<code>aHR0cDovL2ljcC5jaGluYXouY29tLw==</code></li>
 <li>接口：<code>aHR0cDovL2ljcC5jaGluYXouY29tL2hvbWUvR2V0UGVyaW1pdEJ5SG9zdA==</code></li>
 <li>逆向参数：<code>hostToken</code>、<code>permitToken</code></li>
 </ul>
 <p>本次主要是 AST 解混淆实战，本例中的 JS 混淆方式是 sojson 旗下的 jsjiami v6 版本，感兴趣的可以去官网体验一下：<a target="_blank" rel="noopener" href="https://www.jsjiami.com/">https://www.jsjiami.com/</a> ，如果你还不了解 AST，可以先看看上期的文章（非常详细）：<a href="https://www.itbob.cn/article/051/">《逆向进阶，利用 AST 技术还原 JavaScript 混淆代码》</a>，本文部分 AST 还原代码直接使用了上期文章中的代码，所以细节方面不再赘述，有疑问的地方可以参考参考上期文章。</p>
-<h2 id="第三方工具"><a href="#第三方工具" class="headerlink" title="第三方工具"></a>第三方工具</h2><p>逆向领域大佬云集，市面上已经有很多大佬写好的解混淆工具了，除了我们自己手动去写 AST 解析代码以外，有时候直接使用工具会更加方便，当然并没有十全十美的工具，不过大部分情况下都能成功解混淆的，以下工具值得去体验一下：</p>
+<h2 id="第三方工具">第三方工具</h2>
+<p>逆向领域大佬云集，市面上已经有很多大佬写好的解混淆工具了，除了我们自己手动去写 AST 解析代码以外，有时候直接使用工具会更加方便，当然并没有十全十美的工具，不过大部分情况下都能成功解混淆的，以下工具值得去体验一下：</p>
 <ul>
 <li>蔡老板一键还原 OB 混淆：<a target="_blank" rel="noopener" href="https://github.com/Tsaiboss/decodeObfuscator">https://github.com/Tsaiboss/decodeObfuscator</a></li>
 <li>哲哥 AST 混淆还原框架：<a target="_blank" rel="noopener" href="https://github.com/sml2h3/ast_tools">https://github.com/sml2h3/ast_tools</a></li>
 <li>V 神 Chrome 插件，内置 AST 混淆还原：<a target="_blank" rel="noopener" href="https://github.com/cilame/v_jstools">https://github.com/cilame/v_jstools</a></li>
 <li>jsjiami v6 专用解密工具：<a target="_blank" rel="noopener" href="https://github.com/NXY666/JsjiamiV6-Decryptor">https://github.com/NXY666/JsjiamiV6-Decryptor</a></li>
 </ul>
-<h2 id="抓包分析"><a href="#抓包分析" class="headerlink" title="抓包分析"></a>抓包分析</h2><p>进入主题，首先抓包看看，来到 ICP 备案查询页面，查询结果中，其他信息都可以直接在相应的 html 源码中找到，只有这个备案号是通过接口传过来的，对应的请求和相关加密参数如下图所示：</p>
+<h2 id="抓包分析">抓包分析</h2>
+<p>进入主题，首先抓包看看，来到 ICP 备案查询页面，查询结果中，其他信息都可以直接在相应的 html 源码中找到，只有这个备案号是通过接口传过来的，对应的请求和相关加密参数如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/0f138564edc0bd1105d47f5cdfbfade8.png" alt="01"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/410785d65040014c5e2ef0790cd61d5c.png" alt="02"></p>
-<h2 id="加密定位"><a href="#加密定位" class="headerlink" title="加密定位"></a>加密定位</h2><p>直接搜索关键字 <code>hostToken</code> 或者 <code>permitToken</code> 即可定位：</p>
+<h2 id="加密定位">加密定位</h2>
+<p>直接搜索关键字 <code>hostToken</code> 或者 <code>permitToken</code> 即可定位：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/ce5187bac33cd5f5a818cfc2a6a720fb.png" alt="03"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/049d86ab89afba4d32cb21ac9a2fb599.png" alt="04"></p>
 <p>关键代码：</p>
-<pre><code class="javascript">&#39;data&#39;: &#123;
-    &#39;kw&#39;: kw,
-    &#39;hostToken&#39;: _0x791532[&#39;IIPmq&#39;](generateHostKey, kw),
-    &#39;permitToken&#39;: _0x791532[_0x404f(&#39;‫1df&#39;, &#39;7Gn4&#39;)](generateWordKey, kw)
-&#125;
-</code></pre>
+<pre><code class="hljs javascript"><span class="hljs-string">&#x27;data&#x27;</span>: &#123;
+    <span class="hljs-string">&#x27;kw&#x27;</span>: kw,
+    <span class="hljs-string">&#x27;hostToken&#x27;</span>: _0x791532[<span class="hljs-string">&#x27;IIPmq&#x27;</span>](generateHostKey, kw),
+    <span class="hljs-string">&#x27;permitToken&#x27;</span>: _0x791532[_0x404f(<span class="hljs-string">&#x27;‫1df&#x27;</span>, <span class="hljs-string">&#x27;7Gn4&#x27;</span>)](generateWordKey, kw)
+&#125;</code></pre>
 <p>这里的混淆可以手动跟一下，还原后如下：</p>
-<pre><code class="javascript">&#39;data&#39;: &#123;
-    &#39;kw&#39;: kw,
-    &#39;hostToken&#39;: generateHostKey(kw),
-    &#39;permitToken&#39;: generateWordKey(kw)
-&#125;
-</code></pre>
+<pre><code class="hljs javascript"><span class="hljs-string">&#x27;data&#x27;</span>: &#123;
+    <span class="hljs-string">&#x27;kw&#x27;</span>: kw,
+    <span class="hljs-string">&#x27;hostToken&#x27;</span>: generateHostKey(kw),
+    <span class="hljs-string">&#x27;permitToken&#x27;</span>: generateWordKey(kw)
+&#125;</code></pre>
 <p><code>kw</code> 是查询的域名，有用的就是 <code>generateHostKey()</code> 和 <code>generateWordKey()</code> 两个方法了，跟进去看，代码经过了 jsjiami v6 混淆：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/66713c07ba6880c09c9dbc3604e290df.png" alt="05"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/abcc44976be8d583e2cd948e06c705d9.png" alt="06"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/3332edc2c481e2dbc672ca818c8ad060.png" alt="07"></p>
-<h2 id="AST-脱混淆"><a href="#AST-脱混淆" class="headerlink" title="AST 脱混淆"></a>AST 脱混淆</h2><p>jsjiami 混淆的特征其实和 OB 混淆是类似的：</p>
+<h2 id="AST-脱混淆">AST 脱混淆</h2>
+<p>jsjiami 混淆的特征其实和 OB 混淆是类似的：</p>
 <ol>
 <li>一般由一个大数组或者含有大数组的函数、一个数组位移操作的自执行函数、一个解密函数和加密后的函数四部分组成；</li>
 <li>函数名和变量名通常以 _0x 或者 0x 开头，后接 1~6 位数字或字母组合；</li>
@@ -632,93 +183,93 @@
 <p>本例中，<code>generateHostKey()</code> 方法在 <code>commo.js</code> 里，<code>generateWordKey()</code> 方法在 <code>generatetoken.js</code> 里，结构如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/3d1c1327ff484c80e8e308d16c71cd22.png" alt="08"></p>
 <p>观察 <code>generatetoken.js</code> 文件，可以发现这里面也有 <code>commo.js</code> 里面的 <code>generateHostKey()</code> 和 <code>getRandom()</code> 方法，从方法名来看貌似是重复了，实际上混淆还原后方法是一样的，所以这里我们只需要还原 <code>generatetoken.js</code> 就可以了。</p>
-<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><ul>
+<h3 id="文件结构">文件结构</h3>
+<ul>
 <li>混淆 JS 文件：<code>generatetoken.js</code></li>
 <li>AST 还原代码：<code>generatetokenAst.js</code></li>
 <li>还原后的代码：<code>generatetokenNew.js</code></li>
 </ul>
-<h3 id="解密函数还原"><a href="#解密函数还原" class="headerlink" title="解密函数还原"></a>解密函数还原</h3><p>在原来混淆后的 JS 里，解密函数是 <code>_0x530e</code>，首先观察整个 JS，调用了很多次解密函数，类似于：<code>_0x530e(&#39;1&#39;, &#39;7XEq&#39;)</code>。</p>
+<h3 id="解密函数还原">解密函数还原</h3>
+<p>在原来混淆后的 JS 里，解密函数是 <code>_0x530e</code>，首先观察整个 JS，调用了很多次解密函数，类似于：<code>_0x530e('1', '7XEq')</code>。</p>
 <p>注意这里代码里面有一些特殊字符，类似于 <code>RLE</code>、<code>RLO</code> 之类的，如果在 VSCode 打开是一些 <code>U+202B</code>、<code>U+202E</code> 的字符，实际上这是 RTLO (Right-to-Left Override) 字符，<code>U+202B</code> 和 <code>U+202E</code> 的意思分别是根据内存顺序从左至右和从右至左显示字符，感兴趣的可以网上搜索了解一下。这里并不影响我们进行还原操作。但是如果直接复制过来的话就会导致前后文显示的顺序不对，所以本文中为了方便描述，粘贴的部分代码就手动去掉了这些字符。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/160a9bdb547e5cd19a94563f78addccf.png" alt="09"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/6a62938a7cb953b2c02e7e0326ea8d23.png" alt="10"></p>
-<p>所以第一步我们要还原一下解密函数，把所有 <code>_0x530e</code> 调用的地方直接替换成实际值，首先需要将大数组、自执行函数、加密函数和解密函数分割开，将代码放到 astexplorer.net 看一下，也就是将 body 的前四部分和后面剩余部分分割开来，如下图所示：</p>
+<p>所以第一步我们要还原一下解密函数，把所有 <code>_0x530e</code> 调用的地方直接替换成实际值，首先需要将大数组、自执行函数、加密函数和解密函数分割开，将代码放到 <a target="_blank" rel="noopener" href="http://astexplorer.net">astexplorer.net</a> 看一下，也就是将 body 的前四部分和后面剩余部分分割开来，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/588093722962f4d006dcfeefbe90cb7a.png" alt="11"></p>
 <p>分割代码：</p>
-<pre><code class="javascript">const fs = require(&quot;fs&quot;);
-const parse = require(&quot;@babel/parser&quot;).parse;
-const generate = require(&quot;@babel/generator&quot;).default
-const traverse = require(&quot;@babel/traverse&quot;).default
-const types = require(&quot;@babel/types&quot;)
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);
+<span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>).parse;
+<span class="hljs-keyword">const</span> generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/generator&quot;</span>).default
+<span class="hljs-keyword">const</span> traverse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/traverse&quot;</span>).default
+<span class="hljs-keyword">const</span> types = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/types&quot;</span>)
 
-// 导入混淆代码并解析为 AST
-const oldCode = fs.readFileSync(&quot;generatetoken.js&quot;, &#123;encoding: &quot;utf-8&quot;&#125;);
-const astCode = parse(oldCode);
+<span class="hljs-comment">// 导入混淆代码并解析为 AST</span>
+<span class="hljs-keyword">const</span> oldCode = fs.readFileSync(<span class="hljs-string">&quot;generatetoken.js&quot;</span>, &#123;<span class="hljs-attr">encoding</span>: <span class="hljs-string">&quot;utf-8&quot;</span>&#125;);
+<span class="hljs-keyword">const</span> astCode = parse(oldCode);
 
-// 获取整个 AST 节点的长度
-let astCodeLength = astCode.program.body.length
+<span class="hljs-comment">// 获取整个 AST 节点的长度</span>
+<span class="hljs-keyword">let</span> astCodeLength = astCode.program.body.length
 
-// 获取解密函数的名字 也就是 _0x530e
-let decryptFunctionName = astCode.program.body[3].id.name
+<span class="hljs-comment">// 获取解密函数的名字 也就是 _0x530e</span>
+<span class="hljs-keyword">let</span> decryptFunctionName = astCode.program.body[<span class="hljs-number">3</span>].id.name
 
-// 分割加密函数和解密函数，即 body 的前四部分和后面剩余部分
-let decryptFunction = astCode.program.body.slice(0, 4)
-let encryptFunction = astCode.program.body.slice(4, astCodeLength)
+<span class="hljs-comment">// 分割加密函数和解密函数，即 body 的前四部分和后面剩余部分</span>
+<span class="hljs-keyword">let</span> decryptFunction = astCode.program.body.slice(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>)
+<span class="hljs-keyword">let</span> encryptFunction = astCode.program.body.slice(<span class="hljs-number">4</span>, astCodeLength)
 
-// 获取加密函数和解密函数的方法多种多样，比如可以挨个取值并转换成 JS 代码
-// 这样做就不需要将解密函数赋值给整个 AST 节点了
-// let decryptFunction = &quot;&quot;;
-// for(let i=0; i&lt;4; i++)&#123;
-//     decryptFunction += generate(astCode.program.body[i], &#123;compact: true&#125;).code
-// &#125;
-// eval(decryptFunction);
-</code></pre>
+<span class="hljs-comment">// 获取加密函数和解密函数的方法多种多样，比如可以挨个取值并转换成 JS 代码</span>
+<span class="hljs-comment">// 这样做就不需要将解密函数赋值给整个 AST 节点了</span>
+<span class="hljs-comment">// let decryptFunction = &quot;&quot;;</span>
+<span class="hljs-comment">// for(let i=0; i&lt;4; i++)&#123;</span>
+<span class="hljs-comment">//     decryptFunction += generate(astCode.program.body[i], &#123;compact: true&#125;).code</span>
+<span class="hljs-comment">// &#125;</span>
+<span class="hljs-comment">// eval(decryptFunction);</span></code></pre>
 <p>在上面的获取加密函数和解密函数的代码中，方法不是唯一的，多种多样，比如直接循环取 body 并转换成 JS 代码，比如直接人工把大数组、自执行函数和解密函数三部分，拿出来放到一个新文件里，然后导出解密方法，后续直接调用也可以。</p>
 <p>在本例中，拿到解密函数后，需要将其赋值给整个 AST 节点，然后再将整个 AST 节点转换成 JavaScript 代码，这里注意有可能会检测代码是否格式化，所以建议转换要加一个 <code>compact</code> 参数，避免格式化，转换完成后 <code>eval</code> 执行一下，让数组位移操作完成，然后我们就可以直接调用解密函数，即 <code>_0x530e()</code>。</p>
-<pre><code class="javascript">// 将解密函数赋值给整个 AST 节点
+<pre><code class="hljs javascript"><span class="hljs-comment">// 将解密函数赋值给整个 AST 节点</span>
 astCode.program.body = decryptFunction
 
-// 将 AST 节点转换成 JS 代码，并 eval 执行一下
-decryptFunction = generate(astCode, &#123;compact: true&#125;).code
-eval(decryptFunction);
+<span class="hljs-comment">// 将 AST 节点转换成 JS 代码，并 eval 执行一下</span>
+decryptFunction = generate(astCode, &#123;<span class="hljs-attr">compact</span>: <span class="hljs-literal">true</span>&#125;).code
+<span class="hljs-built_in">eval</span>(decryptFunction);
 
-// 测试一下，直接调用 _0x530e 函数可以正确拿到结果
-// 输出 split
-// console.log(_0x530e(&#39;‮b&#39;, &#39;Zp9G&#39;))
-</code></pre>
+<span class="hljs-comment">// 测试一下，直接调用 _0x530e 函数可以正确拿到结果</span>
+<span class="hljs-comment">// 输出 split</span>
+<span class="hljs-comment">// console.log(_0x530e(&#x27;‮b&#x27;, &#x27;Zp9G&#x27;))</span></code></pre>
 <p>现在我们能直接调用解密函数 <code>_0x530e()</code> 了，接下来要做的就是怎么把混淆代码中所有调用 <code>_0x530e()</code> 的地方替换成真实值，在此之前，我们要把加密函数（<code>generateKey()</code>、<code>generateHostKey()</code>、<code>generateWordKey()</code> 和 <code>getRandom()</code>）赋值给整个 AST 节点，此时整个节点就没有大数组、自执行函数和解密函数了，解密函数 <code>_0x530e()</code> 已经被写入内存，所以后面不影响我们调用。</p>
-<p>老样子，还是先在 astexplorer.net 看一下调用 <code>_0x530e()</code> 的地方，以 <code>_0x530e(&#39;b&#39;, &#39;Zp9G&#39;)</code> 为例，其真实值应该是 <code>split</code>，对比一下替换前后的结构，如下图所示：</p>
+<p>老样子，还是先在 <a target="_blank" rel="noopener" href="http://astexplorer.net">astexplorer.net</a> 看一下调用 <code>_0x530e()</code> 的地方，以 <code>_0x530e('b', 'Zp9G')</code> 为例，其真实值应该是 <code>split</code>，对比一下替换前后的结构，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/97d80ef9b923f117cac6e4060a4998f5.png" alt="12"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/8bf00ab1113c218219f838cd00ab21e9.png" alt="13"></p>
-<p>可以看到节点由原来的 <code>CallExpression</code> 变成了 <code>StringLiteral</code>，所以我们可以遍历 <code>CallExpression</code>，如果函数名为解密函数名，那就通过 <code>path.toString()</code> 方法获取节点源码，也就类似 <code>_0x530e(&#39;b&#39;, &#39;Zp9G&#39;)</code> 的源码，然后 <code>eval</code> 执行一下获取其真实值，再使用 <code>types.stringLiteral()</code> 构建 <code>StringLiteral</code> 节点，最后通过 <code>path.replaceInline()</code> 方法替换节点，遍历代码如下：</p>
-<pre><code class="javascript">// 将加密函数赋值给整个 AST 节点，此时整个节点就没有大数组、自执行函数和解密函数了
+<p>可以看到节点由原来的 <code>CallExpression</code> 变成了 <code>StringLiteral</code>，所以我们可以遍历 <code>CallExpression</code>，如果函数名为解密函数名，那就通过 <code>path.toString()</code> 方法获取节点源码，也就类似 <code>_0x530e('b', 'Zp9G')</code> 的源码，然后 <code>eval</code> 执行一下获取其真实值，再使用 <code>types.stringLiteral()</code> 构建 <code>StringLiteral</code> 节点，最后通过 <code>path.replaceInline()</code> 方法替换节点，遍历代码如下：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// 将加密函数赋值给整个 AST 节点，此时整个节点就没有大数组、自执行函数和解密函数了</span>
 astCode.program.body = encryptFunction
 
-// 调用解密函数，直接计算出类似以下方法的值并替换
-// 混淆代码：_0x530e(&#39;‮b&#39;, &#39;Zp9G&#39;)
-// 还原后：split
-const visitor1 = &#123;
-    CallExpression(path)&#123;
-        if (path.node.callee.name === decryptFunctionName &amp;&amp; path.node.arguments.length === 2)&#123;
-            path.replaceInline(types.stringLiteral(eval(path.toString())))
+<span class="hljs-comment">// 调用解密函数，直接计算出类似以下方法的值并替换</span>
+<span class="hljs-comment">// 混淆代码：_0x530e(&#x27;‮b&#x27;, &#x27;Zp9G&#x27;)</span>
+<span class="hljs-comment">// 还原后：split</span>
+<span class="hljs-keyword">const</span> visitor1 = &#123;
+    <span class="hljs-function"><span class="hljs-title">CallExpression</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">if</span> (path.node.callee.name === decryptFunctionName &amp;&amp; path.node.arguments.length === <span class="hljs-number">2</span>)&#123;
+            path.replaceInline(types.stringLiteral(<span class="hljs-built_in">eval</span>(path.toString())))
         &#125;
     &#125;
 &#125;
 
-// 遍历节点
+<span class="hljs-comment">// 遍历节点</span>
 traverse(astCode, visitor1)
 
-// 将 AST 节点转换成 JS 代码并写入到新文件里
-const result = generate(astCode, &#123;concise:true&#125;).code
-fs.writeFile(&quot;./generatetokenNew.js&quot;, result, (err =&gt; &#123;console.log(err)&#125;))
-</code></pre>
+<span class="hljs-comment">// 将 AST 节点转换成 JS 代码并写入到新文件里</span>
+<span class="hljs-keyword">const</span> result = generate(astCode, &#123;<span class="hljs-attr">concise</span>:<span class="hljs-literal">true</span>&#125;).code
+fs.writeFile(<span class="hljs-string">&quot;./generatetokenNew.js&quot;</span>, result, (<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;<span class="hljs-built_in">console</span>.log(err)&#125;))</code></pre>
 <p>自此，第一步的解密函数还原就完成了，可以看一下还原前后的对比，如下图所示浅蓝色标记的地方，所有调用 <code>_0x530e()</code> 的地方都被还原了：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/592ed12ad85ea4b424c8b59a99e03bc9.png" alt="14"></p>
-<h3 id="大对象还原"><a href="#大对象还原" class="headerlink" title="大对象还原"></a>大对象还原</h3><p>初步还原后我们的代码里就只剩下以下四个方法：</p>
+<h3 id="大对象还原">大对象还原</h3>
+<p>初步还原后我们的代码里就只剩下以下四个方法：</p>
 <ul>
 <li><code>generateKey()</code></li>
 <li><code>generateHostKey()</code></li>
 <li><code>generateWordKey()</code></li>
-<li> <code>getRandom()</code></li>
+<li><code>getRandom()</code></li>
 </ul>
 <p>再观察代码，发现每个方法一开始都有个大的对象，他们分别是：</p>
 <ul>
@@ -730,908 +281,347 @@ fs.writeFile(&quot;./generatetokenNew.js&quot;, result, (err =&gt; &#123;console
 <p>后续的代码也在不断调用这个对象的方法，比如 <code>_0x3b79c6[&quot;esdtg&quot;](_0x2e5848[&quot;length&quot;], 0x4)</code> 实际上就是 <code>_0x2e5848[&quot;length&quot;] != 0x4</code>，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/dad85b7cf44527da212f026cf6f8fd36.png" alt="15"></p>
 <p>首先我们将这四个大的对象单独提取出来，还是保持原来的键值对样式，提取完成后删除这两个节点，遍历代码如下：</p>
-<pre><code class="javascript">let functionName = &#123;
-    &quot;_0x3b79c6&quot;: &#123;&#125;,
-    &quot;_0x278b2d&quot;: &#123;&#125;,
-    &quot;_0x4115c4&quot;: &#123;&#125;,
-    &quot;_0xd8ec33&quot;: &#123;&#125;
+<pre><code class="hljs javascript"><span class="hljs-keyword">let</span> functionName = &#123;
+    <span class="hljs-string">&quot;_0x3b79c6&quot;</span>: &#123;&#125;,
+    <span class="hljs-string">&quot;_0x278b2d&quot;</span>: &#123;&#125;,
+    <span class="hljs-string">&quot;_0x4115c4&quot;</span>: &#123;&#125;,
+    <span class="hljs-string">&quot;_0xd8ec33&quot;</span>: &#123;&#125;
 &#125;
 
-// 单独提取出四个大对象
-const visitor2 = &#123;
-    VariableDeclarator(path)&#123;
-        for (let key in functionName)&#123;
-            if (path.node &amp;&amp; path.node.id.name == key) &#123;
-                const properties = path.node.init.properties
-                for (let i=0; i&lt;properties.length; i++)&#123;
+<span class="hljs-comment">// 单独提取出四个大对象</span>
+<span class="hljs-keyword">const</span> visitor2 = &#123;
+    <span class="hljs-function"><span class="hljs-title">VariableDeclarator</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> functionName)&#123;
+            <span class="hljs-keyword">if</span> (path.node &amp;&amp; path.node.id.name == key) &#123;
+                <span class="hljs-keyword">const</span> properties = path.node.init.properties
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;properties.length; i++)&#123;
                     functionName[key][properties[i].key.value] = properties[i].value
                 &#125;
-                // 写入对象后就可以删除该节点了
+                <span class="hljs-comment">// 写入对象后就可以删除该节点了</span>
                 path.remove()
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
+&#125;</code></pre>
 <p>这里要注意，大的对象里面，有 <code>+</code>、<code>-</code>、<code>==</code> 之类的二项式计算，也有直接为字符串的，还有变成函数调用的，如下所示：</p>
-<pre><code class="JavaScript">var _0x3b79c6 = &#123;
-    &#39;MuRlB&#39;: function (_0x3ca134, _0x50ee94) &#123;
-        return _0x3ca134 + _0x50ee94;
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> _0x3b79c6 = &#123;
+    <span class="hljs-string">&#x27;MuRlB&#x27;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">_0x3ca134, _0x50ee94</span>) </span>&#123;
+        <span class="hljs-keyword">return</span> _0x3ca134 + _0x50ee94;
     &#125;, 
-    &#39;Ucwyj&#39;: function (_0x32bfa3, _0x3b191b) &#123;
-        return _0x32bfa3(_0x3b191b);
+    <span class="hljs-string">&#x27;Ucwyj&#x27;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">_0x32bfa3, _0x3b191b</span>) </span>&#123;
+        <span class="hljs-keyword">return</span> _0x32bfa3(_0x3b191b);
     &#125;, 
-    &#39;YrYQW&#39;: &#39;#IpValue&#39;
-&#125;
-</code></pre>
+    <span class="hljs-string">&#x27;YrYQW&#x27;</span>: <span class="hljs-string">&#x27;#IpValue&#x27;</span>
+&#125;</code></pre>
 <p>针对不同的情况有不同的处理方法，同时还要注意传参和 return 返回的参数位置，不要还原后把 <code>a - b</code> 搞成 <code>b - a</code> 了，当然在本例中传入和返回的顺序是一样的，就不需要考虑这个问题。</p>
-<h4 id="字符串还原"><a href="#字符串还原" class="headerlink" title="字符串还原"></a>字符串还原</h4><p>首先来看字符串，有以下几种情况：</p>
+<h4 id="字符串还原">字符串还原</h4>
+<p>首先来看字符串，有以下几种情况：</p>
 <ul>
-<li>以 <code>_0x3b79c6[&#39;YrYQW&#39;]</code> 为例，实际上其值为字符串 <code>&#39;#IpValue&#39;</code>，观察其结构，是一个 <code>MemberExpression</code>，在一个列表里；</li>
-<li>以 <code>_0x278b2d[&#39;pjbyX&#39;]</code> 为例，实际上其值为字符串 <code>&#39;3|2|1|4|5|0|6&#39;</code>，观察其结构，是一个 <code>MemberExpression</code>，在一个字典里；</li>
-<li>以 <code>_0x278b2d[&#39;CnTaO&#39;]</code> 为例，虽然也是一个 <code>MemberExpression</code>，也在一个字典里。但实际上是二项式计算，所以要排除在外。</li>
+<li>以 <code>_0x3b79c6['YrYQW']</code> 为例，实际上其值为字符串 <code>'#IpValue'</code>，观察其结构，是一个 <code>MemberExpression</code>，在一个列表里；</li>
+<li>以 <code>_0x278b2d['pjbyX']</code> 为例，实际上其值为字符串 <code>'3|2|1|4|5|0|6'</code>，观察其结构，是一个 <code>MemberExpression</code>，在一个字典里；</li>
+<li>以 <code>_0x278b2d['CnTaO']</code> 为例，虽然也是一个 <code>MemberExpression</code>，也在一个字典里。但实际上是二项式计算，所以要排除在外。</li>
 </ul>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/c7da2da4b18ea101be336632d3302e9b.png" alt="16"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/bb64748de3614028d49b5445a8f0a4bd.png" alt="17"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/2d864c898a10fe2512de55ae0aae6b4b.png" alt="18"></p>
 <p>所以我们在写遍历代码时，同时要注意这三种情况，满足条件后直接取原来大对象对应的节点进行替换即可，遍历代码如下所示：</p>
-<pre><code class="javascript">// 函数替换，字符串替换：将类似 _0x3b79c6[&#39;YrYQW&#39;] 变成 &#39;#IpValue&#39;
-const visitor3 = &#123;
-    MemberExpression(path) &#123;
-        for (let key in functionName)&#123;
-            if (path.node.object &amp;&amp; path.node.object.name == key &amp;&amp; path.inList ) &#123;
+<pre><code class="hljs javascript"><span class="hljs-comment">// 函数替换，字符串替换：将类似 _0x3b79c6[&#x27;YrYQW&#x27;] 变成 &#x27;#IpValue&#x27;</span>
+<span class="hljs-keyword">const</span> visitor3 = &#123;
+    <span class="hljs-function"><span class="hljs-title">MemberExpression</span>(<span class="hljs-params">path</span>)</span> &#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> functionName)&#123;
+            <span class="hljs-keyword">if</span> (path.node.object &amp;&amp; path.node.object.name == key &amp;&amp; path.inList ) &#123;
                 path.replaceInline(functionName[key][path.node.property.value])
             &#125;
-            if (path.node.object &amp;&amp; path.node.object.name == key &amp;&amp; path.parent.property &amp;&amp; path.parent.property.value == &quot;split&quot;) &#123;
+            <span class="hljs-keyword">if</span> (path.node.object &amp;&amp; path.node.object.name == key &amp;&amp; path.parent.property &amp;&amp; path.parent.property.value == <span class="hljs-string">&quot;split&quot;</span>) &#123;
                 path.replaceInline(functionName[key][path.node.property.value])
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
-<h4 id="二项式计算替换"><a href="#二项式计算替换" class="headerlink" title="二项式计算替换"></a>二项式计算替换</h4><p>再来看看二项式计算的情况，以 <code>_0x278b2d[&#39;CnTaO&#39;](_0x691267[&quot;length&quot;], 0x1)</code> 为例，实际上是做减法运算，即 <code>_0x691267[&quot;length&quot;] - 0x1</code>，看一下替换前后对比：</p>
+&#125;</code></pre>
+<h4 id="二项式计算替换">二项式计算替换</h4>
+<p>再来看看二项式计算的情况，以 <code>_0x278b2d['CnTaO'](_0x691267[&quot;length&quot;], 0x1)</code> 为例，实际上是做减法运算，即 <code>_0x691267[&quot;length&quot;] - 0x1</code>，看一下替换前后对比：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/15473cd5662d90370f1bdd845bd6f42a.png" alt="19"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/c2c67cc2f0760f493d99a29281599894.png" alt="20"></p>
 <p>对于这种情况，我们可以直接提取两个参数，然后提取大对象里对应方法的操作符，然后将参数和操作符直接连接起来组成新的节点（<code>binaryExpression</code>）并替换即可，遍历代码如下：</p>
-<pre><code class="javascript">// 函数替换，二项式计算：将类似 _0x278b2d[&#39;CnTaO&#39;](_0x691267[&quot;length&quot;], 0x1) 变成 _0x691267[&quot;length&quot;] - 0x1
-const visitor4 = &#123;
-    CallExpression(path)&#123;
-        for (let key in functionName) &#123;
-            if (path.node.callee &amp;&amp; path.node.callee.object &amp;&amp; path.node.callee.object.name == key) &#123;
-                let func = functionName[key][path.node.callee.property.value]
-                if (func.body.body[0].argument.type == &quot;BinaryExpression&quot;) &#123;
-                    let operator = func.body.body[0].argument.operator
-                    let left = path.node.arguments[0]
-                    let right = path.node.arguments[1]
+<pre><code class="hljs javascript"><span class="hljs-comment">// 函数替换，二项式计算：将类似 _0x278b2d[&#x27;CnTaO&#x27;](_0x691267[&quot;length&quot;], 0x1) 变成 _0x691267[&quot;length&quot;] - 0x1</span>
+<span class="hljs-keyword">const</span> visitor4 = &#123;
+    <span class="hljs-function"><span class="hljs-title">CallExpression</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> functionName) &#123;
+            <span class="hljs-keyword">if</span> (path.node.callee &amp;&amp; path.node.callee.object &amp;&amp; path.node.callee.object.name == key) &#123;
+                <span class="hljs-keyword">let</span> func = functionName[key][path.node.callee.property.value]
+                <span class="hljs-keyword">if</span> (func.body.body[<span class="hljs-number">0</span>].argument.type == <span class="hljs-string">&quot;BinaryExpression&quot;</span>) &#123;
+                    <span class="hljs-keyword">let</span> operator = func.body.body[<span class="hljs-number">0</span>].argument.operator
+                    <span class="hljs-keyword">let</span> left = path.node.arguments[<span class="hljs-number">0</span>]
+                    <span class="hljs-keyword">let</span> right = path.node.arguments[<span class="hljs-number">1</span>]
                     path.replaceInline(types.binaryExpression(operator, left, right))
                 &#125;
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
-<h4 id="方法调用还原"><a href="#方法调用还原" class="headerlink" title="方法调用还原"></a>方法调用还原</h4><p>以 <code>_0x4115c4[&quot;PJbSm&quot;](getRandom, 0x64, 0x3e7)</code> 为例，实际上是 <code>getRandom(0x64, 0x3e7)</code>，看一下替换前后对比：</p>
+&#125;</code></pre>
+<h4 id="方法调用还原">方法调用还原</h4>
+<p>以 <code>_0x4115c4[&quot;PJbSm&quot;](getRandom, 0x64, 0x3e7)</code> 为例，实际上是 <code>getRandom(0x64, 0x3e7)</code>，看一下替换前后对比：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/0214e34c163d988a87ae74c287aa4fb9.png" alt="21"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/618a03ab22a77658de6b3f90232ad8cd.png" alt="22"></p>
 <p>对于这种情况，传入的第一个参数为方法名称，后面的都是参数，那么可以直接取第一个元素为方法名称，使用 <code>slice(1)</code> 方法取后面所有的参数（因为后面的参数个数是不一定的），然后构造新的节点（<code>callExpression</code>）并替换即可，这部分遍历代码可以和前面二项式的替换相结合，代码如下：</p>
-<pre><code class="javascript">// 函数替换，二项式计算：将类似 _0x278b2d[&#39;CnTaO&#39;](_0x691267[&quot;length&quot;], 0x1) 变成 _0x691267[&quot;length&quot;] - 0x1
-// 函数替换，方法调用：将类似 _0x4115c4[&quot;PJbSm&quot;](getRandom, 0x64, 0x3e7) 变成 getRandom(0x64, 0x3e7)
-const visitor4 = &#123;
-    CallExpression(path)&#123;
-        for (let key in functionName) &#123;
-            if (path.node.callee &amp;&amp; path.node.callee.object &amp;&amp; path.node.callee.object.name == key) &#123;
-                let func = functionName[key][path.node.callee.property.value]
-                if (func.body.body[0].argument.type == &quot;BinaryExpression&quot;) &#123;
-                    let operator = func.body.body[0].argument.operator
-                    let left = path.node.arguments[0]
-                    let right = path.node.arguments[1]
+<pre><code class="hljs javascript"><span class="hljs-comment">// 函数替换，二项式计算：将类似 _0x278b2d[&#x27;CnTaO&#x27;](_0x691267[&quot;length&quot;], 0x1) 变成 _0x691267[&quot;length&quot;] - 0x1</span>
+<span class="hljs-comment">// 函数替换，方法调用：将类似 _0x4115c4[&quot;PJbSm&quot;](getRandom, 0x64, 0x3e7) 变成 getRandom(0x64, 0x3e7)</span>
+<span class="hljs-keyword">const</span> visitor4 = &#123;
+    <span class="hljs-function"><span class="hljs-title">CallExpression</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> functionName) &#123;
+            <span class="hljs-keyword">if</span> (path.node.callee &amp;&amp; path.node.callee.object &amp;&amp; path.node.callee.object.name == key) &#123;
+                <span class="hljs-keyword">let</span> func = functionName[key][path.node.callee.property.value]
+                <span class="hljs-keyword">if</span> (func.body.body[<span class="hljs-number">0</span>].argument.type == <span class="hljs-string">&quot;BinaryExpression&quot;</span>) &#123;
+                    <span class="hljs-keyword">let</span> operator = func.body.body[<span class="hljs-number">0</span>].argument.operator
+                    <span class="hljs-keyword">let</span> left = path.node.arguments[<span class="hljs-number">0</span>]
+                    <span class="hljs-keyword">let</span> right = path.node.arguments[<span class="hljs-number">1</span>]
                     path.replaceInline(types.binaryExpression(operator, left, right))
                 &#125;
-                if (func.body.body[0].argument.type == &quot;CallExpression&quot;) &#123;
-                    let identifier = path.node.arguments[0]
-                    let arguments = path.node.arguments.slice(1)
-                    path.replaceInline(types.callExpression(identifier, arguments))
+                <span class="hljs-keyword">if</span> (func.body.body[<span class="hljs-number">0</span>].argument.type == <span class="hljs-string">&quot;CallExpression&quot;</span>) &#123;
+                    <span class="hljs-keyword">let</span> identifier = path.node.arguments[<span class="hljs-number">0</span>]
+                    <span class="hljs-keyword">let</span> <span class="hljs-built_in">arguments</span> = path.node.arguments.slice(<span class="hljs-number">1</span>)
+                    path.replaceInline(types.callExpression(identifier, <span class="hljs-built_in">arguments</span>))
                 &#125;
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
+&#125;</code></pre>
 <p>自此，第二步的大对象还原就完成了，可以看一下还原前后的对比，如下图所示浅蓝色标记的地方，所有调用四个大对象（<code>_0x3b79c6</code>、<code>_0x278b2d</code>、<code>_0x4115c4</code>、<code>_0xd8ec33</code>）的地方都被还原了：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/7d6b3b0a9c46e31799e0c8d15b3a7b86.png" alt="23"></p>
-<h3 id="switch-case-反控制流平坦化"><a href="#switch-case-反控制流平坦化" class="headerlink" title="switch-case 反控制流平坦化"></a>switch-case 反控制流平坦化</h3><p>经过前面几步的还原之后，我们发现 <code>generateHostKey()</code>、<code>generateWordKey()</code>、<code>getRandom()</code> 方法里都有一个 <code>switch-case</code> 的控制流，关于反控制流平坦化的讲解在我上期文章有很详细的介绍，不理解的可以看看上期文章，此处也不再赘述了，直接贴代码了：</p>
-<pre><code class="javascript">// switch-case 反控制流平坦化
-const visitor5 = &#123;
-    WhileStatement(path) &#123;
-        // switch 节点
-        let switchNode = path.node.body.body[0];
-        // switch 语句内的控制流数组名，本例中是 _0x28073a、_0x2efb35、_0x187fb8
-        let arrayName = switchNode.discriminant.object.name;
-        // 获取控制流数组绑定的节点
-        let bindingArray = path.scope.getBinding(arrayName);
-        // 获取节点整个表达式的参数、分割方法、分隔符
-        let init = bindingArray.path.node.init;
-        let object = init.callee.object.value;
-        let property = init.callee.property.value;
-        let argument = init.arguments[0].value;
-        // 模拟执行 &#39;3|2|1|4|5|0|6&#39;[&#39;split&#39;](&#39;|&#39;) 语句
-        let array = object[property](argument)
-        // 也可以直接取参数进行分割，方法不通用，比如分隔符换成 , 就不行了
-        // let array = init.callee.object.value.split(&#39;|&#39;);
+<h3 id="switch-case-反控制流平坦化">switch-case 反控制流平坦化</h3>
+<p>经过前面几步的还原之后，我们发现 <code>generateHostKey()</code>、<code>generateWordKey()</code>、<code>getRandom()</code> 方法里都有一个 <code>switch-case</code> 的控制流，关于反控制流平坦化的讲解在我上期文章有很详细的介绍，不理解的可以看看上期文章，此处也不再赘述了，直接贴代码了：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// switch-case 反控制流平坦化</span>
+<span class="hljs-keyword">const</span> visitor5 = &#123;
+    <span class="hljs-function"><span class="hljs-title">WhileStatement</span>(<span class="hljs-params">path</span>)</span> &#123;
+        <span class="hljs-comment">// switch 节点</span>
+        <span class="hljs-keyword">let</span> switchNode = path.node.body.body[<span class="hljs-number">0</span>];
+        <span class="hljs-comment">// switch 语句内的控制流数组名，本例中是 _0x28073a、_0x2efb35、_0x187fb8</span>
+        <span class="hljs-keyword">let</span> arrayName = switchNode.discriminant.object.name;
+        <span class="hljs-comment">// 获取控制流数组绑定的节点</span>
+        <span class="hljs-keyword">let</span> bindingArray = path.scope.getBinding(arrayName);
+        <span class="hljs-comment">// 获取节点整个表达式的参数、分割方法、分隔符</span>
+        <span class="hljs-keyword">let</span> init = bindingArray.path.node.init;
+        <span class="hljs-keyword">let</span> object = init.callee.object.value;
+        <span class="hljs-keyword">let</span> property = init.callee.property.value;
+        <span class="hljs-keyword">let</span> argument = init.arguments[<span class="hljs-number">0</span>].value;
+        <span class="hljs-comment">// 模拟执行 &#x27;3|2|1|4|5|0|6&#x27;[&#x27;split&#x27;](&#x27;|&#x27;) 语句</span>
+        <span class="hljs-keyword">let</span> array = object[property](argument)
+        <span class="hljs-comment">// 也可以直接取参数进行分割，方法不通用，比如分隔符换成 , 就不行了</span>
+        <span class="hljs-comment">// let array = init.callee.object.value.split(&#x27;|&#x27;);</span>
 
-        // switch 语句内的控制流自增变量名，本例中是 _0x38c69e、_0x396880、_0x3b3dc7
-        let autoIncrementName = switchNode.discriminant.property.argument.name;
-        // 获取控制流自增变量名绑定的节点
-        let bindingAutoIncrement = path.scope.getBinding(autoIncrementName);
-        // 可选择的操作：删除控制流数组绑定的节点、自增变量名绑定的节点
+        <span class="hljs-comment">// switch 语句内的控制流自增变量名，本例中是 _0x38c69e、_0x396880、_0x3b3dc7</span>
+        <span class="hljs-keyword">let</span> autoIncrementName = switchNode.discriminant.property.argument.name;
+        <span class="hljs-comment">// 获取控制流自增变量名绑定的节点</span>
+        <span class="hljs-keyword">let</span> bindingAutoIncrement = path.scope.getBinding(autoIncrementName);
+        <span class="hljs-comment">// 可选择的操作：删除控制流数组绑定的节点、自增变量名绑定的节点</span>
         bindingArray.path.remove();
         bindingAutoIncrement.path.remove();
 
-        // 储存正确顺序的控制流语句
-        let replace = [];
-        // 遍历控制流数组，按正确顺序取 case 内容
-        array.forEach(index =&gt; &#123;
-                let consequent = switchNode.cases[index].consequent;
-                // 如果最后一个节点是 continue 语句，则删除 ContinueStatement 节点
-                if (types.isContinueStatement(consequent[consequent.length - 1])) &#123;
+        <span class="hljs-comment">// 储存正确顺序的控制流语句</span>
+        <span class="hljs-keyword">let</span> replace = [];
+        <span class="hljs-comment">// 遍历控制流数组，按正确顺序取 case 内容</span>
+        array.forEach(<span class="hljs-function"><span class="hljs-params">index</span> =&gt;</span> &#123;
+                <span class="hljs-keyword">let</span> consequent = switchNode.cases[index].consequent;
+                <span class="hljs-comment">// 如果最后一个节点是 continue 语句，则删除 ContinueStatement 节点</span>
+                <span class="hljs-keyword">if</span> (types.isContinueStatement(consequent[consequent.length - <span class="hljs-number">1</span>])) &#123;
                     consequent.pop();
                 &#125;
-                // concat 方法拼接多个数组，即正确顺序的 case 内容
+                <span class="hljs-comment">// concat 方法拼接多个数组，即正确顺序的 case 内容</span>
                 replace = replace.concat(consequent);
             &#125;
         );
-        // 替换整个 while 节点，两种方法都可以
+        <span class="hljs-comment">// 替换整个 while 节点，两种方法都可以</span>
         path.replaceWithMultiple(replace);
-        // path.replaceInline(replace);
+        <span class="hljs-comment">// path.replaceInline(replace);</span>
     &#125;
-&#125;
-</code></pre>
-<h3 id="其他细节还原"><a href="#其他细节还原" class="headerlink" title="其他细节还原"></a>其他细节还原</h3><p>到这里其实大部分混淆都已经还原了，已经很容易分析其逻辑了，还剩下一些细节，我们也还原一下，主要有以下细节：</p>
+&#125;</code></pre>
+<h3 id="其他细节还原">其他细节还原</h3>
+<p>到这里其实大部分混淆都已经还原了，已经很容易分析其逻辑了，还剩下一些细节，我们也还原一下，主要有以下细节：</p>
 <ul>
 <li>十六进制、Unicode 编码等，转正常字符；</li>
-<li>对象属性还原，比如 <code>_0x3cbc20[&#39;length&#39;]</code> 转换成 <code>_0x3cbc20.length</code>；</li>
+<li>对象属性还原，比如 <code>_0x3cbc20['length']</code> 转换成 <code>_0x3cbc20.length</code>；</li>
 <li>表达式还原，比如 <code>!![]</code> 直接计算成 true；</li>
 <li>删除未引用的变量，比如 <code>_0xodD= &quot;jsjiami.com.v6&quot;;</code>；</li>
 <li>删除冗余逻辑代码，只保留 if 为 true 的。</li>
 </ul>
-<p>这些还原代码在我上期文章有详细讲过，结合代码，在 astexplorer.net 对照其结构看，也能理解，同样也不赘述了，直接贴代码：</p>
-<pre><code class="javascript">const visitor5 = &#123;
-    // 十六进制、Unicode 编码等，转正常字符
-    &quot;StringLiteral|NumericLiteral&quot;(path)&#123;
-        delete path.node.extra;
+<p>这些还原代码在我上期文章有详细讲过，结合代码，在 <a target="_blank" rel="noopener" href="http://astexplorer.net">astexplorer.net</a> 对照其结构看，也能理解，同样也不赘述了，直接贴代码：</p>
+<pre><code class="hljs javascript"><span class="hljs-keyword">const</span> visitor5 = &#123;
+    <span class="hljs-comment">// 十六进制、Unicode 编码等，转正常字符</span>
+    <span class="hljs-string">&quot;StringLiteral|NumericLiteral&quot;</span>(path)&#123;
+        <span class="hljs-keyword">delete</span> path.node.extra;
     &#125;,
-    // _0x3cbc20[&quot;length&quot;] 转换成 _0x3cbc20.length
-    MemberExpression(path)&#123;
-        if (path.node.property.type == &quot;StringLiteral&quot;) &#123;
-            path.node.computed = false
+    <span class="hljs-comment">// _0x3cbc20[&quot;length&quot;] 转换成 _0x3cbc20.length</span>
+    <span class="hljs-function"><span class="hljs-title">MemberExpression</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">if</span> (path.node.property.type == <span class="hljs-string">&quot;StringLiteral&quot;</span>) &#123;
+            path.node.computed = <span class="hljs-literal">false</span>
             path.node.property = types.identifier(path.node.property.value)
         &#125;
     &#125;,
-    // 表达式还原，!![] 直接计算成 true
-    &quot;BinaryExpression|UnaryExpression&quot;(path) &#123;
-        let &#123;confident, value&#125; = path.evaluate()
-        if (confident)&#123;
+    <span class="hljs-comment">// 表达式还原，!![] 直接计算成 true</span>
+    <span class="hljs-string">&quot;BinaryExpression|UnaryExpression&quot;</span>(path) &#123;
+        <span class="hljs-keyword">let</span> &#123;confident, value&#125; = path.evaluate()
+        <span class="hljs-keyword">if</span> (confident)&#123;
             path.replaceInline(types.valueToNode(value))
         &#125;
     &#125;,
-    // 删除未引用的变量，比如 _0xodD = &quot;jsjiami.com.v6&quot;;
-    AssignmentExpression(path)&#123;
-        let binding = path.scope.getBinding(path.node.left.name);
-        if (!binding) &#123;
+    <span class="hljs-comment">// 删除未引用的变量，比如 _0xodD = &quot;jsjiami.com.v6&quot;;</span>
+    <span class="hljs-function"><span class="hljs-title">AssignmentExpression</span>(<span class="hljs-params">path</span>)</span>&#123;
+        <span class="hljs-keyword">let</span> binding = path.scope.getBinding(path.node.left.name);
+        <span class="hljs-keyword">if</span> (!binding) &#123;
             path.remove();
         &#125;
     &#125;
 &#125;
 
-// 删除冗余逻辑代码，只保留 if 为 true 的
-const visitor6 = &#123;
-    IfStatement(path) &#123;
-        if(path.node.test.type == &quot;BooleanLiteral&quot;) &#123;
-            if(path.node.test.value) &#123;
+<span class="hljs-comment">// 删除冗余逻辑代码，只保留 if 为 true 的</span>
+<span class="hljs-keyword">const</span> visitor6 = &#123;
+    <span class="hljs-function"><span class="hljs-title">IfStatement</span>(<span class="hljs-params">path</span>)</span> &#123;
+        <span class="hljs-keyword">if</span>(path.node.test.type == <span class="hljs-string">&quot;BooleanLiteral&quot;</span>) &#123;
+            <span class="hljs-keyword">if</span>(path.node.test.value) &#123;
                 path.replaceInline(path.node.consequent.body)
-            &#125; else &#123;
+            &#125; <span class="hljs-keyword">else</span> &#123;
                 path.replaceInline(path.node.alternate.body)
             &#125;
         &#125;
     &#125;
-&#125;
-</code></pre>
+&#125;</code></pre>
 <p>自此 jajiami v6 混淆就还原完毕了，还原前后对比一下，代码量缩短了很多，逻辑也更加清楚了，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/52f0ccf4ce30a1c150ddd25e8f189ab0.png" alt="24"></p>
 <p>最后结合 Python 代码，携带生成的 <code>hostToken</code> 和 <code>permitToken</code>，成功拿到备案号：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/4b54ca38cc38d9776bdb39c52ed25c93.png" alt="25"></p>
-<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>原混淆代码 <code>generatetoken.js</code>、AST 脱混淆代码 <code>generatetokenAst.js</code>、还原后的代码 <code>generatetokenNew.js</code>，以及 Python 测试代码均在 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
+<h2 id="完整代码">完整代码</h2>
+<p>原混淆代码 <code>generatetoken.js</code>、AST 脱混淆代码 <code>generatetokenAst.js</code>、还原后的代码 <code>generatetokenNew.js</code>，以及 Python 测试代码均在 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
 <p>代码地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice">https://github.com/TRHX/Python3-Spider-Practice</a></p>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/052/">https://www.itbob.cn/article/052/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/051/" 
+                            class="post-title gt-a-link">逆向进阶，利用 AST 技术还原 JavaScript 混淆代码</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/051/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

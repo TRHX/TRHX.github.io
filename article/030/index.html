@@ -1,590 +1,140 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Pandas">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/030/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/030/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Pandas"> 
-
-    
-        <meta property="article:published_time" content="Wed Jun 17 2020 23:02:33 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:41:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/030/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/030/index.html",
-    "headline": "Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并",
-    "datePublished": "Wed Jun 17 2020 23:02:33 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:41:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",Python,数据分析,PandasITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9001x00%E3%80%91GroupBy-%E6%9C%BA%E5%88%B6"><span class="post-toc-number">1.</span> <span class="post-toc-text">【01x00】GroupBy 机制</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9002x00%E3%80%91GroupBy-%E5%AF%B9%E8%B1%A1"><span class="post-toc-number">2.</span> <span class="post-toc-text">【02x00】GroupBy 对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9003x00%E3%80%91GroupBy-Split-%E6%95%B0%E6%8D%AE%E5%88%86%E8%A3%82"><span class="post-toc-number">3.</span> <span class="post-toc-text">【03x00】GroupBy Split 数据分裂</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x01%E3%80%91%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【03x01】分组运算</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x02%E3%80%91%E6%8C%89%E7%B1%BB%E5%9E%8B%E6%8C%89%E5%88%97%E5%88%86%E7%BB%84"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【03x02】按类型按列分组</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x03%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E7%BB%84"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【03x03】自定义分组</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E3%80%9003x03x01%E3%80%91%E5%AD%97%E5%85%B8%E5%88%86%E7%BB%84"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">【03x03x01】字典分组</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E3%80%9003x03x02%E3%80%91%E5%87%BD%E6%95%B0%E5%88%86%E7%BB%84"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">【03x03x02】函数分组</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E3%80%9003x03x03%E3%80%91%E7%B4%A2%E5%BC%95%E5%B1%82%E7%BA%A7%E5%88%86%E7%BB%84"><span class="post-toc-number">3.3.3.</span> <span class="post-toc-text">【03x03x03】索引层级分组</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x04%E3%80%91%E5%88%86%E7%BB%84%E8%BF%AD%E4%BB%A3"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【03x04】分组迭代</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x05%E3%80%91%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">【03x05】对象转换</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9004x00%E3%80%91GroupBy-Apply-%E6%95%B0%E6%8D%AE%E5%BA%94%E7%94%A8"><span class="post-toc-number">4.</span> <span class="post-toc-text">【04x00】GroupBy Apply 数据应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9004x01%E3%80%91%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">【04x01】聚合函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9004x02%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">【04x02】自定义函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9004x03%E3%80%91%E5%AF%B9%E4%B8%8D%E5%90%8C%E5%88%97%E4%BD%9C%E7%94%A8%E4%B8%8D%E5%90%8C%E5%87%BD%E6%95%B0"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">【04x03】对不同列作用不同函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9004x04%E3%80%91GroupBy-apply"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">【04x04】GroupBy.apply()</span></a></li></ol></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>6月 17, 2020</span> -->
-        <span>2020-06-17 23:02:33</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACX0lEQVR42u3aW27DMAwEwNz/0u0B2qS7lCWnwfgrMOLH+EMkVnx8ffTxwMPDw8PDw8PDezPeIz6eXfXLA16enz2luAoPDw/vCO+PpTZgJJ/g5+/XT5+9Gx4eHt5J3rMF9zVjhZ0/K/k/Hh4e3vvzZuy8VODh4eF9Hq+9z+vyMLsnHh4e3r28vEVO4tS8MOSvvj1rwcPDw4t5+SbT+d9H9/fw8PDwAl490rS+cC+UgXroCg8PD28Db71dnsUKObh+Hzw8PLzNvPwV8y2rZ4A8CM7vH7XUeHh4eJfy8tAhf9istMzeJ6p7eHh4eEd4swa6DWGTwtB+ODw8PLwzvFkL2xaSlS23on3Hw8PDO85rm93k2tmZJBrGw8PDu5e3e8sqD3PbIoGHh4d3F6+NDK6NG9q2+7LJCDw8PLwRr12OZ8FBHg23jTUeHh7eSV7bTM+W+PV2fGmmDA8PD28DL39YG8LOItqlMoOHh4d3hBdtLAWDArP75BtddRiBh4eHt42XD0jlbfesEW8/Fh4eHt553o62OF/uk4a+/kB4eHh4B3ltwDorEisjBVFwjIeHh3cTb/YqCT4PiJOSMywMeHh4eBt4bdi63qbPRlTx8PDwzvPaYyVomBWDdtsMDw8PbzdvtiivN80r22zF6AAeHh7eNl7eIuejUXWIMBq9qvf38PDw8C7l5Qt0O2aaU2eRBB4eHt7/4uXNcduat203Hh4e3jvzrhojGDbNszACDw8PbwNvNgqQX5X/Jy8MeHh4eHfx8ghgVjZyav4pn57Hw8PD28z7vAMPDw8PDw8PD+8Njm8rZz7aASOttwAAAABJRU5ErkJggg==">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;5.6k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;30 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/030/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并&url=https://www.itbob.cn/article/030/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并&url=https://www.itbob.cn/article/030/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/030/index.html&text=Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/030/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/030/index.html&title=Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/030/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2020-06-17 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <p>Pandas 系列文章：</p>
+                    
+                        <a href="/tags/Python/" class="post-tag">
+                            #Python</a>
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            #数据分析</a>
+                    
+                        <a href="/tags/Pandas/" class="post-tag">
+                            #Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -612,14 +162,14 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/106804881
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106804881</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="【01x00】GroupBy-机制"><a href="#【01x00】GroupBy-机制" class="headerlink" title="【01x00】GroupBy 机制"></a><font color=#FF0000>【01x00】GroupBy 机制</font></h2><p>对数据集进行分组并对各组应用一个函数（无论是聚合还是转换），通常是数据分析工作中的重要环节。在将数据集加载、融合、准备好之后，通常就是计算分组统计或生成透视表。Pandas 提供了一个灵活高效的 GroupBy 功能，虽然“分组”（group by）这个名字是借用 SQL 数据库语言的命令，但其理念引用发明 R 语言 frame 的 Hadley Wickham 的观点可能更合适：分裂（Split）、应用（Apply）和组合（Combine）。</p>
+<h2 id="font-color-FF0000-【01x00】GroupBy-机制-font"><font color=#FF0000>【01x00】GroupBy 机制</font></h2>
+<p>对数据集进行分组并对各组应用一个函数（无论是聚合还是转换），通常是数据分析工作中的重要环节。在将数据集加载、融合、准备好之后，通常就是计算分组统计或生成透视表。Pandas 提供了一个灵活高效的 GroupBy 功能，虽然“分组”（group by）这个名字是借用 SQL 数据库语言的命令，但其理念引用发明 R 语言 frame 的 Hadley Wickham 的观点可能更合适：分裂（Split）、应用（Apply）和组合（Combine）。</p>
 <p>分组运算过程：Split —&gt; Apply —&gt; Combine</p>
 <ul>
 <li>分裂（Split）：根据某些标准将数据分组；</li>
@@ -627,33 +177,34 @@
 <li>合并（Combine）：把每个分组的计算结果合并起来。</li>
 </ul>
 <p>官方介绍：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/user_guide/groupby.html">https://pandas.pydata.org/docs/user_guide/groupby.html</a></p>
-<p><img src="https://fastly.jsdelivr.net/gh/TRHX/ImageHosting/ITRHX-PIC/A84/01.png" alt="01"></p>
-<h2 id="【02x00】GroupBy-对象"><a href="#【02x00】GroupBy-对象" class="headerlink" title="【02x00】GroupBy 对象"></a><font color=#FF0000>【02x00】GroupBy 对象</font></h2><p>常见的 GroupBy 对象：Series.groupby、DataFrame.groupby，基本语法如下：</p>
-<pre><code class="python">Series.groupby(self,
-               by=None,
-               axis=0,
-               level=None,
-               as_index: bool = True,
-               sort: bool = True,
-               group_keys: bool = True,
-               squeeze: bool = False,
-               observed: bool = False) → ’groupby_generic.SeriesGroupBy’
-</code></pre>
-<pre><code class="python">DataFrame.groupby(self,
-                  by=None,
-                  axis=0,
-                  level=None,
-                  as_index: bool = True,
-                  sort: bool = True,
-                  group_keys: bool = True,
-                  squeeze: bool = False,
-                  observed: bool = False) → ’groupby_generic.DataFrameGroupBy’
-</code></pre>
+<p><img src="/img/article/030/01.png" alt="01"></p>
+<h2 id="font-color-FF0000-【02x00】GroupBy-对象-font"><font color=#FF0000>【02x00】GroupBy 对象</font></h2>
+<p>常见的 GroupBy 对象：Series.groupby、DataFrame.groupby，基本语法如下：</p>
+<pre><code class="hljs python">Series.groupby(self,
+               by=<span class="hljs-literal">None</span>,
+               axis=<span class="hljs-number">0</span>,
+               level=<span class="hljs-literal">None</span>,
+               as_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+               sort: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+               group_keys: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+               squeeze: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+               observed: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>) → ’groupby_generic.SeriesGroupBy’</code></pre>
+<pre><code class="hljs python">DataFrame.groupby(self,
+                  by=<span class="hljs-literal">None</span>,
+                  axis=<span class="hljs-number">0</span>,
+                  level=<span class="hljs-literal">None</span>,
+                  as_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+                  sort: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+                  group_keys: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+                  squeeze: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+                  observed: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>) → ’groupby_generic.DataFrameGroupBy’</code></pre>
 <p>官方文档：</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.groupby.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.groupby.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.groupby.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.groupby.html</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html</a></p>
 </li>
 </ul>
 <p>常用参数解释如下：</p>
@@ -664,13 +215,14 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>by</td>
 <td>映射、函数、标签或标签列表，用于确定分组依据的分组。如果 by 是函数，则会在对象索引的每个值上调用它。 <br>如果传递了 dict 或 Series，则将使用 Series 或 dict 的值来确定组（将 Series 的值首先对齐；请参见.align() 方法）。<br> 如果传递了 ndarray，则按原样使用这些值来确定组。标签或标签列表可以按自身中的列传递给分组。 注意，元组被解释为（单个）键</td>
 </tr>
 <tr>
 <td>axis</td>
-<td>沿指定轴拆分，默认 <code>0</code>，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>&#39;columns’</code></td>
+<td>沿指定轴拆分，默认 <code>0</code>，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
 </tr>
 <tr>
 <td>level</td>
@@ -692,406 +244,407 @@
 <td>squeeze</td>
 <td>bool 类型，默认 False，如果可能，减少返回类型的维度，否则返回一致的类型</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>groupby() 进行分组，GroupBy 对象没有进行实际运算，只是包含分组的中间数据，示例如下：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -0.804160 -0.868905
-1    b    one -0.086990  0.325741
-2    a    two  0.757992  0.541101
-3    b  three -0.281435  0.097841
-4    a    two  0.817757 -0.643699
-5    b    two -0.462760 -0.321196
-6    a    one -0.403699  0.602138
-7    a  three  0.883940 -0.850526
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;)
-&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x03CDB7C0&gt;
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj[&#39;data1&#39;].groupby(obj[&#39;key1&#39;])
-&lt;pandas.core.groupby.generic.SeriesGroupBy object at 0x03CDB748&gt;
-</code></pre>
-<h2 id="【03x00】GroupBy-Split-数据分裂"><a href="#【03x00】GroupBy-Split-数据分裂" class="headerlink" title="【03x00】GroupBy Split 数据分裂"></a><font color=#FF0000>【03x00】GroupBy Split 数据分裂</font></h2><h3 id="【03x01】分组运算"><a href="#【03x01】分组运算" class="headerlink" title="【03x01】分组运算"></a><font color=#4876FF>【03x01】分组运算</font></h3><p>前面通过 <code>groupby()</code> 方法获得了一个 GroupBy 对象，它实际上还没有进行任何计算，只是含有一些有关分组键 <code>obj[&#39;key1&#39;]</code> 的中间数据而已。换句话说，该对象已经有了接下来对各分组执行运算所需的一切信息。例如，我们可以调用 GroupBy 的 <code>mean()</code> 方法来计算分组平均值，<code>size()</code> 方法返回每个分组的元素个数：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.804160</span> -<span class="hljs-number">0.868905</span>
+<span class="hljs-number">1</span>    b    one -<span class="hljs-number">0.086990</span>  <span class="hljs-number">0.325741</span>
+<span class="hljs-number">2</span>    a    two  <span class="hljs-number">0.757992</span>  <span class="hljs-number">0.541101</span>
+<span class="hljs-number">3</span>    b  three -<span class="hljs-number">0.281435</span>  <span class="hljs-number">0.097841</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.817757</span> -<span class="hljs-number">0.643699</span>
+<span class="hljs-number">5</span>    b    two -<span class="hljs-number">0.462760</span> -<span class="hljs-number">0.321196</span>
+<span class="hljs-number">6</span>    a    one -<span class="hljs-number">0.403699</span>  <span class="hljs-number">0.602138</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.883940</span> -<span class="hljs-number">0.850526</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>)
+&lt;pandas.core.groupby.generic.DataFrameGroupBy <span class="hljs-built_in">object</span> at <span class="hljs-number">0x03CDB7C0</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;data1&#x27;</span>].groupby(obj[<span class="hljs-string">&#x27;key1&#x27;</span>])
+&lt;pandas.core.groupby.generic.SeriesGroupBy <span class="hljs-built_in">object</span> at <span class="hljs-number">0x03CDB748</span>&gt;</code></pre>
+<h2 id="font-color-FF0000-【03x00】GroupBy-Split-数据分裂-font"><font color=#FF0000>【03x00】GroupBy Split 数据分裂</font></h2>
+<h3 id="font-color-4876FF-【03x01】分组运算-font"><font color=#4876FF>【03x01】分组运算</font></h3>
+<p>前面通过 <code>groupby()</code> 方法获得了一个 GroupBy 对象，它实际上还没有进行任何计算，只是含有一些有关分组键 <code>obj['key1']</code> 的中间数据而已。换句话说，该对象已经有了接下来对各分组执行运算所需的一切信息。例如，我们可以调用 GroupBy 的 <code>mean()</code> 方法来计算分组平均值，<code>size()</code> 方法返回每个分组的元素个数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -0.544099 -0.614079
-1    b    one  2.193712  0.101005
-2    a    two -0.004683  0.882770
-3    b  three  0.312858  1.732105
-4    a    two  0.011089  0.089587
-5    b    two  0.292165  1.327638
-6    a    one -1.433291 -0.238971
-7    a  three -0.004724 -2.117326
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped1 = obj.groupby(&#39;key1&#39;)
-&gt;&gt;&gt; grouped2 = obj[&#39;data1&#39;].groupby(obj[&#39;key1&#39;])
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped1.mean()
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.544099</span> -<span class="hljs-number">0.614079</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">2.193712</span>  <span class="hljs-number">0.101005</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">0.004683</span>  <span class="hljs-number">0.882770</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.312858</span>  <span class="hljs-number">1.732105</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.011089</span>  <span class="hljs-number">0.089587</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.292165</span>  <span class="hljs-number">1.327638</span>
+<span class="hljs-number">6</span>    a    one -<span class="hljs-number">1.433291</span> -<span class="hljs-number">0.238971</span>
+<span class="hljs-number">7</span>    a  three -<span class="hljs-number">0.004724</span> -<span class="hljs-number">2.117326</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped1 = obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped2 = obj[<span class="hljs-string">&#x27;data1&#x27;</span>].groupby(obj[<span class="hljs-string">&#x27;key1&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped1.mean()
          data1     data2
 key1                    
-a    -0.395142 -0.399604
-b     0.932912  1.053583
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped2.mean()
+a    -<span class="hljs-number">0.395142</span> -<span class="hljs-number">0.399604</span>
+b     <span class="hljs-number">0.932912</span>  <span class="hljs-number">1.053583</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped2.mean()
 key1
-a   -0.395142
-b    0.932912
+a   -<span class="hljs-number">0.395142</span>
+b    <span class="hljs-number">0.932912</span>
 Name: data1, dtype: float64
 &gt;&gt;&gt;
-&gt;&gt;&gt; grouped1.size()
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped1.size()
 key1
-a    5
-b    3
+a    <span class="hljs-number">5</span>
+b    <span class="hljs-number">3</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped2.size()
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped2.size()
 key1
-a    5
-b    3
-Name: data1, dtype: int64
-</code></pre>
-<h3 id="【03x02】按类型按列分组"><a href="#【03x02】按类型按列分组" class="headerlink" title="【03x02】按类型按列分组"></a><font color=#4876FF>【03x02】按类型按列分组</font></h3><p><code>groupby()</code> 方法 <code>axis</code> 参数默认是 0，通过设置也可以在其他任何轴上进行分组，也支持按照类型（dtype）进行分组：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+a    <span class="hljs-number">5</span>
+b    <span class="hljs-number">3</span>
+Name: data1, dtype: int64</code></pre>
+<h3 id="font-color-4876FF-【03x02】按类型按列分组-font"><font color=#4876FF>【03x02】按类型按列分组</font></h3>
+<p><code>groupby()</code> 方法 <code>axis</code> 参数默认是 0，通过设置也可以在其他任何轴上进行分组，也支持按照类型（dtype）进行分组：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -0.607009  1.948301
-1    b    one  0.150818 -0.025095
-2    a    two -2.086024  0.358164
-3    b  three  0.446061  1.708797
-4    a    two  0.745457 -0.980948
-5    b    two  0.981877  2.159327
-6    a    one  0.804480 -0.499661
-7    a  three  0.112884  0.004367
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.dtypes
-key1      object
-key2      object
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.607009</span>  <span class="hljs-number">1.948301</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.150818</span> -<span class="hljs-number">0.025095</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">2.086024</span>  <span class="hljs-number">0.358164</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.446061</span>  <span class="hljs-number">1.708797</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.745457</span> -<span class="hljs-number">0.980948</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.981877</span>  <span class="hljs-number">2.159327</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">0.804480</span> -<span class="hljs-number">0.499661</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.112884</span>  <span class="hljs-number">0.004367</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dtypes
+key1      <span class="hljs-built_in">object</span>
+key2      <span class="hljs-built_in">object</span>
 data1    float64
 data2    float64
-dtype: object
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(obj.dtypes, axis=1).size()
-float64    2
-object     2
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(obj.dtypes, axis=<span class="hljs-number">1</span>).size()
+float64    <span class="hljs-number">2</span>
+<span class="hljs-built_in">object</span>     <span class="hljs-number">2</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(obj.dtypes, axis=1).sum()
-    float64  object
-0  1.341291    aone
-1  0.125723    bone
-2 -1.727860    atwo
-3  2.154858  bthree
-4 -0.235491    atwo
-5  3.141203    btwo
-6  0.304819    aone
-7  0.117251  athree
-</code></pre>
-<h3 id="【03x03】自定义分组"><a href="#【03x03】自定义分组" class="headerlink" title="【03x03】自定义分组"></a><font color=#4876FF>【03x03】自定义分组</font></h3><p><code>groupby()</code> 方法中可以一次传入多个数组的列表，也可以自定义一组分组键。也可以通过一个字典、一个函数，或者按照索引层级进行分组。</p>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(obj.dtypes, axis=<span class="hljs-number">1</span>).<span class="hljs-built_in">sum</span>()
+    float64  <span class="hljs-built_in">object</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.341291</span>    aone
+<span class="hljs-number">1</span>  <span class="hljs-number">0.125723</span>    bone
+<span class="hljs-number">2</span> -<span class="hljs-number">1.727860</span>    atwo
+<span class="hljs-number">3</span>  <span class="hljs-number">2.154858</span>  bthree
+<span class="hljs-number">4</span> -<span class="hljs-number">0.235491</span>    atwo
+<span class="hljs-number">5</span>  <span class="hljs-number">3.141203</span>    btwo
+<span class="hljs-number">6</span>  <span class="hljs-number">0.304819</span>    aone
+<span class="hljs-number">7</span>  <span class="hljs-number">0.117251</span>  athree</code></pre>
+<h3 id="font-color-4876FF-【03x03】自定义分组-font"><font color=#4876FF>【03x03】自定义分组</font></h3>
+<p><code>groupby()</code> 方法中可以一次传入多个数组的列表，也可以自定义一组分组键。也可以通过一个字典、一个函数，或者按照索引层级进行分组。</p>
 <p>传入多个数组的列表：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -0.841652  0.688055
-1    b    one  0.510042 -0.561171
-2    a    two -0.418862 -0.145983
-3    b  three -1.104698  0.563158
-4    a    two  0.329527 -0.893108
-5    b    two  0.753653 -0.342520
-6    a    one -0.882527 -1.121329
-7    a  three  1.726794  0.160244
-&gt;&gt;&gt; 
-&gt;&gt;&gt; means = obj[&#39;data1&#39;].groupby([obj[&#39;key1&#39;], obj[&#39;key2&#39;]]).mean()
-&gt;&gt;&gt; means
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.841652</span>  <span class="hljs-number">0.688055</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.510042</span> -<span class="hljs-number">0.561171</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">0.418862</span> -<span class="hljs-number">0.145983</span>
+<span class="hljs-number">3</span>    b  three -<span class="hljs-number">1.104698</span>  <span class="hljs-number">0.563158</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.329527</span> -<span class="hljs-number">0.893108</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.753653</span> -<span class="hljs-number">0.342520</span>
+<span class="hljs-number">6</span>    a    one -<span class="hljs-number">0.882527</span> -<span class="hljs-number">1.121329</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">1.726794</span>  <span class="hljs-number">0.160244</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>means = obj[<span class="hljs-string">&#x27;data1&#x27;</span>].groupby([obj[<span class="hljs-string">&#x27;key1&#x27;</span>], obj[<span class="hljs-string">&#x27;key2&#x27;</span>]]).mean()
+<span class="hljs-meta">&gt;&gt;&gt; </span>means
 key1  key2 
-a     one     -0.862090
-      three    1.726794
-      two     -0.044667
-b     one      0.510042
-      three   -1.104698
-      two      0.753653
+a     one     -<span class="hljs-number">0.862090</span>
+      three    <span class="hljs-number">1.726794</span>
+      two     -<span class="hljs-number">0.044667</span>
+b     one      <span class="hljs-number">0.510042</span>
+      three   -<span class="hljs-number">1.104698</span>
+      two      <span class="hljs-number">0.753653</span>
 Name: data1, dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; means.unstack()
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>means.unstack()
 key2       one     three       two
 key1                              
-a    -0.862090  1.726794 -0.044667
-b     0.510042 -1.104698  0.753653
-</code></pre>
+a    -<span class="hljs-number">0.862090</span>  <span class="hljs-number">1.726794</span> -<span class="hljs-number">0.044667</span>
+b     <span class="hljs-number">0.510042</span> -<span class="hljs-number">1.104698</span>  <span class="hljs-number">0.753653</span></code></pre>
 <p>自定义分组键：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;key1&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;two&#39;, &#39;one&#39;, &#39;two&#39;, &#39;one&#39;],
-    &#39;data1&#39; : np.random.randn(5),
-    &#39;data2&#39; : np.random.randn(5)&#125;)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span> : np.random.randn(<span class="hljs-number">5</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span> : np.random.randn(<span class="hljs-number">5</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1 key2     data1     data2
-0    a  one -0.024003  0.350480
-1    a  two -0.767534 -0.100426
-2    b  one -0.594983 -1.945580
-3    b  two -0.374482  0.817592
-4    a  one  0.755452 -0.137759
-&gt;&gt;&gt; 
-&gt;&gt;&gt; states = np.array([&#39;Wuhan&#39;, &#39;Beijing&#39;, &#39;Beijing&#39;, &#39;Wuhan&#39;, &#39;Wuhan&#39;])
-&gt;&gt;&gt; years = np.array([2005, 2005, 2006, 2005, 2006])
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj[&#39;data1&#39;].groupby([states, years]).mean()
-Beijing  2005   -0.767534
-         2006   -0.594983
-Wuhan    2005   -0.199242
-         2006    0.755452
-Name: data1, dtype: float64
-</code></pre>
-<h4 id="【03x03x01】字典分组"><a href="#【03x03x01】字典分组" class="headerlink" title="【03x03x01】字典分组"></a><font color=#FFA500>【03x03x01】字典分组</font></h4><p>通过字典进行分组：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randint(1, 10, (5,5)),
-    columns=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;],
-    index=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;])
-&gt;&gt;&gt; obj
+<span class="hljs-number">0</span>    a  one -<span class="hljs-number">0.024003</span>  <span class="hljs-number">0.350480</span>
+<span class="hljs-number">1</span>    a  two -<span class="hljs-number">0.767534</span> -<span class="hljs-number">0.100426</span>
+<span class="hljs-number">2</span>    b  one -<span class="hljs-number">0.594983</span> -<span class="hljs-number">1.945580</span>
+<span class="hljs-number">3</span>    b  two -<span class="hljs-number">0.374482</span>  <span class="hljs-number">0.817592</span>
+<span class="hljs-number">4</span>    a  one  <span class="hljs-number">0.755452</span> -<span class="hljs-number">0.137759</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>states = np.array([<span class="hljs-string">&#x27;Wuhan&#x27;</span>, <span class="hljs-string">&#x27;Beijing&#x27;</span>, <span class="hljs-string">&#x27;Beijing&#x27;</span>, <span class="hljs-string">&#x27;Wuhan&#x27;</span>, <span class="hljs-string">&#x27;Wuhan&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>years = np.array([<span class="hljs-number">2005</span>, <span class="hljs-number">2005</span>, <span class="hljs-number">2006</span>, <span class="hljs-number">2005</span>, <span class="hljs-number">2006</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;data1&#x27;</span>].groupby([states, years]).mean()
+Beijing  <span class="hljs-number">2005</span>   -<span class="hljs-number">0.767534</span>
+         <span class="hljs-number">2006</span>   -<span class="hljs-number">0.594983</span>
+Wuhan    <span class="hljs-number">2005</span>   -<span class="hljs-number">0.199242</span>
+         <span class="hljs-number">2006</span>    <span class="hljs-number">0.755452</span>
+Name: data1, dtype: float64</code></pre>
+<h4 id="font-color-FFA500-【03x03x01】字典分组-font"><font color=#FFA500>【03x03x01】字典分组</font></h4>
+<p>通过字典进行分组：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, (<span class="hljs-number">5</span>,<span class="hljs-number">5</span>)),
+    columns=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>],
+    index=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;E&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
    a  b  c  d  e
-A  1  4  7  1  9
-B  8  2  4  7  8
-C  9  8  2  5  1
-D  2  4  2  8  3
-E  7  5  7  2  3
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj_dict = &#123;&#39;a&#39;:&#39;Python&#39;, &#39;b&#39;:&#39;Python&#39;, &#39;c&#39;:&#39;Java&#39;, &#39;d&#39;:&#39;C++&#39;, &#39;e&#39;:&#39;Java&#39;&#125;
-&gt;&gt;&gt; obj.groupby(obj_dict, axis=1).size()
-C++       1
-Java      2
-Python    2
+A  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">7</span>  <span class="hljs-number">1</span>  <span class="hljs-number">9</span>
+B  <span class="hljs-number">8</span>  <span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>
+C  <span class="hljs-number">9</span>  <span class="hljs-number">8</span>  <span class="hljs-number">2</span>  <span class="hljs-number">5</span>  <span class="hljs-number">1</span>
+D  <span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">2</span>  <span class="hljs-number">8</span>  <span class="hljs-number">3</span>
+E  <span class="hljs-number">7</span>  <span class="hljs-number">5</span>  <span class="hljs-number">7</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj_dict = &#123;<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-string">&#x27;Python&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-string">&#x27;Python&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>:<span class="hljs-string">&#x27;Java&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>:<span class="hljs-string">&#x27;C++&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>:<span class="hljs-string">&#x27;Java&#x27;</span>&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(obj_dict, axis=<span class="hljs-number">1</span>).size()
+C++       <span class="hljs-number">1</span>
+Java      <span class="hljs-number">2</span>
+Python    <span class="hljs-number">2</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(obj_dict, axis=1).count()
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(obj_dict, axis=<span class="hljs-number">1</span>).count()
    C++  Java  Python
-A    1     2       2
-B    1     2       2
-C    1     2       2
-D    1     2       2
-E    1     2       2
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(obj_dict, axis=1).sum()
+A    <span class="hljs-number">1</span>     <span class="hljs-number">2</span>       <span class="hljs-number">2</span>
+B    <span class="hljs-number">1</span>     <span class="hljs-number">2</span>       <span class="hljs-number">2</span>
+C    <span class="hljs-number">1</span>     <span class="hljs-number">2</span>       <span class="hljs-number">2</span>
+D    <span class="hljs-number">1</span>     <span class="hljs-number">2</span>       <span class="hljs-number">2</span>
+E    <span class="hljs-number">1</span>     <span class="hljs-number">2</span>       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(obj_dict, axis=<span class="hljs-number">1</span>).<span class="hljs-built_in">sum</span>()
    C++  Java  Python
-A    1    16       5
-B    7    12      10
-C    5     3      17
-D    8     5       6
-E    2    10      12
-</code></pre>
-<h4 id="【03x03x02】函数分组"><a href="#【03x03x02】函数分组" class="headerlink" title="【03x03x02】函数分组"></a><font color=#FFA500>【03x03x02】函数分组</font></h4><p>通过函数进行分组：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randint(1, 10, (5,5)),
-        columns=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;],
-        index=[&#39;AA&#39;, &#39;BBB&#39;, &#39;CC&#39;, &#39;D&#39;, &#39;EE&#39;])
-&gt;&gt;&gt; obj
+A    <span class="hljs-number">1</span>    <span class="hljs-number">16</span>       <span class="hljs-number">5</span>
+B    <span class="hljs-number">7</span>    <span class="hljs-number">12</span>      <span class="hljs-number">10</span>
+C    <span class="hljs-number">5</span>     <span class="hljs-number">3</span>      <span class="hljs-number">17</span>
+D    <span class="hljs-number">8</span>     <span class="hljs-number">5</span>       <span class="hljs-number">6</span>
+E    <span class="hljs-number">2</span>    <span class="hljs-number">10</span>      <span class="hljs-number">12</span></code></pre>
+<h4 id="font-color-FFA500-【03x03x02】函数分组-font"><font color=#FFA500>【03x03x02】函数分组</font></h4>
+<p>通过函数进行分组：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, (<span class="hljs-number">5</span>,<span class="hljs-number">5</span>)),
+        columns=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>],
+        index=[<span class="hljs-string">&#x27;AA&#x27;</span>, <span class="hljs-string">&#x27;BBB&#x27;</span>, <span class="hljs-string">&#x27;CC&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-string">&#x27;EE&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
      a  b  c  d  e
-AA   3  9  5  8  2
-BBB  1  4  2  2  6
-CC   9  2  4  7  6
-D    2  5  5  7  1
-EE   8  8  8  2  2
-&gt;&gt;&gt; 
-&gt;&gt;&gt; def group_key(idx):
-        &quot;&quot;&quot;
-            idx 为列索引或行索引
-        &quot;&quot;&quot;
-        return len(idx)
+AA   <span class="hljs-number">3</span>  <span class="hljs-number">9</span>  <span class="hljs-number">5</span>  <span class="hljs-number">8</span>  <span class="hljs-number">2</span>
+BBB  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">2</span>  <span class="hljs-number">2</span>  <span class="hljs-number">6</span>
+CC   <span class="hljs-number">9</span>  <span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">7</span>  <span class="hljs-number">6</span>
+D    <span class="hljs-number">2</span>  <span class="hljs-number">5</span>  <span class="hljs-number">5</span>  <span class="hljs-number">7</span>  <span class="hljs-number">1</span>
+EE   <span class="hljs-number">8</span>  <span class="hljs-number">8</span>  <span class="hljs-number">8</span>  <span class="hljs-number">2</span>  <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">group_key</span>(<span class="hljs-params">idx</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">	        idx 为列索引或行索引</span>
+<span class="hljs-string">	    &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(idx)
 
-&gt;&gt;&gt; obj.groupby(group_key).size()    # 等价于 obj.groupby(len).size()
-1    1
-2    3
-3    1
-dtype: int64
-</code></pre>
-<h4 id="【03x03x03】索引层级分组"><a href="#【03x03x03】索引层级分组" class="headerlink" title="【03x03x03】索引层级分组"></a><font color=#FFA500>【03x03x03】索引层级分组</font></h4><p>通过不同索引层级进行分组：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; columns = pd.MultiIndex.from_arrays([[&#39;Python&#39;, &#39;Java&#39;, &#39;Python&#39;, &#39;Java&#39;, &#39;Python&#39;],
-    [&#39;A&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;B&#39;]], names=[&#39;language&#39;, &#39;index&#39;])
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randint(1, 10, (5, 5)), columns=columns)
-&gt;&gt;&gt; obj
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(group_key).size()    <span class="hljs-comment"># 等价于 obj.groupby(len).size()</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">1</span>
+dtype: int64</code></pre>
+<h4 id="font-color-FFA500-【03x03x03】索引层级分组-font"><font color=#FFA500>【03x03x03】索引层级分组</font></h4>
+<p>通过不同索引层级进行分组：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>columns = pd.MultiIndex.from_arrays([[<span class="hljs-string">&#x27;Python&#x27;</span>, <span class="hljs-string">&#x27;Java&#x27;</span>, <span class="hljs-string">&#x27;Python&#x27;</span>, <span class="hljs-string">&#x27;Java&#x27;</span>, <span class="hljs-string">&#x27;Python&#x27;</span>],
+    [<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>]], names=[<span class="hljs-string">&#x27;language&#x27;</span>, <span class="hljs-string">&#x27;index&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, (<span class="hljs-number">5</span>, <span class="hljs-number">5</span>)), columns=columns)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
 language Python Java Python Java Python
 index         A    A      B    C      B
-0             7    1      9    8      5
-1             4    5      4    5      6
-2             4    3      1    9      5
-3             6    6      3    8      1
-4             7    9      2    8      2
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(level=&#39;language&#39;, axis=1).sum()
+<span class="hljs-number">0</span>             <span class="hljs-number">7</span>    <span class="hljs-number">1</span>      <span class="hljs-number">9</span>    <span class="hljs-number">8</span>      <span class="hljs-number">5</span>
+<span class="hljs-number">1</span>             <span class="hljs-number">4</span>    <span class="hljs-number">5</span>      <span class="hljs-number">4</span>    <span class="hljs-number">5</span>      <span class="hljs-number">6</span>
+<span class="hljs-number">2</span>             <span class="hljs-number">4</span>    <span class="hljs-number">3</span>      <span class="hljs-number">1</span>    <span class="hljs-number">9</span>      <span class="hljs-number">5</span>
+<span class="hljs-number">3</span>             <span class="hljs-number">6</span>    <span class="hljs-number">6</span>      <span class="hljs-number">3</span>    <span class="hljs-number">8</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">4</span>             <span class="hljs-number">7</span>    <span class="hljs-number">9</span>      <span class="hljs-number">2</span>    <span class="hljs-number">8</span>      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(level=<span class="hljs-string">&#x27;language&#x27;</span>, axis=<span class="hljs-number">1</span>).<span class="hljs-built_in">sum</span>()
 language  Java  Python
-0            9      21
-1           10      14
-2           12      10
-3           14      10
-4           17      11
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(level=&#39;index&#39;, axis=1).sum()
+<span class="hljs-number">0</span>            <span class="hljs-number">9</span>      <span class="hljs-number">21</span>
+<span class="hljs-number">1</span>           <span class="hljs-number">10</span>      <span class="hljs-number">14</span>
+<span class="hljs-number">2</span>           <span class="hljs-number">12</span>      <span class="hljs-number">10</span>
+<span class="hljs-number">3</span>           <span class="hljs-number">14</span>      <span class="hljs-number">10</span>
+<span class="hljs-number">4</span>           <span class="hljs-number">17</span>      <span class="hljs-number">11</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(level=<span class="hljs-string">&#x27;index&#x27;</span>, axis=<span class="hljs-number">1</span>).<span class="hljs-built_in">sum</span>()
 index   A   B  C
-0       8  14  8
-1       9  10  5
-2       7   6  9
-3      12   4  8
-4      16   4  8
-</code></pre>
-<h3 id="【03x04】分组迭代"><a href="#【03x04】分组迭代" class="headerlink" title="【03x04】分组迭代"></a><font color=#4876FF>【03x04】分组迭代</font></h3><p>GroupBy 对象支持迭代，对于单层分组，可以产生一组二元元组，由分组名和数据块组成：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<span class="hljs-number">0</span>       <span class="hljs-number">8</span>  <span class="hljs-number">14</span>  <span class="hljs-number">8</span>
+<span class="hljs-number">1</span>       <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>       <span class="hljs-number">7</span>   <span class="hljs-number">6</span>  <span class="hljs-number">9</span>
+<span class="hljs-number">3</span>      <span class="hljs-number">12</span>   <span class="hljs-number">4</span>  <span class="hljs-number">8</span>
+<span class="hljs-number">4</span>      <span class="hljs-number">16</span>   <span class="hljs-number">4</span>  <span class="hljs-number">8</span></code></pre>
+<h3 id="font-color-4876FF-【03x04】分组迭代-font"><font color=#4876FF>【03x04】分组迭代</font></h3>
+<p>GroupBy 对象支持迭代，对于单层分组，可以产生一组二元元组，由分组名和数据块组成：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -1.088762  0.668504
-1    b    one  0.275500  0.787844
-2    a    two -0.108417 -0.491296
-3    b  three  0.019524 -0.363390
-4    a    two  0.453612  0.796999
-5    b    two  1.982858  1.501877
-6    a    one  1.101132 -1.928362
-7    a  three  0.524775 -1.205842
-&gt;&gt;&gt; 
-&gt;&gt;&gt; for group_name, group_data in obj.groupby(&#39;key1&#39;):
-    print(group_name)
-    print(group_data)
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">1.088762</span>  <span class="hljs-number">0.668504</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.275500</span>  <span class="hljs-number">0.787844</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">0.108417</span> -<span class="hljs-number">0.491296</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.019524</span> -<span class="hljs-number">0.363390</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.453612</span>  <span class="hljs-number">0.796999</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">1.982858</span>  <span class="hljs-number">1.501877</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">1.101132</span> -<span class="hljs-number">1.928362</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.524775</span> -<span class="hljs-number">1.205842</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> group_name, group_data <span class="hljs-keyword">in</span> obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>):
+    <span class="hljs-built_in">print</span>(group_name)
+    <span class="hljs-built_in">print</span>(group_data)
 
     
 a
   key1   key2     data1     data2
-0    a    one -1.088762  0.668504
-2    a    two -0.108417 -0.491296
-4    a    two  0.453612  0.796999
-6    a    one  1.101132 -1.928362
-7    a  three  0.524775 -1.205842
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">1.088762</span>  <span class="hljs-number">0.668504</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">0.108417</span> -<span class="hljs-number">0.491296</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.453612</span>  <span class="hljs-number">0.796999</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">1.101132</span> -<span class="hljs-number">1.928362</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.524775</span> -<span class="hljs-number">1.205842</span>
 b
   key1   key2     data1     data2
-1    b    one  0.275500  0.787844
-3    b  three  0.019524 -0.363390
-5    b    two  1.982858  1.501877
-</code></pre>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.275500</span>  <span class="hljs-number">0.787844</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.019524</span> -<span class="hljs-number">0.363390</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">1.982858</span>  <span class="hljs-number">1.501877</span></code></pre>
 <p>对于多层分组，元组的第一个元素将会是由键值组成的元组，第二个元素为数据块：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -1.088762  0.668504
-1    b    one  0.275500  0.787844
-2    a    two -0.108417 -0.491296
-3    b  three  0.019524 -0.363390
-4    a    two  0.453612  0.796999
-5    b    two  1.982858  1.501877
-6    a    one  1.101132 -1.928362
-7    a  three  0.524775 -1.205842
-&gt;&gt;&gt; 
-&gt;&gt;&gt; for group_name, group_data in obj.groupby([&#39;key1&#39;, &#39;key2&#39;]):
-    print(group_name)
-    print(group_data)
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">1.088762</span>  <span class="hljs-number">0.668504</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.275500</span>  <span class="hljs-number">0.787844</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">0.108417</span> -<span class="hljs-number">0.491296</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.019524</span> -<span class="hljs-number">0.363390</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.453612</span>  <span class="hljs-number">0.796999</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">1.982858</span>  <span class="hljs-number">1.501877</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">1.101132</span> -<span class="hljs-number">1.928362</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.524775</span> -<span class="hljs-number">1.205842</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> group_name, group_data <span class="hljs-keyword">in</span> obj.groupby([<span class="hljs-string">&#x27;key1&#x27;</span>, <span class="hljs-string">&#x27;key2&#x27;</span>]):
+    <span class="hljs-built_in">print</span>(group_name)
+    <span class="hljs-built_in">print</span>(group_data)
 
     
-(&#39;a&#39;, &#39;one&#39;)
+(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>)
   key1 key2     data1     data2
-0    a  one -1.088762  0.668504
-6    a  one  1.101132 -1.928362
-(&#39;a&#39;, &#39;three&#39;)
+<span class="hljs-number">0</span>    a  one -<span class="hljs-number">1.088762</span>  <span class="hljs-number">0.668504</span>
+<span class="hljs-number">6</span>    a  one  <span class="hljs-number">1.101132</span> -<span class="hljs-number">1.928362</span>
+(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>)
   key1   key2     data1     data2
-7    a  three  0.524775 -1.205842
-(&#39;a&#39;, &#39;two&#39;)
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.524775</span> -<span class="hljs-number">1.205842</span>
+(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>)
   key1 key2     data1     data2
-2    a  two -0.108417 -0.491296
-4    a  two  0.453612  0.796999
-(&#39;b&#39;, &#39;one&#39;)
+<span class="hljs-number">2</span>    a  two -<span class="hljs-number">0.108417</span> -<span class="hljs-number">0.491296</span>
+<span class="hljs-number">4</span>    a  two  <span class="hljs-number">0.453612</span>  <span class="hljs-number">0.796999</span>
+(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>)
   key1 key2   data1     data2
-1    b  one  0.2755  0.787844
-(&#39;b&#39;, &#39;three&#39;)
+<span class="hljs-number">1</span>    b  one  <span class="hljs-number">0.2755</span>  <span class="hljs-number">0.787844</span>
+(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>)
   key1   key2     data1    data2
-3    b  three  0.019524 -0.36339
-(&#39;b&#39;, &#39;two&#39;)
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.019524</span> -<span class="hljs-number">0.36339</span>
+(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>)
   key1 key2     data1     data2
-5    b  two  1.982858  1.501877
-</code></pre>
-<h3 id="【03x05】对象转换"><a href="#【03x05】对象转换" class="headerlink" title="【03x05】对象转换"></a><font color=#4876FF>【03x05】对象转换</font></h3><p>GroupBy 对象支持转换成列表或字典：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; data = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randn(8),
-    &#39;data2&#39;: np.random.randn(8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(data)
-&gt;&gt;&gt; obj
+<span class="hljs-number">5</span>    b  two  <span class="hljs-number">1.982858</span>  <span class="hljs-number">1.501877</span></code></pre>
+<h3 id="font-color-4876FF-【03x05】对象转换-font"><font color=#4876FF>【03x05】对象转换</font></h3>
+<p>GroupBy 对象支持转换成列表或字典：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randn(<span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2     data1     data2
-0    a    one -0.607009  1.948301
-1    b    one  0.150818 -0.025095
-2    a    two -2.086024  0.358164
-3    b  three  0.446061  1.708797
-4    a    two  0.745457 -0.980948
-5    b    two  0.981877  2.159327
-6    a    one  0.804480 -0.499661
-7    a  three  0.112884  0.004367
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped = obj.groupby(&#39;key1&#39;)
-&gt;&gt;&gt; list(grouped)
-[(&#39;a&#39;,   key1   key2     data1     data2
-0    a    one -0.607009  1.948301
-2    a    two -2.086024  0.358164
-4    a    two  0.745457 -0.980948
-6    a    one  0.804480 -0.499661
-7    a  three  0.112884  0.004367),
-(&#39;b&#39;,   key1   key2     data1     data2
-1    b    one  0.150818 -0.025095
-3    b  three  0.446061  1.708797
-5    b    two  0.981877  2.159327)]
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.607009</span>  <span class="hljs-number">1.948301</span>
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.150818</span> -<span class="hljs-number">0.025095</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">2.086024</span>  <span class="hljs-number">0.358164</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.446061</span>  <span class="hljs-number">1.708797</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.745457</span> -<span class="hljs-number">0.980948</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.981877</span>  <span class="hljs-number">2.159327</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">0.804480</span> -<span class="hljs-number">0.499661</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.112884</span>  <span class="hljs-number">0.004367</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped = obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">list</span>(grouped)
+[(<span class="hljs-string">&#x27;a&#x27;</span>,   key1   key2     data1     data2
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.607009</span>  <span class="hljs-number">1.948301</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">2.086024</span>  <span class="hljs-number">0.358164</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.745457</span> -<span class="hljs-number">0.980948</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">0.804480</span> -<span class="hljs-number">0.499661</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.112884</span>  <span class="hljs-number">0.004367</span>),
+(<span class="hljs-string">&#x27;b&#x27;</span>,   key1   key2     data1     data2
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.150818</span> -<span class="hljs-number">0.025095</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.446061</span>  <span class="hljs-number">1.708797</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.981877</span>  <span class="hljs-number">2.159327</span>)]
 &gt;&gt;&gt;
-&gt;&gt;&gt; dict(list(grouped))
-&#123;&#39;a&#39;:   key1   key2     data1     data2
-0    a    one -0.607009  1.948301
-2    a    two -2.086024  0.358164
-4    a    two  0.745457 -0.980948
-6    a    one  0.804480 -0.499661
-7    a  three  0.112884  0.004367,
-&#39;b&#39;:   key1   key2     data1     data2
-1    b    one  0.150818 -0.025095
-3    b  three  0.446061  1.708797
-5    b    two  0.981877  2.159327&#125;
-</code></pre>
-<h2 id="【04x00】GroupBy-Apply-数据应用"><a href="#【04x00】GroupBy-Apply-数据应用" class="headerlink" title="【04x00】GroupBy Apply 数据应用"></a><font color=#FF0000>【04x00】GroupBy Apply 数据应用</font></h2><p>聚合指的是任何能够从数组产生标量值的数据转换过程，常用于对分组后的数据进行计算</p>
-<h3 id="【04x01】聚合函数"><a href="#【04x01】聚合函数" class="headerlink" title="【04x01】聚合函数"></a><font color=#4876FF>【04x01】聚合函数</font></h3><p>之前的例子已经用过一些内置的聚合函数，比如 mean、count、min 以及 sum 等。常见的聚合运算如下表所示：</p>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">dict</span>(<span class="hljs-built_in">list</span>(grouped))
+&#123;<span class="hljs-string">&#x27;a&#x27;</span>:   key1   key2     data1     data2
+<span class="hljs-number">0</span>    a    one -<span class="hljs-number">0.607009</span>  <span class="hljs-number">1.948301</span>
+<span class="hljs-number">2</span>    a    two -<span class="hljs-number">2.086024</span>  <span class="hljs-number">0.358164</span>
+<span class="hljs-number">4</span>    a    two  <span class="hljs-number">0.745457</span> -<span class="hljs-number">0.980948</span>
+<span class="hljs-number">6</span>    a    one  <span class="hljs-number">0.804480</span> -<span class="hljs-number">0.499661</span>
+<span class="hljs-number">7</span>    a  three  <span class="hljs-number">0.112884</span>  <span class="hljs-number">0.004367</span>,
+<span class="hljs-string">&#x27;b&#x27;</span>:   key1   key2     data1     data2
+<span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.150818</span> -<span class="hljs-number">0.025095</span>
+<span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.446061</span>  <span class="hljs-number">1.708797</span>
+<span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.981877</span>  <span class="hljs-number">2.159327</span>&#125;</code></pre>
+<h2 id="font-color-FF0000-【04x00】GroupBy-Apply-数据应用-font"><font color=#FF0000>【04x00】GroupBy Apply 数据应用</font></h2>
+<p>聚合指的是任何能够从数组产生标量值的数据转换过程，常用于对分组后的数据进行计算</p>
+<h3 id="font-color-4876FF-【04x01】聚合函数-font"><font color=#4876FF>【04x01】聚合函数</font></h3>
+<p>之前的例子已经用过一些内置的聚合函数，比如 mean、count、min 以及 sum 等。常见的聚合运算如下表所示：</p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/groupby.html">https://pandas.pydata.org/docs/reference/groupby.html</a></p>
 <table>
 <thead>
@@ -1100,7 +653,8 @@ b
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>count</td>
 <td>非NA值的数量</td>
 </tr>
@@ -1160,929 +714,347 @@ b
 <td>std</td>
 <td>样本值的标准差</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>应用示例：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randint(1,10, 8),
-    &#39;data2&#39;: np.random.randint(1,10, 8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(obj)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(obj)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2  data1  data2
-0    a    one      9      7
-1    b    one      5      9
-2    a    two      2      4
-3    b  three      3      4
-4    a    two      5      1
-5    b    two      5      9
-6    a    one      1      8
-7    a  three      2      4
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).sum()
+<span class="hljs-number">0</span>    a    one      <span class="hljs-number">9</span>      <span class="hljs-number">7</span>
+<span class="hljs-number">1</span>    b    one      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">2</span>    a    two      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>    b  three      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    a    two      <span class="hljs-number">5</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">5</span>    b    two      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">6</span>    a    one      <span class="hljs-number">1</span>      <span class="hljs-number">8</span>
+<span class="hljs-number">7</span>    a  three      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).<span class="hljs-built_in">sum</span>()
       data1  data2
 key1              
-a        19     24
-b        13     22
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).max()
+a        <span class="hljs-number">19</span>     <span class="hljs-number">24</span>
+b        <span class="hljs-number">13</span>     <span class="hljs-number">22</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).<span class="hljs-built_in">max</span>()
      key2  data1  data2
 key1                   
-a     two      9      8
-b     two      5      9
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).min()
+a     two      <span class="hljs-number">9</span>      <span class="hljs-number">8</span>
+b     two      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).<span class="hljs-built_in">min</span>()
      key2  data1  data2
 key1                   
-a     one      1      1
-b     one      3      4
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).mean()
+a     one      <span class="hljs-number">1</span>      <span class="hljs-number">1</span>
+b     one      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).mean()
          data1     data2
 key1                    
-a     3.800000  4.800000
-b     4.333333  7.333333
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).size()
+a     <span class="hljs-number">3.800000</span>  <span class="hljs-number">4.800000</span>
+b     <span class="hljs-number">4.333333</span>  <span class="hljs-number">7.333333</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).size()
 key1
-a    5
-b    3
+a    <span class="hljs-number">5</span>
+b    <span class="hljs-number">3</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).count()
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).count()
       key2  data1  data2
 key1                    
-a        5      5      5
-b        3      3      3
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).describe()
+a        <span class="hljs-number">5</span>      <span class="hljs-number">5</span>      <span class="hljs-number">5</span>
+b        <span class="hljs-number">3</span>      <span class="hljs-number">3</span>      <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).describe()
      data1                                ... data2                    
-     count      mean       std  min  25%  ...   min  25%  50%  75%  max
+     count      mean       std  <span class="hljs-built_in">min</span>  <span class="hljs-number">25</span>%  ...   <span class="hljs-built_in">min</span>  <span class="hljs-number">25</span>%  <span class="hljs-number">50</span>%  <span class="hljs-number">75</span>%  <span class="hljs-built_in">max</span>
 key1                                      ...                          
-a      5.0  3.800000  3.271085  1.0  2.0  ...   1.0  4.0  4.0  7.0  8.0
-b      3.0  4.333333  1.154701  3.0  4.0  ...   4.0  6.5  9.0  9.0  9.0
+a      <span class="hljs-number">5.0</span>  <span class="hljs-number">3.800000</span>  <span class="hljs-number">3.271085</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>  ...   <span class="hljs-number">1.0</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">7.0</span>  <span class="hljs-number">8.0</span>
+b      <span class="hljs-number">3.0</span>  <span class="hljs-number">4.333333</span>  <span class="hljs-number">1.154701</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">4.0</span>  ...   <span class="hljs-number">4.0</span>  <span class="hljs-number">6.5</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span>
 
-[2 rows x 16 columns]
-</code></pre>
-<h3 id="【04x02】自定义函数"><a href="#【04x02】自定义函数" class="headerlink" title="【04x02】自定义函数"></a><font color=#4876FF>【04x02】自定义函数</font></h3><p>如果自带的内置函数满足不了我们的要求，则可以自定义一个聚合函数，然后传入 <code>GroupBy.agg(func)</code> 或 <code>GroupBy.aggregate(func) </code> 方法中即可。func 的参数为 groupby 索引对应的记录。</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randint(1,10, 8),
-    &#39;data2&#39;: np.random.randint(1,10, 8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(obj)
-&gt;&gt;&gt; obj
+[<span class="hljs-number">2</span> rows x <span class="hljs-number">16</span> columns]</code></pre>
+<h3 id="font-color-4876FF-【04x02】自定义函数-font"><font color=#4876FF>【04x02】自定义函数</font></h3>
+<p>如果自带的内置函数满足不了我们的要求，则可以自定义一个聚合函数，然后传入 <code>GroupBy.agg(func)</code> 或 <code>GroupBy.aggregate(func) </code> 方法中即可。func 的参数为 groupby 索引对应的记录。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(obj)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2  data1  data2
-0    a    one      9      7
-1    b    one      5      9
-2    a    two      2      4
-3    b  three      3      4
-4    a    two      5      1
-5    b    two      5      9
-6    a    one      1      8
-7    a  three      2      4
-&gt;&gt;&gt; 
-&gt;&gt;&gt; def peak_range(df):
-    return df.max() - df.min()
+<span class="hljs-number">0</span>    a    one      <span class="hljs-number">9</span>      <span class="hljs-number">7</span>
+<span class="hljs-number">1</span>    b    one      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">2</span>    a    two      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>    b  three      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    a    two      <span class="hljs-number">5</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">5</span>    b    two      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">6</span>    a    one      <span class="hljs-number">1</span>      <span class="hljs-number">8</span>
+<span class="hljs-number">7</span>    a  three      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">peak_range</span>(<span class="hljs-params">df</span>):</span>
+    <span class="hljs-keyword">return</span> df.<span class="hljs-built_in">max</span>() - df.<span class="hljs-built_in">min</span>()
 
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).agg(peak_range)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).agg(peak_range)
       data1  data2
 key1              
-a         8      7
-b         2      5
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).agg(lambda df : df.max() - df.min())
+a         <span class="hljs-number">8</span>      <span class="hljs-number">7</span>
+b         <span class="hljs-number">2</span>      <span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).agg(<span class="hljs-keyword">lambda</span> df : df.<span class="hljs-built_in">max</span>() - df.<span class="hljs-built_in">min</span>())
       data1  data2
 key1              
-a         8      7
-b         2      5
-</code></pre>
-<h3 id="【04x03】对不同列作用不同函数"><a href="#【04x03】对不同列作用不同函数" class="headerlink" title="【04x03】对不同列作用不同函数"></a><font color=#4876FF>【04x03】对不同列作用不同函数</font></h3><p>使用字典可以对不同列作用不同的聚合函数：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = &#123;&#39;key1&#39; : [&#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;b&#39;, &#39;a&#39;, &#39;a&#39;],
-    &#39;key2&#39; : [&#39;one&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;two&#39;, &#39;two&#39;, &#39;one&#39;, &#39;three&#39;],
-    &#39;data1&#39;: np.random.randint(1,10, 8),
-    &#39;data2&#39;: np.random.randint(1,10, 8)&#125;
-&gt;&gt;&gt; obj = pd.DataFrame(obj)
-&gt;&gt;&gt; obj
+a         <span class="hljs-number">8</span>      <span class="hljs-number">7</span>
+b         <span class="hljs-number">2</span>      <span class="hljs-number">5</span></code></pre>
+<h3 id="font-color-4876FF-【04x03】对不同列作用不同函数-font"><font color=#4876FF>【04x03】对不同列作用不同函数</font></h3>
+<p>使用字典可以对不同列作用不同的聚合函数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = &#123;<span class="hljs-string">&#x27;key1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>],
+    <span class="hljs-string">&#x27;key2&#x27;</span> : [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+    <span class="hljs-string">&#x27;data1&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>),
+    <span class="hljs-string">&#x27;data2&#x27;</span>: np.random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">8</span>)&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(obj)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
   key1   key2  data1  data2
-0    a    one      9      7
-1    b    one      5      9
-2    a    two      2      4
-3    b  three      3      4
-4    a    two      5      1
-5    b    two      5      9
-6    a    one      1      8
-7    a  three      2      4
-&gt;&gt;&gt; 
-&gt;&gt;&gt; dict1 = &#123;&#39;data1&#39;:&#39;mean&#39;, &#39;data2&#39;:&#39;sum&#39;&#125;
-&gt;&gt;&gt; dict2 = &#123;&#39;data1&#39;:[&#39;mean&#39;,&#39;max&#39;], &#39;data2&#39;:&#39;sum&#39;&#125;
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).agg(dict1)
+<span class="hljs-number">0</span>    a    one      <span class="hljs-number">9</span>      <span class="hljs-number">7</span>
+<span class="hljs-number">1</span>    b    one      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">2</span>    a    two      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>    b  three      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    a    two      <span class="hljs-number">5</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">5</span>    b    two      <span class="hljs-number">5</span>      <span class="hljs-number">9</span>
+<span class="hljs-number">6</span>    a    one      <span class="hljs-number">1</span>      <span class="hljs-number">8</span>
+<span class="hljs-number">7</span>    a  three      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>dict1 = &#123;<span class="hljs-string">&#x27;data1&#x27;</span>:<span class="hljs-string">&#x27;mean&#x27;</span>, <span class="hljs-string">&#x27;data2&#x27;</span>:<span class="hljs-string">&#x27;sum&#x27;</span>&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>dict2 = &#123;<span class="hljs-string">&#x27;data1&#x27;</span>:[<span class="hljs-string">&#x27;mean&#x27;</span>,<span class="hljs-string">&#x27;max&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>:<span class="hljs-string">&#x27;sum&#x27;</span>&#125;
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).agg(dict1)
          data1  data2
 key1                 
-a     3.800000     24
-b     4.333333     22
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.groupby(&#39;key1&#39;).agg(dict2)
+a     <span class="hljs-number">3.800000</span>     <span class="hljs-number">24</span>
+b     <span class="hljs-number">4.333333</span>     <span class="hljs-number">22</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(<span class="hljs-string">&#x27;key1&#x27;</span>).agg(dict2)
          data1     data2
-          mean max   sum
+          mean <span class="hljs-built_in">max</span>   <span class="hljs-built_in">sum</span>
 key1                    
-a     3.800000   9    24
-b     4.333333   5    22
-</code></pre>
-<h3 id="【04x04】GroupBy-apply"><a href="#【04x04】GroupBy-apply" class="headerlink" title="【04x04】GroupBy.apply()"></a><font color=#4876FF>【04x04】GroupBy.apply()</font></h3><p><code>apply()</code> 方法会将待处理的对象拆分成多个片段，然后对各片段调用传入的函数，最后尝试将各片段组合到一起。</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;A&#39;:[&#39;bob&#39;,&#39;sos&#39;,&#39;bob&#39;,&#39;sos&#39;,&#39;bob&#39;,&#39;sos&#39;,&#39;bob&#39;,&#39;bob&#39;],
-              &#39;B&#39;:[&#39;one&#39;,&#39;one&#39;,&#39;two&#39;,&#39;three&#39;,&#39;two&#39;,&#39;two&#39;,&#39;one&#39;,&#39;three&#39;],
-              &#39;C&#39;:[3,1,4,1,5,9,2,6],
-              &#39;D&#39;:[1,2,3,4,5,6,7,8]&#125;)
-&gt;&gt;&gt; obj
+a     <span class="hljs-number">3.800000</span>   <span class="hljs-number">9</span>    <span class="hljs-number">24</span>
+b     <span class="hljs-number">4.333333</span>   <span class="hljs-number">5</span>    <span class="hljs-number">22</span></code></pre>
+<h3 id="font-color-4876FF-【04x04】GroupBy-apply-font"><font color=#4876FF>【04x04】GroupBy.apply()</font></h3>
+<p><code>apply()</code> 方法会将待处理的对象拆分成多个片段，然后对各片段调用传入的函数，最后尝试将各片段组合到一起。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;A&#x27;</span>:[<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>],
+              <span class="hljs-string">&#x27;B&#x27;</span>:[<span class="hljs-string">&#x27;one&#x27;</span>,<span class="hljs-string">&#x27;one&#x27;</span>,<span class="hljs-string">&#x27;two&#x27;</span>,<span class="hljs-string">&#x27;three&#x27;</span>,<span class="hljs-string">&#x27;two&#x27;</span>,<span class="hljs-string">&#x27;two&#x27;</span>,<span class="hljs-string">&#x27;one&#x27;</span>,<span class="hljs-string">&#x27;three&#x27;</span>],
+              <span class="hljs-string">&#x27;C&#x27;</span>:[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],
+              <span class="hljs-string">&#x27;D&#x27;</span>:[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
      A      B  C  D
-0  bob    one  3  1
-1  sos    one  1  2
-2  bob    two  4  3
-3  sos  three  1  4
-4  bob    two  5  5
-5  sos    two  9  6
-6  bob    one  2  7
-7  bob  three  6  8
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped = obj.groupby(&#39;A&#39;)
-&gt;&gt;&gt; for name, group in grouped:
-    print(name)
-    print(group)
+<span class="hljs-number">0</span>  bob    one  <span class="hljs-number">3</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  sos    one  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>  bob    two  <span class="hljs-number">4</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">3</span>  sos  three  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>  bob    two  <span class="hljs-number">5</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">5</span>  sos    two  <span class="hljs-number">9</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">6</span>  bob    one  <span class="hljs-number">2</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">7</span>  bob  three  <span class="hljs-number">6</span>  <span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped = obj.groupby(<span class="hljs-string">&#x27;A&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> name, group <span class="hljs-keyword">in</span> grouped:
+    <span class="hljs-built_in">print</span>(name)
+    <span class="hljs-built_in">print</span>(group)
 
     
 bob
      A      B  C  D
-0  bob    one  3  1
-2  bob    two  4  3
-4  bob    two  5  5
-6  bob    one  2  7
-7  bob  three  6  8
+<span class="hljs-number">0</span>  bob    one  <span class="hljs-number">3</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>  bob    two  <span class="hljs-number">4</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>  bob    two  <span class="hljs-number">5</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">6</span>  bob    one  <span class="hljs-number">2</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">7</span>  bob  three  <span class="hljs-number">6</span>  <span class="hljs-number">8</span>
 sos
      A      B  C  D
-1  sos    one  1  2
-3  sos  three  1  4
-5  sos    two  9  6
-&gt;&gt;&gt; 
-&gt;&gt;&gt; grouped.apply(lambda x:x.describe())  # 对 bob 和 sos 两组数据使用 describe 方法
+<span class="hljs-number">1</span>  sos    one  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>  sos  three  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>  sos    two  <span class="hljs-number">9</span>  <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped.apply(<span class="hljs-keyword">lambda</span> x:x.describe())  <span class="hljs-comment"># 对 bob 和 sos 两组数据使用 describe 方法</span>
                   C         D
 A                            
-bob count  5.000000  5.000000
-    mean   4.000000  4.800000
-    std    1.581139  2.863564
-    min    2.000000  1.000000
-    25%    3.000000  3.000000
-    50%    4.000000  5.000000
-    75%    5.000000  7.000000
-    max    6.000000  8.000000
-sos count  3.000000  3.000000
-    mean   3.666667  4.000000
-    std    4.618802  2.000000
-    min    1.000000  2.000000
-    25%    1.000000  3.000000
-    50%    1.000000  4.000000
-    75%    5.000000  5.000000
-    max    9.000000  6.000000
+bob count  <span class="hljs-number">5.000000</span>  <span class="hljs-number">5.000000</span>
+    mean   <span class="hljs-number">4.000000</span>  <span class="hljs-number">4.800000</span>
+    std    <span class="hljs-number">1.581139</span>  <span class="hljs-number">2.863564</span>
+    <span class="hljs-built_in">min</span>    <span class="hljs-number">2.000000</span>  <span class="hljs-number">1.000000</span>
+    <span class="hljs-number">25</span>%    <span class="hljs-number">3.000000</span>  <span class="hljs-number">3.000000</span>
+    <span class="hljs-number">50</span>%    <span class="hljs-number">4.000000</span>  <span class="hljs-number">5.000000</span>
+    <span class="hljs-number">75</span>%    <span class="hljs-number">5.000000</span>  <span class="hljs-number">7.000000</span>
+    <span class="hljs-built_in">max</span>    <span class="hljs-number">6.000000</span>  <span class="hljs-number">8.000000</span>
+sos count  <span class="hljs-number">3.000000</span>  <span class="hljs-number">3.000000</span>
+    mean   <span class="hljs-number">3.666667</span>  <span class="hljs-number">4.000000</span>
+    std    <span class="hljs-number">4.618802</span>  <span class="hljs-number">2.000000</span>
+    <span class="hljs-built_in">min</span>    <span class="hljs-number">1.000000</span>  <span class="hljs-number">2.000000</span>
+    <span class="hljs-number">25</span>%    <span class="hljs-number">1.000000</span>  <span class="hljs-number">3.000000</span>
+    <span class="hljs-number">50</span>%    <span class="hljs-number">1.000000</span>  <span class="hljs-number">4.000000</span>
+    <span class="hljs-number">75</span>%    <span class="hljs-number">5.000000</span>  <span class="hljs-number">5.000000</span>
+    <span class="hljs-built_in">max</span>    <span class="hljs-number">9.000000</span>  <span class="hljs-number">6.000000</span>
 &gt;&gt;&gt;
-&gt;&gt;&gt; grouped.apply(lambda x:x.min())  # # 对 bob 和 sos 两组数据使用 min 方法
+<span class="hljs-meta">&gt;&gt;&gt; </span>grouped.apply(<span class="hljs-keyword">lambda</span> x:x.<span class="hljs-built_in">min</span>())  <span class="hljs-comment"># # 对 bob 和 sos 两组数据使用 min 方法</span>
        A    B  C  D
 A                  
-bob  bob  one  2  1
-sos  sos  one  1  2
-</code></pre>
+bob  bob  one  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>
+sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</span></code></pre>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/106804881
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106804881</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/030/">https://www.itbob.cn/article/030/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/031/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（七）：合并数据集</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/029/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/031/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/029/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-    <script src="https://fastly.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

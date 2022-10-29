@@ -1,636 +1,186 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>Python 中如何解决 asyncio 文件描述符最大数量限制问题 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            Python 中如何解决 asyncio 文件描述符最大数量限制问题 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,asyncio">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/048/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/048/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python 中如何解决 asyncio 文件描述符最大数量限制问题 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="asyncio"> 
-
-    
-        <meta property="article:published_time" content="Wed Feb 23 2022 10:18:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/048/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/048/index.html",
-    "headline": "Python 中如何解决 asyncio 文件描述符最大数量限制问题",
-    "datePublished": "Wed Feb 23 2022 10:18:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",Python,asyncioITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E5%A4%8D%E7%8E%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">问题复现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF-EventLoop"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">事件循环 EventLoop</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">I&#x2F;O 多路复用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#select-%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">select 的缺点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">解决方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#1-%E6%9B%B4%E6%8D%A2%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E9%80%89%E6%8B%A9%E5%99%A8"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">1.更换事件循环选择器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-%E9%99%90%E5%88%B6%E5%B9%B6%E5%8F%91%E9%87%8F"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">2.限制并发量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#3-%E4%BF%AE%E6%94%B9%E6%9C%80%E5%A4%A7%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E9%99%90%E5%88%B6"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">3.修改最大文件描述符限制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Windows"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">Windows</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Linux"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">Linux</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Windows-1"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Windows</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Linux-1"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Linux</span></a></li></ol></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                Python 中如何解决 asyncio 文件描述符最大数量限制问题
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>2月 23, 2022</span> -->
-        <span>2022-02-23 10:18:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACXklEQVR42u3aQY6DMBAEQP7/6d3rSlGcHo9t2Kg4oQSBywfG9Pj6+erjwsPDw8PDw8PDexjvio/X6//+8nr+7v6v/74daHFseHh4eCd5H161Q8CYMZ6a/Ln5NXh4eHgnefkQkzKQDGtcKqpjw8PDw3smL2Eky/G5acXDw8P7j7ycOo4MqlEFHh4e3jN5i0OBOHitBh8bsxY8PDy8mFdtgJ08v6G/h4eHhzfkTW5sCgKFHe2u6D54eHh4m3nVpXAeUnRaYnPBBB4eHt5J3txG0k6zfy6kiK7Ew8PDu5WXv6zHvGSCkme1shY8PDy8DbzOY/JykpeEuU0JeHh4eCd5+Su+v1WrX1qWfTHg4eHhLeoQ7Wh6dYoBHh4e3tN4c8HB3C/VjVzlwBcPDw/vCC9vdOUTUW2VdYoTHh4e3nlevx2VBxCdYhBt3sLDw8M7wit/8Bc3FuwLhVt1Dw8PD2+KlwOqwUTycl8VT+Dh4eGd5FVDgU5EuyoaxsPDw7uXl4enqxbW+fK6Oil4eHh4Z3jJsKrNsDzgmFtGt1JqPDw8vEW8ahiRxxP9BfSCwoCHh4d3kFdtgOVxbbXwFMoSHh4e3hHe3HI2iRJWBRyFgBgPDw9vM29uu1WneFSXyOXn4uHh4W3mrV0cV8+rJSqaCDw8PLwjvH4xuIpHXjySWBkPDw/vLl7+uk/iibm7JXeYbIDh4eHh3crrxA1JpJtHw3h4eHjP5+VRb7WcjDGFgoGHh4d3kJeEEUlUkTfG8mnCw8PDexrv5uA1fmJUlvDw8PA2877vwMPDw8PDw8PDe8DxC59ZZ6NVRXpTAAAAAElFTkSuQmCC">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/asyncio/" rel="tag">asyncio</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;2.3k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;9 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 中如何解决 asyncio 文件描述符最大数量限制问题&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/048/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 中如何解决 asyncio 文件描述符最大数量限制问题&url=https://www.itbob.cn/article/048/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 中如何解决 asyncio 文件描述符最大数量限制问题&url=https://www.itbob.cn/article/048/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/048/index.html&text=Python 中如何解决 asyncio 文件描述符最大数量限制问题" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/048/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/048/index.html&title=Python 中如何解决 asyncio 文件描述符最大数量限制问题" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/048/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 中如何解决 asyncio 文件描述符最大数量限制问题</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-02-23 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="问题复现"><a href="#问题复现" class="headerlink" title="问题复现"></a>问题复现</h2><p>Windows 平台下，Python 版本 3.5，使用异步框架 asyncio，有时候会出现 <code>ValueError: too many file descriptors in select()</code> 的报错信息，今天我们就来聊一下为什么会出现这种问题，以及问题的一些解决方法。</p>
+                    
+                        <a href="/tags/Python/" class="post-tag">
+                            #Python</a>
+                    
+                        <a href="/tags/asyncio/" class="post-tag">
+                            #asyncio</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="问题复现">问题复现</h2>
+<p>Windows 平台下，Python 版本 3.5，使用异步框架 asyncio，有时候会出现 <code>ValueError: too many file descriptors in select()</code> 的报错信息，今天我们就来聊一下为什么会出现这种问题，以及问题的一些解决方法。</p>
 <p>写一个小 dome 复现这个问题（环境：Windows 64 位、Python 3.7）：</p>
-<pre><code class="python">import aiohttp
-import asyncio
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> aiohttp
+<span class="hljs-keyword">import</span> asyncio
 
 
-num = 0
+num = <span class="hljs-number">0</span>
 
 
-async def main(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            global num
-            num += 1
-            print(&#39;%s ——&gt; %s&#39; % (str(num), response.status))
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>(<span class="hljs-params">url</span>):</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> aiohttp.ClientSession() <span class="hljs-keyword">as</span> session:
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> session.get(url) <span class="hljs-keyword">as</span> response:
+            <span class="hljs-keyword">global</span> num
+            num += <span class="hljs-number">1</span>
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;%s ——&gt; %s&#x27;</span> % (<span class="hljs-built_in">str</span>(num), response.status))
 
 
-def tasks():
-    url = &#39;https://www.baidu.com/s?ie=UTF-8&amp;wd=%s&#39;
-    task = [main(url % i) for i in range(10000)]
-    return task
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tasks</span>():</span>
+    url = <span class="hljs-string">&#x27;https://www.baidu.com/s?ie=UTF-8&amp;wd=%s&#x27;</span>
+    task = [main(url % i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10000</span>)]
+    <span class="hljs-keyword">return</span> task
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(asyncio.wait(tasks()))
-</code></pre>
+loop.run_until_complete(asyncio.wait(tasks()))</code></pre>
 <p>在打印 500 次左右后就会出现以下报错：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/f70f58344164e7929022924cd757a85e.png" alt="01.png"></p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>好像这个报错和 select 有关，那什么是 select 呢？要怎么解决呢？别急，我们首先来了解一下 asyncio 中的事件循环，即 EventLoop。</p>
-<h3 id="事件循环-EventLoop"><a href="#事件循环-EventLoop" class="headerlink" title="事件循环 EventLoop"></a>事件循环 EventLoop</h3><p>事件循环是 asyncio 的核心，异步任务的运行、任务完成之后的回调、网络 I/O 操作、子进程的运行，都是通过事件循环完成的，通俗来讲，事件循环所做的就是等待事件发生，然后再将每个事件与我们已明确与所述事件类型匹配的函数进行匹配。下图很好的展示了协程、事件循环之间的相互作用：</p>
+<h2 id="问题分析">问题分析</h2>
+<p>好像这个报错和 select 有关，那什么是 select 呢？要怎么解决呢？别急，我们首先来了解一下 asyncio 中的事件循环，即 EventLoop。</p>
+<h3 id="事件循环-EventLoop">事件循环 EventLoop</h3>
+<p>事件循环是 asyncio 的核心，异步任务的运行、任务完成之后的回调、网络 I/O 操作、子进程的运行，都是通过事件循环完成的，通俗来讲，事件循环所做的就是等待事件发生，然后再将每个事件与我们已明确与所述事件类型匹配的函数进行匹配。下图很好的展示了协程、事件循环之间的相互作用：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/91dc097882fc67be9195869f3b179174.png" alt="02.png"></p>
-<p>在 asyncio 中，主要提供了两种不同事件循环的实现方法： </p>
+<p>在 asyncio 中，主要提供了两种不同事件循环的实现方法：</p>
 <ul>
-<li><p><strong>SelectorEventLoop</strong>：基于 selectors 模块的事件循环，selectors 又是建立在底层的 I/O 复用模块 select 之上的，selectors 提供了高度封装和高效的 I/O 复用，也就是说 SelectorEventLoop 在底层就是使用了 select I/O 多路复用的机制。</p>
+<li>
+<p><strong>SelectorEventLoop</strong>：基于 selectors 模块的事件循环，selectors 又是建立在底层的 I/O 复用模块 select 之上的，selectors 提供了高度封装和高效的 I/O 复用，也就是说 SelectorEventLoop 在底层就是使用了 select I/O 多路复用的机制。</p>
 </li>
-<li><p><strong>ProactorEventLoop</strong>：使用 IOCP 专为 Windows 构建的事件循环，IOCP 全称 I/O Completion Port，即 I/O 完成端口。它是支持多个同时发生的异步 I/O 操作的应用程序编程接口，它充分利用内核对象的调度，只使用少量的几个线程来处理和客户端的所有通信，消除了无谓的线程上下文切换，是 Windows 下性能最好的 I/O 模型，有关 IOCP 的详细介绍可参考<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-ca/windows/win32/fileio/i-o-completion-ports">微软文档</a>。</p>
+<li>
+<p><strong>ProactorEventLoop</strong>：使用 IOCP 专为 Windows 构建的事件循环，IOCP 全称 I/O Completion Port，即 I/O 完成端口。它是支持多个同时发生的异步 I/O 操作的应用程序编程接口，它充分利用内核对象的调度，只使用少量的几个线程来处理和客户端的所有通信，消除了无谓的线程上下文切换，是 Windows 下性能最好的 I/O 模型，有关 IOCP 的详细介绍可参考<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-ca/windows/win32/fileio/i-o-completion-ports">微软文档</a>。</p>
 </li>
 </ul>
 <p>那么这两种方法有什么区别呢？在 asyncio 中什么时候用什么方法呢？</p>
 <p>我们不妨看一下 asyncio 的源码，在 Python 3.7 中，无论在 Windows 还是 Linux 中都可以看到其默认的设置是 SelectorEventLoop：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/7d650aeaed8ffcd845b1042a2a790501.png" alt="03.png"></p>
 <p>我们也可以分别在 Windows 平台和 Linux 平台打印一下 EventLoop 对象（Python 3.7），可以看到默认都是 SelectorEventLoop：</p>
-<pre><code class="python">import asyncio
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> asyncio
 
 loop = asyncio.get_event_loop()
-print(loop)
-</code></pre>
+<span class="hljs-built_in">print</span>(loop)</code></pre>
 <p>Windows：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/bcfeab7170f5de6e7ad605d76aa5868a.png" alt="04.png"></p>
 <p>Linux：</p>
@@ -642,803 +192,257 @@ print(loop)
 </ul>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/30387729cf1d1eaafe4114fb3a4a847d.png" alt="06.png"></p>
 <p>说了这么多，这和 <code>ValueError: too many file descriptors in select()</code> 的报错问题有什么关系呢？select 到底是什么东西呢？</p>
-<h3 id="I-O-多路复用"><a href="#I-O-多路复用" class="headerlink" title="I/O 多路复用"></a>I/O 多路复用</h3><p>要了解 select，我们还要了解一下什么是 I/O 多路复用（I/O multiplexing），服务器端编程经常需要构造高性能的 I/O 模型，常见的 I/O 模型有同步阻塞 I/O、同步非阻塞 I/O、I/O 多路复用等；当需要同时处理多个客户端接入请求时，可以利用多线程或者 I/O 多路复用技术进行处理，I/O 多路复用技术就是为了解决进程或线程阻塞到某个 I/O 系统调用而出现的技术，使进程不阻塞于某个特定的 I/O 系统调用。</p>
+<h3 id="I-O-多路复用">I/O 多路复用</h3>
+<p>要了解 select，我们还要了解一下什么是 I/O 多路复用（I/O multiplexing），服务器端编程经常需要构造高性能的 I/O 模型，常见的 I/O 模型有同步阻塞 I/O、同步非阻塞 I/O、I/O 多路复用等；当需要同时处理多个客户端接入请求时，可以利用多线程或者 I/O 多路复用技术进行处理，I/O 多路复用技术就是为了解决进程或线程阻塞到某个 I/O 系统调用而出现的技术，使进程不阻塞于某个特定的 I/O 系统调用。</p>
 <p><strong>select，poll，epoll 等都是 I/O 多路复用的一种机制</strong>，其中后两个在 Linux 中可用，Windows 仅支持 select，I/O 多路复用通过这种机制，可以监视多个描述符，一旦某个描述符就绪，一般是读就绪或者写就绪，就是在这个文件描述符进行读写操作之前，能够通知程序进行相应的读写操作。</p>
-<h3 id="select-的缺点"><a href="#select-的缺点" class="headerlink" title="select 的缺点"></a>select 的缺点</h3><p>I/O 多路复用这个概念被提出来以后， select 是第一个实现这个概念的，select 被实现以后，很快就暴露出了很多问题，其中一个缺点就是 <strong>select 在 Windows 中限制了文件描述符数量为 512 个，在 Linux 中限制为 1024 个</strong>，那么在前面的 dome 中，使用的是 Python 3.5，这个版本的 asyncio 默认使用了 SelectorEventLoop，底层调用的是 select，受 select 缺点的影响，并发量过高，就出现了 <code>ValueError: too many file descriptors in select()</code> 的报错信息。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><h3 id="1-更换事件循环选择器"><a href="#1-更换事件循环选择器" class="headerlink" title="1.更换事件循环选择器"></a>1.更换事件循环选择器</h3><p>如果你使用的是 Python 3.7 及以下的版本，那么在 Windows 平台，可以使用 ProactorEventLoop。在 Linux 平台可以使用 PollSelector。</p>
+<h3 id="select-的缺点">select 的缺点</h3>
+<p>I/O 多路复用这个概念被提出来以后， select 是第一个实现这个概念的，select 被实现以后，很快就暴露出了很多问题，其中一个缺点就是 <strong>select 在 Windows 中限制了文件描述符数量为 512 个，在 Linux 中限制为 1024 个</strong>，那么在前面的 dome 中，使用的是 Python 3.5，这个版本的 asyncio 默认使用了 SelectorEventLoop，底层调用的是 select，受 select 缺点的影响，并发量过高，就出现了 <code>ValueError: too many file descriptors in select()</code> 的报错信息。</p>
+<h2 id="解决方法">解决方法</h2>
+<h3 id="1-更换事件循环选择器">1.更换事件循环选择器</h3>
+<p>如果你使用的是 Python 3.7 及以下的版本，那么在 Windows 平台，可以使用 ProactorEventLoop。在 Linux 平台可以使用 PollSelector。</p>
 <p><strong>注意</strong>：如果你使用了 ProactorEventLoop，那么你将无法使用代理！这是 asyncio 的 bug，早在 2020 年 1 月就有人提过 <a target="_blank" rel="noopener" href="https://github.com/aio-libs/aiohttp/issues/4536">issue</a>，目前仍然可以看到类似的 issue，官方貌似也还没办法解决，所以，如果您必须要使用代理，则可以参考后面的解决办法。</p>
-<pre><code class="python">import selectors
-import asyncio
-import sys
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> selectors
+<span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">import</span> sys
 
-if sys.platform == &#39;win32&#39;:
+<span class="hljs-keyword">if</span> sys.platform == <span class="hljs-string">&#x27;win32&#x27;</span>:
     loop = asyncio.ProactorEventLoop()
     asyncio.set_event_loop(loop)
-else:
+<span class="hljs-keyword">else</span>:
     selector = selectors.PollSelector()
     loop = asyncio.SelectorEventLoop(selector)
-    asyncio.set_event_loop(loop)
-</code></pre>
-<h3 id="2-限制并发量"><a href="#2-限制并发量" class="headerlink" title="2.限制并发量"></a>2.限制并发量</h3><p>可以使用方法 <code>asyncio.Semaphore()</code> 来限制并发量，Semaphore 就是信号量的意思，Semaphore 管理一个内部计数器，该计数器在每次调用 <code>acquire()</code> 方法时递减，每次调用 <code>release()</code> 方法时递增，计数器永远不会低于零，当方法 <code>acquire()</code> 发现它为零时，它会阻塞，等待其他线程调用 <code>release()</code> 方法。通过限制并发量的方法来解决报错问题是个不错的选择。</p>
-<pre><code class="python">import aiohttp
-import asyncio
+    asyncio.set_event_loop(loop)</code></pre>
+<h3 id="2-限制并发量">2.限制并发量</h3>
+<p>可以使用方法 <code>asyncio.Semaphore()</code> 来限制并发量，Semaphore 就是信号量的意思，Semaphore 管理一个内部计数器，该计数器在每次调用 <code>acquire()</code> 方法时递减，每次调用 <code>release()</code> 方法时递增，计数器永远不会低于零，当方法 <code>acquire()</code> 发现它为零时，它会阻塞，等待其他线程调用 <code>release()</code> 方法。通过限制并发量的方法来解决报错问题是个不错的选择。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> aiohttp
+<span class="hljs-keyword">import</span> asyncio
 
 
-num = 0
+num = <span class="hljs-number">0</span>
 
 
-async def main(url, semaphore):
-    async with semaphore:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                global num
-                num += 1
-                print(&#39;%s ——&gt; %s&#39; % (str(num), response.status))
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>(<span class="hljs-params">url, semaphore</span>):</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> semaphore:
+        <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> aiohttp.ClientSession() <span class="hljs-keyword">as</span> session:
+            <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> session.get(url) <span class="hljs-keyword">as</span> response:
+                <span class="hljs-keyword">global</span> num
+                num += <span class="hljs-number">1</span>
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;%s ——&gt; %s&#x27;</span> % (<span class="hljs-built_in">str</span>(num), response.status))
 
 
-def tasks():
-    semaphore = asyncio.Semaphore(300)                         # 限制并发量为 300
-    url = &#39;https://www.baidu.com/s?ie=UTF-8&amp;wd=%s&#39;
-    task = [main(url % i, semaphore) for i in range(10000)]    # #总共 10000 任务
-    return task
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tasks</span>():</span>
+    semaphore = asyncio.Semaphore(<span class="hljs-number">300</span>)                         <span class="hljs-comment"># 限制并发量为 300</span>
+    url = <span class="hljs-string">&#x27;https://www.baidu.com/s?ie=UTF-8&amp;wd=%s&#x27;</span>
+    task = [main(url % i, semaphore) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10000</span>)]    <span class="hljs-comment"># #总共 10000 任务</span>
+    <span class="hljs-keyword">return</span> task
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(asyncio.wait(tasks()))
-</code></pre>
-<h3 id="3-修改最大文件描述符限制"><a href="#3-修改最大文件描述符限制" class="headerlink" title="3.修改最大文件描述符限制"></a>3.修改最大文件描述符限制</h3><h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p>在 Windows 中，最大文件描述符限制在 C 语言的头文件 Winsock2.h 中使用变量 <code>FD_SETSIZE</code> 进行定义，如果要修改它，可以通过在包含 Winsock2.h 之前将 <code>FD_SETSIZE</code> 定义为另一个值来修改，如果我们使用的编程语言是 Python 的话，是不太好对这个值进行修改的，可以参考微软官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select">https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select</a></p>
-<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><p>在 Linux 平台，可以使用 <code>ulimit</code> 命令来修改最大文件描述符限制：</p>
+loop.run_until_complete(asyncio.wait(tasks()))</code></pre>
+<h3 id="3-修改最大文件描述符限制">3.修改最大文件描述符限制</h3>
+<h4 id="Windows">Windows</h4>
+<p>在 Windows 中，最大文件描述符限制在 C 语言的头文件 Winsock2.h 中使用变量 <code>FD_SETSIZE</code> 进行定义，如果要修改它，可以通过在包含 Winsock2.h 之前将 <code>FD_SETSIZE</code> 定义为另一个值来修改，如果我们使用的编程语言是 Python 的话，是不太好对这个值进行修改的，可以参考微软官方文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select">https://docs.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-select</a></p>
+<h4 id="Linux">Linux</h4>
+<p>在 Linux 平台，可以使用 <code>ulimit</code> 命令来修改最大文件描述符限制：</p>
 <ul>
-<li><p>查看当前会话最大文件描述符限制（默认1024）：<code>ulimit -n</code></p>
+<li>
+<p>查看当前会话最大文件描述符限制（默认1024）：<code>ulimit -n</code></p>
 </li>
-<li><p>临时修改限制，只对当前的会话有效：<code>ulimit -SHn 65536</code></p>
+<li>
+<p>临时修改限制，只对当前的会话有效：<code>ulimit -SHn 65536</code></p>
 </li>
-<li><p>永久修改限制，在 <code>/etc/security/limits.conf</code> 文件里新增以下内容：</p>
-<pre><code>* hard nofile 65536
-* soft nofile 65536
-</code></pre>
+<li>
+<p>永久修改限制，在 <code>/etc/security/limits.conf</code> 文件里新增以下内容：</p>
+  <pre><code class="hljs asciidoc"><span class="hljs-bullet">* </span>hard nofile 65536
+<span class="hljs-bullet">* </span>soft nofile 65536</code></pre>
 </li>
 </ul>
 <p><code>ulimit</code> 命令参考：</p>
-<pre><code>    -S    使用软 (soft) 资源限制
-    -H    使用硬 (hard) 资源限制
-    -a    所有当前限制都被报告
-    -b    套接字缓存尺寸
-    -c    创建的核文件的最大尺寸
-    -d    一个进程的数据区的最大尺寸
-    -e    最高的调度优先级 (nice)
-    -f    有 shell 及其子进程可以写的最大文件尺寸
-    -i    最多的可以挂起的信号数
-    -k    分配给此进程的最大 kqueue 数量
-    -l    一个进程可以锁定的最大内存尺寸
-    -m    最大的内存进驻尺寸
-    -n    最多的打开的文件描述符个数
-    -p    管道缓冲区尺寸
-    -q    POSIX 信息队列的最大字节数
-    -r    实时调度的最大优先级
-    -s    最大栈尺寸
-    -t    最大的CPU时间，以秒为单位
-    -u    最大用户进程数
-    -v    虚拟内存尺寸
-    -x    最大的文件锁数量
-    -P    最大伪终端数量
-    -T    最大线程数量
-</code></pre>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>asyncio 事件循环选择器，在 Python 3.7 以及之前的版本中，所有平台默认使用的都是 SelectorEventLoop，在 Python 3.8 以及以后的版本中，Unix 平台默认使用的是 SelectorEventLoop，Windows 平台默认使用的是 ProactorEventLoop。</p>
+<pre><code class="hljs diff"><span class="hljs-deletion">-S	使用软 (soft) 资源限制</span>
+<span class="hljs-deletion">-H	使用硬 (hard) 资源限制</span>
+<span class="hljs-deletion">-a	所有当前限制都被报告</span>
+<span class="hljs-deletion">-b	套接字缓存尺寸</span>
+<span class="hljs-deletion">-c	创建的核文件的最大尺寸</span>
+<span class="hljs-deletion">-d	一个进程的数据区的最大尺寸</span>
+<span class="hljs-deletion">-e	最高的调度优先级 (nice)</span>
+<span class="hljs-deletion">-f	有 shell 及其子进程可以写的最大文件尺寸</span>
+<span class="hljs-deletion">-i	最多的可以挂起的信号数</span>
+<span class="hljs-deletion">-k	分配给此进程的最大 kqueue 数量</span>
+<span class="hljs-deletion">-l	一个进程可以锁定的最大内存尺寸</span>
+<span class="hljs-deletion">-m	最大的内存进驻尺寸</span>
+<span class="hljs-deletion">-n	最多的打开的文件描述符个数</span>
+<span class="hljs-deletion">-p	管道缓冲区尺寸</span>
+<span class="hljs-deletion">-q	POSIX 信息队列的最大字节数</span>
+<span class="hljs-deletion">-r	实时调度的最大优先级</span>
+<span class="hljs-deletion">-s	最大栈尺寸</span>
+<span class="hljs-deletion">-t	最大的CPU时间，以秒为单位</span>
+<span class="hljs-deletion">-u	最大用户进程数</span>
+<span class="hljs-deletion">-v	虚拟内存尺寸</span>
+<span class="hljs-deletion">-x	最大的文件锁数量</span>
+<span class="hljs-deletion">-P	最大伪终端数量</span>
+<span class="hljs-deletion">-T	最大线程数量</span></code></pre>
+<h2 id="总结">总结</h2>
+<p>asyncio 事件循环选择器，在 Python 3.7 以及之前的版本中，所有平台默认使用的都是 SelectorEventLoop，在 Python 3.8 以及以后的版本中，Unix 平台默认使用的是 SelectorEventLoop，Windows 平台默认使用的是 ProactorEventLoop。</p>
 <p>select 在 Windows 中限制了文件描述符最大数量为 512 个，在 Linux 中限制为 1024 个。</p>
 <p>要解决 <code>ValueError: too many file descriptors in select()</code> 的报错问题，根据您的平台和业务要求选择合理的解决方法：</p>
-<h3 id="Windows-1"><a href="#Windows-1" class="headerlink" title="Windows"></a>Windows</h3><ol>
-<li><p>通过 <code>asyncio.Semaphore()</code> 方法来限制并发量，通常设置在 300-500 比较合理，这是最优的做法；</p>
+<h3 id="Windows-t2">Windows</h3>
+<ol>
+<li>
+<p>通过 <code>asyncio.Semaphore()</code> 方法来限制并发量，通常设置在 300-500 比较合理，这是最优的做法；</p>
 </li>
-<li><p>更换 asyncio 的事件循环选择器为 ProactorEventLoop，<strong>注意：这将导致无法使用代理！</strong></p>
+<li>
+<p>更换 asyncio 的事件循环选择器为 ProactorEventLoop，<strong>注意：这将导致无法使用代理！</strong></p>
 </li>
 </ol>
-<h3 id="Linux-1"><a href="#Linux-1" class="headerlink" title="Linux"></a>Linux</h3><ol>
-<li><p>通过 <code>asyncio.Semaphore()</code> 方法来限制并发量，通常设置在 800-1000 比较合理；</p>
+<h3 id="Linux-t2">Linux</h3>
+<ol>
+<li>
+<p>通过 <code>asyncio.Semaphore()</code> 方法来限制并发量，通常设置在 800-1000 比较合理；</p>
 </li>
-<li><p>通过 <code>ulimit</code> 命令来修改最大文件描述符限制；</p>
+<li>
+<p>通过 <code>ulimit</code> 命令来修改最大文件描述符限制；</p>
 </li>
-<li><p>更换 asyncio 的事件循环选择器为 PollSelector。</p>
+<li>
+<p>更换 asyncio 的事件循环选择器为 PollSelector。</p>
 </li>
 </ol>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/048/">https://www.itbob.cn/article/048/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/049/" 
+                            class="post-title gt-a-link">【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/047/" 
+                            class="post-title gt-a-link">RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/049/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/047/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

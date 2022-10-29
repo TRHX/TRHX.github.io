@@ -1,590 +1,141 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫,RPC">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/047/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/047/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> <meta property="og:article:tag" content="RPC"> 
-
-    
-        <meta property="article:published_time" content="Mon Feb 21 2022 17:20:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/047/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/047/index.html",
-    "headline": "RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭",
-    "datePublished": "Mon Feb 21 2022 17:20:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",JS 逆向,爬虫,RPCITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-RPC"><span class="post-toc-number">1.</span> <span class="post-toc-text">什么是 RPC</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JSRPC"><span class="post-toc-number">2.</span> <span class="post-toc-text">JSRPC</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Sekiro"><span class="post-toc-number">3.</span> <span class="post-toc-text">Sekiro</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="post-toc-number">4.</span> <span class="post-toc-text">优缺点</span></a></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>2月 21, 2022</span> -->
-        <span>2022-02-21 17:20:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaElEQVR42u3aQY7jMAwEwPz/07vXAXbjaZIyYwTlk2FkbJUOoqbF15+vvl54eHh4eHh4eHgP473i691f/ecDl897Xyn8FR4eHt4K75el9s2Hkyc/n/97f/315tjw8PDwFnnvFtzk/vqdyXKffOv693h4eHjP5/UW8bxU4OHh4X0frzqU6/KQFBg8PDy8p/GSf/jzODUvDPnQb89a8PDw8GJefsi0f796voeHh4cX8MotTeOQYlIGyk1XeHh4eDfw5tvlXqyQg8vjwcPDw7uZl4QC1YP/65asXglJDsnw8PDwdnh56DD5ZVJaeuOJ6h4eHh7eOu96se5t0K+Lx2Ti8PDw8HZ48/s8nugduRW273h4eHiLvF5AkCzrvSd5LIKHh4f3KV4vbpgs95OYuBBG4OHh4d3GSw6fqpvjamHovRkPDw9vn1ddjvOgId+4V0OHZusAHh4e3iFetUGqEA0Up6BKxcPDw9vnndpe50dfyXI/KjN4eHh4N/N62+JTzVVRLFt9Px4eHt4iL4kYekOstg5Ux4CHh4f3WV7eklXdiOfTOjlCw8PDw9vk5R9L7ufloTmteHh4eOu8yVCqm+98A500GeDh4eHt86oBbm9Sem2vB5qu8PDw8A7xqlc+0FPFoBoc4+Hh4d3Nmy/KPcy8WeHt2/Dw8PBWeNVikLdqFUKEYusVHh4e3hN4vTDiLDUvUaOeMjw8PLx1XrV1NWmiqka9N6bUeHh4eLcdgM0nIo9FCu0OeHh4eIu8U61Xkzf3tul4eHh4+7xqBJAf8Fep+TQVwgg8PDy8o7zvu/Dw8PDw8PDw8B5w/QWilD7avCt6QAAAAABJRU5ErkJggg==">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/RPC/" rel="tag">RPC</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;3.7k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;16 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/047/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭&url=https://www.itbob.cn/article/047/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭&url=https://www.itbob.cn/article/047/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/047/index.html&text=RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/047/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/047/index.html&title=RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/047/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-02-21 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="什么是-RPC"><a href="#什么是-RPC" class="headerlink" title="什么是 RPC"></a>什么是 RPC</h2><p><del>RPC，英文 RangPaCong，中文让爬虫，旨在为爬虫开路，秒杀一切，让爬虫畅通无阻！</del></p>
+                    
+                        <a href="/tags/JS-%E9%80%86%E5%90%91/" class="post-tag">
+                            #JS 逆向</a>
+                    
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            #爬虫</a>
+                    
+                        <a href="/tags/RPC/" class="post-tag">
+                            #RPC</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="什么是-RPC">什么是 RPC</h2>
+<p><s>RPC，英文 RangPaCong，中文让爬虫，旨在为爬虫开路，秒杀一切，让爬虫畅通无阻！</s></p>
 <p>开个玩笑，实际上 RPC 为远程过程调用，全称 Remote Procedure Call，是一种技术思想而非一种规范或协议。RPC 的诞生事实上离不开分布式的发展，RPC 主要解决了两个问题：</p>
 <ol>
 <li>解决了分布式系统中，服务之间的互相调用问题；</li>
@@ -592,7 +143,8 @@
 </ol>
 <p>RPC 的存在让构建分布式系统更加容易，相比于 HTTP 协议，RPC 采用二进制字节码传输，因此也更加高效、安全。在一个典型 RPC 的使用场景中，包含了服务发现、负载、容错、网络传输、序列化等组件，完整 RPC 架构图如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/71bb132886df40999a33ad59bd6a1159.png" alt="01"></p>
-<h2 id="JSRPC"><a href="#JSRPC" class="headerlink" title="JSRPC"></a>JSRPC</h2><p>RPC 技术是非常复杂的，对于我们搞爬虫、逆向的来说，不需要完全了解，只需要知道这项技术如何在逆向中应用就行了。</p>
+<h2 id="JSRPC">JSRPC</h2>
+<p>RPC 技术是非常复杂的，对于我们搞爬虫、逆向的来说，不需要完全了解，只需要知道这项技术如何在逆向中应用就行了。</p>
 <p>RPC 在逆向中，简单来说就是将本地和浏览器，看做是服务端和客户端，二者之间通过 WebSocket 协议进行 RPC 通信，在浏览器中将加密函数暴露出来，在本地直接调用浏览器中对应的加密函数，从而得到加密结果，不必去在意函数具体的执行逻辑，也省去了扣代码、补环境等操作，可以省去大量的逆向调试时间。我们以某团网页端的登录为例来演示 RPC 在逆向中的具体使用方法。（假设你已经有一定逆向基础，了解 WebSocket 协议，纯小白可以先看看以前的文章）</p>
 <ul>
 <li>主页（base64）：<code>aHR0cHM6Ly9wYXNzcG9ydC5tZWl0dWFuLmNvbS9hY2NvdW50L3VuaXRpdmVsb2dpbg==</code></li>
@@ -603,76 +155,74 @@
 <p>直接搜一下就能找到加密函数：</p>
 <p><img src="https://img-blog.csdnimg.cn/59e03ca57d2d4b75937961e81fc7b247.png" alt="03"></p>
 <p>其中 <code>utility.getH5fingerprint()</code> 传入的参数 <code>window.location.origin + url</code> 格式化后，参数如下：</p>
-<pre><code>url = &quot;https://passport.脱敏处理.com/account/unitivelogin&quot;
+<pre><code class="hljs makefile">url = <span class="hljs-string">&quot;https://passport.脱敏处理.com/account/unitivelogin&quot;</span>
 params = &#123;
-    &quot;risk_partner&quot;: &quot;0&quot;,
-    &quot;risk_platform&quot;: &quot;1&quot;,
-    &quot;risk_app&quot;: &quot;-1&quot;,
-    &quot;uuid&quot;: &quot;96309b5f00ba4143b920.1644805104.1.0.0&quot;,
-    &quot;token_id&quot;: &quot;DNCmLoBpSbBD6leXFdqIxA&quot;,
-    &quot;service&quot;: &quot;www&quot;,
-    &quot;continue&quot;: &quot;https://www.脱敏处理.com/account/settoken?continue=https%3A%2F%2Fwww.脱敏处理.com%2F&quot;
-&#125;
-</code></pre>
+    <span class="hljs-string">&quot;risk_partner&quot;</span>: <span class="hljs-string">&quot;0&quot;</span>,
+    <span class="hljs-string">&quot;risk_platform&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,
+    <span class="hljs-string">&quot;risk_app&quot;</span>: <span class="hljs-string">&quot;-1&quot;</span>,
+    <span class="hljs-string">&quot;uuid&quot;</span>: <span class="hljs-string">&quot;96309b5f00ba4143b920.1644805104.1.0.0&quot;</span>,
+    <span class="hljs-string">&quot;token_id&quot;</span>: <span class="hljs-string">&quot;DNCmLoBpSbBD6leXFdqIxA&quot;</span>,
+    <span class="hljs-string">&quot;service&quot;</span>: <span class="hljs-string">&quot;www&quot;</span>,
+    <span class="hljs-string">&quot;continue&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/account/settoken?continue=https%3A%2F%2Fwww.脱敏处理.com%2F&quot;</span>
+&#125;</code></pre>
 <p>uuid 和 token_id 都可以直接搜到，不是本次研究重点，这里不再细说，接下来我们使用 RPC 技术，直接调用浏览器里的 <code>utility.getH5fingerprint()</code> 方法，首先在本地编写服务端代码，使其能够一直输入待加密字符串，接收并打印加密后的字符串：</p>
-<pre><code class="python"># ==================================
-# --*-- coding: utf-8 --*--
-# @Time    : 2022-02-14
-# @Author  : ITBOB
-# @FileName: ws_server.py
-# @Software: PyCharm
-# ==================================
+<pre><code class="hljs python"><span class="hljs-comment"># ==================================</span>
+<span class="hljs-comment"># --*-- coding: utf-8 --*--</span>
+<span class="hljs-comment"># @Time    : 2022-02-14</span>
+<span class="hljs-comment"># @Author  : ITBOB</span>
+<span class="hljs-comment"># @FileName: ws_server.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ==================================</span>
 
 
-import sys
-import asyncio
-import websockets
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">import</span> websockets
 
 
-async def receive_massage(websocket):
-    while True:
-        send_text = input(&quot;请输入要加密的字符串: &quot;)
-        if send_text == &quot;exit&quot;:
-            print(&quot;Exit, goodbye!&quot;)
-            await websocket.send(send_text)
-            await websocket.close()
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">receive_massage</span>(<span class="hljs-params">websocket</span>):</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        send_text = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入要加密的字符串: &quot;</span>)
+        <span class="hljs-keyword">if</span> send_text == <span class="hljs-string">&quot;exit&quot;</span>:
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Exit, goodbye!&quot;</span>)
+            <span class="hljs-keyword">await</span> websocket.send(send_text)
+            <span class="hljs-keyword">await</span> websocket.close()
             sys.exit()
-        else:
-            await websocket.send(send_text)
-            response_text = await websocket.recv()
-            print(&quot;\n加密结果：&quot;, response_text)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">await</span> websocket.send(send_text)
+            response_text = <span class="hljs-keyword">await</span> websocket.recv()
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n加密结果：&quot;</span>, response_text)
 
 
-start_server = websockets.serve(receive_massage, &#39;127.0.0.1&#39;, 5678)  # 自定义端口
+start_server = websockets.serve(receive_massage, <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">5678</span>)  <span class="hljs-comment"># 自定义端口</span>
 asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
-</code></pre>
+asyncio.get_event_loop().run_forever()</code></pre>
 <p>编写浏览器客户端 JS 代码，收到消息就直接 <code>utility.getH5fingerprint()</code> 得到加密参数并发送给服务端：</p>
-<pre><code class="javascript">/* ==================================
-# @Time    : 2022-02-14
-# @Author  : ITBOB
-# @FileName: ws_client.js
-# @Software: PyCharm
-# ================================== */
+<pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
+<span class="hljs-comment"># @Time    : 2022-02-14</span>
+<span class="hljs-comment"># @Author  : ITBOB</span>
+<span class="hljs-comment"># @FileName: ws_client.js</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ================================== */</span>
 
 
-var ws = new WebSocket(&quot;ws://127.0.0.1:5678&quot;);  // 自定义端口
+<span class="hljs-keyword">var</span> ws = <span class="hljs-keyword">new</span> WebSocket(<span class="hljs-string">&quot;ws://127.0.0.1:5678&quot;</span>);  <span class="hljs-comment">// 自定义端口</span>
 
-ws.onmessage = function (evt) &#123;
-    console.log(&quot;Received Message: &quot; + evt.data);
-    if (evt.data == &quot;exit&quot;) &#123;
+ws.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">evt</span>) </span>&#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Received Message: &quot;</span> + evt.data);
+    <span class="hljs-keyword">if</span> (evt.data == <span class="hljs-string">&quot;exit&quot;</span>) &#123;
         ws.close();
-    &#125; else &#123;
+    &#125; <span class="hljs-keyword">else</span> &#123;
         ws.send(utility.getH5fingerprint(evt.data))
     &#125;
-&#125;;
-</code></pre>
+&#125;;</code></pre>
 <p>然后我们需要把客户端代码注入到网页中，这里方法有很多，比如抓包软件 Fiddler 替换响应、浏览器插件 ReRes 替换 JS、浏览器开发者工具 Overrides 重写功能等，也可以通过插件、油猴等注入 Hook 的方式插入，反正方法很多，对这些方法不太了解的朋友可以去看看以前的文章，都有介绍。</p>
 <p>这里我们使用浏览器开发者工具 Overrides 重写功能，将 WebSocket 客户端代码加到加密的这个 JS 文件里并 Ctrl+S 保存，这里将其写成了 IIFE 自执行方式，这样做的原因是防止污染全局变量，不用自执行方式当然也是可以的。</p>
 <p><img src="https://img-blog.csdnimg.cn/5dfd3cb4f9614bed9b3a2eaa60f20c3d.png" alt="04"></p>
 <p>然后先运行本地服务端代码，网页上先登录一遍，网页上先登录一遍，网页上先登录一遍，重要的步骤说三遍！然后就可以在本地传入待加密字符串，获取 <code>utility.getH5fingerprint()</code> 加密后的结果了：</p>
 <p><img src="https://img-blog.csdnimg.cn/8851ff218c3a424f878fda67ecfe6f45.png" alt="05"></p>
-<h2 id="Sekiro"><a href="#Sekiro" class="headerlink" title="Sekiro"></a>Sekiro</h2><p>通过前面的示例，可以发现自己写服务端太麻烦了，不易扩展，那这方面有没有现成的轮子呢？答案是有的，这里介绍两个项目：</p>
+<h2 id="Sekiro">Sekiro</h2>
+<p>通过前面的示例，可以发现自己写服务端太麻烦了，不易扩展，那这方面有没有现成的轮子呢？答案是有的，这里介绍两个项目：</p>
 <ul>
 <li>JsRPC-hliang：<a target="_blank" rel="noopener" href="https://github.com/jxhczhl/JsRpc">https://github.com/jxhczhl/JsRpc</a></li>
 <li>Sekiro：<a target="_blank" rel="noopener" href="https://github.com/virjar/sekiro">https://github.com/virjar/sekiro</a></li>
@@ -680,9 +230,11 @@ ws.onmessage = function (evt) &#123;
 <p>JsRPC-hliang 是用 go 语言写的，是专门为 JS 逆向做的项目，而 Sekiro 功能更加强大，Sekiro 是由邓维佳大佬，俗称渣总，写的一个基于长链接和代码注入的 Android Private API 暴露框架，可以用在 APP 逆向、APP 数据抓取、Android 群控等场景，同时 Sekiro 也是目前公开方案唯一稳定的 JSRPC 框架，两者在 JS 逆向方面的使用方法其实都差不多，本文主要介绍一下 Sekiro 在 Web JS 逆向中的应用。</p>
 <p>参考 Sekiro 文档，首先在本地编译项目：</p>
 <ul>
-<li><p>Linux &amp; Mac：执行脚本 <code>build_demo_server.sh</code>，之后得到产出发布压缩包：<code>sekiro-service-demo/target/sekiro-release-demo.zip</code></p>
+<li>
+<p>Linux &amp; Mac：执行脚本 <code>build_demo_server.sh</code>，之后得到产出发布压缩包：<code>sekiro-service-demo/target/sekiro-release-demo.zip</code></p>
 </li>
-<li><p>Windows：可以直接下载：<a target="_blank" rel="noopener" href="https://oss.virjar.com/sekiro/sekiro-demo">https://oss.virjar.com/sekiro/sekiro-demo</a></p>
+<li>
+<p>Windows：可以直接下载：<a target="_blank" rel="noopener" href="https://oss.virjar.com/sekiro/sekiro-demo">https://oss.virjar.com/sekiro/sekiro-demo</a></p>
 </li>
 </ul>
 <p>然后在本地运行（需要有 Java 环境，自行配置）：</p>
@@ -693,19 +245,18 @@ ws.onmessage = function (evt) &#123;
 <p>以 Windows 为例，启动后如下：</p>
 <p><img src="https://img-blog.csdnimg.cn/c7acc0ca85e040d38ee97aff3e256f22.png" alt="06"></p>
 <p>接下来就需要在浏览器里注入代码了，需要将作者提供的 sekiro_web_client.js（下载地址：<a target="_blank" rel="noopener" href="https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js%EF%BC%89">https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js）</a> 注入到浏览器环境，然后通过 SekiroClient 和 Sekiro 服务器通信，即可直接 RPC 调用浏览器内部方法，官方提供的 SekiroClient 代码样例如下：</p>
-<pre><code class="javascript">function guid() &#123;
-    function S4() &#123;
-        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+<pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">guid</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">S4</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> (((<span class="hljs-number">1</span>+<span class="hljs-built_in">Math</span>.random())*<span class="hljs-number">0x10000</span>)|<span class="hljs-number">0</span>).toString(<span class="hljs-number">16</span>).substring(<span class="hljs-number">1</span>);
     &#125;
-    return (S4()+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+&quot;-&quot;+S4()+S4()+S4());
+    <span class="hljs-keyword">return</span> (S4()+S4()+<span class="hljs-string">&quot;-&quot;</span>+S4()+<span class="hljs-string">&quot;-&quot;</span>+S4()+<span class="hljs-string">&quot;-&quot;</span>+S4()+<span class="hljs-string">&quot;-&quot;</span>+S4()+S4()+S4());
 &#125;
 
-var client = new SekiroClient(&quot;wss://sekiro.virjar.com/business/register?group=ws-group&amp;clientId=&quot;+guid());
+<span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> SekiroClient(<span class="hljs-string">&quot;wss://sekiro.virjar.com/business/register?group=ws-group&amp;clientId=&quot;</span>+guid());
 
-client.registerAction(&quot;clientTime&quot;,function(request, resolve, reject)&#123;
-    resolve(&quot;&quot;+new Date());
-&#125;)
-</code></pre>
+client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">request, resolve, reject</span>)</span>&#123;
+    resolve(<span class="hljs-string">&quot;&quot;</span>+<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
+&#125;)</code></pre>
 <p>wss 链接里，如果是免费版，要将 business 改成 business-demo，解释一下涉及到的名词：</p>
 <ul>
 <li><strong>group</strong>：业务类型（接口组），每个业务一个 group，group 下面可以注册多个终端（SekiroClient），同时 group 可以挂载多个 Action；</li>
@@ -722,230 +273,229 @@ client.registerAction(&quot;clientTime&quot;,function(request, resolve, reject)&
 <li><code>resolve</code> 返回的结果为 <code>utility.getH5fingerprint(request[&quot;url&quot;])</code>，即加密并返回客户端传过来的 url 参数。</li>
 </ol>
 <p>完整代码如下（留意末尾 SekiroClient 通信代码部分的写法）：</p>
-<pre><code class="javascript">/* ==================================
-# @Time    : 2022-02-14
-# @Author  : ITBOB
-# @FileName: sekiro.js
-# @Software: PyCharm
-# ================================== */
+<pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
+<span class="hljs-comment"># @Time    : 2022-02-14</span>
+<span class="hljs-comment"># @Author  : ITBOB</span>
+<span class="hljs-comment"># @FileName: sekiro.js</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ================================== */</span>
 
-(function () &#123;
-    &#39;use strict&#39;;
-    function SekiroClient(wsURL) &#123;
-        this.wsURL = wsURL;
-        this.handlers = &#123;&#125;;
-        this.socket = &#123;&#125;;
-        // check
-        if (!wsURL) &#123;
-            throw new Error(&#39;wsURL can not be empty!!&#39;)
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+<span class="hljs-meta">    &#x27;use strict&#x27;</span>;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SekiroClient</span>(<span class="hljs-params">wsURL</span>) </span>&#123;
+        <span class="hljs-built_in">this</span>.wsURL = wsURL;
+        <span class="hljs-built_in">this</span>.handlers = &#123;&#125;;
+        <span class="hljs-built_in">this</span>.socket = &#123;&#125;;
+        <span class="hljs-comment">// check</span>
+        <span class="hljs-keyword">if</span> (!wsURL) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;wsURL can not be empty!!&#x27;</span>)
         &#125;
-        this.webSocketFactory = this.resolveWebSocketFactory();
-        this.connect()
+        <span class="hljs-built_in">this</span>.webSocketFactory = <span class="hljs-built_in">this</span>.resolveWebSocketFactory();
+        <span class="hljs-built_in">this</span>.connect()
     &#125;
 
-    SekiroClient.prototype.resolveWebSocketFactory = function () &#123;
-        if (typeof window === &#39;object&#39;) &#123;
-            var theWebSocket = window.WebSocket ? window.WebSocket : window.MozWebSocket;
-            return function (wsURL) &#123;
+    SekiroClient.prototype.resolveWebSocketFactory = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> === <span class="hljs-string">&#x27;object&#x27;</span>) &#123;
+            <span class="hljs-keyword">var</span> theWebSocket = <span class="hljs-built_in">window</span>.WebSocket ? <span class="hljs-built_in">window</span>.WebSocket : <span class="hljs-built_in">window</span>.MozWebSocket;
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">wsURL</span>) </span>&#123;
 
-                function WindowWebSocketWrapper(wsURL) &#123;
-                    this.mSocket = new theWebSocket(wsURL);
+                <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">WindowWebSocketWrapper</span>(<span class="hljs-params">wsURL</span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket = <span class="hljs-keyword">new</span> theWebSocket(wsURL);
                 &#125;
 
-                WindowWebSocketWrapper.prototype.close = function () &#123;
-                    this.mSocket.close();
+                WindowWebSocketWrapper.prototype.close = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket.close();
                 &#125;;
 
-                WindowWebSocketWrapper.prototype.onmessage = function (onMessageFunction) &#123;
-                    this.mSocket.onmessage = onMessageFunction;
+                WindowWebSocketWrapper.prototype.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">onMessageFunction</span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket.onmessage = onMessageFunction;
                 &#125;;
 
-                WindowWebSocketWrapper.prototype.onopen = function (onOpenFunction) &#123;
-                    this.mSocket.onopen = onOpenFunction;
+                WindowWebSocketWrapper.prototype.onopen = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">onOpenFunction</span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket.onopen = onOpenFunction;
                 &#125;;
-                WindowWebSocketWrapper.prototype.onclose = function (onCloseFunction) &#123;
-                    this.mSocket.onclose = onCloseFunction;
-                &#125;;
-
-                WindowWebSocketWrapper.prototype.send = function (message) &#123;
-                    this.mSocket.send(message);
+                WindowWebSocketWrapper.prototype.onclose = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">onCloseFunction</span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket.onclose = onCloseFunction;
                 &#125;;
 
-                return new WindowWebSocketWrapper(wsURL);
+                WindowWebSocketWrapper.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message</span>) </span>&#123;
+                    <span class="hljs-built_in">this</span>.mSocket.send(message);
+                &#125;;
+
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> WindowWebSocketWrapper(wsURL);
             &#125;
         &#125;
-        if (typeof weex === &#39;object&#39;) &#123;
-            // this is weex env : https://weex.apache.org/zh/docs/modules/websockets.html
-            try &#123;
-                console.log(&quot;test webSocket for weex&quot;);
-                var ws = weex.requireModule(&#39;webSocket&#39;);
-                console.log(&quot;find webSocket for weex:&quot; + ws);
-                return function (wsURL) &#123;
-                    try &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> weex === <span class="hljs-string">&#x27;object&#x27;</span>) &#123;
+            <span class="hljs-comment">// this is weex env : https://weex.apache.org/zh/docs/modules/websockets.html</span>
+            <span class="hljs-keyword">try</span> &#123;
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;test webSocket for weex&quot;</span>);
+                <span class="hljs-keyword">var</span> ws = weex.requireModule(<span class="hljs-string">&#x27;webSocket&#x27;</span>);
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;find webSocket for weex:&quot;</span> + ws);
+                <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">wsURL</span>) </span>&#123;
+                    <span class="hljs-keyword">try</span> &#123;
                         ws.close();
-                    &#125; catch (e) &#123;
+                    &#125; <span class="hljs-keyword">catch</span> (e) &#123;
                     &#125;
-                    ws.WebSocket(wsURL, &#39;&#39;);
-                    return ws;
+                    ws.WebSocket(wsURL, <span class="hljs-string">&#x27;&#x27;</span>);
+                    <span class="hljs-keyword">return</span> ws;
                 &#125;
-            &#125; catch (e) &#123;
-                console.log(e);
-                //ignore
+            &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+                <span class="hljs-built_in">console</span>.log(e);
+                <span class="hljs-comment">//ignore</span>
             &#125;
         &#125;
-        //TODO support ReactNative
-        if (typeof WebSocket === &#39;object&#39;) &#123;
-            return function (wsURL) &#123;
-                return new theWebSocket(wsURL);
+        <span class="hljs-comment">//TODO support ReactNative</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> WebSocket === <span class="hljs-string">&#x27;object&#x27;</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">wsURL</span>) </span>&#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> theWebSocket(wsURL);
             &#125;
         &#125;
-        // weex 和 PC环境的websocket API不完全一致，所以做了抽象兼容
-        throw new Error(&quot;the js environment do not support websocket&quot;);
+        <span class="hljs-comment">// weex 和 PC环境的websocket API不完全一致，所以做了抽象兼容</span>
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;the js environment do not support websocket&quot;</span>);
     &#125;;
 
-    SekiroClient.prototype.connect = function () &#123;
-        console.log(&#39;sekiro: begin of connect to wsURL: &#39; + this.wsURL);
-        var _this = this;
-        // 不check close，让
-        // if (this.socket &amp;&amp; this.socket.readyState === 1) &#123;
-        //     this.socket.close();
-        // &#125;
-        try &#123;
-            this.socket = this.webSocketFactory(this.wsURL);
-        &#125; catch (e) &#123;
-            console.log(&quot;sekiro: create connection failed,reconnect after 2s&quot;);
-            setTimeout(function () &#123;
+    SekiroClient.prototype.connect = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;sekiro: begin of connect to wsURL: &#x27;</span> + <span class="hljs-built_in">this</span>.wsURL);
+        <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+        <span class="hljs-comment">// 不check close，让</span>
+        <span class="hljs-comment">// if (this.socket &amp;&amp; this.socket.readyState === 1) &#123;</span>
+        <span class="hljs-comment">//     this.socket.close();</span>
+        <span class="hljs-comment">// &#125;</span>
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-built_in">this</span>.socket = <span class="hljs-built_in">this</span>.webSocketFactory(<span class="hljs-built_in">this</span>.wsURL);
+        &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;sekiro: create connection failed,reconnect after 2s&quot;</span>);
+            <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
                 _this.connect()
-            &#125;, 2000)
+            &#125;, <span class="hljs-number">2000</span>)
         &#125;
 
-        this.socket.onmessage(function (event) &#123;
+        <span class="hljs-built_in">this</span>.socket.onmessage(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>&#123;
             _this.handleSekiroRequest(event.data)
         &#125;);
 
-        this.socket.onopen(function (event) &#123;
-            console.log(&#39;sekiro: open a sekiro client connection&#39;)
+        <span class="hljs-built_in">this</span>.socket.onopen(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;sekiro: open a sekiro client connection&#x27;</span>)
         &#125;);
 
-        this.socket.onclose(function (event) &#123;
-            console.log(&#39;sekiro: disconnected ,reconnection after 2s&#39;);
-            setTimeout(function () &#123;
+        <span class="hljs-built_in">this</span>.socket.onclose(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) </span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;sekiro: disconnected ,reconnection after 2s&#x27;</span>);
+            <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
                 _this.connect()
-            &#125;, 2000)
+            &#125;, <span class="hljs-number">2000</span>)
         &#125;);
     &#125;;
 
-    SekiroClient.prototype.handleSekiroRequest = function (requestJson) &#123;
-        console.log(&quot;receive sekiro request: &quot; + requestJson);
-        var request = JSON.parse(requestJson);
-        var seq = request[&#39;__sekiro_seq__&#39;];
+    SekiroClient.prototype.handleSekiroRequest = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">requestJson</span>) </span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;receive sekiro request: &quot;</span> + requestJson);
+        <span class="hljs-keyword">var</span> request = <span class="hljs-built_in">JSON</span>.parse(requestJson);
+        <span class="hljs-keyword">var</span> seq = request[<span class="hljs-string">&#x27;__sekiro_seq__&#x27;</span>];
 
-        if (!request[&#39;action&#39;]) &#123;
-            this.sendFailed(seq, &#39;need request param &#123;action&#125;&#39;);
-            return
+        <span class="hljs-keyword">if</span> (!request[<span class="hljs-string">&#x27;action&#x27;</span>]) &#123;
+            <span class="hljs-built_in">this</span>.sendFailed(seq, <span class="hljs-string">&#x27;need request param &#123;action&#125;&#x27;</span>);
+            <span class="hljs-keyword">return</span>
         &#125;
-        var action = request[&#39;action&#39;];
-        if (!this.handlers[action]) &#123;
-            this.sendFailed(seq, &#39;no action handler: &#39; + action + &#39; defined&#39;);
-            return
+        <span class="hljs-keyword">var</span> action = request[<span class="hljs-string">&#x27;action&#x27;</span>];
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.handlers[action]) &#123;
+            <span class="hljs-built_in">this</span>.sendFailed(seq, <span class="hljs-string">&#x27;no action handler: &#x27;</span> + action + <span class="hljs-string">&#x27; defined&#x27;</span>);
+            <span class="hljs-keyword">return</span>
         &#125;
 
-        var theHandler = this.handlers[action];
-        var _this = this;
-        try &#123;
-            theHandler(request, function (response) &#123;
-                try &#123;
+        <span class="hljs-keyword">var</span> theHandler = <span class="hljs-built_in">this</span>.handlers[action];
+        <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            theHandler(request, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">response</span>) </span>&#123;
+                <span class="hljs-keyword">try</span> &#123;
                     _this.sendSuccess(seq, response)
-                &#125; catch (e) &#123;
-                    _this.sendFailed(seq, &quot;e:&quot; + e);
+                &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+                    _this.sendFailed(seq, <span class="hljs-string">&quot;e:&quot;</span> + e);
                 &#125;
-            &#125;, function (errorMessage) &#123;
+            &#125;, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">errorMessage</span>) </span>&#123;
                 _this.sendFailed(seq, errorMessage)
             &#125;)
-        &#125; catch (e) &#123;
-            console.log(&quot;error: &quot; + e);
-            _this.sendFailed(seq, &quot;:&quot; + e);
+        &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;error: &quot;</span> + e);
+            _this.sendFailed(seq, <span class="hljs-string">&quot;:&quot;</span> + e);
         &#125;
     &#125;;
 
-    SekiroClient.prototype.sendSuccess = function (seq, response) &#123;
-        var responseJson;
-        if (typeof response == &#39;string&#39;) &#123;
-            try &#123;
-                responseJson = JSON.parse(response);
-            &#125; catch (e) &#123;
+    SekiroClient.prototype.sendSuccess = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seq, response</span>) </span>&#123;
+        <span class="hljs-keyword">var</span> responseJson;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> response == <span class="hljs-string">&#x27;string&#x27;</span>) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                responseJson = <span class="hljs-built_in">JSON</span>.parse(response);
+            &#125; <span class="hljs-keyword">catch</span> (e) &#123;
                 responseJson = &#123;&#125;;
-                responseJson[&#39;data&#39;] = response;
+                responseJson[<span class="hljs-string">&#x27;data&#x27;</span>] = response;
             &#125;
-        &#125; else if (typeof response == &#39;object&#39;) &#123;
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> response == <span class="hljs-string">&#x27;object&#x27;</span>) &#123;
             responseJson = response;
-        &#125; else &#123;
+        &#125; <span class="hljs-keyword">else</span> &#123;
             responseJson = &#123;&#125;;
-            responseJson[&#39;data&#39;] = response;
+            responseJson[<span class="hljs-string">&#x27;data&#x27;</span>] = response;
         &#125;
 
 
-        if (Array.isArray(responseJson)) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(responseJson)) &#123;
             responseJson = &#123;
-                data: responseJson,
-                code: 0
+                <span class="hljs-attr">data</span>: responseJson,
+                <span class="hljs-attr">code</span>: <span class="hljs-number">0</span>
             &#125;
         &#125;
 
-        if (responseJson[&#39;code&#39;]) &#123;
-            responseJson[&#39;code&#39;] = 0;
-        &#125; else if (responseJson[&#39;status&#39;]) &#123;
-            responseJson[&#39;status&#39;] = 0;
-        &#125; else &#123;
-            responseJson[&#39;status&#39;] = 0;
+        <span class="hljs-keyword">if</span> (responseJson[<span class="hljs-string">&#x27;code&#x27;</span>]) &#123;
+            responseJson[<span class="hljs-string">&#x27;code&#x27;</span>] = <span class="hljs-number">0</span>;
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (responseJson[<span class="hljs-string">&#x27;status&#x27;</span>]) &#123;
+            responseJson[<span class="hljs-string">&#x27;status&#x27;</span>] = <span class="hljs-number">0</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            responseJson[<span class="hljs-string">&#x27;status&#x27;</span>] = <span class="hljs-number">0</span>;
         &#125;
-        responseJson[&#39;__sekiro_seq__&#39;] = seq;
-        var responseText = JSON.stringify(responseJson);
-        console.log(&quot;response :&quot; + responseText);
-        this.socket.send(responseText);
+        responseJson[<span class="hljs-string">&#x27;__sekiro_seq__&#x27;</span>] = seq;
+        <span class="hljs-keyword">var</span> responseText = <span class="hljs-built_in">JSON</span>.stringify(responseJson);
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;response :&quot;</span> + responseText);
+        <span class="hljs-built_in">this</span>.socket.send(responseText);
     &#125;;
 
-    SekiroClient.prototype.sendFailed = function (seq, errorMessage) &#123;
-        if (typeof errorMessage != &#39;string&#39;) &#123;
-            errorMessage = JSON.stringify(errorMessage);
+    SekiroClient.prototype.sendFailed = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">seq, errorMessage</span>) </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> errorMessage != <span class="hljs-string">&#x27;string&#x27;</span>) &#123;
+            errorMessage = <span class="hljs-built_in">JSON</span>.stringify(errorMessage);
         &#125;
-        var responseJson = &#123;&#125;;
-        responseJson[&#39;message&#39;] = errorMessage;
-        responseJson[&#39;status&#39;] = -1;
-        responseJson[&#39;__sekiro_seq__&#39;] = seq;
-        var responseText = JSON.stringify(responseJson);
-        console.log(&quot;sekiro: response :&quot; + responseText);
-        this.socket.send(responseText)
+        <span class="hljs-keyword">var</span> responseJson = &#123;&#125;;
+        responseJson[<span class="hljs-string">&#x27;message&#x27;</span>] = errorMessage;
+        responseJson[<span class="hljs-string">&#x27;status&#x27;</span>] = -<span class="hljs-number">1</span>;
+        responseJson[<span class="hljs-string">&#x27;__sekiro_seq__&#x27;</span>] = seq;
+        <span class="hljs-keyword">var</span> responseText = <span class="hljs-built_in">JSON</span>.stringify(responseJson);
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;sekiro: response :&quot;</span> + responseText);
+        <span class="hljs-built_in">this</span>.socket.send(responseText)
     &#125;;
 
-    SekiroClient.prototype.registerAction = function (action, handler) &#123;
-        if (typeof action !== &#39;string&#39;) &#123;
-            throw new Error(&quot;an action must be string&quot;);
+    SekiroClient.prototype.registerAction = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">action, handler</span>) </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> action !== <span class="hljs-string">&#x27;string&#x27;</span>) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;an action must be string&quot;</span>);
         &#125;
-        if (typeof handler !== &#39;function&#39;) &#123;
-            throw new Error(&quot;a handler must be function&quot;);
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> handler !== <span class="hljs-string">&#x27;function&#x27;</span>) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;a handler must be function&quot;</span>);
         &#125;
-        console.log(&quot;sekiro: register action: &quot; + action);
-        this.handlers[action] = handler;
-        return this;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;sekiro: register action: &quot;</span> + action);
+        <span class="hljs-built_in">this</span>.handlers[action] = handler;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;
     &#125;;
 
-    function guid() &#123;
-        function S4() &#123;
-            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">guid</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">S4</span>(<span class="hljs-params"></span>) </span>&#123;
+            <span class="hljs-keyword">return</span> (((<span class="hljs-number">1</span> + <span class="hljs-built_in">Math</span>.random()) * <span class="hljs-number">0x10000</span>) | <span class="hljs-number">0</span>).toString(<span class="hljs-number">16</span>).substring(<span class="hljs-number">1</span>);
         &#125;
 
-        return (S4() + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + S4() + S4());
+        <span class="hljs-keyword">return</span> (S4() + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + S4() + S4());
     &#125;
 
-    var client = new SekiroClient(&quot;ws://127.0.0.1:5620/business-demo/register?group=rpc-test&amp;clientId=&quot; + guid());
+    <span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> SekiroClient(<span class="hljs-string">&quot;ws://127.0.0.1:5620/business-demo/register?group=rpc-test&amp;clientId=&quot;</span> + guid());
 
-    client.registerAction(&quot;getH5fingerprint&quot;, function (request, resolve, reject) &#123;
-        resolve(utility.getH5fingerprint(request[&quot;url&quot;]));
+    client.registerAction(<span class="hljs-string">&quot;getH5fingerprint&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">request, resolve, reject</span>) </span>&#123;
+        resolve(utility.getH5fingerprint(request[<span class="hljs-string">&quot;url&quot;</span>]));
     &#125;)
 
-&#125;)();
-</code></pre>
+&#125;)();</code></pre>
 <p>与前面的方法一样，使用浏览器开发者工具 Overrides 重写功能，将上面的代码注入到网页 JS 里：</p>
 <p><img src="https://img-blog.csdnimg.cn/608ac74417ac4010be5ae64bc986e926.png" alt="07"></p>
 <p>然后 Sekiro 为我们提供了一些 API：</p>
@@ -970,739 +520,178 @@ client.registerAction(&quot;clientTime&quot;,function(request, resolve, reject)&
 <li>由于 SekiroClient 通信代码被封装成了函数，此时直接调用 <code>utility.getH5fingerprint</code> 是会提示未定义的，所以我们要先将其导为全局变量，比如 <code>window.getH5fingerprint = utility.getH5fingerprint</code>，后续直接调用 <code>window.getH5fingerprint</code> 即可。</li>
 </ol>
 <p>完整代码如下所示：</p>
-<pre><code class="javascript">/* ==================================
-# @Time    : 2022-02-14
-# @Author  : ITBOB
-# @FileName: sekiro.js
-# @Software: PyCharm
-# ================================== */
+<pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
+<span class="hljs-comment"># @Time    : 2022-02-14</span>
+<span class="hljs-comment"># @Author  : ITBOB</span>
+<span class="hljs-comment"># @FileName: sekiro.js</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ================================== */</span>
 
-(function () &#123;
-    var newElement = document.createElement(&quot;script&quot;);
-    newElement.setAttribute(&quot;type&quot;, &quot;text/javascript&quot;);
-    newElement.setAttribute(&quot;src&quot;, &quot;https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js&quot;);
-    document.body.appendChild(newElement);
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> newElement = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&quot;script&quot;</span>);
+    newElement.setAttribute(<span class="hljs-string">&quot;type&quot;</span>, <span class="hljs-string">&quot;text/javascript&quot;</span>);
+    newElement.setAttribute(<span class="hljs-string">&quot;src&quot;</span>, <span class="hljs-string">&quot;https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js&quot;</span>);
+    <span class="hljs-built_in">document</span>.body.appendChild(newElement);
 
-    window.getH5fingerprint = utility.getH5fingerprint
+    <span class="hljs-built_in">window</span>.getH5fingerprint = utility.getH5fingerprint
 
-    function guid() &#123;
-        function S4() &#123;
-            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">guid</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">S4</span>(<span class="hljs-params"></span>) </span>&#123;
+            <span class="hljs-keyword">return</span> (((<span class="hljs-number">1</span> + <span class="hljs-built_in">Math</span>.random()) * <span class="hljs-number">0x10000</span>) | <span class="hljs-number">0</span>).toString(<span class="hljs-number">16</span>).substring(<span class="hljs-number">1</span>);
         &#125;
-        return (S4() + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + &quot;-&quot; + S4() + S4() + S4());
+        <span class="hljs-keyword">return</span> (S4() + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + <span class="hljs-string">&quot;-&quot;</span> + S4() + S4() + S4());
     &#125;
 
-    function startSekiro() &#123;
-        var client = new SekiroClient(&quot;ws://127.0.0.1:5620/business-demo/register?group=rpc-test&amp;clientId=&quot; + guid());
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startSekiro</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> SekiroClient(<span class="hljs-string">&quot;ws://127.0.0.1:5620/business-demo/register?group=rpc-test&amp;clientId=&quot;</span> + guid());
 
-        client.registerAction(&quot;getH5fingerprint&quot;, function (request, resolve, reject) &#123;
-            resolve(window.getH5fingerprint(request[&quot;url&quot;]));
+        client.registerAction(<span class="hljs-string">&quot;getH5fingerprint&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">request, resolve, reject</span>) </span>&#123;
+            resolve(<span class="hljs-built_in">window</span>.getH5fingerprint(request[<span class="hljs-string">&quot;url&quot;</span>]));
         &#125;)
     &#125;
 
-    setTimeout(startSekiro, 2000)
-&#125;)();
-</code></pre>
+    <span class="hljs-built_in">setTimeout</span>(startSekiro, <span class="hljs-number">2000</span>)
+&#125;)();</code></pre>
 <p><img src="https://img-blog.csdnimg.cn/5657c3efd68048b59db91794a8b9c9c4.png" alt="10"></p>
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>目前如果不去逆向 JS 来实现加密参数的话，用得最多的就是自动化工具了，比如 Selenium、Puppeteer 等，很显然这些自动化工具配置繁琐、运行效率极低，而 RPC 技术不需要加载多余的资源，稳定性和效率明显都更高，RPC 不需要考虑浏览器指纹、各种环境，如果风控不严的话，高并发也是能够轻松实现的，相反，由于 RPC 是一直挂载在同一个浏览器上的，所以针对风控较严格的站点，比如检测 UA、IP 与加密参数绑定之类的，那么 PRC 调用太频繁就不太行了，当然也可以研究研究浏览器群控技术，操纵多个不同浏览器可以一定程度上缓解这个问题。总之 RPC 技术还是非常牛的，除了 JS 逆向，可以说是目前比较万能、高效的方法了，一定程度上做到了加密参数一把梭！</p>
+<h2 id="优缺点">优缺点</h2>
+<p>目前如果不去逆向 JS 来实现加密参数的话，用得最多的就是自动化工具了，比如 Selenium、Puppeteer 等，很显然这些自动化工具配置繁琐、运行效率极低，而 RPC 技术不需要加载多余的资源，稳定性和效率明显都更高，RPC 不需要考虑浏览器指纹、各种环境，如果风控不严的话，高并发也是能够轻松实现的，相反，由于 RPC 是一直挂载在同一个浏览器上的，所以针对风控较严格的站点，比如检测 UA、IP 与加密参数绑定之类的，那么 PRC 调用太频繁就不太行了，当然也可以研究研究浏览器群控技术，操纵多个不同浏览器可以一定程度上缓解这个问题。总之 RPC 技术还是非常牛的，除了 JS 逆向，可以说是目前比较万能、高效的方法了，一定程度上做到了加密参数一把梭！</p>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/047/">https://www.itbob.cn/article/047/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/048/" 
+                            class="post-title gt-a-link">Python 中如何解决 asyncio 文件描述符最大数量限制问题</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/046/" 
+                            class="post-title gt-a-link">【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/048/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/046/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

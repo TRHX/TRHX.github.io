@@ -1,628 +1,178 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/046/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/046/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> 
-
-    
-        <meta property="article:published_time" content="Thu Feb 17 2022 08:43:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/046/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/046/index.html",
-    "headline": "【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解",
-    "datePublished": "Thu Feb 17 2022 08:43:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",JS 逆向,爬虫ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%80%86%E5%90%91%E7%9B%AE%E6%A0%87"><span class="post-toc-number">1.</span> <span class="post-toc-text">逆向目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HLS-%E6%B5%81%E5%AA%92%E4%BD%93%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="post-toc-number">2.</span> <span class="post-toc-text">HLS 流媒体传输协议</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#SAZ-%E5%88%86%E6%9E%90"><span class="post-toc-number">3.</span> <span class="post-toc-text">SAZ 分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JS-%E9%80%86%E5%90%91"><span class="post-toc-number">4.</span> <span class="post-toc-text">JS 逆向</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TS-%E8%A7%A3%E5%AF%86%E5%90%88%E5%B9%B6%E8%BD%AC%E6%8D%A2"><span class="post-toc-number">5.</span> <span class="post-toc-text">TS 解密合并转换</span></a></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>2月 17, 2022</span> -->
-        <span>2022-02-17 08:43:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACb0lEQVR42u3awa7jIAwF0P7/T7/ZjvSmzLUNNKpOVlHUBA4L7Nq8fr76euHh4eHh4eHh4T2M94qvd2/9Y4Dl894ohbfw8PDwrvD+s9W+GTh58vfz3/fr0Ztzw8PDw7vIe7fhJvfrbybbfTLW+vd4eHh4T+YlgWGdUidfxsPDw/smXjLppGCRFzXw8PDwnslL/vDnw+SBYf5NPDw8vPu8vMl0//5qfw8PDw8v4JWPNM037kEYKB+6wsPDwzvAyzfiJFHe1RIbzQcPDw/vMC+fYt6yWrfH8kOuyfejlBoPDw9vK69XCKiWZXtL1jvqioeHh3eal2/o0aeLRdhkrOrC4eHh4d3hTYJBNUHvtdwK6TseHh7eYV6yQTeHGT9JghAeHh7eE3jVcm0vjc4XMRkXDw8P71O8aslg8m4PeeRkBB4eHl6Lt6utVQ0D1WAQHTjAw8PDu8KrHsCqbvHVokb1sAIeHh7ep3hJulxtg/VKtKMwg4eHh3eYt4ZNyhB5OSNvdJUDAx4eHt5h3qQA0SwcLBPuZIaFwICHh4e3ibdOT5Or2eBvpezREzw8PLyLvCRtzTfuXpEiX/QNh67w8PDwxry8sFvd4idHEPLCBB4eHt5neXmKXH2ST7p5iAEPDw/vMK9XepgsTS8pLyw3Hh4e3mHeZFOeJM3rOfSSezw8PLybvGow2JU0VwNDtFh4eHh4F3m9BliCyal5iLrU38PDw8Pbyuu1vnrNthyJh4eH90xedYuft8HyvwF4eHh4N3lJMWLyVv6bapqOh4eHd59XLQFU21Q5NV/KQjECDw8Pbyvv+y48PDw8PDw8PLwHXH8APuw+2m4wyz8AAAAASUVORK5CYII=">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;3k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;12 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/046/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解&url=https://www.itbob.cn/article/046/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解&url=https://www.itbob.cn/article/046/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/046/index.html&text=【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/046/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/046/index.html&title=【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/046/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">【JS 逆向】吾爱破解2022春节解题领红包之番外篇 Web 中级题解</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-02-17 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="逆向目标"><a href="#逆向目标" class="headerlink" title="逆向目标"></a>逆向目标</h2><p>本次逆向的目标来源于吾爱破解 2022 春节解题领红包之番外篇 Web 中级题，吾爱破解每年都会有派送红包活动（送吾爱币），需要大家使出看家逆向本领来分析内容获得口令红包，今年一共有五个题，一个送分题，两个 Windows 题、一个 Android 题和一个 Web 题，本文分析的正是  Web 题，<strong>吾爱有规定活动结束前不要外泄口令、讨论分享分析过程，所以本文在活动结束后才发出来。</strong></p>
+                    
+                        <a href="/tags/JS-%E9%80%86%E5%90%91/" class="post-tag">
+                            #JS 逆向</a>
+                    
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            #爬虫</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="逆向目标">逆向目标</h2>
+<p>本次逆向的目标来源于吾爱破解 2022 春节解题领红包之番外篇 Web 中级题，吾爱破解每年都会有派送红包活动（送吾爱币），需要大家使出看家逆向本领来分析内容获得口令红包，今年一共有五个题，一个送分题，两个 Windows 题、一个 Android 题和一个 Web 题，本文分析的正是  Web 题，<strong>吾爱有规定活动结束前不要外泄口令、讨论分享分析过程，所以本文在活动结束后才发出来。</strong></p>
 <p>此 Web 题题目是：小 D 最爱看的视频网站最近关站了，关站前他用 Fiddler 和 Web Archive 保存了一位主播的视频，但他发现存下来的文件无法播放。你能帮小 D 找回他的回忆吗？（.saz 与 .wacz 任选其一即可解题）</p>
 <ul>
-<li><p>活动地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1582582-1-1.html">https://www.52pojie.cn/thread-1582582-1-1.html</a></p>
+<li>
+<p>活动地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1582582-1-1.html">https://www.52pojie.cn/thread-1582582-1-1.html</a></p>
 </li>
-<li><p>Web 题地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17">https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17</a></p>
+<li>
+<p>Web 题地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17">https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17</a></p>
 </li>
 </ul>
-<h2 id="HLS-流媒体传输协议"><a href="#HLS-流媒体传输协议" class="headerlink" title="HLS 流媒体传输协议"></a>HLS 流媒体传输协议</h2><p>本题涉及到 HLS 流媒体传输协议，先简单介绍一下，了解的同志可直接跳过。</p>
+<h2 id="HLS-流媒体传输协议">HLS 流媒体传输协议</h2>
+<p>本题涉及到 HLS 流媒体传输协议，先简单介绍一下，了解的同志可直接跳过。</p>
 <p>HLS 全称 HTTP Live Streaming，即基于 HTTP 的自适应码率流媒体传输协议，是苹果研发的动态码率自适应技术，它包括一个 M3U(8) 的索引文件，若干 TS 视频流文件，如果视频流文件是加密的，那就还会存在一个 key 加密串文件。</p>
 <p>M3U8 文件是 M3U 的一种，只不过文件中存储的文本使用 UTF-8 字符编码，在极少数情况下，M3U8 文件可能会以 M3UP 扩展名保存。M3U8 文件是各种音频和视频播放程序使用的播放列表文件，它包含了媒体文件或媒体文件夹的路径或 URL，以及有关播放列表的相关信息。</p>
 <p>TS 全称为 MPEG2-TS，TS 即 Transport Stream 传输流，又称 MPEG-TS、MTS、TP，这种格式的特点就是从视频流的任一片段开始都是可以独立解码的。</p>
 <p>针对 TS 格式的文件，如果是未加密的，一般的播放器就能够直接播放，也可以使用 FFmpeg 等工具转换为其他格式，FFmpeg 也可以直接处理 M3U8 文件，自动解密合并转换 TS 文件，当然也有其他大佬写好的小工具，拖入 M3U8 文件就直接给你处理好了。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/04101c9e3b5b32d096045bf6be06f40a.png" alt="01"></p>
 <p>M3U8 文件内容的大致格式示例如下：</p>
-<pre><code>#EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-ALLOW-CACHE:YES
-#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://www.example.com/m3u8.key&quot;
-#EXT-X-TARGETDURATION:5
-#EXTINF:4.200000,
-https://www.example.com/hls/live_00000.ts
-#EXTINF:4.166667,
-https://www.example.com/hls/live_00001.ts
-#EXTINF:3.600000,
-https://www.example.com/hls/live_00002.ts
-#EXTINF:2.516667,
-https://www.example.com/hls/live_00003.ts
-#EXTINF:4.166667,
-https://www.example.com/hls/live_00004.ts
-#EXTINF:4.166667,
-https://www.example.com/hls/live_00005.ts
-#EXTINF:4.166667,
-https://www.example.com/hls/live_00006.ts
-#EXTINF:1.716667,
-https://www.example.com/hls/live_00007.ts
-#EXT-X-ENDLIST
-</code></pre>
+<pre><code class="hljs awk"><span class="hljs-comment">#EXTM3U</span>
+<span class="hljs-comment">#EXT-X-VERSION:3</span>
+<span class="hljs-comment">#EXT-X-MEDIA-SEQUENCE:0</span>
+<span class="hljs-comment">#EXT-X-ALLOW-CACHE:YES</span>
+<span class="hljs-comment">#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://www.example.com/m3u8.key&quot;</span>
+<span class="hljs-comment">#EXT-X-TARGETDURATION:5</span>
+<span class="hljs-comment">#EXTINF:4.200000,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00000.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00001.ts
+<span class="hljs-comment">#EXTINF:3.600000,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00002.ts
+<span class="hljs-comment">#EXTINF:2.516667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00003.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00004.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00005.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00006.ts
+<span class="hljs-comment">#EXTINF:1.716667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00007.ts
+<span class="hljs-comment">#EXT-X-ENDLIST</span></code></pre>
 <p>各标签含义如下：</p>
 <ul>
 <li><code>#EXTM3U</code>：m3u文件头，必须放在第一行，起标示作用；</li>
@@ -635,14 +185,16 @@ https://www.example.com/hls/live_00007.ts
 <li><code>#EXT-X-ENDLIST</code>：表示不再将媒体片段添加到播放列表文件中，一般位于文件结尾。</li>
 </ul>
 <p>完整格式、标准标签可参考 HLS 标准协议中，对 Playlist file 的介绍：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08">https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08</a></p>
-<h2 id="SAZ-分析"><a href="#SAZ-分析" class="headerlink" title="SAZ 分析"></a>SAZ 分析</h2><p>在 Fiddler 软件中，使用 SAZ 格式用来保存和读取 HTTP/HTTPS 请求信息，打开该文件可以注意到一些重要的请求：script.bundle.js、live.m3u8、drm 以及八个 ts 视频流文件。</p>
+<h2 id="SAZ-分析">SAZ 分析</h2>
+<p>在 Fiddler 软件中，使用 SAZ 格式用来保存和读取 HTTP/HTTPS 请求信息，打开该文件可以注意到一些重要的请求：script.bundle.js、live.m3u8、drm 以及八个 ts 视频流文件。</p>
 <p>先来看看 m3u8 文件，可以看到是 AES-128 加密，加密的 key 文件地址为 <code>key://live</code>，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/082996c240d55cb83e787c489961d98b.png" alt="02.png"></p>
 <p>一般情况下，要想解密 ts，必然会去请求 key 的地址，拿到 key 后再解密 ts，很显然此题的 key 地址不是一个合法的 URL 地址，当然此题的抓包记录可能是出题人伪造的，因为这个 Host 是 52tube.mmxxii，也不是一个合法的域名，最主要的是，抓包记录里没有 <code>key://live</code> 这条请求，那么很大概率真实的地址隐藏在 JS 里，从另一个方面来思考，如果这是完整的抓包记录，不管真实的 key 地址是啥，必然会在记录里出现！</p>
 <p>有经验的朋友应该一眼就能看出来 drm 这条请求最有可能是拿 key 的操作了，第一是 drm 这个关键词在 ts 解密里经常会出现，搞得多的朋友应该见过不少，第二 ping 请求返回的 success，通过其名称和返回值来看也不像 key，剩下就只有 drm 了，查看返回值是乱码的，查看 Hex 值，32 位 16 进制数据，而正常的 key 应该是 16 位 16 进制数据，所以你如果直接拿这个数据当作 key 去解密，肯定也是失败的。</p>
 <p>到这里我们应该有如下猜想：drm 返回的数据，经过了 script.bundle.js 二次处理就能得到正确的 key。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/2bbab0520ed00218eebede697b3ab165.png" alt="03"></p>
-<h2 id="JS-逆向"><a href="#JS-逆向" class="headerlink" title="JS 逆向"></a>JS 逆向</h2><p>我们把抓包记录的 script.bundle.js，右键，save - response - response body，保存到本地。</p>
+<h2 id="JS-逆向">JS 逆向</h2>
+<p>我们把抓包记录的 script.bundle.js，右键，save - response - response body，保存到本地。</p>
 <p>格式化之后有 15000+ 行代码，又不能动态调试，从哪里找加密入口呢？可以大胆尝试一下：</p>
 <ul>
 <li>JS 里可能会检测到 m3u8 里存在 key 的 URI 之后，发送 /api/drm/ 这个请求，可以直接搜索 <code>/api/drm/</code> 或者 <code>key://live</code> 定位；</li>
@@ -652,99 +204,98 @@ https://www.example.com/hls/live_00007.ts
 <p>通过搜索可以发现如下可疑代码片段：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/2dd7603630340ef2fd14cace1e7fc58e.png" alt="05"></p>
 <p>将关键代码提炼一下：</p>
-<pre><code class="javascript">function n(t) &#123;
-    return [...new Uint8Array(t)].map((t =&gt; t.toString(16).padStart(2, &quot;0&quot;))).join(&quot;&quot;)
+<pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">n</span>(<span class="hljs-params">t</span>) </span>&#123;
+    <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Uint8Array</span>(t)].map((<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.toString(<span class="hljs-number">16</span>).padStart(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;0&quot;</span>))).join(<span class="hljs-string">&quot;&quot;</span>)
 &#125;
 
-function s(t, e) &#123;
-    let r = new Uint8Array(t.length);
-    for (let i = 0; i &lt; t.length; i++) r[i] = t[i] ^ e[i];
-    return r
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">t, e</span>) </span>&#123;
+    <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(t.length);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; t.length; i++) r[i] = t[i] ^ e[i];
+    <span class="hljs-keyword">return</span> r
 &#125;
 
-let e = &quot;/api/ping/&quot;,
-    i = &quot;/api/drm/&quot;;
+<span class="hljs-keyword">let</span> e = <span class="hljs-string">&quot;/api/ping/&quot;</span>,
+    i = <span class="hljs-string">&quot;/api/drm/&quot;</span>;
 
-class a extends t.DefaultConfig.loader &#123;
-    let e = await async function() &#123;
-        let t = new Uint8Array(16);
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">t</span>.<span class="hljs-title">DefaultConfig</span>.<span class="hljs-title">loader</span> </span>&#123;
+    <span class="hljs-keyword">let</span> e = <span class="hljs-keyword">await</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">let</span> t = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(<span class="hljs-number">16</span>);
         crypto.getRandomValues(t);
-        let e = n(t.buffer) + Date.now() + Math.random();
-        return new Uint8Array((await async function(t) &#123;
-            const e = (new TextEncoder).encode(t);
-            return await crypto.subtle.digest(&quot;SHA-256&quot;, e)
-        &#125; (e)).slice(0, 16))
+        <span class="hljs-keyword">let</span> e = n(t.buffer) + <span class="hljs-built_in">Date</span>.now() + <span class="hljs-built_in">Math</span>.random();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>((<span class="hljs-keyword">await</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>&#123;
+            <span class="hljs-keyword">const</span> e = (<span class="hljs-keyword">new</span> TextEncoder).encode(t);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> crypto.subtle.digest(<span class="hljs-string">&quot;SHA-256&quot;</span>, e)
+        &#125; (e)).slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>))
     &#125;();
-    var r = new URLSearchParams;
-    r.append(&quot;h&quot;, n(e.buffer)),
-        r.append(&quot;id&quot;, t);
-    var a = &#123;
-        method: &quot;POST&quot;,
-        headers: &#123;
-            &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;
+    <span class="hljs-keyword">var</span> r = <span class="hljs-keyword">new</span> URLSearchParams;
+    r.append(<span class="hljs-string">&quot;h&quot;</span>, n(e.buffer)),
+        r.append(<span class="hljs-string">&quot;id&quot;</span>, t);
+    <span class="hljs-keyword">var</span> a = &#123;
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+        <span class="hljs-attr">headers</span>: &#123;
+            <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/x-www-form-urlencoded&quot;</span>
         &#125;,
-        body: r
+        <span class="hljs-attr">body</span>: r
     &#125;;
-    let o = await fetch(i, a),
-        l = await o.arrayBuffer();
-    if (32 !== l.byteLength) throw new Error(&quot;Invalid response&quot;);
-    let u = new Uint8Array(l.slice(0, 16)),
-        c = new Uint8Array(l.slice(16, 32));
-    return s(s(u, e), c)
-&#125;
-</code></pre>
+    <span class="hljs-keyword">let</span> o = <span class="hljs-keyword">await</span> fetch(i, a),
+        l = <span class="hljs-keyword">await</span> o.arrayBuffer();
+    <span class="hljs-keyword">if</span> (<span class="hljs-number">32</span> !== l.byteLength) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;Invalid response&quot;</span>);
+    <span class="hljs-keyword">let</span> u = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>)),
+        c = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>));
+    <span class="hljs-keyword">return</span> s(s(u, e), c)
+&#125;</code></pre>
 <p>可以看到事实上在发送 <code>/api/drm/</code> 请求拿到结果后，先后取前后 16 位数据，然后经过了 s 方法的处理，最后返回的 <code>s(s(u, e), c)</code> 应该才是正确的 key，这里的重点在于 e 的值，上面有个方法，取了当前时间+随机值，经过 SHA-256 加密，再取前 16 位。</p>
 <p>这里可以思考一下，这个 e 的值是不固定的，那么最后的 key 应该也是不固定的，同一个 TS 对应有无数个 key，我反正是没见过，不信的话尝试就用那个方法生成 e，你会发现最终的 key 是错误的。</p>
 <p>仔细看一下，发送 post 请求对 h 值赋值的地方：<code>r.append(&quot;h&quot;, n(e.buffer))</code>，n 方法是转 16 进制，那么我们直接将 h 值倒推，从16进制转为10进制，这才是正确的 e 的值！然后 l 的值是 <code>/api/drm/</code> 请求返回的 32 位 16 进制数据转为 10 进制，剩下的就好说了，直接改写一下 JS 代码拿到正确的 key：</p>
-<pre><code class="javascript">function s(t, e) &#123;
-    let r = new Uint8Array(t.length);
-    for (let i = 0; i &lt; t.length; i++)
+<pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">t, e</span>) </span>&#123;
+    <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(t.length);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; t.length; i++)
         r[i] = t[i] ^ e[i];
-    return r
+    <span class="hljs-keyword">return</span> r
 &#125;
 
-function getKey()&#123;
-    // /api/drm/ 请求表单的 h 值，16进制数据
-    const h = [&quot;7b&quot;, &quot;10&quot;, &quot;31&quot;, &quot;1e&quot;, &quot;6e&quot;, &quot;31&quot;, &quot;0f&quot;, &quot;0d&quot;, &quot;f0&quot;, &quot;68&quot;, &quot;d9&quot;, &quot;ed&quot;, &quot;e1&quot;, &quot;04&quot;, &quot;75&quot;, &quot;a8&quot;];
-    // /api/drm/ 请求返回的32位16进制数据
-    const drm = [&quot;08&quot;, &quot;A5&quot;, &quot;E6&quot;, &quot;C2&quot;, &quot;C2&quot;, &quot;61&quot;, &quot;A8&quot;, &quot;AC&quot;, &quot;B4&quot;, &quot;D7&quot;, &quot;9C&quot;, &quot;49&quot;, &quot;AF&quot;, &quot;16&quot;, &quot;0A&quot;, &quot;3A&quot;, &quot;DA&quot;, &quot;4E&quot;, &quot;5C&quot;, &quot;EA&quot;, &quot;E1&quot;, &quot;6F&quot;, &quot;ED&quot;, &quot;46&quot;, &quot;EB&quot;, &quot;6F&quot;, &quot;49&quot;, &quot;8C&quot;, &quot;9B&quot;, &quot;63&quot;, &quot;D5&quot;, &quot;3B&quot;]
-    // 转换为10进制数据，为 e 和 l 赋值
-    const e = [];
-    const l = [];
-    for (let i=0; i&lt;h.length; i++)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getKey</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-comment">// /api/drm/ 请求表单的 h 值，16进制数据</span>
+    <span class="hljs-keyword">const</span> h = [<span class="hljs-string">&quot;7b&quot;</span>, <span class="hljs-string">&quot;10&quot;</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-string">&quot;1e&quot;</span>, <span class="hljs-string">&quot;6e&quot;</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-string">&quot;0f&quot;</span>, <span class="hljs-string">&quot;0d&quot;</span>, <span class="hljs-string">&quot;f0&quot;</span>, <span class="hljs-string">&quot;68&quot;</span>, <span class="hljs-string">&quot;d9&quot;</span>, <span class="hljs-string">&quot;ed&quot;</span>, <span class="hljs-string">&quot;e1&quot;</span>, <span class="hljs-string">&quot;04&quot;</span>, <span class="hljs-string">&quot;75&quot;</span>, <span class="hljs-string">&quot;a8&quot;</span>];
+    <span class="hljs-comment">// /api/drm/ 请求返回的32位16进制数据</span>
+    <span class="hljs-keyword">const</span> drm = [<span class="hljs-string">&quot;08&quot;</span>, <span class="hljs-string">&quot;A5&quot;</span>, <span class="hljs-string">&quot;E6&quot;</span>, <span class="hljs-string">&quot;C2&quot;</span>, <span class="hljs-string">&quot;C2&quot;</span>, <span class="hljs-string">&quot;61&quot;</span>, <span class="hljs-string">&quot;A8&quot;</span>, <span class="hljs-string">&quot;AC&quot;</span>, <span class="hljs-string">&quot;B4&quot;</span>, <span class="hljs-string">&quot;D7&quot;</span>, <span class="hljs-string">&quot;9C&quot;</span>, <span class="hljs-string">&quot;49&quot;</span>, <span class="hljs-string">&quot;AF&quot;</span>, <span class="hljs-string">&quot;16&quot;</span>, <span class="hljs-string">&quot;0A&quot;</span>, <span class="hljs-string">&quot;3A&quot;</span>, <span class="hljs-string">&quot;DA&quot;</span>, <span class="hljs-string">&quot;4E&quot;</span>, <span class="hljs-string">&quot;5C&quot;</span>, <span class="hljs-string">&quot;EA&quot;</span>, <span class="hljs-string">&quot;E1&quot;</span>, <span class="hljs-string">&quot;6F&quot;</span>, <span class="hljs-string">&quot;ED&quot;</span>, <span class="hljs-string">&quot;46&quot;</span>, <span class="hljs-string">&quot;EB&quot;</span>, <span class="hljs-string">&quot;6F&quot;</span>, <span class="hljs-string">&quot;49&quot;</span>, <span class="hljs-string">&quot;8C&quot;</span>, <span class="hljs-string">&quot;9B&quot;</span>, <span class="hljs-string">&quot;63&quot;</span>, <span class="hljs-string">&quot;D5&quot;</span>, <span class="hljs-string">&quot;3B&quot;</span>]
+    <span class="hljs-comment">// 转换为10进制数据，为 e 和 l 赋值</span>
+    <span class="hljs-keyword">const</span> e = [];
+    <span class="hljs-keyword">const</span> l = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;h.length; i++)
     &#123;
-        e.push(parseInt(h[i],16))
+        e.push(<span class="hljs-built_in">parseInt</span>(h[i],<span class="hljs-number">16</span>))
     &#125;
-    for (let i=0; i&lt;drm.length; i++)
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;drm.length; i++)
     &#123;
-        l.push(parseInt(drm[i],16))
+        l.push(<span class="hljs-built_in">parseInt</span>(drm[i],<span class="hljs-number">16</span>))
     &#125;
 
-    const u = new Uint8Array(l.slice(0, 16));
-    const c = new Uint8Array(l.slice(16, 32));
+    <span class="hljs-keyword">const</span> u = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>));
+    <span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>));
 
-    const keyArray = s(s(u, e), c);
-    const keyHex = new Buffer.from(keyArray).toString(&#39;hex&#39;);
-    const keyBase64 = new Buffer.from(keyArray).toString(&#39;base64&#39;);
+    <span class="hljs-keyword">const</span> keyArray = s(s(u, e), c);
+    <span class="hljs-keyword">const</span> keyHex = <span class="hljs-keyword">new</span> Buffer.from(keyArray).toString(<span class="hljs-string">&#x27;hex&#x27;</span>);
+    <span class="hljs-keyword">const</span> keyBase64 = <span class="hljs-keyword">new</span> Buffer.from(keyArray).toString(<span class="hljs-string">&#x27;base64&#x27;</span>);
 
-    console.log(&quot;keyArray: &quot;, keyArray)
-    console.log(&quot;keyHex: &quot;, keyHex)
-    console.log(&quot;keyBase64: &quot;, keyBase64)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyArray: &quot;</span>, keyArray)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyHex: &quot;</span>, keyHex)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyBase64: &quot;</span>, keyBase64)
 &#125;
 
 getKey()
 
-// 输出
-// keyArray:  Uint8Array(16) [
-//   169, 251, 139,  54,  77,
-//    63,  74, 231, 175, 208,
-//    12,  40, 213, 113, 170,
-//   169
-// ]
-// keyHex:  a9fb8b364d3f4ae7afd00c28d571aaa9
-// keyBase64:  qfuLNk0/Suev0Awo1XGqqQ==
-</code></pre>
-<h2 id="TS-解密合并转换"><a href="#TS-解密合并转换" class="headerlink" title="TS 解密合并转换"></a>TS 解密合并转换</h2><p>通过 JS 逆向我们拿到了 16进制和 base64 形式的  key，不管什么形式都可以拿来解密，这里介绍两种对 TS 媒体流解密、合并、转换的方法。</p>
+<span class="hljs-comment">// 输出</span>
+<span class="hljs-comment">// keyArray:  Uint8Array(16) [</span>
+<span class="hljs-comment">//   169, 251, 139,  54,  77,</span>
+<span class="hljs-comment">//    63,  74, 231, 175, 208,</span>
+<span class="hljs-comment">//    12,  40, 213, 113, 170,</span>
+<span class="hljs-comment">//   169</span>
+<span class="hljs-comment">// ]</span>
+<span class="hljs-comment">// keyHex:  a9fb8b364d3f4ae7afd00c28d571aaa9</span>
+<span class="hljs-comment">// keyBase64:  qfuLNk0/Suev0Awo1XGqqQ==</span></code></pre>
+<h2 id="TS-解密合并转换">TS 解密合并转换</h2>
+<p>通过 JS 逆向我们拿到了 16进制和 base64 形式的  key，不管什么形式都可以拿来解密，这里介绍两种对 TS 媒体流解密、合并、转换的方法。</p>
 <p>第一种方法是使用 FFmpeg 工具，FFmpeg 是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。官网地址：<a target="_blank" rel="noopener" href="https://ffmpeg.org/">https://ffmpeg.org/</a> ，下载编译好的程序，将 bin 目录添加到环境变量即可。</p>
 <p>首先我们要把 m3u8 文件和 ts 媒体流保存到同一个文件夹，由于是虚假的 Host，所以不能直接浏览器访问保存，可以直接在 Fiddler 里，右键，save - response - response body，保存到本地，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/749cfe83e0a6e2fc1abc53d6f014af20.png" alt="06"></p>
@@ -765,703 +316,142 @@ getKey()
 <p><img src="https://img-blog.csdnimg.cn/img_convert/362caaedb5b649cfd650aefd326ae615.png" alt="14"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/4dd28112ed306fd0ba26f946f8531891.png" alt="15"></p>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/046/">https://www.itbob.cn/article/046/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/047/" 
+                            class="post-title gt-a-link">RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/045/" 
+                            class="post-title gt-a-link">CTF&爬虫：掌握这些特征，一秒识别密文加密方式</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/047/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/045/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

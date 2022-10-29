@@ -1,591 +1,140 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,JS 逆向,爬虫">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/049/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/049/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="JS 逆向"> <meta property="og:article:tag" content="爬虫"> 
-
-    
-        <meta property="article:published_time" content="Wed Mar 16 2022 12:18:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/049/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/049/index.html",
-    "headline": "【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析",
-    "datePublished": "Wed Mar 16 2022 12:18:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",JS 逆向,爬虫ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%A3%B0%E6%98%8E"><span class="post-toc-number">1.</span> <span class="post-toc-text">声明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%80%86%E5%90%91%E7%9B%AE%E6%A0%87"><span class="post-toc-number">2.</span> <span class="post-toc-text">逆向目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90"><span class="post-toc-number">3.</span> <span class="post-toc-text">抓包分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Cookies-%E5%8F%82%E6%95%B0"><span class="post-toc-number">4.</span> <span class="post-toc-text">Cookies 参数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#user-trace-token"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">user_trace_token</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-HTTP-TOKEN"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">X_HTTP_TOKEN</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#lg-stoken"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">lg_stoken</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%8F%82%E6%95%B0"><span class="post-toc-number">5.</span> <span class="post-toc-text">请求头参数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#x-anit-forge-code-x-anit-forge-token"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">x-anit-forge-code &#x2F; x-anit-forge-token</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#traceparent"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">traceparent</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-K-HEADER-X-SS-REQ-HEADER"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">X-K-HEADER &#x2F; X-SS-REQ-HEADER</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-S-HEADER"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">X-S-HEADER</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%AF%B7%E6%B1%82-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E8%A7%A3%E5%AF%86"><span class="post-toc-number">6.</span> <span class="post-toc-text">请求&#x2F;返回数据解密</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%80%86%E5%90%91%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="post-toc-number">7.</span> <span class="post-toc-text">逆向小技巧</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="post-toc-number">8.</span> <span class="post-toc-text">完整代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="post-toc-number">9.</span> <span class="post-toc-text">常见问题</span></a></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>3月 16, 2022</span> -->
-        <span>2022-03-16 12:18:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZklEQVR42u3a0W7CMAwFUP7/p7fXSYju2k5DQKdPaC0lJ5MS68aPn6++Hnh4eHh4eHh4eIfxHvH1/Pzfvzx/fvX+57svB1ocGx4eHt5O3j9L7SXgmnE9Nfnv5s/g4eHh7eTlQ0y2gWRY11tFdWx4eHh4Z/KShTspx3vTioeHh/eJvFUxRDWqwMPDwzuT1wsFrgeXBK/V4OPGrAUPDw8v5lUPwHZ+fsP5Hh4eHt4lr9nYVNwMVh13Re/Bw8PDu5lXLYXzMGJyJNYLJvDw8PB28iaLcu/IqhdSRE/i4eHhbeElg642EyRHX3khPspa8PDw8JbyystuXGTn362W43h4eHjn8MpL8KKoore1FFJqPDw8vKW8vAWqFz1Ut58F4QgeHh7eFt71Ij4pnSdbSDPwxcPDw9vCm8e1vY0k+Vb5n4GHh4e3hZc3WiVtAdViPd8MouYtPDw8vC28JIaYHIbl20/vbXh4eHgn8KpRRa9RYFU8gYeHh7eT14shehFtNQSpTgQeHh7eHl41jMjvThh5hIGHh4d3Aq8XGfTapHpl9CilxsPDw1vEqwLyI7F5Ab1gY8DDw8O7jZe8unoV4tdW4Y6Hh4f3Ll5eWCdTM2lNqE5Zs6cMDw8Pb8BbFR9UW7LyErn8u3h4eHg38ybFcTWK7TUllCcCDw8PbwtvvhkkUUIvpFjQdIWHh4d3Gy95RfUYrNeCkJfjeHh4eJ/Fm5TFefhbvouHh4d3GC8vuwuH/YPNBg8PD++9vGTovYOupBTutRHg4eHhvYs3CV7zwVWX/up04OHh4e3hfd+Fh4eHh4eHh4d3wPULBS73EzvnmwQAAAAASUVORK5CYII=">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/JS-%E9%80%86%E5%90%91/" rel="tag">JS 逆向</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;5.1k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;22 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/049/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析&url=https://www.itbob.cn/article/049/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析&url=https://www.itbob.cn/article/049/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/049/index.html&text=【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/049/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/049/index.html&title=【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/049/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">【JS 逆向】拉勾网爬虫，traceparent、__lg_stoken__、X-S-HEADER 等参数分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-03-16 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p><strong>本文章中所有内容仅供学习交流，抓包内容、敏感网址、数据接口均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关，若有侵权，请在公众号联系我立即删除！</strong></p>
-<h2 id="逆向目标"><a href="#逆向目标" class="headerlink" title="逆向目标"></a>逆向目标</h2><p>本次的目标是拉勾网职位的爬取，涉及到的一些关键参数如下：</p>
+                    
+                        <a href="/tags/JS-%E9%80%86%E5%90%91/" class="post-tag">
+                            #JS 逆向</a>
+                    
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            #爬虫</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="声明">声明</h2>
+<p><strong>本文章中所有内容仅供学习交流，抓包内容、敏感网址、数据接口均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关，若有侵权，请在公众号联系我立即删除！</strong></p>
+<h2 id="逆向目标">逆向目标</h2>
+<p>本次的目标是拉勾网职位的爬取，涉及到的一些关键参数如下：</p>
 <ul>
 <li>请求头参数：<code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code></li>
 <li>Cookie 值：<code>user_trace_token</code>、<code>X_HTTP_TOKEN</code>、<code>__lg_stoken__</code></li>
@@ -593,7 +142,8 @@
 </ul>
 <p>参数比较多，但事实上有些参数固定、或者直接不要，也是可以的，比如 Cookie 的三个值，请求头的 <code>X-K-HEADER</code>、<code>X-SS-REQ-HEADER</code> 等可以固定，<code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 可有可无。尽管如此，本文还是把每个参数的来源都分析了，可根据你实际情况灵活处理。</p>
 <p>另外即便是把所有参数都补齐了，拉勾网对于单个 IP 还有频率限制，抓不了几次就要求登录，可自行搭配代理进行抓取，或者复制账号登录后的 cookies 到代码里，可以解除限制，如果是账号登录后访问，请求头多了两个参数，即 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code>，经过测试这两个参数其实不要也行。</p>
-<h2 id="抓包分析"><a href="#抓包分析" class="headerlink" title="抓包分析"></a>抓包分析</h2><p>搜索职位，点击翻页，就可以看到一条名为 positionAjax.json 的 Ajax 请求，不难判断这就是返回的职位信息。重点参数已在图中框出来了。</p>
+<h2 id="抓包分析">抓包分析</h2>
+<p>搜索职位，点击翻页，就可以看到一条名为 positionAjax.json 的 Ajax 请求，不难判断这就是返回的职位信息。重点参数已在图中框出来了。</p>
 <p>未登录，正常 IP，正常请求，Header 以及 Cookies：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/70cb2fa995ca86f03f2356999f2e76dc.png" alt="01"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/0072eeb2185eb259f92ba86ffaa87216.png" alt="02"></p>
@@ -602,50 +152,51 @@
 <p><img src="https://img-blog.csdnimg.cn/img_convert/1f7fadc2fceef7508ac9acf308965a69.png" alt="04"></p>
 <p>请求数据和返回数据都经过了加密：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/1253e653b4c3ef62aa5b0a6ea43cc60f.png" alt="05"></p>
-<h2 id="Cookies-参数"><a href="#Cookies-参数" class="headerlink" title="Cookies 参数"></a>Cookies 参数</h2><p>先看 cookies 里的关键参数，主要是 <code>user_trace_token</code>、<code>X_HTTP_TOKEN</code> 和 <code>__lg_stoken__</code>。</p>
-<h3 id="user-trace-token"><a href="#user-trace-token" class="headerlink" title="user_trace_token"></a>user_trace_token</h3><p>通过接口返回的，直接搜索就可以找到，如下图所示：</p>
+<h2 id="Cookies-参数">Cookies 参数</h2>
+<p>先看 cookies 里的关键参数，主要是 <code>user_trace_token</code>、<code>X_HTTP_TOKEN</code> 和 <code>__lg_stoken__</code>。</p>
+<h3 id="user-trace-token">user_trace_token</h3>
+<p>通过接口返回的，直接搜索就可以找到，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/51b765b8c4bf512393cfc701254bf1a7.png" alt="06"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/cf51c497bb4c3a66b5dd6a4e6d1fa0af.png" alt="07"></p>
 <p>请求参数，time 是时间戳，a 值随便，没有都可以，不影响，其他值都是定值，获取的关键代码如下：</p>
-<pre><code class="python">def get_user_trace_token() -&gt; str:
-    # 获取 cookie 中的 user_trace_token
-    json_url = &quot;https://a.脱敏处理.com/json&quot;
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_trace_token</span>() -&gt; <span class="hljs-built_in">str</span>:</span>
+    <span class="hljs-comment"># 获取 cookie 中的 user_trace_token</span>
+    json_url = <span class="hljs-string">&quot;https://a.脱敏处理.com/json&quot;</span>
     headers = &#123;
-        &quot;Host&quot;: &quot;a.脱敏处理.com&quot;,
-        &quot;Referer&quot;: &quot;https://www.脱敏处理.com/&quot;,
-        &quot;User-Agent&quot;: UA
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;a.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/&quot;</span>,
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA
     &#125;
     params = &#123;
-        &quot;lt&quot;: &quot;trackshow&quot;,
-        &quot;t&quot;: &quot;ad&quot;,
-        &quot;v&quot;: 0,
-        &quot;dl&quot;: &quot;https://www.脱敏处理.com/&quot;,
-        &quot;dr&quot;: &quot;https://www.脱敏处理.com&quot;,
-        &quot;time&quot;: str(int(time.time() * 1000))
+        <span class="hljs-string">&quot;lt&quot;</span>: <span class="hljs-string">&quot;trackshow&quot;</span>,
+        <span class="hljs-string">&quot;t&quot;</span>: <span class="hljs-string">&quot;ad&quot;</span>,
+        <span class="hljs-string">&quot;v&quot;</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-string">&quot;dl&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/&quot;</span>,
+        <span class="hljs-string">&quot;dr&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;time&quot;</span>: <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(time.time() * <span class="hljs-number">1000</span>))
     &#125;
     response = requests.get(url=json_url, headers=headers, params=params)
-    user_trace_token = response.cookies.get_dict()[&quot;user_trace_token&quot;]
-    return user_trace_token
-</code></pre>
-<h3 id="X-HTTP-TOKEN"><a href="#X-HTTP-TOKEN" class="headerlink" title="X_HTTP_TOKEN"></a>X_HTTP_TOKEN</h3><p>直接搜索没有值，直接上 Hook 大法，小白朋友不清楚的话可以看以前的文章，都有详细教程，这里不再细说。</p>
-<pre><code class="javascript">(function () &#123;
-    &#39;use strict&#39;;
-    var cookieTemp = &quot;&quot;;
-    Object.defineProperty(document, &#39;cookie&#39;, &#123;
-        set: function (val) &#123;
-            console.log(&#39;Hook捕获到cookie设置-&gt;&#39;, val);
-            if (val.indexOf(&#39;X_HTTP_TOKEN&#39;) != -1) &#123;
-                debugger;
+    user_trace_token = response.cookies.get_dict()[<span class="hljs-string">&quot;user_trace_token&quot;</span>]
+    <span class="hljs-keyword">return</span> user_trace_token</code></pre>
+<h3 id="X-HTTP-TOKEN">X_HTTP_TOKEN</h3>
+<p>直接搜索没有值，直接上 Hook 大法，小白朋友不清楚的话可以看以前的文章，都有详细教程，这里不再细说。</p>
+<pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+<span class="hljs-meta">    &#x27;use strict&#x27;</span>;
+    <span class="hljs-keyword">var</span> cookieTemp = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">document</span>, <span class="hljs-string">&#x27;cookie&#x27;</span>, &#123;
+        <span class="hljs-attr">set</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">val</span>) </span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hook捕获到cookie设置-&gt;&#x27;</span>, val);
+            <span class="hljs-keyword">if</span> (val.indexOf(<span class="hljs-string">&#x27;X_HTTP_TOKEN&#x27;</span>) != -<span class="hljs-number">1</span>) &#123;
+                <span class="hljs-keyword">debugger</span>;
             &#125;
             cookieTemp = val;
-            return val;
+            <span class="hljs-keyword">return</span> val;
         &#125;,
-        get: function () &#123;
-            return cookieTemp;
+        <span class="hljs-attr">get</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+            <span class="hljs-keyword">return</span> cookieTemp;
         &#125;
     &#125;);
-&#125;)();
-</code></pre>
+&#125;)();</code></pre>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/bbba2e987582027cc7abd508b3574034.png" alt="08"></p>
 <p>往上跟栈调试，是一个小小的 OB 混淆，<code>_0x32e0d2</code> 就是最后的 <code>X_HTTP_TOKEN</code> 值了，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/54d3c9e468fc4a104eceb6d3e888e241.png" alt="09"></p>
@@ -653,33 +204,33 @@
 <p><img src="https://img-blog.csdnimg.cn/img_convert/7a1675d3103c4057fc553339712e9f06.png" alt="10"></p>
 <p>补全 document 后，再次运行，又会报错 window 未定义，再次定位到源码，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/0b202a0b9bba762648653c7a519277f7.png" alt="11"></p>
-<p>分析一下，取了 window XMLHttpRequest 对象，向 wafcheck.json 这个接口发送了一个 Ajax GET 请求，然后取了 Response Header 的 Date 值赋值给 <code>_0x309ac8</code>，注意这个 Date 值比正常时间晚了8个小时，然而取 Date 值并没有什么用，因为后面又 new 了一个新 Date 标准时间，赋值给了 <code>_0x150c4d</code>，<code>new Date(_0x309ac8[_0x3551(&#39;0x2d&#39;)](/-/g, &#39;/&#39;))</code> 语句虽然用到了前面的旧 Date，然而实际上是 <code>replace()</code> 替换方法，与旧的 Date 并没有什么关系，然后调用 <code>Date.parse()</code> 方法将新 Date 转换成时间戳赋值给 <code>_0x4e6d5d</code>，所以不需要这么复杂，直接本地把 <code>_0x89ea429</code> 方法修改一下就行了：</p>
-<pre><code class="javascript">// 原方法
-// function _0x89ea42() &#123;
-//     var _0x372cc0 = null;
-//     if (window[_0x3551(&#39;0x26&#39;)]) &#123;
-//         _0x372cc0 = new window[(_0x3551(&#39;0x26&#39;))]();
-//     &#125; else &#123;
-//         _0x372cc0 = new ActiveObject(_0x3551(&#39;0x27&#39;));
-//     &#125;
-//     _0x372cc0[_0x3551(&#39;0x28&#39;)](_0x3551(&#39;0x29&#39;), _0x3551(&#39;0x2a&#39;), ![]);
-//     _0x372cc0[_0x3551(&#39;0x2b&#39;)](null);
-//     var _0x309ac8 = _0x372cc0[_0x3551(&#39;0x2c&#39;)](&#39;Date&#39;);
-//     var _0x150c4d = new Date(_0x309ac8[_0x3551(&#39;0x2d&#39;)](/-/g, &#39;/&#39;));
-//     var _0x4e6d5d = Date[_0x3551(&#39;0x2e&#39;)](_0x150c4d);
-//     return _0x4e6d5d / 0x3e8;
-// &#125;
+<p>分析一下，取了 window XMLHttpRequest 对象，向 wafcheck.json 这个接口发送了一个 Ajax GET 请求，然后取了 Response Header 的 Date 值赋值给 <code>_0x309ac8</code>，注意这个 Date 值比正常时间晚了8个小时，然而取 Date 值并没有什么用，因为后面又 new 了一个新 Date 标准时间，赋值给了 <code>_0x150c4d</code>，<code>new Date(_0x309ac8[_0x3551('0x2d')](/-/g, '/'))</code> 语句虽然用到了前面的旧 Date，然而实际上是 <code>replace()</code> 替换方法，与旧的 Date 并没有什么关系，然后调用 <code>Date.parse()</code> 方法将新 Date 转换成时间戳赋值给 <code>_0x4e6d5d</code>，所以不需要这么复杂，直接本地把 <code>_0x89ea429</code> 方法修改一下就行了：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// 原方法</span>
+<span class="hljs-comment">// function _0x89ea42() &#123;</span>
+<span class="hljs-comment">//     var _0x372cc0 = null;</span>
+<span class="hljs-comment">//     if (window[_0x3551(&#x27;0x26&#x27;)]) &#123;</span>
+<span class="hljs-comment">//         _0x372cc0 = new window[(_0x3551(&#x27;0x26&#x27;))]();</span>
+<span class="hljs-comment">//     &#125; else &#123;</span>
+<span class="hljs-comment">//         _0x372cc0 = new ActiveObject(_0x3551(&#x27;0x27&#x27;));</span>
+<span class="hljs-comment">//     &#125;</span>
+<span class="hljs-comment">//     _0x372cc0[_0x3551(&#x27;0x28&#x27;)](_0x3551(&#x27;0x29&#x27;), _0x3551(&#x27;0x2a&#x27;), ![]);</span>
+<span class="hljs-comment">//     _0x372cc0[_0x3551(&#x27;0x2b&#x27;)](null);</span>
+<span class="hljs-comment">//     var _0x309ac8 = _0x372cc0[_0x3551(&#x27;0x2c&#x27;)](&#x27;Date&#x27;);</span>
+<span class="hljs-comment">//     var _0x150c4d = new Date(_0x309ac8[_0x3551(&#x27;0x2d&#x27;)](/-/g, &#x27;/&#x27;));</span>
+<span class="hljs-comment">//     var _0x4e6d5d = Date[_0x3551(&#x27;0x2e&#x27;)](_0x150c4d);</span>
+<span class="hljs-comment">//     return _0x4e6d5d / 0x3e8;</span>
+<span class="hljs-comment">// &#125;</span>
 
-// 本地改写
-function _0x89ea42() &#123;
-    var _0x150c4d = new Date();
-    var _0x4e6d5d = Date.parse(_0x150c4d);
-    return _0x4e6d5d / 0x3e8;
-&#125;
-</code></pre>
+<span class="hljs-comment">// 本地改写</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_0x89ea42</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> _0x150c4d = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-keyword">var</span> _0x4e6d5d = <span class="hljs-built_in">Date</span>.parse(_0x150c4d);
+    <span class="hljs-keyword">return</span> _0x4e6d5d / <span class="hljs-number">0x3e8</span>;
+&#125;</code></pre>
 <p>本地测试 OK：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/281437e650682cc59489955d88dc7bf5.png" alt="12"></p>
-<h3 id="lg-stoken"><a href="#lg-stoken" class="headerlink" title="lg_stoken"></a><strong>lg_stoken</strong></h3><p><code>__lg_stoken__</code> 这个参数是在点击搜索后才开始生成的，直接搜索同样没值，Hook 一下，往上跟栈，很容易找到生成位置：</p>
+<h3 id="lg-stoken"><strong>lg_stoken</strong></h3>
+<p><code>__lg_stoken__</code> 这个参数是在点击搜索后才开始生成的，直接搜索同样没值，Hook 一下，往上跟栈，很容易找到生成位置：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/da44eff2c8db5bcb772483440154ca4a.png" alt="13"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/95fc8ff9ba9695f869840d786f33b822.png" alt="14"></p>
 <p>可以看到 d 就是 <code>__lg_stoken__</code> 的值，<code>d = (new g()).a()</code>、<code>g = window.gt</code>，<code>window.gt</code> 实际上是调用了 <code>_0x11db59</code></p>
@@ -687,9 +238,9 @@ function _0x89ea42() &#123;
 <p><img src="https://img-blog.csdnimg.cn/img_convert/7b16218279b88d708ef41c717ebf03d4.png" alt="15"></p>
 <p>到这里也许你想下断点去调试一下，看看能不能扣个逻辑出来，但是你会发现刷新之后断不下，因为这个混淆 JS 文件是一直在变化的，之前的断点就不管用了，然后你就可能会想到直接替换掉这个 JS，让文件名固定下来，就可以断点调试了，如果你这样操作的话，重新刷新会发现一直在加载中，打开控制台会发现报错了，造成这样的原因就在于这个混淆 JS 不仅文件名会改变，他的内容也会改变，当然，内容也不仅仅是改变了变量名那么简单，有些值也是动态变化的，比如：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/085f1a05ec9ba2419fe631e412e776ff.png" alt="16"></p>
-<p>这里我们先不管那么多，直接把所有的混淆代码 copy 下来，先在本地调试一下，看看能不能跑通，调试过程中，先后会提示 <code>window is not defined</code>、<code>Cannot read properties of undefined (reading &#39;hostname&#39;)</code>，定位到代码，有个取 <code>window.location.hostname</code> 的操作，本地定义一下就行了：</p>
+<p>这里我们先不管那么多，直接把所有的混淆代码 copy 下来，先在本地调试一下，看看能不能跑通，调试过程中，先后会提示 <code>window is not defined</code>、<code>Cannot read properties of undefined (reading 'hostname')</code>，定位到代码，有个取 <code>window.location.hostname</code> 的操作，本地定义一下就行了：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/fdda6cf866ecb09c5f7f059bd91ad056.png" alt="17"></p>
-<p>再次调试又会报错 <code> Cannot read properties of undefined (reading &#39;substr&#39;)</code>，<code>substr()</code> 方法可在字符串中抽取从指定下标开始的、指定数目的字符，是字符串对象 stringObject 具有的方法，我们定位到代码，发现是 <code>window.location.search</code> 对象调用了 <code>substr()</code> 方法，所以同样的，我们本地也要补齐。</p>
+<p>再次调试又会报错 <code> Cannot read properties of undefined (reading 'substr')</code>，<code>substr()</code> 方法可在字符串中抽取从指定下标开始的、指定数目的字符，是字符串对象 stringObject 具有的方法，我们定位到代码，发现是 <code>window.location.search</code> 对象调用了 <code>substr()</code> 方法，所以同样的，我们本地也要补齐。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/e951e3c429fff1e85e127a810d9e259e.png" alt="18"></p>
 <p>本地补齐参数后，运行结果与网页一致：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/3ef0c04fbc7678fc2553830a473d4356.png" alt="19"></p>
@@ -697,131 +248,130 @@ function _0x89ea42() &#123;
 <p><img src="https://img-blog.csdnimg.cn/img_convert/c686be59dceaf2965fd00383cfe68066.png" alt="20"></p>
 <p>调试成功后，我们随便换一个搜索关键词，将得到的302跳转地址拿到这个 JS 中，加密一下，发现会报错，这说明混淆 JS 传入的参数和 JS 内容应该是相对应的，这里的做法是直接请求拿到这个 JS 文件内容，然后把要补的 window 和获取 <code>__lg_stoken__</code> 的方法加进去，然后直接执行就行了。</p>
 <p>获取 <code>__lg_stoken__</code>  的关键代码如下（<code>original_data</code> 为原始搜索数据）：</p>
-<pre><code class="python">def get_lg_stoken(original_data: dict) -&gt; str:
-    # 获取 cookie 中的 __lg_stoken__
-    token_url = &quot;https://www.脱敏处理.com/wn/jobs&quot;
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_lg_stoken</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">str</span>:</span>
+    <span class="hljs-comment"># 获取 cookie 中的 __lg_stoken__</span>
+    token_url = <span class="hljs-string">&quot;https://www.脱敏处理.com/wn/jobs&quot;</span>
     token_headers = &#123;
-        &quot;Host&quot;: &quot;www.脱敏处理.com&quot;,
-        &quot;Referer&quot;: &quot;https://www.脱敏处理.com/&quot;,
-        &quot;User-Agent&quot;: UA
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/&quot;</span>,
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA
     &#125;
     params = &#123;
-        &quot;kd&quot;: original_data[&quot;kd&quot;],
-        &quot;city&quot;: original_data[&quot;city&quot;]
+        <span class="hljs-string">&quot;kd&quot;</span>: original_data[<span class="hljs-string">&quot;kd&quot;</span>],
+        <span class="hljs-string">&quot;city&quot;</span>: original_data[<span class="hljs-string">&quot;city&quot;</span>]
     &#125;
-    token_response = requests.get(url=token_url, params=params, headers=token_headers, cookies=global_cookies, allow_redirects=False)
-    if token_response.status_code != 302:
-        raise Exception(&quot;获取跳转链接异常！检查 global_cookies 是否已包含 __lg_stoken__！&quot;)
-    # 获取 302 跳转的地址
-    security_check_url = token_response.headers[&quot;Location&quot;]
-    if &quot;login&quot; in security_check_url:
-        raise Exception(&quot;IP 被关进小黑屋啦！需要登录！请补全登录后的 Cookie，或者自行添加代理！&quot;)
+    token_response = requests.get(url=token_url, params=params, headers=token_headers, cookies=global_cookies, allow_redirects=<span class="hljs-literal">False</span>)
+    <span class="hljs-keyword">if</span> token_response.status_code != <span class="hljs-number">302</span>:
+        <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;获取跳转链接异常！检查 global_cookies 是否已包含 __lg_stoken__！&quot;</span>)
+    <span class="hljs-comment"># 获取 302 跳转的地址</span>
+    security_check_url = token_response.headers[<span class="hljs-string">&quot;Location&quot;</span>]
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;login&quot;</span> <span class="hljs-keyword">in</span> security_check_url:
+        <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;IP 被关进小黑屋啦！需要登录！请补全登录后的 Cookie，或者自行添加代理！&quot;</span>)
     parse_result = parse.urlparse(security_check_url)
-    # url 的参数为待加密对象
+    <span class="hljs-comment"># url 的参数为待加密对象</span>
     security_check_params = parse_result.query
-    # 取 name 参数，为混淆 js 的文件名
-    security_check_js_name = parse.parse_qs(security_check_params)[&quot;name&quot;][0]
+    <span class="hljs-comment"># 取 name 参数，为混淆 js 的文件名</span>
+    security_check_js_name = parse.parse_qs(security_check_params)[<span class="hljs-string">&quot;name&quot;</span>][<span class="hljs-number">0</span>]
 
-    # 发送请求，获取混淆的 js
-    js_url = &quot;https://www.脱敏处理.com/common-sec/dist/&quot; + security_check_js_name + &quot;.js&quot;
+    <span class="hljs-comment"># 发送请求，获取混淆的 js</span>
+    js_url = <span class="hljs-string">&quot;https://www.脱敏处理.com/common-sec/dist/&quot;</span> + security_check_js_name + <span class="hljs-string">&quot;.js&quot;</span>
     js_headers = &#123;
-        &quot;Host&quot;: &quot;www.脱敏处理.com&quot;,
-        &quot;Referer&quot;: security_check_url,
-        &quot;User-Agent&quot;: UA
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: security_check_url,
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA
     &#125;
     js_response = requests.get(url=js_url, headers=js_headers, cookies=global_cookies).text
-    # 补全 js，添加 window 参数和一个方法，用于获取 __lg_stoken__ 的值
-    lg_js = &quot;&quot;&quot;
-    window = &#123;
-        &quot;location&quot;: &#123;
-            &quot;hostname&quot;: &quot;www.脱敏处理.com&quot;,
-            &quot;search&quot;: &#39;?%s&#39;
-        &#125;
-    &#125;
-    function getLgStoken()&#123;
-        return window.gt.prototype.a()
-    &#125;
-    &quot;&quot;&quot; % security_check_params + js_response
+    <span class="hljs-comment"># 补全 js，添加 window 参数和一个方法，用于获取 __lg_stoken__ 的值</span>
+    lg_js = <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    window = &#123;</span>
+<span class="hljs-string">        &quot;location&quot;: &#123;</span>
+<span class="hljs-string">            &quot;hostname&quot;: &quot;www.脱敏处理.com&quot;,</span>
+<span class="hljs-string">            &quot;search&quot;: &#x27;?%s&#x27;</span>
+<span class="hljs-string">        &#125;</span>
+<span class="hljs-string">    &#125;</span>
+<span class="hljs-string">    function getLgStoken()&#123;</span>
+<span class="hljs-string">        return window.gt.prototype.a()</span>
+<span class="hljs-string">    &#125;</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span> % security_check_params + js_response
 
-    lg_stoken = execjs.compile(lg_js).call(&quot;getLgStoken&quot;)
-    return lg_stoken
-</code></pre>
-<h2 id="请求头参数"><a href="#请求头参数" class="headerlink" title="请求头参数"></a>请求头参数</h2><p>请求头参数比较多，有 <code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code>，其中最后两个 <code>x-anit</code> 开头的参数是登录后才有的，实际测试中，即便是登录了，不加这两个好像也行。不过还是分析一下吧。</p>
-<h3 id="x-anit-forge-code-x-anit-forge-token"><a href="#x-anit-forge-code-x-anit-forge-token" class="headerlink" title="x-anit-forge-code / x-anit-forge-token"></a>x-anit-forge-code / x-anit-forge-token</h3><p>这两个值是首次点击搜索生成的，第一次访问搜索接口，返回的 HTML 里面夹杂了一个 JSON 文件，里面的 <code>submitCode</code> 和 <code>submitToken</code> 就是 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 的值，如下图所示：</p>
+    lg_stoken = execjs.<span class="hljs-built_in">compile</span>(lg_js).call(<span class="hljs-string">&quot;getLgStoken&quot;</span>)
+    <span class="hljs-keyword">return</span> lg_stoken</code></pre>
+<h2 id="请求头参数">请求头参数</h2>
+<p>请求头参数比较多，有 <code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code>，其中最后两个 <code>x-anit</code> 开头的参数是登录后才有的，实际测试中，即便是登录了，不加这两个好像也行。不过还是分析一下吧。</p>
+<h3 id="x-anit-forge-code-x-anit-forge-token">x-anit-forge-code / x-anit-forge-token</h3>
+<p>这两个值是首次点击搜索生成的，第一次访问搜索接口，返回的 HTML 里面夹杂了一个 JSON 文件，里面的 <code>submitCode</code> 和 <code>submitToken</code> 就是 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 的值，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/b058272ab7d86994c7c93e4ef6c521ed.png" alt="21"></p>
 <p>请求这个接口要注意带上登录后的 cookies，有用的只有四个值，正确的 cookies 类似于：</p>
-<pre><code class="python">cookies = &#123;
-    &quot;login&quot;: &quot;true&quot;,
-    &quot;gate_login_token&quot;: &quot;54a31e93aa904a6bb9731bxxxxxxxxxxxxxx&quot;,
-    &quot;_putrc&quot;: &quot;9550E53D830BE8xxxxxxxxxxxxxx&quot;,
-    &quot;JSESSIONID&quot;: &quot;ABAAAECABIEACCA79BFxxxxxxxxxxxxxx&quot;
-&#125;
-</code></pre>
+<pre><code class="hljs python">cookies = &#123;
+    <span class="hljs-string">&quot;login&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
+    <span class="hljs-string">&quot;gate_login_token&quot;</span>: <span class="hljs-string">&quot;54a31e93aa904a6bb9731bxxxxxxxxxxxxxx&quot;</span>,
+    <span class="hljs-string">&quot;_putrc&quot;</span>: <span class="hljs-string">&quot;9550E53D830BE8xxxxxxxxxxxxxx&quot;</span>,
+    <span class="hljs-string">&quot;JSESSIONID&quot;</span>: <span class="hljs-string">&quot;ABAAAECABIEACCA79BFxxxxxxxxxxxxxx&quot;</span>
+&#125;</code></pre>
 <p>注意，JSESSIONID 即便不登录也会有，但是登录时应该会携带这个值，进行一个激活操作，如果你请求获取到的 submitCode、submitToken 为空，那么就有可能 JSESSIONID 是无效的，以上所有值都必须登录后复制过来！</p>
 <p>获取 <code> x-anit-forge-code</code>、<code>x-anit-forge-token</code>  的关键代码如下（<code>original_data</code> 为原始搜索数据）：</p>
-<pre><code class="python">def update_x_anit(original_data: dict) -&gt; None:
-    # 更新 x-anit-forge-code 和 x-anit-forge-token
-    url = &quot;https://www.脱敏处理.com/wn/jobs&quot;
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_x_anit</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-literal">None</span>:</span>
+    <span class="hljs-comment"># 更新 x-anit-forge-code 和 x-anit-forge-token</span>
+    url = <span class="hljs-string">&quot;https://www.脱敏处理.com/wn/jobs&quot;</span>
     headers = &#123;
-        &quot;Host&quot;: &quot;www.脱敏处理.com&quot;,
-        &quot;Referer&quot;: &quot;https://www.脱敏处理.com/&quot;,
-        &quot;User-Agent&quot;: UA
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/&quot;</span>,
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA
     &#125;
     params = &#123;
-        &quot;kd&quot;: original_data[&quot;kd&quot;],
-        &quot;city&quot;: original_data[&quot;city&quot;]
+        <span class="hljs-string">&quot;kd&quot;</span>: original_data[<span class="hljs-string">&quot;kd&quot;</span>],
+        <span class="hljs-string">&quot;city&quot;</span>: original_data[<span class="hljs-string">&quot;city&quot;</span>]
     &#125;
     response = requests.get(url=url, params=params, headers=headers, cookies=global_cookies)
     tree = etree.HTML(response.text)
-    next_data_json = json.loads(tree.xpath(&quot;//script[@id=&#39;__NEXT_DATA__&#39;]/text()&quot;)[0])
-    submit_code = next_data_json[&quot;props&quot;][&quot;tokenData&quot;][&quot;submitCode&quot;]
-    submit_token = next_data_json[&quot;props&quot;][&quot;tokenData&quot;][&quot;submitToken&quot;]
-    # 注意 JSESSIONID 必须是登录验证后的！
-    if not submit_code or not submit_token:
-        raise Exception(&quot;submitCode &amp; submitToken 为空，请检查 JSESSIONID 是否正确！&quot;)
-    global x_anit
-    x_anit[&quot;x-anit-forge-code&quot;] = submit_code
-    x_anit[&quot;x-anit-forge-token&quot;] = submit_token
-</code></pre>
-<h3 id="traceparent"><a href="#traceparent" class="headerlink" title="traceparent"></a>traceparent</h3><p>同样的 Hook 大法，跟栈：</p>
-<pre><code class="javascript">(function () &#123;
-    var org = window.XMLHttpRequest.prototype.setRequestHeader;
-    window.XMLHttpRequest.prototype.setRequestHeader = function (key, value) &#123;
-        console.log(&#39;Hook 捕获到 %s 设置 -&gt; %s&#39;, key, value);
-        if (key == &#39;traceparent&#39;) &#123;
-            debugger;
+    next_data_json = json.loads(tree.xpath(<span class="hljs-string">&quot;//script[@id=&#x27;__NEXT_DATA__&#x27;]/text()&quot;</span>)[<span class="hljs-number">0</span>])
+    submit_code = next_data_json[<span class="hljs-string">&quot;props&quot;</span>][<span class="hljs-string">&quot;tokenData&quot;</span>][<span class="hljs-string">&quot;submitCode&quot;</span>]
+    submit_token = next_data_json[<span class="hljs-string">&quot;props&quot;</span>][<span class="hljs-string">&quot;tokenData&quot;</span>][<span class="hljs-string">&quot;submitToken&quot;</span>]
+    <span class="hljs-comment"># 注意 JSESSIONID 必须是登录验证后的！</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> submit_code <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> submit_token:
+        <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;submitCode &amp; submitToken 为空，请检查 JSESSIONID 是否正确！&quot;</span>)
+    <span class="hljs-keyword">global</span> x_anit
+    x_anit[<span class="hljs-string">&quot;x-anit-forge-code&quot;</span>] = submit_code
+    x_anit[<span class="hljs-string">&quot;x-anit-forge-token&quot;</span>] = submit_token</code></pre>
+<h3 id="traceparent">traceparent</h3>
+<p>同样的 Hook 大法，跟栈：</p>
+<pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> org = <span class="hljs-built_in">window</span>.XMLHttpRequest.prototype.setRequestHeader;
+    <span class="hljs-built_in">window</span>.XMLHttpRequest.prototype.setRequestHeader = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value</span>) </span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Hook 捕获到 %s 设置 -&gt; %s&#x27;</span>, key, value);
+        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">&#x27;traceparent&#x27;</span>) &#123;
+            <span class="hljs-keyword">debugger</span>;
         &#125;
-        return org.apply(this, arguments);
+        <span class="hljs-keyword">return</span> org.apply(<span class="hljs-built_in">this</span>, <span class="hljs-built_in">arguments</span>);
     &#125;;
-&#125;)();
-</code></pre>
+&#125;)();</code></pre>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/ca4250dc656e4516f61eb4085ca9743e.png" alt="22"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/b38bd3f45b8b107002472e03f13b4ce9.png" alt="23"></p>
 <p>观察上面的代码，三元表达式，<code>t.sampled</code> 为 <code>true</code>，所以 <code>e</code> 值为 <code>01</code>，<code>n</code> 值为 <code>t.id</code>，重点在于 <code>t.traceId</code> 和 <code>t.id</code> 了，跟栈发现很难调，直接搜索关键字，可找到生成的位置：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/9aa669c7aac13c6f101f1df1bc01d1df.png" alt="24"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/1c6831862c149d7dec12e01dbf838d86.png" alt="25"></p>
 <p>把 <code>E()</code> 方法扣出来就行了，改写一下即可：</p>
-<pre><code class="javascript">getRandomValues = require(&#39;get-random-values&#39;)
+<pre><code class="hljs javascript">getRandomValues = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;get-random-values&#x27;</span>)
 
-function E(t) &#123;
-    for (var b = [], w = 0; w &lt; 256; ++w)
-            b[w] = (w + 256).toString(16).substr(1);
-    var T = new Uint8Array(16);
-    return function(t) &#123;
-        for (var e = [], n = 0; n &lt; t.length; n++)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">E</span>(<span class="hljs-params">t</span>) </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> b = [], w = <span class="hljs-number">0</span>; w &lt; <span class="hljs-number">256</span>; ++w)
+            b[w] = (w + <span class="hljs-number">256</span>).toString(<span class="hljs-number">16</span>).substr(<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">var</span> T = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(<span class="hljs-number">16</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> e = [], n = <span class="hljs-number">0</span>; n &lt; t.length; n++)
             e.push(b[t[n]]);
-        return e.join(&quot;&quot;)
-    &#125;(getRandomValues(T)).substr(0, t)
+        <span class="hljs-keyword">return</span> e.join(<span class="hljs-string">&quot;&quot;</span>)
+    &#125;(getRandomValues(T)).substr(<span class="hljs-number">0</span>, t)
 &#125;
 
-function getTraceparent()&#123;
-    return &quot;00-&quot; + E() + &quot;-&quot; + E(16) + &quot;-&quot; + &quot;01&quot;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTraceparent</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;00-&quot;</span> + E() + <span class="hljs-string">&quot;-&quot;</span> + E(<span class="hljs-number">16</span>) + <span class="hljs-string">&quot;-&quot;</span> + <span class="hljs-string">&quot;01&quot;</span>
 &#125;
 
-// 测试输出
-// console.log(getTraceparent())
-</code></pre>
-<h3 id="X-K-HEADER-X-SS-REQ-HEADER"><a href="#X-K-HEADER-X-SS-REQ-HEADER" class="headerlink" title="X-K-HEADER / X-SS-REQ-HEADER"></a>X-K-HEADER / X-SS-REQ-HEADER</h3><p><code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code> 数据是一样的，只不过后者是键值对形式，先直接全局搜索关键字，发现都是从本地拿这两个值，清除 cookie 就为空了，那么直接搜索值，发现是 agreement 这个接口返回的，<code>secretKeyValue</code> 值就是我们要的，有可能浏览器抓包直接搜索的话搜索不到，使用抓包工具，比如 Fiddler 就能搜到了，如下图所示：</p>
+<span class="hljs-comment">// 测试输出</span>
+<span class="hljs-comment">// console.log(getTraceparent())</span></code></pre>
+<h3 id="X-K-HEADER-X-SS-REQ-HEADER">X-K-HEADER / X-SS-REQ-HEADER</h3>
+<p><code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code> 数据是一样的，只不过后者是键值对形式，先直接全局搜索关键字，发现都是从本地拿这两个值，清除 cookie 就为空了，那么直接搜索值，发现是 agreement 这个接口返回的，<code>secretKeyValue</code> 值就是我们要的，有可能浏览器抓包直接搜索的话搜索不到，使用抓包工具，比如 Fiddler 就能搜到了，如下图所示：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/5b82461455529eac20e1037983745711.png" alt="26"></p>
 <p>这个接口是 post 请求，请求带了一个 json 数据，<code>secretKeyDecode</code>，直接搜索关键字，就一个值，定位跟栈：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/738389717bc00ab5cedf5d7fecc09b82.png" alt="27"></p>
@@ -830,903 +380,344 @@ function getTraceparent()&#123;
 <p>这里就非常明显了，t 是32位随机字符串，赋值为 <code>aesKey</code>，后面紧接着一个 RSA 加密了 <code>aesKey</code>，赋值为 <code>rsaEncryptData</code>，而 <code>rsaEncryptData</code> 就是前面 agreement 接口请求的 <code>secretKeyValue</code> 值。</p>
 <p>这里先说一下，最终搜索职位请求的 data 和返回数据都是 AES 加密解密，会用到这个 <code>aesKey</code>，请求头的另一个参数 <code>X-S-HEADER</code> 也会用到，如果这个 key 没有经过 RSA 加密并通过 agreement 接口验证的话，是无效的，可以理解为 agreement 接口既是为了获取 <code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code>，也是为了激活这个 <code>aesKey</code>。</p>
 <p>这部分的 JS 代码和 Python 代码大致如下：</p>
-<pre><code class="javascript">JSEncrypt = require(&quot;jsencrypt&quot;)
+<pre><code class="hljs javascript">JSEncrypt = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;jsencrypt&quot;</span>)
 
-function getAesKeyAndRsaEncryptData() &#123;
-    var aesKey = function (t) &#123;
-        for (var e = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;, r = &quot;&quot;, n = 0; n &lt; t; n++) &#123;
-            var i = Math.floor(Math.random() * e.length);
-            r += e.substring(i, i + 1)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getAesKeyAndRsaEncryptData</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> aesKey = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">t</span>) </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> e = <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span>, r = <span class="hljs-string">&quot;&quot;</span>, n = <span class="hljs-number">0</span>; n &lt; t; n++) &#123;
+            <span class="hljs-keyword">var</span> i = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * e.length);
+            r += e.substring(i, i + <span class="hljs-number">1</span>)
         &#125;
-        return r
-    &#125;(32);
+        <span class="hljs-keyword">return</span> r
+    &#125;(<span class="hljs-number">32</span>);
 
-    var e = new JSEncrypt();
-    e.setPublicKey(&quot;-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnbJqzIXk6qGotX5nD521Vk/24APi2qx6C+2allfix8iAfUGqx0MK3GufsQcAt/o7NO8W+qw4HPE+RBR6m7+3JVlKAF5LwYkiUJN1dh4sTj03XQ0jsnd3BYVqL/gi8iC4YXJ3aU5VUsB6skROancZJAeq95p7ehXXAJfCbLwcK+yFFeRKLvhrjZOMDvh1TsMB4exfg+h2kNUI94zu8MK3UA7v1ANjfgopaE+cpvoulg446oKOkmigmc35lv8hh34upbMmehUqB51kqk9J7p8VMI3jTDBcMC21xq5XF7oM8gmqjNsYxrT9EVK7cezYPq7trqLX1fyWgtBtJZG7WMftKwIDAQAB-----END PUBLIC KEY-----&quot;);
-    var rsaEncryptData = e.encrypt(aesKey);
+    <span class="hljs-keyword">var</span> e = <span class="hljs-keyword">new</span> JSEncrypt();
+    e.setPublicKey(<span class="hljs-string">&quot;-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnbJqzIXk6qGotX5nD521Vk/24APi2qx6C+2allfix8iAfUGqx0MK3GufsQcAt/o7NO8W+qw4HPE+RBR6m7+3JVlKAF5LwYkiUJN1dh4sTj03XQ0jsnd3BYVqL/gi8iC4YXJ3aU5VUsB6skROancZJAeq95p7ehXXAJfCbLwcK+yFFeRKLvhrjZOMDvh1TsMB4exfg+h2kNUI94zu8MK3UA7v1ANjfgopaE+cpvoulg446oKOkmigmc35lv8hh34upbMmehUqB51kqk9J7p8VMI3jTDBcMC21xq5XF7oM8gmqjNsYxrT9EVK7cezYPq7trqLX1fyWgtBtJZG7WMftKwIDAQAB-----END PUBLIC KEY-----&quot;</span>);
+    <span class="hljs-keyword">var</span> rsaEncryptData = e.encrypt(aesKey);
 
-    return &#123;
-        &quot;aesKey&quot;: aesKey,
-        &quot;rsaEncryptData&quot;: rsaEncryptData
+    <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-string">&quot;aesKey&quot;</span>: aesKey,
+        <span class="hljs-string">&quot;rsaEncryptData&quot;</span>: rsaEncryptData
     &#125;
 &#125;
 
-// 测试输出
-// console.log(getAesKeyAndRsaEncryptData())
-</code></pre>
-<pre><code class="python">def update_aes_key() -&gt; None:
-    # 通过JS获取 AES Key，并通过接口激活，接口激活后会返回一个 secretKeyValue，后续请求头会用到
-    global aes_key, secret_key_value
-    url = &quot;https://gate.脱敏处理.com/system/agreement&quot;
+<span class="hljs-comment">// 测试输出</span>
+<span class="hljs-comment">// console.log(getAesKeyAndRsaEncryptData())</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_aes_key</span>() -&gt; <span class="hljs-literal">None</span>:</span>
+    <span class="hljs-comment"># 通过JS获取 AES Key，并通过接口激活，接口激活后会返回一个 secretKeyValue，后续请求头会用到</span>
+    <span class="hljs-keyword">global</span> aes_key, secret_key_value
+    url = <span class="hljs-string">&quot;https://gate.脱敏处理.com/system/agreement&quot;</span>
     headers = &#123;
-        &quot;Content-Type&quot;: &quot;application/json&quot;,
-        &quot;Host&quot;: &quot;gate.脱敏处理.com&quot;,
-        &quot;Origin&quot;: &quot;https://www.脱敏处理.com&quot;,
-        &quot;Referer&quot;: &quot;https://www.脱敏处理.com/&quot;,
-        &quot;User-Agent&quot;: UA
+        <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;gate.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Origin&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/&quot;</span>,
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA
     &#125;
-    encrypt_data = lagou_js.call(&quot;getAesKeyAndRsaEncryptData&quot;)
-    aes_key = encrypt_data[&quot;aesKey&quot;]
-    rsa_encrypt_data = encrypt_data[&quot;rsaEncryptData&quot;]
-    data = &#123;&quot;secretKeyDecode&quot;: rsa_encrypt_data&#125;
+    encrypt_data = lagou_js.call(<span class="hljs-string">&quot;getAesKeyAndRsaEncryptData&quot;</span>)
+    aes_key = encrypt_data[<span class="hljs-string">&quot;aesKey&quot;</span>]
+    rsa_encrypt_data = encrypt_data[<span class="hljs-string">&quot;rsaEncryptData&quot;</span>]
+    data = &#123;<span class="hljs-string">&quot;secretKeyDecode&quot;</span>: rsa_encrypt_data&#125;
     response = requests.post(url=url, headers=headers, json=data).json()
-    secret_key_value = response[&quot;content&quot;][&quot;secretKeyValue&quot;]
-</code></pre>
-<h3 id="X-S-HEADER"><a href="#X-S-HEADER" class="headerlink" title="X-S-HEADER"></a>X-S-HEADER</h3><p><code>X-S-HEADER</code> 你每次翻页都会改变，直接搜索关键字可定位：</p>
+    secret_key_value = response[<span class="hljs-string">&quot;content&quot;</span>][<span class="hljs-string">&quot;secretKeyValue&quot;</span>]</code></pre>
+<h3 id="X-S-HEADER">X-S-HEADER</h3>
+<p><code>X-S-HEADER</code> 你每次翻页都会改变，直接搜索关键字可定位：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/3c12d2eec0ae138cdf5b9308c5efd6dd.png" alt="29"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/67936e9e23ab04bbdd242d44b8ec3af1.png" alt="30"></p>
 <p>中间有一个 SHA256 加密，最后返回的 <code>Rt(JSON.stringify(&#123;originHeader: JSON.stringify(e), code: t&#125;))</code> 就是 <code>X-S-HEADER</code> 的值了，<code>Rt()</code> 是一个 AES 加密，比较关键的，<code>Vt(r)</code> 是一个 URL，比如你搜索职位就是 positionAjax.json，搜索公司就是 companyAjax.json，可根据实际情况定制，然后 <code>Lt(t)</code> 就是搜索信息，字符串形式，包含了城市、页码、关键词等。</p>
 <p>获取 <code>X-S-HEADER</code> 的 JS 代码大致如下：</p>
-<pre><code class="javascript">CryptoJS = require(&#39;crypto-js&#39;)
+<pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
-jt = function(aesKey, originalData, u) &#123;
-    var e = &#123;deviceType: 1&#125;
-      , t = &quot;&quot;.concat(JSON.stringify(e)).concat(u).concat(JSON.stringify(originalData))
-      , t = (t = t, null === (t = CryptoJS.SHA256(t).toString()) || void 0 === t ? void 0 : t.toUpperCase());
+jt = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">aesKey, originalData, u</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> e = &#123;<span class="hljs-attr">deviceType</span>: <span class="hljs-number">1</span>&#125;
+      , t = <span class="hljs-string">&quot;&quot;</span>.concat(<span class="hljs-built_in">JSON</span>.stringify(e)).concat(u).concat(<span class="hljs-built_in">JSON</span>.stringify(originalData))
+      , t = (t = t, <span class="hljs-literal">null</span> === (t = CryptoJS.SHA256(t).toString()) || <span class="hljs-keyword">void</span> <span class="hljs-number">0</span> === t ? <span class="hljs-keyword">void</span> <span class="hljs-number">0</span> : t.toUpperCase());
 
-    return Rt(JSON.stringify(&#123;
-        originHeader: JSON.stringify(e),
-        code: t
+    <span class="hljs-keyword">return</span> Rt(<span class="hljs-built_in">JSON</span>.stringify(&#123;
+        <span class="hljs-attr">originHeader</span>: <span class="hljs-built_in">JSON</span>.stringify(e),
+        <span class="hljs-attr">code</span>: t
     &#125;), aesKey)
 &#125;
 
-Rt = function (t, aesKey) &#123;
-    var Ot = CryptoJS.enc.Utf8.parse(&quot;c558Gq0YQK2QUlMc&quot;),
+Rt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">t, aesKey</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> Ot = CryptoJS.enc.Utf8.parse(<span class="hljs-string">&quot;c558Gq0YQK2QUlMc&quot;</span>),
         Dt = CryptoJS.enc.Utf8.parse(aesKey),
         t = CryptoJS.enc.Utf8.parse(t);
     t = CryptoJS.AES.encrypt(t, Dt, &#123;
-        iv: Ot,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
+        <span class="hljs-attr">iv</span>: Ot,
+        <span class="hljs-attr">mode</span>: CryptoJS.mode.CBC,
+        <span class="hljs-attr">padding</span>: CryptoJS.pad.Pkcs7
     &#125;);
-    return t.toString()
+    <span class="hljs-keyword">return</span> t.toString()
 &#125;;
 
-function getXSHeader(aesKey, originalData, u)&#123;
-    return jt(aesKey, originalData, u)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getXSHeader</span>(<span class="hljs-params">aesKey, originalData, u</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> jt(aesKey, originalData, u)
 &#125;
 
-// 测试样例
-// var url = &quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;
-// var aesKey = &quot;dgHY1qVeo/Z0yDaF5WV/EEXxYiwbr5Jt&quot;
-// var originalData = &#123;&quot;first&quot;: &quot;true&quot;, &quot;needAddtionalResult&quot;: &quot;false&quot;, &quot;city&quot;: &quot;全国&quot;, &quot;pn&quot;: &quot;2&quot;, &quot;kd&quot;: &quot;Java&quot;&#125;
-// console.log(getXSHeader(aesKey, originalData, url))
-</code></pre>
-<h2 id="请求-返回数据解密"><a href="#请求-返回数据解密" class="headerlink" title="请求/返回数据解密"></a>请求/返回数据解密</h2><p>前面抓包我们已经发现 positionAjax.json 是 POST 请求，Form Data 中的数据是加密的，返回的 data 也是加密的，我们分析请求头参数的时候，就涉及到 AES 加密解密，所以我们直接搜索 <code>AES.encrypt</code>、<code>AES.decrypt</code>，下断点调试：</p>
+<span class="hljs-comment">// 测试样例</span>
+<span class="hljs-comment">// var url = &quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;</span>
+<span class="hljs-comment">// var aesKey = &quot;dgHY1qVeo/Z0yDaF5WV/EEXxYiwbr5Jt&quot;</span>
+<span class="hljs-comment">// var originalData = &#123;&quot;first&quot;: &quot;true&quot;, &quot;needAddtionalResult&quot;: &quot;false&quot;, &quot;city&quot;: &quot;全国&quot;, &quot;pn&quot;: &quot;2&quot;, &quot;kd&quot;: &quot;Java&quot;&#125;</span>
+<span class="hljs-comment">// console.log(getXSHeader(aesKey, originalData, url))</span></code></pre>
+<h2 id="请求-返回数据解密">请求/返回数据解密</h2>
+<p>前面抓包我们已经发现 positionAjax.json 是 POST 请求，Form Data 中的数据是加密的，返回的 data 也是加密的，我们分析请求头参数的时候，就涉及到 AES 加密解密，所以我们直接搜索 <code>AES.encrypt</code>、<code>AES.decrypt</code>，下断点调试：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/a71d05bb4c558409eea816c1792038e7.png" alt="31"></p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/1127358d32e96c667e465d71b06365ae.png" alt="32"></p>
 <p>非常明显了，这部分的 JS 代码大致如下：</p>
-<pre><code class="javascript">CryptoJS = require(&#39;crypto-js&#39;)
+<pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
-function getRequestData(aesKey, originalData)&#123;
-    return Rt(JSON.stringify(originalData), aesKey)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRequestData</span>(<span class="hljs-params">aesKey, originalData</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> Rt(<span class="hljs-built_in">JSON</span>.stringify(originalData), aesKey)
 &#125;
 
-function getResponseData(encryptData, aesKey)&#123;
-    return It(encryptData, aesKey)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getResponseData</span>(<span class="hljs-params">encryptData, aesKey</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> It(encryptData, aesKey)
 &#125;
 
-Rt = function (t, aesKey) &#123;
-    var Ot = CryptoJS.enc.Utf8.parse(&quot;c558Gq0YQK2QUlMc&quot;),
+Rt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">t, aesKey</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> Ot = CryptoJS.enc.Utf8.parse(<span class="hljs-string">&quot;c558Gq0YQK2QUlMc&quot;</span>),
         Dt = CryptoJS.enc.Utf8.parse(aesKey),
         t = CryptoJS.enc.Utf8.parse(t);
     t = CryptoJS.AES.encrypt(t, Dt, &#123;
-        iv: Ot,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
+        <span class="hljs-attr">iv</span>: Ot,
+        <span class="hljs-attr">mode</span>: CryptoJS.mode.CBC,
+        <span class="hljs-attr">padding</span>: CryptoJS.pad.Pkcs7
     &#125;);
-    return t.toString()
+    <span class="hljs-keyword">return</span> t.toString()
 &#125;;
 
-It = function(t, aesKey) &#123;
-    var Ot = CryptoJS.enc.Utf8.parse(&quot;c558Gq0YQK2QUlMc&quot;),
+It = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t, aesKey</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> Ot = CryptoJS.enc.Utf8.parse(<span class="hljs-string">&quot;c558Gq0YQK2QUlMc&quot;</span>),
     Dt = CryptoJS.enc.Utf8.parse(aesKey);
     t = CryptoJS.AES.decrypt(t, Dt, &#123;
-        iv: Ot,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
+        <span class="hljs-attr">iv</span>: Ot,
+        <span class="hljs-attr">mode</span>: CryptoJS.mode.CBC,
+        <span class="hljs-attr">padding</span>: CryptoJS.pad.Pkcs7
     &#125;).toString(CryptoJS.enc.Utf8);
-    try &#123;
-        t = JSON.parse(t)
-    &#125; catch (t) &#123;&#125;
-    return t
+    <span class="hljs-keyword">try</span> &#123;
+        t = <span class="hljs-built_in">JSON</span>.parse(t)
+    &#125; <span class="hljs-keyword">catch</span> (t) &#123;&#125;
+    <span class="hljs-keyword">return</span> t
 &#125;
 
-// 测试样例，注意，encryptedData 数据太多，省略了，直接运行解密是会报错的
-// var aesKey = &quot;dgHY1qVeo/Z0yDaF5WV/EEXxYiwbr5Jt&quot;
-// var encryptedData = &quot;r4MqbduYxu3Z9sFL75xDhelMTCYPHLluKaurYgzEXlEQ1Rg......&quot;
-// var originalData = &#123;&quot;first&quot;: &quot;true&quot;, &quot;needAddtionalResult&quot;: &quot;false&quot;, &quot;city&quot;: &quot;全国&quot;, &quot;pn&quot;: &quot;2&quot;, &quot;kd&quot;: &quot;Java&quot;&#125;
-// console.log(getRequestData(aesKey, originalData))
-// console.log(getResponseData(encryptedData, aesKey))
-</code></pre>
+<span class="hljs-comment">// 测试样例，注意，encryptedData 数据太多，省略了，直接运行解密是会报错的</span>
+<span class="hljs-comment">// var aesKey = &quot;dgHY1qVeo/Z0yDaF5WV/EEXxYiwbr5Jt&quot;</span>
+<span class="hljs-comment">// var encryptedData = &quot;r4MqbduYxu3Z9sFL75xDhelMTCYPHLluKaurYgzEXlEQ1Rg......&quot;</span>
+<span class="hljs-comment">// var originalData = &#123;&quot;first&quot;: &quot;true&quot;, &quot;needAddtionalResult&quot;: &quot;false&quot;, &quot;city&quot;: &quot;全国&quot;, &quot;pn&quot;: &quot;2&quot;, &quot;kd&quot;: &quot;Java&quot;&#125;</span>
+<span class="hljs-comment">// console.log(getRequestData(aesKey, originalData))</span>
+<span class="hljs-comment">// console.log(getResponseData(encryptedData, aesKey))</span></code></pre>
 <p>大致的 Python 代码如下：</p>
-<pre><code class="python">def get_header_params(original_data: dict) -&gt; dict:
-    # 后续请求数据所需的请求头参数
-    # 职位搜索 URL，如果是搜索公司，那就是 https://www.脱敏处理.com/jobs/companyAjax.json，根据实际情况更改
-    u = &quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;
-    return &#123;
-        &quot;traceparent&quot;: lagou_js.call(&quot;getTraceparent&quot;),
-        &quot;X-K-HEADER&quot;: secret_key_value,
-        &quot;X-S-HEADER&quot;: lagou_js.call(&quot;getXSHeader&quot;, aes_key, original_data, u),
-        &quot;X-SS-REQ-HEADER&quot;: json.dumps(&#123;&quot;secret&quot;: secret_key_value&#125;)
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_header_params</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">dict</span>:</span>
+    <span class="hljs-comment"># 后续请求数据所需的请求头参数</span>
+    <span class="hljs-comment"># 职位搜索 URL，如果是搜索公司，那就是 https://www.脱敏处理.com/jobs/companyAjax.json，根据实际情况更改</span>
+    u = <span class="hljs-string">&quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;</span>
+    <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-string">&quot;traceparent&quot;</span>: lagou_js.call(<span class="hljs-string">&quot;getTraceparent&quot;</span>),
+        <span class="hljs-string">&quot;X-K-HEADER&quot;</span>: secret_key_value,
+        <span class="hljs-string">&quot;X-S-HEADER&quot;</span>: lagou_js.call(<span class="hljs-string">&quot;getXSHeader&quot;</span>, aes_key, original_data, u),
+        <span class="hljs-string">&quot;X-SS-REQ-HEADER&quot;</span>: json.dumps(&#123;<span class="hljs-string">&quot;secret&quot;</span>: secret_key_value&#125;)
     &#125;
 
 
-def get_encrypted_data(original_data: dict) -&gt; str:
-    # AES 加密原始数据
-    encrypted_data = lagou_js.call(&quot;getRequestData&quot;, aes_key, original_data)
-    return encrypted_data
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_encrypted_data</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">str</span>:</span>
+    <span class="hljs-comment"># AES 加密原始数据</span>
+    encrypted_data = lagou_js.call(<span class="hljs-string">&quot;getRequestData&quot;</span>, aes_key, original_data)
+    <span class="hljs-keyword">return</span> encrypted_data
 
 
-def get_data(original_data: dict, encrypted_data: str, header_params: dict) -&gt; dict:
-    # 携带加密后的请求数据和完整请求头，拿到密文，AES 解密得到明文职位信息
-    url = &quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;
-    referer = parse.urljoin(&quot;https://www.脱敏处理.com/wn/jobs?&quot;, parse.urlencode(original_data))
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span>, encrypted_data: <span class="hljs-built_in">str</span>, header_params: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">dict</span>:</span>
+    <span class="hljs-comment"># 携带加密后的请求数据和完整请求头，拿到密文，AES 解密得到明文职位信息</span>
+    url = <span class="hljs-string">&quot;https://www.脱敏处理.com/jobs/v2/positionAjax.json&quot;</span>
+    referer = parse.urljoin(<span class="hljs-string">&quot;https://www.脱敏处理.com/wn/jobs?&quot;</span>, parse.urlencode(original_data))
     headers = &#123;
-        # &quot;content-type&quot;: &quot;application/x-www-form-urlencoded; charset=UTF-8&quot;,
-        &quot;Host&quot;: &quot;www.脱敏处理.com&quot;,
-        &quot;Origin&quot;: &quot;https://www.脱敏处理.com&quot;,
-        &quot;Referer&quot;: referer,
-        &quot;traceparent&quot;: header_params[&quot;traceparent&quot;],
-        &quot;User-Agent&quot;: UA,
-        &quot;X-K-HEADER&quot;: header_params[&quot;X-K-HEADER&quot;],
-        &quot;X-S-HEADER&quot;: header_params[&quot;X-S-HEADER&quot;],
-        &quot;X-SS-REQ-HEADER&quot;: header_params[&quot;X-SS-REQ-HEADER&quot;],
+        <span class="hljs-comment"># &quot;content-type&quot;: &quot;application/x-www-form-urlencoded; charset=UTF-8&quot;,</span>
+        <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Origin&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com&quot;</span>,
+        <span class="hljs-string">&quot;Referer&quot;</span>: referer,
+        <span class="hljs-string">&quot;traceparent&quot;</span>: header_params[<span class="hljs-string">&quot;traceparent&quot;</span>],
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: UA,
+        <span class="hljs-string">&quot;X-K-HEADER&quot;</span>: header_params[<span class="hljs-string">&quot;X-K-HEADER&quot;</span>],
+        <span class="hljs-string">&quot;X-S-HEADER&quot;</span>: header_params[<span class="hljs-string">&quot;X-S-HEADER&quot;</span>],
+        <span class="hljs-string">&quot;X-SS-REQ-HEADER&quot;</span>: header_params[<span class="hljs-string">&quot;X-SS-REQ-HEADER&quot;</span>],
     &#125;
-    # 添加 x-anit-forge-code 和 x-anit-forge-token
+    <span class="hljs-comment"># 添加 x-anit-forge-code 和 x-anit-forge-token</span>
     headers.update(x_anit)
 
-    data = &#123;&quot;data&quot;: encrypted_data&#125;
+    data = &#123;<span class="hljs-string">&quot;data&quot;</span>: encrypted_data&#125;
     response = requests.post(url=url, headers=headers, cookies=global_cookies, data=data).json()
-    if &quot;status&quot; in response:
-        if not response[&quot;status&quot;] and &quot;操作太频繁&quot; in response[&quot;msg&quot;]:
-            raise Exception(&quot;获取数据失败！msg：%s！可以尝试补全登录后的 Cookies，或者添加代理！&quot; % response[&quot;msg&quot;])
-        else:
-            raise Exception(&quot;获取数据异常！请检查数据是否完整！&quot;)
-    else:
-        response_data = response[&quot;data&quot;]
-        decrypted_data = lagou_js.call(&quot;getResponseData&quot;, response_data, aes_key)
-        return decrypted_data
-</code></pre>
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;status&quot;</span> <span class="hljs-keyword">in</span> response:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> response[<span class="hljs-string">&quot;status&quot;</span>] <span class="hljs-keyword">and</span> <span class="hljs-string">&quot;操作太频繁&quot;</span> <span class="hljs-keyword">in</span> response[<span class="hljs-string">&quot;msg&quot;</span>]:
+            <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;获取数据失败！msg：%s！可以尝试补全登录后的 Cookies，或者添加代理！&quot;</span> % response[<span class="hljs-string">&quot;msg&quot;</span>])
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">raise</span> Exception(<span class="hljs-string">&quot;获取数据异常！请检查数据是否完整！&quot;</span>)
+    <span class="hljs-keyword">else</span>:
+        response_data = response[<span class="hljs-string">&quot;data&quot;</span>]
+        decrypted_data = lagou_js.call(<span class="hljs-string">&quot;getResponseData&quot;</span>, response_data, aes_key)
+        <span class="hljs-keyword">return</span> decrypted_data</code></pre>
 <p>最终整合所有代码，成功拿到数据：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/113e75fb0750f81f8e39031ce7268bb5.png" alt="33"></p>
-<h2 id="逆向小技巧"><a href="#逆向小技巧" class="headerlink" title="逆向小技巧"></a>逆向小技巧</h2><p>浏览器开发者工具 Application - Storage 选项，可以一键清除所有 Cookies，也可以自定义存储配额：</p>
+<h2 id="逆向小技巧">逆向小技巧</h2>
+<p>浏览器开发者工具 Application - Storage 选项，可以一键清除所有 Cookies，也可以自定义存储配额：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/05bcd18f355250c4570239163d16cae0.png" alt="34"></p>
 <p>Storage - Cookies 可以查看每个站点的所有 Cookies，HttpOnly 打勾的表示是服务器返回的，选中一条 Cookie，右键可以直接定位到哪个请求带了这个 Cookie，也可以直接编辑值，还可以删除单个 Cookie，当你登录了账号，但又需要清除某个 Cookie，且不想重新登录时，这个功能或许有用。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/1cc2ddd95e3c595f71f1760b16d60b08.png" alt="35"></p>
-<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>文中给出了部分关键代码，不能直接运行，部分细节可能没提及到，完整代码已放 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
+<h2 id="完整代码">完整代码</h2>
+<p>文中给出了部分关键代码，不能直接运行，部分细节可能没提及到，完整代码已放 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
 <p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice">https://github.com/TRHX/Python3-Spider-Practice</a></p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><ul>
-<li><p>JS 代码里引用了三个库，npm install 安装一下即可，如果安装了还提示找不到库，那就是路径问题，推荐在当前目录下执行命令安装，或者在 Python 代码里指定完整路径，具体方法可自行百度。</p>
+<h2 id="常见问题">常见问题</h2>
+<ul>
+<li>
+<p>JS 代码里引用了三个库，npm install 安装一下即可，如果安装了还提示找不到库，那就是路径问题，推荐在当前目录下执行命令安装，或者在 Python 代码里指定完整路径，具体方法可自行百度。</p>
 </li>
-<li><p>jsencrypt 这个库，本地运行可能会报错 <code>window is not defined</code>，在 <code>\node_modules\jsencrypt\bin\jsencrypt.js</code> 源码中加入 <code>var window = global;</code> 即可，这是实现 RSA 加密的库，当然还有很多其他实现方法或者库，都可以。</p>
+<li>
+<p>jsencrypt 这个库，本地运行可能会报错 <code>window is not defined</code>，在 <code>\node_modules\jsencrypt\bin\jsencrypt.js</code> 源码中加入 <code>var window = global;</code> 即可，这是实现 RSA 加密的库，当然还有很多其他实现方法或者库，都可以。</p>
 </li>
-<li><p>execjs 执行 JS 的时候，可能会报编码错误 <code>&quot;gbk&quot; can&#39;t decode byte...</code>，有两种解决方法，一是找到官方源码 subprocess.py，搜索 <code>encoding=None</code> 改成 <code>encoding=&#39;utf-8&#39;</code>，二是直接在 Python 代码里面加入以下代码即可：</p>
+<li>
+<p>execjs 执行 JS 的时候，可能会报编码错误 <code>&quot;gbk&quot; can't decode byte...</code>，有两种解决方法，一是找到官方源码 <a target="_blank" rel="noopener" href="http://subprocess.py">subprocess.py</a>，搜索 <code>encoding=None</code> 改成 <code>encoding='utf-8'</code>，二是直接在 Python 代码里面加入以下代码即可：</p>
 </li>
 </ul>
-<pre><code class="python">import subprocess
-from functools import partial
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> subprocess
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> partial
 
-subprocess.Popen = partial(subprocess.Popen, encoding=&quot;utf-8&quot;)
-</code></pre>
+subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>)</code></pre>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/049/">https://www.itbob.cn/article/049/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/050/" 
+                            class="post-title gt-a-link">【JS 逆向】网洛者反爬练习平台第七题：JSVMPZL 初体验</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/048/" 
+                            class="post-title gt-a-link">Python 中如何解决 asyncio 文件描述符最大数量限制问题</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/050/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/048/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

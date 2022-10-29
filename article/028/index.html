@@ -1,590 +1,140 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python,数据分析,Pandas">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/028/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/028/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="Python"> <meta property="og:article:tag" content="数据分析"> <meta property="og:article:tag" content="Pandas"> 
-
-    
-        <meta property="article:published_time" content="Mon Jun 15 2020 20:27:32 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:39:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/028/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/028/index.html",
-    "headline": "Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引",
-    "datePublished": "Mon Jun 15 2020 20:27:32 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:39:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",Python,数据分析,PandasITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9001x00%E3%80%91%E5%87%BD%E6%95%B0%E5%BA%94%E7%94%A8%E5%92%8C%E6%98%A0%E5%B0%84"><span class="post-toc-number">1.</span> <span class="post-toc-text">【01x00】函数应用和映射</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9002x00%E3%80%91%E6%8E%92%E5%BA%8F"><span class="post-toc-number">2.</span> <span class="post-toc-text">【02x00】排序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9002x01%E3%80%91sort-index-%E7%B4%A2%E5%BC%95%E6%8E%92%E5%BA%8F"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">【02x01】sort_index() 索引排序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9002x02%E3%80%91sort-values-%E6%8C%89%E5%80%BC%E6%8E%92%E5%BA%8F"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">【02x02】sort_values() 按值排序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9002x03%E3%80%91rank-%E8%BF%94%E5%9B%9E%E6%8E%92%E5%BA%8F%E5%90%8E%E5%85%83%E7%B4%A0%E7%B4%A2%E5%BC%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">【02x03】rank() 返回排序后元素索引</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E3%80%9003x00%E3%80%91%E5%B1%82%E7%BA%A7%E7%B4%A2%E5%BC%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">【03x00】层级索引</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x01%E3%80%91%E8%AE%A4%E8%AF%86%E5%B1%82%E7%BA%A7%E7%B4%A2%E5%BC%95"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">【03x01】认识层级索引</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x02%E3%80%91MultiIndex-%E7%B4%A2%E5%BC%95%E5%AF%B9%E8%B1%A1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">【03x02】MultiIndex 索引对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x03%E3%80%91%E6%8F%90%E5%8F%96%E5%80%BC"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">【03x03】提取值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E3%80%9003x04%E3%80%91%E4%BA%A4%E6%8D%A2%E5%88%86%E5%B1%82%E4%B8%8E%E6%8E%92%E5%BA%8F"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">【03x04】交换分层与排序</span></a></li></ol></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>6月 15, 2020</span> -->
-        <span>2020-06-15 20:27:32</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbUlEQVR42u3aQa7bMAwFwNz/0u22QGv3PSpS/IPxyjDiSJMFyYh8/frq64WHh4eHh4eHh/cw3iu+rt76xwK3z2erFG/h4eHhHeH9J9ReLJw8+fP53/f3qw/3hoeHh3eQdxVwr+6TJfNwf/9u8nk8PDy8J/OSsH5fUiepAg8PD++beLMgfp8ekgSDh4eH9zReXiInx6l5Ysi3vv2sBQ8PDy/m5U2m8/dH+3t4eHh4Aa8eaVoP3AtpoB66wsPDw9vA21cur7TEVvaDh4eHt5vXtrWSgvt+JCsfck2+Pyqp8fDw8DbzWvwbQvnC+EKdGPDw8PCWebPS+T6U54ewSWJofzg8PDy8M7xZUJ4NXc1abkX5joeHh/chXt7gb1tfs2SQ/w3Aw8PD+xSvHYRqy+j84CNPOXh4eHjnee1QVLt88mR2kIGHh4d3npcH8fagISnBZ+MI0egAHh4e3gbebACrDfH5T9BS8fDw8M7zcsysIJ4d0S6lGTw8PLwjvDbERy38Ejk72MXDw8P7LG8W6NvmVl5wz5ITHh4e3hle2/RqD2eTNJMnGzw8PLwn8PLl28C9kh7a78HDw8M7z2sTQ5IM2hZXW8TX/xjw8PDwtvHut7gS6PNND4cY8PDw8Dbz2ivf6LuSQds2w8PDw9vNWw/KeQGdFOJJQlqaKcPDw8N7E69NBrOyez0xRMcleHh4eAd5+dbzjbbUWYrCw8PD+ym8/LghGaJqU8v2xICHh4e3oQGWbHe97K7HF/Dw8PAO8pLDiJW38s+0ZToeHh7eeV5+BDBLGzk1/ykvn+Ph4eFt5n3fhYeHh4eHh4eH94DrN9A7zkqziDOKAAAAAElFTkSuQmCC">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/Pandas/" rel="tag">Pandas</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a></li><li class="mdl-menu__item"><a class="post_tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag">数据分析</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;4.4k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;22 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/028/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引&url=https://www.itbob.cn/article/028/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引&url=https://www.itbob.cn/article/028/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/028/index.html&text=Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/028/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/028/index.html&title=Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/028/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2020-06-15 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <p>Pandas 系列文章：</p>
+                    
+                        <a href="/tags/Python/" class="post-tag">
+                            #Python</a>
+                    
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            #数据分析</a>
+                    
+                        <a href="/tags/Pandas/" class="post-tag">
+                            #Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -612,102 +162,99 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/106758103
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="【01x00】函数应用和映射"><a href="#【01x00】函数应用和映射" class="headerlink" title="【01x00】函数应用和映射"></a><font color=#FF0000>【01x00】函数应用和映射</font></h2><p>Pandas 可直接使用 NumPy 的 ufunc（元素级数组方法） 函数：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randn(5,4) - 1)
-&gt;&gt;&gt; obj
-          0         1         2         3
-0 -0.228107  1.377709 -1.096528 -2.051001
-1 -2.477144 -0.500013 -0.040695 -0.267452
-2 -0.485999 -1.232930 -0.390701 -1.947984
-3 -0.839161 -0.702802 -1.756359 -1.873149
-4  0.853121 -1.540105  0.621614 -0.583360
-&gt;&gt;&gt; 
-&gt;&gt;&gt; np.abs(obj)
-          0         1         2         3
-0  0.228107  1.377709  1.096528  2.051001
-1  2.477144  0.500013  0.040695  0.267452
-2  0.485999  1.232930  0.390701  1.947984
-3  0.839161  0.702802  1.756359  1.873149
-4  0.853121  1.540105  0.621614  0.583360
-</code></pre>
+<h2 id="font-color-FF0000-【01x00】函数应用和映射-font"><font color=#FF0000>【01x00】函数应用和映射</font></h2>
+<p>Pandas 可直接使用 NumPy 的 ufunc（元素级数组方法） 函数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) - <span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+          <span class="hljs-number">0</span>         <span class="hljs-number">1</span>         <span class="hljs-number">2</span>         <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> -<span class="hljs-number">0.228107</span>  <span class="hljs-number">1.377709</span> -<span class="hljs-number">1.096528</span> -<span class="hljs-number">2.051001</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">2.477144</span> -<span class="hljs-number">0.500013</span> -<span class="hljs-number">0.040695</span> -<span class="hljs-number">0.267452</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">0.485999</span> -<span class="hljs-number">1.232930</span> -<span class="hljs-number">0.390701</span> -<span class="hljs-number">1.947984</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">0.839161</span> -<span class="hljs-number">0.702802</span> -<span class="hljs-number">1.756359</span> -<span class="hljs-number">1.873149</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">0.853121</span> -<span class="hljs-number">1.540105</span>  <span class="hljs-number">0.621614</span> -<span class="hljs-number">0.583360</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.<span class="hljs-built_in">abs</span>(obj)
+          <span class="hljs-number">0</span>         <span class="hljs-number">1</span>         <span class="hljs-number">2</span>         <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">0.228107</span>  <span class="hljs-number">1.377709</span>  <span class="hljs-number">1.096528</span>  <span class="hljs-number">2.051001</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.477144</span>  <span class="hljs-number">0.500013</span>  <span class="hljs-number">0.040695</span>  <span class="hljs-number">0.267452</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">0.485999</span>  <span class="hljs-number">1.232930</span>  <span class="hljs-number">0.390701</span>  <span class="hljs-number">1.947984</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">0.839161</span>  <span class="hljs-number">0.702802</span>  <span class="hljs-number">1.756359</span>  <span class="hljs-number">1.873149</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">0.853121</span>  <span class="hljs-number">1.540105</span>  <span class="hljs-number">0.621614</span>  <span class="hljs-number">0.583360</span></code></pre>
 <p>函数映射：在 Pandas 中 <code>apply</code> 方法可以将函数应用到列或行上，可以通过设置 axis 参数来指定行或列，默认 axis = 0，即按列映射：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randn(5,4) - 1)
-&gt;&gt;&gt; obj
-          0         1         2         3
-0 -0.707028 -0.755552 -2.196480 -0.529676
-1 -0.772668  0.127485 -2.015699 -0.283654
-2  0.248200 -1.940189 -1.068028 -1.751737
-3 -0.872904 -0.465371 -1.327951 -2.883160
-4 -0.092664  0.258351 -1.010747 -2.313039
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.apply(lambda x : x.max())
-0    0.248200
-1    0.258351
-2   -1.010747
-3   -0.283654
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) - <span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+          <span class="hljs-number">0</span>         <span class="hljs-number">1</span>         <span class="hljs-number">2</span>         <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> -<span class="hljs-number">0.707028</span> -<span class="hljs-number">0.755552</span> -<span class="hljs-number">2.196480</span> -<span class="hljs-number">0.529676</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">0.772668</span>  <span class="hljs-number">0.127485</span> -<span class="hljs-number">2.015699</span> -<span class="hljs-number">0.283654</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">0.248200</span> -<span class="hljs-number">1.940189</span> -<span class="hljs-number">1.068028</span> -<span class="hljs-number">1.751737</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">0.872904</span> -<span class="hljs-number">0.465371</span> -<span class="hljs-number">1.327951</span> -<span class="hljs-number">2.883160</span>
+<span class="hljs-number">4</span> -<span class="hljs-number">0.092664</span>  <span class="hljs-number">0.258351</span> -<span class="hljs-number">1.010747</span> -<span class="hljs-number">2.313039</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.apply(<span class="hljs-keyword">lambda</span> x : x.<span class="hljs-built_in">max</span>())
+<span class="hljs-number">0</span>    <span class="hljs-number">0.248200</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">0.258351</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">1.010747</span>
+<span class="hljs-number">3</span>   -<span class="hljs-number">0.283654</span>
 dtype: float64
 &gt;&gt;&gt;
-&gt;&gt;&gt; obj.apply(lambda x : x.max(), axis=1)
-0   -0.529676
-1    0.127485
-2    0.248200
-3   -0.465371
-4    0.258351
-dtype: float64
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.apply(<span class="hljs-keyword">lambda</span> x : x.<span class="hljs-built_in">max</span>(), axis=<span class="hljs-number">1</span>)
+<span class="hljs-number">0</span>   -<span class="hljs-number">0.529676</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">0.127485</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">0.248200</span>
+<span class="hljs-number">3</span>   -<span class="hljs-number">0.465371</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">0.258351</span>
+dtype: float64</code></pre>
 <p>另外还可以通过 <code>applymap</code> 将函数映射到每个数据上：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.DataFrame(np.random.randn(5,4) - 1)
-&gt;&gt;&gt; obj
-          0         1         2         3
-0 -0.772463 -1.597008 -3.196100 -1.948486
-1 -1.765108 -1.646421 -0.687175 -0.401782
-2  0.275699 -3.115184 -1.429063 -1.075610
-3 -0.251734 -0.448399 -3.077677 -0.294674
-4 -1.495896 -1.689729 -0.560376 -1.808794
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.applymap(lambda x : &#39;%.2f&#39; % x)
-       0      1      2      3
-0  -0.77  -1.60  -3.20  -1.95
-1  -1.77  -1.65  -0.69  -0.40
-2   0.28  -3.12  -1.43  -1.08
-3  -0.25  -0.45  -3.08  -0.29
-4  -1.50  -1.69  -0.56  -1.81
-</code></pre>
-<h2 id="【02x00】排序"><a href="#【02x00】排序" class="headerlink" title="【02x00】排序"></a><font color=#FF0000>【02x00】排序</font></h2><h3 id="【02x01】sort-index-索引排序"><a href="#【02x01】sort-index-索引排序" class="headerlink" title="【02x01】sort_index() 索引排序"></a><font color=#4876FF>【02x01】sort_index() 索引排序</font></h3><p>根据条件对数据集排序（sorting）也是一种重要的内置运算。要对行或列索引进行排序（按字典顺序），可使用 <code>sort_index</code> 方法，它将返回一个已排序的新对象。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>) - <span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+          <span class="hljs-number">0</span>         <span class="hljs-number">1</span>         <span class="hljs-number">2</span>         <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> -<span class="hljs-number">0.772463</span> -<span class="hljs-number">1.597008</span> -<span class="hljs-number">3.196100</span> -<span class="hljs-number">1.948486</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">1.765108</span> -<span class="hljs-number">1.646421</span> -<span class="hljs-number">0.687175</span> -<span class="hljs-number">0.401782</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">0.275699</span> -<span class="hljs-number">3.115184</span> -<span class="hljs-number">1.429063</span> -<span class="hljs-number">1.075610</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">0.251734</span> -<span class="hljs-number">0.448399</span> -<span class="hljs-number">3.077677</span> -<span class="hljs-number">0.294674</span>
+<span class="hljs-number">4</span> -<span class="hljs-number">1.495896</span> -<span class="hljs-number">1.689729</span> -<span class="hljs-number">0.560376</span> -<span class="hljs-number">1.808794</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.applymap(<span class="hljs-keyword">lambda</span> x : <span class="hljs-string">&#x27;%.2f&#x27;</span> % x)
+       <span class="hljs-number">0</span>      <span class="hljs-number">1</span>      <span class="hljs-number">2</span>      <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  -<span class="hljs-number">0.77</span>  -<span class="hljs-number">1.60</span>  -<span class="hljs-number">3.20</span>  -<span class="hljs-number">1.95</span>
+<span class="hljs-number">1</span>  -<span class="hljs-number">1.77</span>  -<span class="hljs-number">1.65</span>  -<span class="hljs-number">0.69</span>  -<span class="hljs-number">0.40</span>
+<span class="hljs-number">2</span>   <span class="hljs-number">0.28</span>  -<span class="hljs-number">3.12</span>  -<span class="hljs-number">1.43</span>  -<span class="hljs-number">1.08</span>
+<span class="hljs-number">3</span>  -<span class="hljs-number">0.25</span>  -<span class="hljs-number">0.45</span>  -<span class="hljs-number">3.08</span>  -<span class="hljs-number">0.29</span>
+<span class="hljs-number">4</span>  -<span class="hljs-number">1.50</span>  -<span class="hljs-number">1.69</span>  -<span class="hljs-number">0.56</span>  -<span class="hljs-number">1.81</span></code></pre>
+<h2 id="font-color-FF0000-【02x00】排序-font"><font color=#FF0000>【02x00】排序</font></h2>
+<h3 id="font-color-4876FF-【02x01】sort-index-索引排序-font"><font color=#4876FF>【02x01】sort_index() 索引排序</font></h3>
+<p>根据条件对数据集排序（sorting）也是一种重要的内置运算。要对行或列索引进行排序（按字典顺序），可使用 <code>sort_index</code> 方法，它将返回一个已排序的新对象。</p>
 <p>在 Series 和 DataFrame 中的基本语法如下：</p>
-<pre><code class="python">Series.sort_index(self,
-                  axis=0,
-                  level=None,
-                  ascending=True,
-                  inplace=False,
-                  kind=&#39;quicksort&#39;,
-                  na_position=&#39;last&#39;,
-                  sort_remaining=True,
-                  ignore_index: bool = False)
-</code></pre>
-<pre><code class="python">DataFrame.sort_index(self,
-                     axis=0,
-                     level=None,
-                     ascending=True,
-                     inplace=False,
-                     kind=&#39;quicksort&#39;,
-                     na_position=&#39;last&#39;,
-                     sort_remaining=True,
-                     ignore_index: bool = False)
-</code></pre>
+<pre><code class="hljs python">Series.sort_index(self,
+                  axis=<span class="hljs-number">0</span>,
+                  level=<span class="hljs-literal">None</span>,
+                  ascending=<span class="hljs-literal">True</span>,
+                  inplace=<span class="hljs-literal">False</span>,
+                  kind=<span class="hljs-string">&#x27;quicksort&#x27;</span>,
+                  na_position=<span class="hljs-string">&#x27;last&#x27;</span>,
+                  sort_remaining=<span class="hljs-literal">True</span>,
+                  ignore_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>)</code></pre>
+<pre><code class="hljs python">DataFrame.sort_index(self,
+                     axis=<span class="hljs-number">0</span>,
+                     level=<span class="hljs-literal">None</span>,
+                     ascending=<span class="hljs-literal">True</span>,
+                     inplace=<span class="hljs-literal">False</span>,
+                     kind=<span class="hljs-string">&#x27;quicksort&#x27;</span>,
+                     na_position=<span class="hljs-string">&#x27;last&#x27;</span>,
+                     sort_remaining=<span class="hljs-literal">True</span>,
+                     ignore_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>)</code></pre>
 <p>官方文档：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_index.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_index.html</a></li>
@@ -721,9 +268,10 @@ dtype: float64
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>axis</td>
-<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>&#39;columns’</code></td>
+<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
 </tr>
 <tr>
 <td>ascending</td>
@@ -731,72 +279,72 @@ dtype: float64
 </tr>
 <tr>
 <td>kind</td>
-<td>排序方法，<code>quicksort</code>：快速排序（默认）；<code>&#39;mergesort’</code>：归并排序；<code>&#39;heapsort&#39;</code>：堆排序；具体可参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html">numpy.sort()</a></td>
+<td>排序方法，<code>quicksort</code>：快速排序（默认）；<code>'mergesort’</code>：归并排序；<code>'heapsort'</code>：堆排序；具体可参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html">numpy.sort()</a></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>在 Series 中的应用（按照索引 index 排序）：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.Series(range(4), index=[&#39;d&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])
-&gt;&gt;&gt; obj
-d    0
-a    1
-b    2
-c    3
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>), index=[<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+d    <span class="hljs-number">0</span>
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">2</span>
+c    <span class="hljs-number">3</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_index()
-a    1
-b    2
-c    3
-d    0
-dtype: int64
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_index()
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">2</span>
+c    <span class="hljs-number">3</span>
+d    <span class="hljs-number">0</span>
+dtype: int64</code></pre>
 <p>在 DataFrame 中的应用（可按照索引 index 或列标签 columns 排序）：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.DataFrame(np.arange(8).reshape((2, 4)), index=[&#39;three&#39;, &#39;one&#39;], columns=[&#39;d&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;])
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">8</span>).reshape((<span class="hljs-number">2</span>, <span class="hljs-number">4</span>)), index=[<span class="hljs-string">&#x27;three&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>], columns=[<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
        d  a  b  c
-three  0  1  2  3
-one    4  5  6  7
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_index()
+three  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+one    <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_index()
        d  a  b  c
-one    4  5  6  7
-three  0  1  2  3
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_index(axis=1)
+one    <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>
+three  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_index(axis=<span class="hljs-number">1</span>)
        a  b  c  d
-three  1  2  3  0
-one    5  6  7  4
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_index(axis=1, ascending=False)
+three  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>  <span class="hljs-number">0</span>
+one    <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>  <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_index(axis=<span class="hljs-number">1</span>, ascending=<span class="hljs-literal">False</span>)
        d  c  b  a
-three  0  3  2  1
-one    4  7  6  5
-</code></pre>
-<h3 id="【02x02】sort-values-按值排序"><a href="#【02x02】sort-values-按值排序" class="headerlink" title="【02x02】sort_values() 按值排序"></a><font color=#4876FF>【02x02】sort_values() 按值排序</font></h3><p>在 Series 和 DataFrame 中的基本语法如下：</p>
-<pre><code class="python">Series.sort_values(self,
-                   axis=0,
-                   ascending=True,
-                   inplace=False,
-                   kind=&#39;quicksort&#39;,
-                   na_position=&#39;last&#39;,
-                   ignore_index=False)
-</code></pre>
-<pre><code class="python">DataFrame.sort_values(self,
+three  <span class="hljs-number">0</span>  <span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>
+one    <span class="hljs-number">4</span>  <span class="hljs-number">7</span>  <span class="hljs-number">6</span>  <span class="hljs-number">5</span></code></pre>
+<h3 id="font-color-4876FF-【02x02】sort-values-按值排序-font"><font color=#4876FF>【02x02】sort_values() 按值排序</font></h3>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<pre><code class="hljs python">Series.sort_values(self,
+                   axis=<span class="hljs-number">0</span>,
+                   ascending=<span class="hljs-literal">True</span>,
+                   inplace=<span class="hljs-literal">False</span>,
+                   kind=<span class="hljs-string">&#x27;quicksort&#x27;</span>,
+                   na_position=<span class="hljs-string">&#x27;last&#x27;</span>,
+                   ignore_index=<span class="hljs-literal">False</span>)</code></pre>
+<pre><code class="hljs python">DataFrame.sort_values(self,
                       by,
-                      axis=0,
-                      ascending=True,
-                      inplace=False,
-                      kind=&#39;quicksort&#39;,
-                      na_position=&#39;last&#39;,
-                      ignore_index=False)
-</code></pre>
+                      axis=<span class="hljs-number">0</span>,
+                      ascending=<span class="hljs-literal">True</span>,
+                      inplace=<span class="hljs-literal">False</span>,
+                      kind=<span class="hljs-string">&#x27;quicksort&#x27;</span>,
+                      na_position=<span class="hljs-string">&#x27;last&#x27;</span>,
+                      ignore_index=<span class="hljs-literal">False</span>)</code></pre>
 <p>官方文档：</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_values.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_values.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_values.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.sort_values.html</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sort_values.html</a></p>
 </li>
 </ul>
 <p>常用参数描述如下：</p>
@@ -807,13 +355,14 @@ one    4  7  6  5
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>by</td>
 <td>DataFrame 中的必须参数，指定列的值进行排序，Series 中没有此参数</td>
 </tr>
 <tr>
 <td>axis</td>
-<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>&#39;columns’</code></td>
+<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
 </tr>
 <tr>
 <td>ascending</td>
@@ -821,115 +370,114 @@ one    4  7  6  5
 </tr>
 <tr>
 <td>kind</td>
-<td>排序方法，<code>quicksort</code>：快速排序（默认）；<code>&#39;mergesort’</code>：归并排序；<code>&#39;heapsort&#39;</code>：堆排序；具体可参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html">numpy.sort()</a></td>
+<td>排序方法，<code>quicksort</code>：快速排序（默认）；<code>'mergesort’</code>：归并排序；<code>'heapsort'</code>：堆排序；具体可参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html">numpy.sort()</a></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>在 Series 中的应用，按照值排序，如果有缺失值，默认都会被放到 Series 的末尾：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.Series([4, 7, -3, 2])
-&gt;&gt;&gt; obj
-0    4
-1    7
-2   -3
-3    2
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">2</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_values()
-2   -3
-3    2
-0    4
-1    7
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values()
+<span class="hljs-number">2</span>   -<span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">7</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj = pd.Series([4, np.nan, 7, np.nan, -3, 2])
-&gt;&gt;&gt; obj
-0    4.0
-1    NaN
-2    7.0
-3    NaN
-4   -3.0
-5    2.0
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, np.nan, <span class="hljs-number">7</span>, np.nan, -<span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">4.0</span>
+<span class="hljs-number">1</span>    NaN
+<span class="hljs-number">2</span>    <span class="hljs-number">7.0</span>
+<span class="hljs-number">3</span>    NaN
+<span class="hljs-number">4</span>   -<span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_values()
-4   -3.0
-5    2.0
-0    4.0
-2    7.0
-1    NaN
-3    NaN
-dtype: float64
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values()
+<span class="hljs-number">4</span>   -<span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">0</span>    <span class="hljs-number">4.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">7.0</span>
+<span class="hljs-number">1</span>    NaN
+<span class="hljs-number">3</span>    NaN
+dtype: float64</code></pre>
 <p>在 DataFrame 中的应用，有时候可能希望根据一个或多个列中的值进行排序。将一个或多个列的名字传递给 <code>sort_values()</code> 的 <code>by</code> 参数即可达到该目的，当传递多个列时，首先会对第一列进行排序，若第一列有相同的值，再根据第二列进行排序，依次类推：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;a&#39;: [4, 4, -3, 2], &#39;b&#39;: [0, 1, 0, 1], &#39;c&#39;: [6, 4, 1, 3]&#125;)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;a&#x27;</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">2</span>], <span class="hljs-string">&#x27;b&#x27;</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], <span class="hljs-string">&#x27;c&#x27;</span>: [<span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
    a  b  c
-0  4  0  6
-1  4  1  4
-2 -3  0  1
-3  2  1  3
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_values(by=&#39;c&#39;)
+<span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span class="hljs-number">0</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">3</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>  <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values(by=<span class="hljs-string">&#x27;c&#x27;</span>)
    a  b  c
-2 -3  0  1
-3  2  1  3
-1  4  1  4
-0  4  0  6
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_values(by=&#39;c&#39;, ascending=False)
+<span class="hljs-number">2</span> -<span class="hljs-number">3</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span class="hljs-number">0</span>  <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values(by=<span class="hljs-string">&#x27;c&#x27;</span>, ascending=<span class="hljs-literal">False</span>)
    a  b  c
-0  4  0  6
-1  4  1  4
-3  2  1  3
-2 -3  0  1
+<span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span class="hljs-number">0</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">3</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
 &gt;&gt;&gt;
-&gt;&gt;&gt; obj.sort_values(by=[&#39;a&#39;, &#39;b&#39;])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values(by=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
    a  b  c
-2 -3  0  1
-3  2  1  3
-0  4  0  6
-1  4  1  4
-</code></pre>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;a&#39;: [4, 4, -3, 2], &#39;b&#39;: [0, 1, 0, 1], &#39;c&#39;: [6, 4, 1, 3]&#125;, index=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;])
-&gt;&gt;&gt; obj
+<span class="hljs-number">2</span> -<span class="hljs-number">3</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span class="hljs-number">0</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">1</span>  <span class="hljs-number">4</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;a&#x27;</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">2</span>], <span class="hljs-string">&#x27;b&#x27;</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], <span class="hljs-string">&#x27;c&#x27;</span>: [<span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]&#125;, index=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
    a  b  c
-A  4  0  6
-B  4  1  4
-C -3  0  1
-D  2  1  3
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.sort_values(by=&#39;B&#39;, axis=1)
+A  <span class="hljs-number">4</span>  <span class="hljs-number">0</span>  <span class="hljs-number">6</span>
+B  <span class="hljs-number">4</span>  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>
+C -<span class="hljs-number">3</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+D  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>  <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.sort_values(by=<span class="hljs-string">&#x27;B&#x27;</span>, axis=<span class="hljs-number">1</span>)
    b  a  c
-A  0  4  6
-B  1  4  4
-C  0 -3  1
-D  1  2  3
-</code></pre>
-<h3 id="【02x03】rank-返回排序后元素索引"><a href="#【02x03】rank-返回排序后元素索引" class="headerlink" title="【02x03】rank() 返回排序后元素索引"></a><font color=#4876FF>【02x03】rank() 返回排序后元素索引</font></h3><p>rank() 函数会返回一个对象，对象的值是原对象经过排序后的索引值，即下标。</p>
+A  <span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span class="hljs-number">6</span>
+B  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">4</span>
+C  <span class="hljs-number">0</span> -<span class="hljs-number">3</span>  <span class="hljs-number">1</span>
+D  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span></code></pre>
+<h3 id="font-color-4876FF-【02x03】rank-返回排序后元素索引-font"><font color=#4876FF>【02x03】rank() 返回排序后元素索引</font></h3>
+<p>rank() 函数会返回一个对象，对象的值是原对象经过排序后的索引值，即下标。</p>
 <p>在 Series 和 DataFrame 中的基本语法如下：</p>
-<pre><code class="python">Series.rank(self: ~ FrameOrSeries,
-            axis=0,
-            method: str = &#39;average&#39;,
-            numeric_only: Union[bool, NoneType] = None,
-            na_option: str = &#39;keep&#39;,
-            ascending: bool = True,
-            pct: bool = False)
-</code></pre>
-<pre><code class="python">DataFrame.rank(self: ~ FrameOrSeries,
-               axis=0,
-               method: str = &#39;average&#39;,
-               numeric_only: Union[bool, NoneType] = None,
-               na_option: str = &#39;keep&#39;,
-               ascending: bool = True,
-               pct: bool = False)
-</code></pre>
+<pre><code class="hljs python">Series.rank(self: ~ FrameOrSeries,
+            axis=<span class="hljs-number">0</span>,
+            method: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;average&#x27;</span>,
+            numeric_only: <span class="hljs-type">Union</span>[<span class="hljs-built_in">bool</span>, NoneType] = <span class="hljs-literal">None</span>,
+            na_option: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;keep&#x27;</span>,
+            ascending: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+            pct: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>)</code></pre>
+<pre><code class="hljs python">DataFrame.rank(self: ~ FrameOrSeries,
+               axis=<span class="hljs-number">0</span>,
+               method: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;average&#x27;</span>,
+               numeric_only: <span class="hljs-type">Union</span>[<span class="hljs-built_in">bool</span>, NoneType] = <span class="hljs-literal">None</span>,
+               na_option: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;keep&#x27;</span>,
+               ascending: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+               pct: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>)</code></pre>
 <p>官方文档：</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.rank.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.rank.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.rank.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.rank.html</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html</a></p>
 </li>
 </ul>
 <p>常用参数描述如下：</p>
@@ -940,175 +488,174 @@ D  1  2  3
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>axis</td>
-<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>&#39;columns’</code></td>
+<td>指定轴排序，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
 </tr>
 <tr>
 <td>method</td>
-<td>有相同值时，如何处理：<br><code>‘average’</code>：默认值，去两个相同索引的平均值；<code>‘min’</code>：取两个相同索引的最小值；<br><code>‘max’</code>：取两个相同索引的最大值；<code>‘first’</code>：按照出现的先后顺序；<br><code>‘dense’</code>：和 <code>&#39;min&#39;</code> 差不多，但是各组之间总是+1的，不太好解释，可以看后面的示例</td>
+<td>有相同值时，如何处理：<br><code>‘average’</code>：默认值，去两个相同索引的平均值；<code>‘min’</code>：取两个相同索引的最小值；<br><code>‘max’</code>：取两个相同索引的最大值；<code>‘first’</code>：按照出现的先后顺序；<br><code>‘dense’</code>：和 <code>'min'</code> 差不多，但是各组之间总是+1的，不太好解释，可以看后面的示例</td>
 </tr>
 <tr>
 <td>ascending</td>
 <td>为 <code>True</code>时升序排序（默认），为 <code>False</code>时降序排序</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>在 Series 中的应用，按照值排序，如果有缺失值，默认都会被放到 Series 的末尾：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.Series([7, -5, 7, 4, 2, 0, 4])
-&gt;&gt;&gt; obj
-0    7
-1   -5
-2    7
-3    4
-4    2
-5    0
-6    4
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">7</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">5</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">4</span>
 dtype: int64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank()
-0    6.5  # 第 0 个和第 2 个值从小到大排名分别为 6 和 7，默认取平均值，即 6.5
-1    1.0
-2    6.5
-3    4.5  # 第 3 个和第 6 个值从小到大排名分别为 4 和 5，默认取平均值，即 4.5
-4    3.0
-5    2.0
-6    4.5
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank()
+<span class="hljs-number">0</span>    <span class="hljs-number">6.5</span>  <span class="hljs-comment"># 第 0 个和第 2 个值从小到大排名分别为 6 和 7，默认取平均值，即 6.5</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">6.5</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4.5</span>  <span class="hljs-comment"># 第 3 个和第 6 个值从小到大排名分别为 4 和 5，默认取平均值，即 4.5</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">4.5</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank(method=&#39;first&#39;)
-0    6.0  # 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照第一次出现排序，分别为 6 和 7
-1    1.0
-2    7.0
-3    4.0  # 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照第一次出现排序，分别为 4 和 5
-4    3.0
-5    2.0
-6    5.0
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank(method=<span class="hljs-string">&#x27;first&#x27;</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">6.0</span>  <span class="hljs-comment"># 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照第一次出现排序，分别为 6 和 7</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">7.0</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4.0</span>  <span class="hljs-comment"># 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照第一次出现排序，分别为 4 和 5</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">5.0</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank(method=&#39;dense&#39;)
-0    5.0  # 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照最小值排序，但 dense 规定间隔为 1 所以为 5
-1    1.0
-2    5.0
-3    4.0  # 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照最小值排序，即 4
-4    3.0
-5    2.0
-6    4.0
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank(method=<span class="hljs-string">&#x27;dense&#x27;</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">5.0</span>  <span class="hljs-comment"># 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照最小值排序，但 dense 规定间隔为 1 所以为 5</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">5.0</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4.0</span>  <span class="hljs-comment"># 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照最小值排序，即 4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">4.0</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank(method=&#39;min&#39;)
-0    6.0  # 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照最小值排序，即 6
-1    1.0
-2    6.0
-3    4.0  # 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照最小值排序，即 4
-4    3.0
-5    2.0
-6    4.0
-dtype: float64
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank(method=<span class="hljs-string">&#x27;min&#x27;</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">6.0</span>  <span class="hljs-comment"># 第 0 个和第 2 个值从小到大排名分别为 6 和 7，按照最小值排序，即 6</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">6.0</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4.0</span>  <span class="hljs-comment"># 第 3 个和第 6 个值从小到大排名分别为 4 和 5，按照最小值排序，即 4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">4.0</span>
+dtype: float64</code></pre>
 <p>在 DataFrame 中可以使用 axis 参数来指定轴：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; obj = pd.DataFrame(&#123;&#39;b&#39;: [4.3, 7, -3, 2], &#39;a&#39;: [0, 1, 0, 1], &#39;c&#39;: [-2, 5, 8, -2.5]&#125;)
-&gt;&gt;&gt; obj
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;b&#x27;</span>: [<span class="hljs-number">4.3</span>, <span class="hljs-number">7</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">2</span>], <span class="hljs-string">&#x27;a&#x27;</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], <span class="hljs-string">&#x27;c&#x27;</span>: [-<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>, -<span class="hljs-number">2.5</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
      b  a    c
-0  4.3  0 -2.0
-1  7.0  1  5.0
-2 -3.0  0  8.0
-3  2.0  1 -2.5
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank()
+<span class="hljs-number">0</span>  <span class="hljs-number">4.3</span>  <span class="hljs-number">0</span> -<span class="hljs-number">2.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">7.0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">5.0</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">3.0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">8.0</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">1</span> -<span class="hljs-number">2.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank()
      b    a    c
-0  3.0  1.5  2.0
-1  4.0  3.5  3.0
-2  1.0  1.5  4.0
-3  2.0  3.5  1.0
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.rank(axis=&#39;columns&#39;)
+<span class="hljs-number">0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">1.5</span>  <span class="hljs-number">2.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">3.5</span>  <span class="hljs-number">3.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">1.5</span>  <span class="hljs-number">4.0</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.5</span>  <span class="hljs-number">1.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rank(axis=<span class="hljs-string">&#x27;columns&#x27;</span>)
      b    a    c
-0  3.0  2.0  1.0
-1  3.0  1.0  2.0
-2  1.0  2.0  3.0
-3  3.0  2.0  1.0
-</code></pre>
+<span class="hljs-number">0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">1.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">1.0</span></code></pre>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/106758103
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="【03x00】层级索引"><a href="#【03x00】层级索引" class="headerlink" title="【03x00】层级索引"></a><font color=#FF0000>【03x00】层级索引</font></h2><h3 id="【03x01】认识层级索引"><a href="#【03x01】认识层级索引" class="headerlink" title="【03x01】认识层级索引"></a><font color=#4876FF>【03x01】认识层级索引</font></h3><p>以下示例将创建一个 Series 对象， 索引 Index 由两个子 list 组成，第一个子 list 是外层索引，第二个 list 是内层索引：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.Series(np.random.randn(12),index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;, &#39;d&#39;, &#39;d&#39;, &#39;d&#39;], [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
-&gt;&gt;&gt; obj
-a  0   -0.201536
-   1   -0.629058
-   2    0.766716
-b  0   -1.255831
-   1   -0.483727
-   2   -0.018653
-c  0    0.788787
-   1    1.010097
-   2   -0.187258
-d  0    1.242363
-   1   -0.822011
-   2   -0.085682
-dtype: float64
-</code></pre>
-<h3 id="【03x02】MultiIndex-索引对象"><a href="#【03x02】MultiIndex-索引对象" class="headerlink" title="【03x02】MultiIndex 索引对象"></a><font color=#4876FF>【03x02】MultiIndex 索引对象</font></h3><p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html">https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html</a></p>
+<h2 id="font-color-FF0000-【03x00】层级索引-font"><font color=#FF0000>【03x00】层级索引</font></h2>
+<h3 id="font-color-4876FF-【03x01】认识层级索引-font"><font color=#4876FF>【03x01】认识层级索引</font></h3>
+<p>以下示例将创建一个 Series 对象， 索引 Index 由两个子 list 组成，第一个子 list 是外层索引，第二个 list 是内层索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">12</span>),index=[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a  <span class="hljs-number">0</span>   -<span class="hljs-number">0.201536</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">0.629058</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">0.766716</span>
+b  <span class="hljs-number">0</span>   -<span class="hljs-number">1.255831</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">0.483727</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.018653</span>
+c  <span class="hljs-number">0</span>    <span class="hljs-number">0.788787</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">1.010097</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.187258</span>
+d  <span class="hljs-number">0</span>    <span class="hljs-number">1.242363</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">0.822011</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.085682</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【03x02】MultiIndex-索引对象-font"><font color=#4876FF>【03x02】MultiIndex 索引对象</font></h3>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html">https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html</a></p>
 <p>尝试打印上面示例中 Series 的索引类型，会得到一个 MultiIndex 对象，MultiIndex 对象的 <font color=#FF0000>levels</font> 属性表示两个层级中分别有那些标签，<font color=#FF0000>codes</font> 属性表示每个位置分别是什么标签，如下所示：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.Series(np.random.randn(12),index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;, &#39;d&#39;, &#39;d&#39;, &#39;d&#39;], [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
-&gt;&gt;&gt; obj
-a  0    0.035946
-   1   -0.867215
-   2   -0.053355
-b  0   -0.986616
-   1    0.026071
-   2   -0.048394
-c  0    0.251274
-   1    0.217790
-   2    1.137674
-d  0   -1.245178
-   1    1.234972
-   2   -0.035624
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">12</span>),index=[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a  <span class="hljs-number">0</span>    <span class="hljs-number">0.035946</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">0.867215</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.053355</span>
+b  <span class="hljs-number">0</span>   -<span class="hljs-number">0.986616</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.026071</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.048394</span>
+c  <span class="hljs-number">0</span>    <span class="hljs-number">0.251274</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.217790</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">1.137674</span>
+d  <span class="hljs-number">0</span>   -<span class="hljs-number">1.245178</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">1.234972</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.035624</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; type(obj.index)
-&lt;class &#39;pandas.core.indexes.multi.MultiIndex&#39;&gt;
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.index
-MultiIndex([(&#39;a&#39;, 0),
-            (&#39;a&#39;, 1),
-            (&#39;a&#39;, 2),
-            (&#39;b&#39;, 0),
-            (&#39;b&#39;, 1),
-            (&#39;b&#39;, 2),
-            (&#39;c&#39;, 0),
-            (&#39;c&#39;, 1),
-            (&#39;c&#39;, 2),
-            (&#39;d&#39;, 0),
-            (&#39;d&#39;, 1),
-            (&#39;d&#39;, 2)],
-           )
-&gt;&gt;&gt; obj.index.levels
-FrozenList([[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], [0, 1, 2]])
-&gt;&gt;&gt;
-&gt;&gt;&gt; obj.index.codes
-FrozenList([[0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3], [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(obj.index)
+&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">pandas</span>.<span class="hljs-title">core</span>.<span class="hljs-title">indexes</span>.<span class="hljs-title">multi</span>.<span class="hljs-title">MultiIndex</span>&#x27;&gt;</span>
+<span class="hljs-class">&gt;&gt;&gt; </span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">obj</span>.<span class="hljs-title">index</span></span>
+<span class="hljs-class"><span class="hljs-title">MultiIndex</span>(<span class="hljs-params">[(<span class="hljs-params"><span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">0</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">2</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">0</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">1</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">0</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">1</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">2</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">0</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">1</span></span>),</span></span>
+<span class="hljs-params"><span class="hljs-class">            (<span class="hljs-params"><span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">2</span></span>)],</span></span>
+<span class="hljs-params"><span class="hljs-class">           </span>)</span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">obj</span>.<span class="hljs-title">index</span>.<span class="hljs-title">levels</span></span>
+<span class="hljs-class"><span class="hljs-title">FrozenList</span>(<span class="hljs-params">[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]]</span>)</span>
+<span class="hljs-class">&gt;&gt;&gt;</span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">obj</span>.<span class="hljs-title">index</span>.<span class="hljs-title">codes</span></span>
+<span class="hljs-class"><span class="hljs-title">FrozenList</span>(<span class="hljs-params">[[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]]</span>)</span></code></pre>
 <p>通常可以使用 <code>from_arrays()</code> 方法来将数组对象转换为 MultiIndex 索引对象：</p>
-<pre><code class="python">&gt;&gt;&gt; arrays = [[1, 1, 2, 2], [&#39;red&#39;, &#39;blue&#39;, &#39;red&#39;, &#39;blue&#39;]]
-&gt;&gt;&gt; pd.MultiIndex.from_arrays(arrays, names=(&#39;number&#39;, &#39;color&#39;))
-MultiIndex([(1,  &#39;red&#39;),
-            (1, &#39;blue&#39;),
-            (2,  &#39;red&#39;),
-            (2, &#39;blue&#39;)],
-           names=[&#39;number&#39;, &#39;color&#39;])
-</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>arrays = [[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>], [<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-string">&#x27;blue&#x27;</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.MultiIndex.from_arrays(arrays, names=(<span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-string">&#x27;color&#x27;</span>))
+MultiIndex([(<span class="hljs-number">1</span>,  <span class="hljs-string">&#x27;red&#x27;</span>),
+            (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;blue&#x27;</span>),
+            (<span class="hljs-number">2</span>,  <span class="hljs-string">&#x27;red&#x27;</span>),
+            (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;blue&#x27;</span>)],
+           names=[<span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-string">&#x27;color&#x27;</span>])</code></pre>
 <p>其他常用方法见下表（更多方法参见官方文档）：</p>
 <table>
 <thead>
@@ -1117,7 +664,8 @@ MultiIndex([(1,  &#39;red&#39;),
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>from_arrays(arrays[, sortorder, names])</td>
 <td>将数组转换为 MultiIndex</td>
 </tr>
@@ -1153,817 +701,236 @@ MultiIndex([(1,  &#39;red&#39;),
 <td>swaplevel(self[, i, j])</td>
 <td>交换 level i 与 level i，即交换外层索引与内层索引</td>
 </tr>
-</tbody></table>
-<h3 id="【03x03】提取值"><a href="#【03x03】提取值" class="headerlink" title="【03x03】提取值"></a><font color=#4876FF>【03x03】提取值</font></h3><p>对于这种有多层索引的对象，如果只传入一个参数，则会对外层索引进行提取，其中包含对应所有的内层索引，如果传入两个参数，则第一个参数表示外层索引，第二个参数表示内层索引，示例如下：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.Series(np.random.randn(12),index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;, &#39;d&#39;, &#39;d&#39;, &#39;d&#39;], [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
-&gt;&gt;&gt; obj
-a  0    0.550202
-   1    0.328784
-   2    1.422690
-b  0   -1.333477
-   1   -0.933809
-   2   -0.326541
-c  0    0.663686
-   1    0.943393
-   2    0.273106
-d  0    1.354037
-   1   -2.312847
-   2   -2.343777
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【03x03】提取值-font"><font color=#4876FF>【03x03】提取值</font></h3>
+<p>对于这种有多层索引的对象，如果只传入一个参数，则会对外层索引进行提取，其中包含对应所有的内层索引，如果传入两个参数，则第一个参数表示外层索引，第二个参数表示内层索引，示例如下：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">12</span>),index=[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a  <span class="hljs-number">0</span>    <span class="hljs-number">0.550202</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.328784</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">1.422690</span>
+b  <span class="hljs-number">0</span>   -<span class="hljs-number">1.333477</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">0.933809</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.326541</span>
+c  <span class="hljs-number">0</span>    <span class="hljs-number">0.663686</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.943393</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">0.273106</span>
+d  <span class="hljs-number">0</span>    <span class="hljs-number">1.354037</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">2.312847</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">2.343777</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj[&#39;b&#39;]
-0   -1.333477
-1   -0.933809
-2   -0.326541
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;b&#x27;</span>]
+<span class="hljs-number">0</span>   -<span class="hljs-number">1.333477</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">0.933809</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">0.326541</span>
 dtype: float64
 &gt;&gt;&gt;
-&gt;&gt;&gt; obj[&#39;b&#39;, 1]
--0.9338094811708413
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj[:, 2]
-a    1.422690
-b   -0.326541
-c    0.273106
-d   -2.343777
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">1</span>]
+-<span class="hljs-number">0.9338094811708413</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[:, <span class="hljs-number">2</span>]
+a    <span class="hljs-number">1.422690</span>
+b   -<span class="hljs-number">0.326541</span>
+c    <span class="hljs-number">0.273106</span>
+d   -<span class="hljs-number">2.343777</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【03x04】交换分层与排序-font"><font color=#4876FF>【03x04】交换分层与排序</font></h3>
+<p>MultiIndex 对象的 <code>swaplevel()</code> 方法可以交换外层与内层索引，<code>sortlevel()</code> 方法会先对外层索引进行排序，再对内层索引进行排序，默认是升序，如果设置 <code>ascending</code> 参数为 False 则会降序排列，示例如下：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">12</span>),index=[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a  <span class="hljs-number">0</span>   -<span class="hljs-number">0.110215</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.193075</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">1.101706</span>
+b  <span class="hljs-number">0</span>   -<span class="hljs-number">1.325743</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">0.528418</span>
+   <span class="hljs-number">2</span>   -<span class="hljs-number">0.127081</span>
+c  <span class="hljs-number">0</span>   -<span class="hljs-number">0.733822</span>
+   <span class="hljs-number">1</span>    <span class="hljs-number">1.665262</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">0.127073</span>
+d  <span class="hljs-number">0</span>    <span class="hljs-number">1.262022</span>
+   <span class="hljs-number">1</span>   -<span class="hljs-number">1.170518</span>
+   <span class="hljs-number">2</span>    <span class="hljs-number">0.966334</span>
 dtype: float64
-</code></pre>
-<h3 id="【03x04】交换分层与排序"><a href="#【03x04】交换分层与排序" class="headerlink" title="【03x04】交换分层与排序"></a><font color=#4876FF>【03x04】交换分层与排序</font></h3><p>MultiIndex 对象的 <code>swaplevel()</code> 方法可以交换外层与内层索引，<code>sortlevel()</code> 方法会先对外层索引进行排序，再对内层索引进行排序，默认是升序，如果设置 <code>ascending</code> 参数为 False 则会降序排列，示例如下：</p>
-<pre><code class="python">&gt;&gt;&gt; import pandas as pd
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; obj = pd.Series(np.random.randn(12),index=[[&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;, &#39;d&#39;, &#39;d&#39;, &#39;d&#39;], [0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2]])
-&gt;&gt;&gt; obj
-a  0   -0.110215
-   1    0.193075
-   2   -1.101706
-b  0   -1.325743
-   1    0.528418
-   2   -0.127081
-c  0   -0.733822
-   1    1.665262
-   2    0.127073
-d  0    1.262022
-   1   -1.170518
-   2    0.966334
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.swaplevel()
+<span class="hljs-number">0</span>  a   -<span class="hljs-number">0.110215</span>
+<span class="hljs-number">1</span>  a    <span class="hljs-number">0.193075</span>
+<span class="hljs-number">2</span>  a   -<span class="hljs-number">1.101706</span>
+<span class="hljs-number">0</span>  b   -<span class="hljs-number">1.325743</span>
+<span class="hljs-number">1</span>  b    <span class="hljs-number">0.528418</span>
+<span class="hljs-number">2</span>  b   -<span class="hljs-number">0.127081</span>
+<span class="hljs-number">0</span>  c   -<span class="hljs-number">0.733822</span>
+<span class="hljs-number">1</span>  c    <span class="hljs-number">1.665262</span>
+<span class="hljs-number">2</span>  c    <span class="hljs-number">0.127073</span>
+<span class="hljs-number">0</span>  d    <span class="hljs-number">1.262022</span>
+<span class="hljs-number">1</span>  d   -<span class="hljs-number">1.170518</span>
+<span class="hljs-number">2</span>  d    <span class="hljs-number">0.966334</span>
 dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.swaplevel()
-0  a   -0.110215
-1  a    0.193075
-2  a   -1.101706
-0  b   -1.325743
-1  b    0.528418
-2  b   -0.127081
-0  c   -0.733822
-1  c    1.665262
-2  c    0.127073
-0  d    1.262022
-1  d   -1.170518
-2  d    0.966334
-dtype: float64
-&gt;&gt;&gt; 
-&gt;&gt;&gt; obj.swaplevel().index.sortlevel()
-(MultiIndex([(0, &#39;a&#39;),
-            (0, &#39;b&#39;),
-            (0, &#39;c&#39;),
-            (0, &#39;d&#39;),
-            (1, &#39;a&#39;),
-            (1, &#39;b&#39;),
-            (1, &#39;c&#39;),
-            (1, &#39;d&#39;),
-            (2, &#39;a&#39;),
-            (2, &#39;b&#39;),
-            (2, &#39;c&#39;),
-            (2, &#39;d&#39;)],
-           ), array([ 0,  3,  6,  9,  1,  4,  7, 10,  2,  5,  8, 11], dtype=int32))
-</code></pre>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.swaplevel().index.sortlevel()
+(MultiIndex([(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;a&#x27;</span>),
+            (<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;b&#x27;</span>),
+            (<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;c&#x27;</span>),
+            (<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;d&#x27;</span>),
+            (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;a&#x27;</span>),
+            (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>),
+            (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;c&#x27;</span>),
+            (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;d&#x27;</span>),
+            (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;a&#x27;</span>),
+            (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;b&#x27;</span>),
+            (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;c&#x27;</span>),
+            (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;d&#x27;</span>)],
+           ), array([ <span class="hljs-number">0</span>,  <span class="hljs-number">3</span>,  <span class="hljs-number">6</span>,  <span class="hljs-number">9</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">4</span>,  <span class="hljs-number">7</span>, <span class="hljs-number">10</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">5</span>,  <span class="hljs-number">8</span>, <span class="hljs-number">11</span>], dtype=int32))</code></pre>
 <hr>
-<pre><code class="yaml">这里是一段防爬虫文本，请读者忽略。
-本文原创首发于 CSDN，作者 TRHX。
-博客首页：https://itrhx.blog.csdn.net/
-本文链接：https://itrhx.blog.csdn.net/article/details/106758103
-未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！
-</code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/028/">https://www.itbob.cn/article/028/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/029/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/027/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/029/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/027/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    });
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-    <script src="https://fastly.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>

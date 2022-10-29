@@ -1,786 +1,328 @@
 <!DOCTYPE html>
-<html style="display: none;" lang="zh">
+<html lang="zh-CN">
     <head>
-    <meta charset="utf-8">
-    <meta name="baidu-site-verification" content="code-gf1mflsgGo" />
-    <!--
-        © Material Theme
-        https://github.com/bollnh/hexo-theme-material
-        Version: 1.5.6 -->
-    <script>
-        window.materialVersion = "1.5.6"
-        // Delete localstorage with these tags
-        window.oldVersion = [
-            'codestartv1',
-            '1.3.4',
-            '1.4.0',
-            '1.4.0b1',
-            '1.5.0',
-            '1.5.2',
-            '1.5.5'
-        ]
-    </script>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- dns prefetch -->
-    <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- Title -->
+<title>Loguru：Python 日志终极解决方案 - BOB&#39;S BLOG</title>
 
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
 
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
-    <link rel="dns-prefetch" href="https://busuanzi.ibruce.info"/>
 
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
 
 
-
-
-    <link rel="dns-prefetch" href="https://hm.baidu.com"/>
-
-    <link rel="dns-prefetch" href="https://www.google-analytics.com"/>
-
-
-
-    <link rel="dns-prefetch" href="https://fonts.proxy.ustclug.org"/>
-
-
-
-
-
-    <!-- Meta & Info -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- Title -->
-    
-    <title>
-        
-            Loguru：Python 日志终极解决方案 | 
-        
-        ITBOB&#39;S BLOG
-    </title>
-
-    <!-- Favicons -->
-    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
-    <link rel="icon" href="/img/favicon.png">
-
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="description" itemprop="description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta name="keywords" content="ITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript,Python">
-    <meta name="theme-color" content="#0097A7">
-
-    <!-- Disable Fucking Bloody Baidu Tranformation -->
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="/css/ie-blocker.css">
-
-        
-            <script src="/js/ie-blocker.zhCN.js"></script>
-        
-    <![endif]-->
-
-    <!-- Import lsloader -->
-    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
-
-    <!-- Import queue -->
-    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
-
-    <!-- Import CSS -->
-    
-        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?T9bls9Il4KYK54s9694XsA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?H4vLb99nOZsM9O+Kbkw8rw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-        
-            
-                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/atelier-forest-light.min.css?HdofjyGu7b4PtoyvVcYV4A==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-            
-        
-
-    
-
-    
-
-    <!-- Config CSS -->
-
-<!-- Other Styles -->
-<style>
-    body,
-    html {
-        font-family: Noto Sans SC, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-        overflow-x: hidden !important;
-    }
-    
-    code {
-        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    }
-    
-    a {
-        color: #00838F;
-    }
-    
-    .mdl-card__media,
-    #search-label,
-    #search-form-label:after,
-    #scheme-Paradox .hot_tags-count,
-    #scheme-Paradox .sidebar_archives-count,
-    #scheme-Paradox .sidebar-colored .sidebar-header,
-    #scheme-Paradox .sidebar-colored .sidebar-badge {
-        background-color: #0097A7 !important;
-    }
-    /* Sidebar User Drop Down Menu Text Color */
-    
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
-    #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
-        color: #0097A7 !important;
-    }
-    
-    #post_entry-right-info,
-    .sidebar-colored .sidebar-nav li:hover>a,
-    .sidebar-colored .sidebar-nav li:hover>a i,
-    .sidebar-colored .sidebar-nav li>a:hover,
-    .sidebar-colored .sidebar-nav li>a:hover i,
-    .sidebar-colored .sidebar-nav li>a:focus i,
-    .sidebar-colored .sidebar-nav>.open>a,
-    .sidebar-colored .sidebar-nav>.open>a:hover,
-    .sidebar-colored .sidebar-nav>.open>a:focus,
-    #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
-        color: #0097A7 !important;
-    }
-    
-    .toTop {
-        background: #757575 !important;
-    }
-    
-    .material-layout .material-post>.material-nav,
-    .material-layout .material-index>.material-nav,
-    .material-nav a {
-        color: #757575;
-    }
-    
-    #scheme-Paradox .MD-burger-layer {
-        background-color: #757575;
-    }
-    
-    #scheme-Paradox #post-toc-trigger-btn {
-        color: #757575;
-    }
-    
-    .post-toc a:hover {
-        color: #00838F;
-        text-decoration: underline;
-    }
-</style>
-
-
-<!-- Theme Background Related-->
-
-        <style>
-            body {
-                background-color: #F5F5F5;
-            }
-            /* blog_info bottom background */
-            
-            #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text {
-                background-color: #fff;
-            }
-        </style>
-        
-
-
-
-                <!-- Fade Effect -->
-                
-                    <style>
-                        .fade {
-                            transition: all 800ms linear;
-                            -webkit-transform: translate3d(0, 0, 0);
-                            -moz-transform: translate3d(0, 0, 0);
-                            -ms-transform: translate3d(0, 0, 0);
-                            -o-transform: translate3d(0, 0, 0);
-                            transform: translate3d(0, 0, 0);
-                            opacity: 1;
-                        }
-                        
-                        .fade.out {
-                            opacity: 0;
-                        }
-                    </style>
-                    
-
-                        <!-- Import Font -->
-                        <!-- Import Roboto -->
-
-    <!-- <link href="https://fonts.proxy.ustclug.org/css?family=ZCOOL%20XiaoWei:300,400,500" rel="stylesheet"> -->
-    <link href="https://fonts.proxy.ustclug.org/css?family=Noto+Sans+SC:300,400,500" rel="stylesheet">
-
-
-<!-- Import Material Icons -->
-
-
-    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
-
-
-
-    <!-- Import jQuery -->
-    
-        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
-    
-    
-    <!-- 枫叶飘落 -->
-    <script>lsloader.load("undefined","/js/leave.min.js?jxgh475VpQSPx5JpWEZ6lA==", true)</script>
-
-    <!-- WebAPP Icons -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="ITBOB&#39;S BLOG">
-    <meta name="msapplication-starturl" content="https://www.itbob.cn/article/042/">
-    <meta name="msapplication-navbutton-color" content="#0097A7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ITBOB&#39;S BLOG">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="/img/favicon.png">
-
-    <!-- Site Verification -->
-    
-    
-
-    <!-- RSS -->
-    
-        
-            <link rel=alternate type="application/atom+xml" href="/atom.xml">
-        
-    
-
-    <!-- The Open Graph protocol -->
-    <meta property="og:url" content="https://www.itbob.cn/article/042/">
-    <meta property="og:type" content="blog">
-    <meta property="og:title" content="Loguru：Python 日志终极解决方案 | ITBOB&#39;S BLOG">
-    <meta property="og:image" content="/img/favicon.png">
-    <meta property="og:description" content="BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！">
-    <meta property="og:article:tag" content="Python"> 
-
-    
-        <meta property="article:published_time" content="Thu Nov 04 2021 15:48:00 GMT+0800">
-        <meta property="article:modified_time" content="Sun May 22 2022 20:49:00 GMT+0800">
-    
-
-    <!-- The Twitter Card protocol -->
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Add canonical link for SEO -->
-    
-        <link rel="canonical" href="https://www.itbob.cn/article/042/index.html" />
-    
-
-    <!-- Structured-data for SEO -->
-    
-        
-
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": "https://www.itbob.cn/article/042/index.html",
-    "headline": "Loguru：Python 日志终极解决方案",
-    "datePublished": "Thu Nov 04 2021 15:48:00 GMT+0800",
-    "dateModified": "Sun May 22 2022 20:49:00 GMT+0800",
-    "author": {
-        "@type": "Person",
-        "name": "BOB",
-        "image": {
-            "@type": "ImageObject",
-            "url": "/img/BOB.png"
-        },
-        "description": "Hi, nice to meet you"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "ITBOB&#39;S BLOG",
-        "logo": {
-            "@type":"ImageObject",
-            "url": "/img/favicon.png"
-        }
-    },
-    "keywords": ",PythonITRHX,TRHX,ITBOB,BOB,爬虫,Python爬虫,数据分析,数据可视化,逆向,逆向安全,JS逆向,安卓逆向,Android逆向,APP逆向,Python,JavaScript",
-    "description": "BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！",
-}
-</script>
-
-
-    
-
-    <!-- Analytics -->
-    
-        <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'G-FLNER0M8ML', 'auto');ga('send', 'pageview');
-</script>
-    
-    
-        <script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(hm, s);
-    })();
-</script>
-    
-    
-
-    <!-- Custom Head -->
-    
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-
-    
-        <body id="scheme-Paradox" class="lazy">
-            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
-                
-
-                <!-- Main Container -->
-                <main class="material-layout__content" id="main">
-
-                    <!-- Top Anchor -->
-                    <div id="top"></div>
-
-                    
-                        <!-- Hamburger Button -->
-                        <button class="MD-burger-icon sidebar-toggle">
-                            <span id="MD-burger-id" class="MD-burger-layer"></span>
-                        </button>
-                    
-
-                    <!-- Post TOC -->
-
-    
-    <!-- Back Button -->
-    <!--
-    <div class="material-back" id="backhome-div" tabindex="0">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
-           href="#" onclick="window.history.back();return false;"
-           target="_self"
-           role="button"
-           data-upgraded=",MaterialButton,MaterialRipple">
-            <i class="material-icons" role="presentation">arrow_back</i>
-            <span class="mdl-button__ripple-container">
-                <span class="mdl-ripple"></span>
-            </span>
-        </a>
-    </div>
-    -->
-
-
-    <!-- Left aligned menu below button -->
-    
-    
-    <button id="post-toc-trigger-btn"
-        class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">format_list_numbered</i>
-    </button>
-
-    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%97%A5%E5%BF%97%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="post-toc-number">1.</span> <span class="post-toc-text">日志的重要性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%96%B9%E5%BC%8F"><span class="post-toc-number">2.</span> <span class="post-toc-text">常见日志记录方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%80%E3%80%81print"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">一、print()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BA%8C%E3%80%81%E8%87%AA%E5%86%99%E6%A8%A1%E6%9D%BF"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">二、自写模板</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%89%E3%80%81Logging"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">三、Logging</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%9B%B4%E4%BC%98%E9%9B%85%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9ALoguru"><span class="post-toc-number">3.</span> <span class="post-toc-text">更优雅的解决方案：Loguru</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%89%E8%A3%85"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">开箱即用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#add-remove"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">add() &#x2F; remove()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%8C%E6%95%B4%E5%8F%82%E6%95%B0"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">完整参数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#rotation-%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%88%86%E9%9A%94"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">rotation 日志文件分隔</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#retention-%E6%97%A5%E5%BF%97%E4%BF%9D%E7%95%99%E6%97%B6%E9%97%B4"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">retention 日志保留时间</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#compression-%E6%97%A5%E5%BF%97%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">compression 日志压缩格式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">字符串格式化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BC%82%E5%B8%B8%E8%BF%BD%E6%BA%AF"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">异常追溯</span></a></li></ol></li></ol>
-    </ul>
-    
-
-
-
-
-<!-- Layouts -->
-
-    <!-- Post Module -->
-    <div class="material-post_container">
-
-        <div class="material-post mdl-grid">
-            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-
-                <!-- Post Header(Thumbnail & Title) -->
-                
-    <!-- Paradox Post Header -->
-    
-        
-            <!-- Random Thumbnail -->
-            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
-            <script type="text/ls-javascript" id="post-thumbnail-script">
-    var randomNum = Math.floor(Math.random() * 100 + 1);
-
-    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.webp');
-    $('.post_thumbnail-random').addClass('lazy');
-</script>
-
-        
-    
-            <p class="article-headline-p">
-                Loguru：Python 日志终极解决方案
-            </p>
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
         </div>
-
-
-
-
-
-                
-                    <!-- Paradox Post Info -->
-                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-
-    <!-- Author Avatar -->
-    <div id="author-avatar">
-        <img src="/img/BOB.png" width="44px" height="44px" class="itbob-author-avatar" alt="Author Avatar"/>
-    </div>
-    <!-- Author Name & Date -->
-    <div>
-        <strong>BOB</strong>
-        <!-- <span>11月 04, 2021</span> -->
-        <span>2021-11-04 15:48:00</span>
-    </div>
-
-    <div class="section-spacer"></div>
-
-    <!-- Favorite -->
-    <!-- <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
-        <i class="material-icons" role="presentation">favorite</i>
-        <span class="visuallyhidden">favorites</span>
-    </button> -->
-   
-
-    <!-- Qrcode -->
-    
-        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">devices other</i>
-    <span class="visuallyhidden">devices other</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
-    <li class="mdl-menu__item" style="text-align:center; color:#E30B20; font-weight:600">在其它设备中阅读本文章</li>
-    
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbUlEQVR42u3a0W7qMBAEUP7/p9vXK7XkznixQ9HJE4pC4hMkrxnv4+ujjwceHh4eHh4eHt6b8R7x8exbvzzg8vzaU4pv4eHh4R3h/WeqffLg5My/539+vn764tjw8PDwDvKeTbjJNdf3TKb76+8m1+Ph4eH9Xd71JJ6XCjw8PLxP4uWL6TyYSAoMHh4e3rvxkj/8OwpDPvTtWQseHh5ezMs3mc5/Prq/h4eHhxfw6pam8SbWpAxEI8TDw8PbzMsn4mSh/KotsdF48PDw8Dbz2oghWXBfR715k2ty/2hJjYeHh7eBNw8F5qVlrX2h+MeAh4eHt5nXvoLJS5nfDQ8PD+887/qR+SI4WaCvbbkVy3c8PDy8zbxJo8Bkom+LQfGT4OHh4R3h5eHpfNJvi0pSJPDw8PDu4tVbTeXjkzNrQQYeHh7eeV67sF4LDl7bjhC1DuDh4eFt4LVbXHmRSK5sF+5RucLDw8M7wssf1oawaxHtqMzg4eHhbea1AUE7iBw5CXbx8PDwTvLaNqm1uLZtHWjbv/Dw8PBO8tqwNWG08etaUanrHh4eHt4GXhKVrjVCrZWH9j54eHh49/Ly4HXedrC2sH56DR4eHt5NvOshTib6fNB5yIuHh4d3ktce+UBfVQzabTM8PDy83bzJpNxO9EngmxSkuukKDw8PbwOvLQZry+55YYheFh4eHt5BXhvF5pFrG/smJareAMPDw8N7M95k82yttNQpNR4eHt6tvHyja77sbluy8PDw8E7y2qA2n/TzO7eFAQ8PD+8uXhsBrC2pE2r+moowAg8PD++lvM878PDw8PDw8PDw3uD4Bq2IzkqFSQ1aAAAAAElFTkSuQmCC">
-    
-</ul>
-
-    
-
-    <!-- Tags (bookmark) -->
-    
-    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">bookmark</i>
-        <span class="visuallyhidden">bookmark</span>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
     </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
-        <li class="mdl-menu__item">
-        <a class="post_tag-none-link" href="/tags/Python/" rel="tag">Python</a>
-    </ul>
-    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                <div class="nav-item">
+                    <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                </div>
+            
+                <div class="nav-item">
+                    <a href="https://travellings.link" class="menu gt-a-link" target="_blank">开往</a>
+                </div>
+            
+        </div>
+    </div>
+</nav>
 
-    <!-- Share -->
-    
-        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-    <i class="material-icons" role="presentation">share</i>
-    <span class="visuallyhidden">share</span>
-</button>
-<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
-    <!-- Leancloud Views -->
-    <!--  -->
-    
-    
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">本文字数&nbsp;3.7k 字</span>
-        </li>
-    </a>
-    <a class="post_share-link" href="#">
-        <li class="mdl-menu__item">
-            <span class="post-count">阅读时长&nbsp;16 分</span>
-        </li>
-    </a>
-    
-    <!-- Busuanzi Views -->
-    
-        
-            <a class="post_share-link" href="#">
-                <li class="mdl-menu__item">
-                    <span id="busuanzi_container_page_pv">
-                        本文浏览量&nbsp;<span id="busuanzi_value_page_pv"></span>
-                    </span>
-                </li>
-            </a>
-        
-    
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
 
-    <!-- Share QQ -->
-    
-        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=ITBOB&#39;S BLOG&title=Loguru：Python 日志终极解决方案&summary=BOB 的个人博客；主攻 Python、爬虫、逆向、数据分析、数据可视化；记录毕生所学！&pics=https://www.itbob.cn/img/favicon.png&url=https://www.itbob.cn/article/042/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 QQ
-            </li>
-        </a>
-    
-
-    <!-- Share Weibo -->
-    
-        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Loguru：Python 日志终极解决方案&url=https://www.itbob.cn/article/042/index.html&pic=https://www.itbob.cn/img/favicon.png&searchPic=false&style=simple" target="_blank">
-            <li class="mdl-menu__item">
-                分享到微博
-            </li>
-        </a>
-    
-
-    <!-- Share Twitter -->
-    
-        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Loguru：Python 日志终极解决方案&url=https://www.itbob.cn/article/042/index.html&via=BOB" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Twitter
-            </li>
-        </a>
-    
-
-    <!-- Share Telegram -->
-    
-        <a class="post_share-link" href="https://telegram.me/share/url?url=https://www.itbob.cn/article/042/index.html&text=Loguru：Python 日志终极解决方案" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Telegram
-            </li>
-        </a>
-    
-
-    <!-- Share Facebook -->
-    
-        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.itbob.cn/article/042/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Facebook
-            </li>
-        </a>
-    
-
-    <!-- Share LinkedIn -->
-    
-        <a class="post_share-link" href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.itbob.cn/article/042/index.html&title=Loguru：Python 日志终极解决方案" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 LinkedIn
-            </li>
-        </a>
-    
-
-
-    <!-- Share Google+ -->
-    
-        <a class="post_share-link" href="https://plus.google.com/share?url=https://www.itbob.cn/article/042/index.html" target="_blank">
-            <li class="mdl-menu__item">
-                分享到 Google+
-            </li>
-        </a>
-    
-</ul>
-
-    
-</div>
-
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Loguru：Python 日志终极解决方案</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2021-11-04 ·</time>
                 
-
-                <!-- Post Content -->
-                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
-    
-        <h2 id="日志的重要性"><a href="#日志的重要性" class="headerlink" title="日志的重要性"></a>日志的重要性</h2><p>日志的作用非常重要，日志可以记录用户的操作、程序的异常，还可以为数据分析提供依据，日志的存在意义就是为了能够在程序在运行过程中记录错误，方便维护和调试，能够快速定位出错的地方，减少维护成本。每个程序员都应该知道，不是为了记录日志而记录日志，日志也不是随意记的。要实现能够只通过日志文件还原整个程序执行的过程，达到能透明地看到程序里执行情况，每个线程、每个过程到底执行到哪的目的。日志就像飞机的黑匣子一样，应当能够复原异常的整个现场乃至细节！</p>
-<h2 id="常见日志记录方式"><a href="#常见日志记录方式" class="headerlink" title="常见日志记录方式"></a>常见日志记录方式</h2><h3 id="一、print"><a href="#一、print" class="headerlink" title="一、print()"></a>一、print()</h3><p>最常见的是把输出函数 <code>print()</code> 当作日志记录的方式，直接打印各种提示信息，常见于个人练习项目里，通常是懒得单独配置日志，而且项目太小不需要日志信息，不需要上线，不需要持续运行，完整的项目不推荐直接打印日志信息，现实中也几乎没有人这么做。</p>
-<h3 id="二、自写模板"><a href="#二、自写模板" class="headerlink" title="二、自写模板"></a>二、自写模板</h3><p>我们可以在不少小项目里面看到作者自己写了一个日志模板，通常利用 <code>print()</code> 或者 <code>sys.stdout</code> 稍微封装一下即可实现简单的日志输出，这里的 <code>sys.stdout</code> 是 Python 中的标准输出流，<code>print()</code> 函数是对 <code>sys.stdout</code> 的高级封装，当我们在 Python 中打印对象调用 <code>print(obj)</code> 时候，事实上是调用了 <code>sys.stdout.write(obj+&#39;\n&#39;)</code>，<code>print()</code> 将内容打印到了控制台，然后追加了一个换行符 <code>\n</code>。</p>
+                    
+                        <a href="/tags/Python/" class="post-tag">
+                            #Python</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h2 id="日志的重要性">日志的重要性</h2>
+<p>日志的作用非常重要，日志可以记录用户的操作、程序的异常，还可以为数据分析提供依据，日志的存在意义就是为了能够在程序在运行过程中记录错误，方便维护和调试，能够快速定位出错的地方，减少维护成本。每个程序员都应该知道，不是为了记录日志而记录日志，日志也不是随意记的。要实现能够只通过日志文件还原整个程序执行的过程，达到能透明地看到程序里执行情况，每个线程、每个过程到底执行到哪的目的。日志就像飞机的黑匣子一样，应当能够复原异常的整个现场乃至细节！</p>
+<h2 id="常见日志记录方式">常见日志记录方式</h2>
+<h3 id="一、print">一、print()</h3>
+<p>最常见的是把输出函数 <code>print()</code> 当作日志记录的方式，直接打印各种提示信息，常见于个人练习项目里，通常是懒得单独配置日志，而且项目太小不需要日志信息，不需要上线，不需要持续运行，完整的项目不推荐直接打印日志信息，现实中也几乎没有人这么做。</p>
+<h3 id="二、自写模板">二、自写模板</h3>
+<p>我们可以在不少小项目里面看到作者自己写了一个日志模板，通常利用 <code>print()</code> 或者 <code>sys.stdout</code> 稍微封装一下即可实现简单的日志输出，这里的 <code>sys.stdout</code> 是 Python 中的标准输出流，<code>print()</code> 函数是对 <code>sys.stdout</code> 的高级封装，当我们在 Python 中打印对象调用 <code>print(obj)</code> 时候，事实上是调用了 <code>sys.stdout.write(obj+'\n')</code>，<code>print()</code> 将内容打印到了控制台，然后追加了一个换行符 <code>\n</code>。</p>
 <p>自写日志模板适合比较小的项目，可以按照自己的喜好编写模板，不需要太多复杂配置，方便快捷，但是这种记录日志的方式并不是很规范，有可能你自己觉得阅读体验不错，但是别人在接触你的项目的时候往往需要花费一定的时间去学习日志的逻辑、格式、输出方式等，比较大的项目同样不推荐这种方法。</p>
 <p>一个简单的自写日志模板举例：</p>
-<p>日志模板 log.py：</p>
-<pre><code class="python">import sys
-import traceback
-import datetime
+<p>日志模板 <a target="_blank" rel="noopener" href="http://log.py">log.py</a>：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> traceback
+<span class="hljs-keyword">import</span> datetime
 
 
-def getnowtime():
-    return datetime.datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getnowtime</span>():</span>
+    <span class="hljs-keyword">return</span> datetime.datetime.now().strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
 
 
-def _log(content, level, *args):
-    sys.stdout.write(&quot;%s - %s - %s\n&quot; % (getnowtime(), level, content))
-    for arg in args:
-        sys.stdout.write(&quot;%s\n&quot; % arg)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_log</span>(<span class="hljs-params">content, level, *args</span>):</span>
+    sys.stdout.write(<span class="hljs-string">&quot;%s - %s - %s\n&quot;</span> % (getnowtime(), level, content))
+    <span class="hljs-keyword">for</span> arg <span class="hljs-keyword">in</span> args:
+        sys.stdout.write(<span class="hljs-string">&quot;%s\n&quot;</span> % arg)
 
 
-def debug(content, *args):
-    _log(content, &#39;DEBUG&#39;, *args)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug</span>(<span class="hljs-params">content, *args</span>):</span>
+    _log(content, <span class="hljs-string">&#x27;DEBUG&#x27;</span>, *args)
 
 
-def info(content, *args):
-    _log(content, &#39;INFO&#39;, *args)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">info</span>(<span class="hljs-params">content, *args</span>):</span>
+    _log(content, <span class="hljs-string">&#x27;INFO&#x27;</span>, *args)
 
 
-def warn(content, *args):
-    _log(content, &#39;WARN&#39;, *args)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">warn</span>(<span class="hljs-params">content, *args</span>):</span>
+    _log(content, <span class="hljs-string">&#x27;WARN&#x27;</span>, *args)
 
 
-def error(content, *args):
-    _log(content, &#39;ERROR&#39;, *args)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span>(<span class="hljs-params">content, *args</span>):</span>
+    _log(content, <span class="hljs-string">&#x27;ERROR&#x27;</span>, *args)
 
 
-def exception(content):
-    sys.stdout.write(&quot;%s - %s\n&quot; % (getnowtime(), content))
-    traceback.print_exc(file=sys.stdout)
-</code></pre>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">exception</span>(<span class="hljs-params">content</span>):</span>
+    sys.stdout.write(<span class="hljs-string">&quot;%s - %s\n&quot;</span> % (getnowtime(), content))
+    traceback.print_exc(file=sys.stdout)</code></pre>
 <p>调用日志模块：</p>
-<pre><code class="python">import log
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> log
 
 
-log.info(&quot;This is log info!&quot;)
-log.warn(&quot;This is log warn!&quot;)
-log.error(&quot;This is log error!&quot;)
-log.debug(&quot;This is log debug!&quot;)
+log.info(<span class="hljs-string">&quot;This is log info!&quot;</span>)
+log.warn(<span class="hljs-string">&quot;This is log warn!&quot;</span>)
+log.error(<span class="hljs-string">&quot;This is log error!&quot;</span>)
+log.debug(<span class="hljs-string">&quot;This is log debug!&quot;</span>)
 
-people_info = &#123;&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 20&#125;
+people_info = &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">20</span>&#125;
 
-try:
-    gender = people_info[&quot;gender&quot;]
-except Exception as error:
-    log.exception(error)
-</code></pre>
+<span class="hljs-keyword">try</span>:
+    gender = people_info[<span class="hljs-string">&quot;gender&quot;</span>]
+<span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> error:
+    log.exception(error)</code></pre>
 <p>日志输出：</p>
-<pre><code class="python">2021-10-19 09:50:58 - INFO - This is log info!
-2021-10-19 09:50:58 - WARN - This is log warn!
-2021-10-19 09:50:58 - ERROR - This is log error!
-2021-10-19 09:50:58 - DEBUG - This is log debug!
-2021-10-19 09:50:58 - &#39;gender&#39;
+<pre><code class="hljs python"><span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> 09:<span class="hljs-number">50</span>:<span class="hljs-number">58</span> - INFO - This <span class="hljs-keyword">is</span> log info!
+<span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> 09:<span class="hljs-number">50</span>:<span class="hljs-number">58</span> - WARN - This <span class="hljs-keyword">is</span> log warn!
+<span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> 09:<span class="hljs-number">50</span>:<span class="hljs-number">58</span> - ERROR - This <span class="hljs-keyword">is</span> log error!
+<span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> 09:<span class="hljs-number">50</span>:<span class="hljs-number">58</span> - DEBUG - This <span class="hljs-keyword">is</span> log debug!
+<span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> 09:<span class="hljs-number">50</span>:<span class="hljs-number">58</span> - <span class="hljs-string">&#x27;gender&#x27;</span>
 Traceback (most recent call last):
-  File &quot;D:/python3Project/test.py&quot;, line 18, in &lt;module&gt;
-    gender = people_info[&quot;gender&quot;]
-KeyError: &#39;gender&#39;
-</code></pre>
-<h3 id="三、Logging"><a href="#三、Logging" class="headerlink" title="三、Logging"></a>三、Logging</h3><p>在一个完整的项目中，大多数人都会引入专门的日志记录库，而 Python 自带的标准库 logging 就是专门为日志记录而生的，logging 模块定义的函数和类为应用程序和库的开发实现了一个灵活的事件日志系统。由标准库模块提供日志记录 API 的关键好处是所有 Python 模块都可以使用这个日志记录功能。所以，你的应用日志可以将你自己的日志信息与来自第三方模块的信息整合起来。</p>
+  File <span class="hljs-string">&quot;D:/python3Project/test.py&quot;</span>, line <span class="hljs-number">18</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+    gender = people_info[<span class="hljs-string">&quot;gender&quot;</span>]
+KeyError: <span class="hljs-string">&#x27;gender&#x27;</span></code></pre>
+<h3 id="三、Logging">三、Logging</h3>
+<p>在一个完整的项目中，大多数人都会引入专门的日志记录库，而 Python 自带的标准库 logging 就是专门为日志记录而生的，logging 模块定义的函数和类为应用程序和库的开发实现了一个灵活的事件日志系统。由标准库模块提供日志记录 API 的关键好处是所有 Python 模块都可以使用这个日志记录功能。所以，你的应用日志可以将你自己的日志信息与来自第三方模块的信息整合起来。</p>
 <p>logging 模块虽然强大，但是其配置也是比较繁琐的，在大型项目中通常需要单独初始化日志、配置日志格式等等，我在日常使用中通常都会对 logging 做如下的封装写法，使日志可以按天保存，保留15天的日志，可以配置是否输出到控制台和文件，如下所示：</p>
-<pre><code class="python"># 实现按天分割保留日志
+<pre><code class="hljs python"><span class="hljs-comment"># 实现按天分割保留日志</span>
 
 
-import os
-import sys
-import logging
-from logging import handlers
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> logging
+<span class="hljs-keyword">from</span> logging <span class="hljs-keyword">import</span> handlers
 
 
-PARENT_DIR = os.path.split(os.path.realpath(__file__))[0]  # 父目录
-LOGGING_DIR = os.path.join(PARENT_DIR, &quot;log&quot;)              # 日志目录
-LOGGING_NAME = &quot;test&quot;                                      # 日志文件名
+PARENT_DIR = os.path.split(os.path.realpath(__file__))[<span class="hljs-number">0</span>]  <span class="hljs-comment"># 父目录</span>
+LOGGING_DIR = os.path.join(PARENT_DIR, <span class="hljs-string">&quot;log&quot;</span>)              <span class="hljs-comment"># 日志目录</span>
+LOGGING_NAME = <span class="hljs-string">&quot;test&quot;</span>                                      <span class="hljs-comment"># 日志文件名</span>
 
-LOGGING_TO_FILE = True                                     # 日志输出文件
-LOGGING_TO_CONSOLE = True                                  # 日志输出到控制台
+LOGGING_TO_FILE = <span class="hljs-literal">True</span>                                     <span class="hljs-comment"># 日志输出文件</span>
+LOGGING_TO_CONSOLE = <span class="hljs-literal">True</span>                                  <span class="hljs-comment"># 日志输出到控制台</span>
 
-LOGGING_WHEN = &#39;D&#39;                                         # 日志文件切分维度
-LOGGING_INTERVAL = 1                                       # 间隔少个 when 后，自动重建文件
-LOGGING_BACKUP_COUNT = 15                                  # 日志保留个数，0 保留所有日志
-LOGGING_LEVEL = logging.DEBUG                              # 日志等级
-LOGGING_suffix = &quot;%Y.%m.%d.log&quot;                            # 旧日志文件名
+LOGGING_WHEN = <span class="hljs-string">&#x27;D&#x27;</span>                                         <span class="hljs-comment"># 日志文件切分维度</span>
+LOGGING_INTERVAL = <span class="hljs-number">1</span>                                       <span class="hljs-comment"># 间隔少个 when 后，自动重建文件</span>
+LOGGING_BACKUP_COUNT = <span class="hljs-number">15</span>                                  <span class="hljs-comment"># 日志保留个数，0 保留所有日志</span>
+LOGGING_LEVEL = logging.DEBUG                              <span class="hljs-comment"># 日志等级</span>
+LOGGING_suffix = <span class="hljs-string">&quot;%Y.%m.%d.log&quot;</span>                            <span class="hljs-comment"># 旧日志文件名</span>
 
-# 日志输出格式
-LOGGING_FORMATTER = &quot;%(levelname)s - %(asctime)s - process:%(process)d - %(filename)s - %(name)s - line:%(lineno)d - %(module)s - %(message)s&quot;
+<span class="hljs-comment"># 日志输出格式</span>
+LOGGING_FORMATTER = <span class="hljs-string">&quot;%(levelname)s - %(asctime)s - process:%(process)d - %(filename)s - %(name)s - line:%(lineno)d - %(module)s - %(message)s&quot;</span>
 
 
-def logging_init():
-    if not os.path.exists(LOGGING_DIR):
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">logging_init</span>():</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(LOGGING_DIR):
         os.makedirs(LOGGING_DIR)
     logger = logging.getLogger()
     logger.setLevel(LOGGING_LEVEL)
     formatter = logging.Formatter(LOGGING_FORMATTER)
 
-    if LOGGING_TO_FILE:
+    <span class="hljs-keyword">if</span> LOGGING_TO_FILE:
         file_handler = handlers.TimedRotatingFileHandler(filename=os.path.join(LOGGING_DIR, LOGGING_NAME), when=LOGGING_WHEN, interval=LOGGING_INTERVAL, backupCount=LOGGING_BACKUP_COUNT)
         file_handler.suffix = LOGGING_suffix
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
-    if LOGGING_TO_CONSOLE:
+    <span class="hljs-keyword">if</span> LOGGING_TO_CONSOLE:
         stream_handler = logging.StreamHandler(sys.stderr)
         stream_handler.setFormatter(formatter)
         logger.addHandler(stream_handler)
 
 
-def logging_test():
-    logging.info(&quot;This is log info!&quot;)
-    logging.warning(&quot;This is log warn!&quot;)
-    logging.error(&quot;This is log error!&quot;)
-    logging.debug(&quot;This is log debug!&quot;)
-    people_info = &#123;&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 20&#125;
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">logging_test</span>():</span>
+    logging.info(<span class="hljs-string">&quot;This is log info!&quot;</span>)
+    logging.warning(<span class="hljs-string">&quot;This is log warn!&quot;</span>)
+    logging.error(<span class="hljs-string">&quot;This is log error!&quot;</span>)
+    logging.debug(<span class="hljs-string">&quot;This is log debug!&quot;</span>)
+    people_info = &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">20</span>&#125;
 
-    try:
-        gender = people_info[&quot;gender&quot;]
-    except Exception as error:
+    <span class="hljs-keyword">try</span>:
+        gender = people_info[<span class="hljs-string">&quot;gender&quot;</span>]
+    <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> error:
         logging.exception(error)
 
 
-if __name__ == &quot;__main__&quot;:
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
     logging_init()
-    logging_test()
-</code></pre>
+    logging_test()</code></pre>
 <p>输出日志：</p>
-<pre><code class="bash">INFO - 2021-10-19 11:28:10,103 - process:15144 - test.py - root - line:52 - test - This is log info!
-WARNING - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:53 - test - This is log warn!
-ERROR - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:54 - test - This is log error!
-DEBUG - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:55 - test - This is log debug!
-ERROR - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:61 - test - &#39;gender&#39;
+<pre><code class="hljs bash">INFO - 2021-10-19 11:28:10,103 - process:15144 - test.py - root - line:52 - <span class="hljs-built_in">test</span> - This is <span class="hljs-built_in">log</span> info!
+WARNING - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:53 - <span class="hljs-built_in">test</span> - This is <span class="hljs-built_in">log</span> warn!
+ERROR - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:54 - <span class="hljs-built_in">test</span> - This is <span class="hljs-built_in">log</span> error!
+DEBUG - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:55 - <span class="hljs-built_in">test</span> - This is <span class="hljs-built_in">log</span> debug!
+ERROR - 2021-10-19 11:28:10,105 - process:15144 - test.py - root - line:61 - <span class="hljs-built_in">test</span> - <span class="hljs-string">&#x27;gender&#x27;</span>
 Traceback (most recent call last):
-  File &quot;D:/python3Project/test.py&quot;, line 59, in logging_test
-    gender = people_info[&quot;gender&quot;]
-KeyError: &#39;gender&#39;
-</code></pre>
+  File <span class="hljs-string">&quot;D:/python3Project/test.py&quot;</span>, line 59, <span class="hljs-keyword">in</span> logging_test
+    gender = people_info[<span class="hljs-string">&quot;gender&quot;</span>]
+KeyError: <span class="hljs-string">&#x27;gender&#x27;</span></code></pre>
 <p>它在控制台中是这样的：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/906ed37334702098905b7cff083f2c6e.png" alt="02.png"></p>
 <p>当然，如果你不需要很复杂的功能，希望简洁一点，仅仅需要在控制台输出一下日志的话，也可以只进行简单的配置：</p>
-<pre><code class="python">import logging
-logging.basicConfig(level=logging.DEBUG, format=&#39;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#39;)
-logging.getLogger()
-</code></pre>
-<h2 id="更优雅的解决方案：Loguru"><a href="#更优雅的解决方案：Loguru" class="headerlink" title="更优雅的解决方案：Loguru"></a>更优雅的解决方案：Loguru</h2><p>对于 logging 模块，即便是简单的使用，也需要自己定义格式，这里介绍一个更加优雅、高效、简洁的第三方模块：loguru，官方的介绍是：Loguru is a library which aims to bring enjoyable logging in Python. Loguru 旨在为 Python 带来愉快的日志记录。这里引用官方的一个 GIF 来快速演示其功能：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> logging
+logging.basicConfig(level=logging.DEBUG, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)
+logging.getLogger()</code></pre>
+<h2 id="更优雅的解决方案：Loguru">更优雅的解决方案：Loguru</h2>
+<p>对于 logging 模块，即便是简单的使用，也需要自己定义格式，这里介绍一个更加优雅、高效、简洁的第三方模块：loguru，官方的介绍是：Loguru is a library which aims to bring enjoyable logging in Python. Loguru 旨在为 Python 带来愉快的日志记录。这里引用官方的一个 GIF 来快速演示其功能：</p>
 <p><img src="https://img-blog.csdnimg.cn/d2cfb68d514240209779ae9dac5a42cb.gif#pic_center" alt="02.gif"></p>
 <hr>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Loguru 仅支持 Python 3.5 及以上的版本，使用 pip 安装即可：</p>
-<pre><code class="bash">pip install loguru
-</code></pre>
+<h3 id="安装">安装</h3>
+<p>Loguru 仅支持 Python 3.5 及以上的版本，使用 pip 安装即可：</p>
+<pre><code class="hljs bash">pip install loguru</code></pre>
 <hr>
-<h3 id="开箱即用"><a href="#开箱即用" class="headerlink" title="开箱即用"></a>开箱即用</h3><p>Loguru 的主要概念是只有一个：logger</p>
-<pre><code class="python">from loguru import logger
+<h3 id="开箱即用">开箱即用</h3>
+<p>Loguru 的主要概念是只有一个：logger</p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
 
-logger.info(&quot;This is log info!&quot;)
-logger.warning(&quot;This is log warn!&quot;)
-logger.error(&quot;This is log error!&quot;)
-logger.debug(&quot;This is log debug!&quot;)
-</code></pre>
+logger.info(<span class="hljs-string">&quot;This is log info!&quot;</span>)
+logger.warning(<span class="hljs-string">&quot;This is log warn!&quot;</span>)
+logger.error(<span class="hljs-string">&quot;This is log error!&quot;</span>)
+logger.debug(<span class="hljs-string">&quot;This is log debug!&quot;</span>)</code></pre>
 <p>控制台输出：</p>
 <p><img src="https://img-blog.csdnimg.cn/345214edaba24e988379399393ac0a7f.png" alt="03.png"></p>
 <p>可以看到不需要手动设置，Loguru 会提前配置一些基础信息，自动输出时间、日志级别、模块名、行号等信息，而且根据等级的不同，还自动设置了不同的颜色，方便观察，真正做到了开箱即用！</p>
 <hr>
-<h3 id="add-remove"><a href="#add-remove" class="headerlink" title="add() / remove()"></a>add() / remove()</h3><p>如果想自定义日志级别，自定义日志格式，保存日志到文件该怎么办？与 logging 模块不同，不需要 Handler，不需要 Formatter，只需要一个 <code>add()</code> 函数就可以了，例如我们想把日志储存到文件：</p>
-<pre><code class="python">from loguru import logger
+<h3 id="add-remove">add() / remove()</h3>
+<p>如果想自定义日志级别，自定义日志格式，保存日志到文件该怎么办？与 logging 模块不同，不需要 Handler，不需要 Formatter，只需要一个 <code>add()</code> 函数就可以了，例如我们想把日志储存到文件：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
 
-logger.add(&#39;test.log&#39;)
-logger.debug(&#39;this is a debug&#39;)
-</code></pre>
-<p>我们不需要像 logging 模块一样再声明一个 FileHandler 了，就一行 <code>add()</code> 语句搞定，运行之后会发现目录下 test.log 里面同样出现了刚刚控制台输出的 debug 信息。 </p>
+logger.add(<span class="hljs-string">&#x27;test.log&#x27;</span>)
+logger.debug(<span class="hljs-string">&#x27;this is a debug&#x27;</span>)</code></pre>
+<p>我们不需要像 logging 模块一样再声明一个 FileHandler 了，就一行 <code>add()</code> 语句搞定，运行之后会发现目录下 test.log 里面同样出现了刚刚控制台输出的 debug 信息。</p>
 <p>与 <code>add()</code> 语句相反，<code>remove()</code> 语句可以删除我们添加的配置：</p>
-<pre><code class="python">from loguru import logger
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
 
-log_file = logger.add(&#39;test.log&#39;)
-logger.debug(&#39;This is log debug!&#39;)
+log_file = logger.add(<span class="hljs-string">&#x27;test.log&#x27;</span>)
+logger.debug(<span class="hljs-string">&#x27;This is log debug!&#x27;</span>)
 logger.remove(log_file)
-logger.debug(&#39;This is another log debug!&#39;)
-</code></pre>
+logger.debug(<span class="hljs-string">&#x27;This is another log debug!&#x27;</span>)</code></pre>
 <p>此时控制台会输出两条 debug 信息：</p>
-<pre><code class="bash">2021-10-19 13:53:36.610 | DEBUG    | __main__:&lt;module&gt;:86 - This is log debug!
-2021-10-19 13:53:36.611 | DEBUG    | __main__:&lt;module&gt;:88 - This is another log debug!
-</code></pre>
+<pre><code class="hljs bash">2021-10-19 13:53:36.610 | DEBUG    | __main__:&lt;module&gt;:86 - This is <span class="hljs-built_in">log</span> debug!
+2021-10-19 13:53:36.611 | DEBUG    | __main__:&lt;module&gt;:88 - This is another <span class="hljs-built_in">log</span> debug!</code></pre>
 <p>而 test.log 日志文件里面只有一条 debug  信息，原因就在于我们在第二条 debug 语句之前使用了 <code>remove()</code> 语句。</p>
 <hr>
-<h3 id="完整参数"><a href="#完整参数" class="headerlink" title="完整参数"></a>完整参数</h3><p>Loguru 对输出到文件的配置有非常强大的支持，比如支持输出到多个文件，分级别分别输出，过大创建新文件，过久自动删除等等。 下面我们来详细看一下 <code>add()</code> 语句的详细参数：</p>
+<h3 id="完整参数">完整参数</h3>
+<p>Loguru 对输出到文件的配置有非常强大的支持，比如支持输出到多个文件，分级别分别输出，过大创建新文件，过久自动删除等等。 下面我们来详细看一下 <code>add()</code> 语句的详细参数：</p>
 <p>基本语法：</p>
-<pre><code class="python">add(sink, *, level=&#39;DEBUG&#39;, format=&#39;&lt;green&gt;&#123;time:YYYY-MM-DD HH:mm:ss.SSS&#125;&lt;/green&gt; | &lt;level&gt;&#123;level: &lt;8&#125;&lt;/level&gt; | &lt;cyan&gt;&#123;name&#125;&lt;/cyan&gt;:&lt;cyan&gt;&#123;function&#125;&lt;/cyan&gt;:&lt;cyan&gt;&#123;line&#125;&lt;/cyan&gt; - &lt;level&gt;&#123;message&#125;&lt;/level&gt;&#39;, filter=None, colorize=None, serialize=False, backtrace=True, diagnose=True, enqueue=False, catch=True, **kwargs)
-</code></pre>
+<pre><code class="hljs python">add(sink, *, level=<span class="hljs-string">&#x27;DEBUG&#x27;</span>, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;&lt;green&gt;&#123;time:YYYY-MM-DD HH:mm:ss.SSS&#125;&lt;/green&gt; | &lt;level&gt;&#123;level: &lt;8&#125;&lt;/level&gt; | &lt;cyan&gt;&#123;name&#125;&lt;/cyan&gt;:&lt;cyan&gt;&#123;function&#125;&lt;/cyan&gt;:&lt;cyan&gt;&#123;line&#125;&lt;/cyan&gt; - &lt;level&gt;&#123;message&#125;&lt;/level&gt;&#x27;</span>, <span class="hljs-built_in">filter</span>=<span class="hljs-literal">None</span>, colorize=<span class="hljs-literal">None</span>, serialize=<span class="hljs-literal">False</span>, backtrace=<span class="hljs-literal">True</span>, diagnose=<span class="hljs-literal">True</span>, enqueue=<span class="hljs-literal">False</span>, catch=<span class="hljs-literal">True</span>, **kwargs)</code></pre>
 <p><strong>基本参数释义：</strong></p>
 <ul>
-<li><strong>sink</strong>：可以是一个 file 对象，例如 <code>sys.stderr</code> 或 <code>open(&#39;file.log&#39;, &#39;w&#39;)</code>，也可以是 <code>str</code> 字符串或者 <code>pathlib.Path</code> 对象，即文件路径，也可以是一个方法，可以自行定义输出实现，也可以是一个 logging 模块的 Handler，比如 FileHandler、StreamHandler 等，还可以是 <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-coroutine-function">coroutine function</a>，即一个返回协程对象的函数等。</li>
+<li><strong>sink</strong>：可以是一个 file 对象，例如 <code>sys.stderr</code> 或 <code>open('file.log', 'w')</code>，也可以是 <code>str</code> 字符串或者 <code>pathlib.Path</code> 对象，即文件路径，也可以是一个方法，可以自行定义输出实现，也可以是一个 logging 模块的 Handler，比如 FileHandler、StreamHandler 等，还可以是 <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-coroutine-function">coroutine function</a>，即一个返回协程对象的函数等。</li>
 <li><strong>level</strong>：日志输出和保存级别。</li>
 <li><strong>format</strong>：日志格式模板。</li>
 <li><strong>filter</strong>：一个可选的指令，用于决定每个记录的消息是否应该发送到 sink。</li>
@@ -809,770 +351,203 @@ logger.debug(&#39;This is another log debug!&#39;)
 </ul>
 <p>这么多参数可以见识到 <code>add()</code> 函数的强大之处，仅仅一个函数就能实现 logging 模块的诸多功能，接下来介绍几个比较常用的方法。</p>
 <hr>
-<h3 id="rotation-日志文件分隔"><a href="#rotation-日志文件分隔" class="headerlink" title="rotation 日志文件分隔"></a>rotation 日志文件分隔</h3><p><code>add()</code> 函数的 rotation 参数，可以实现按照固定时间创建新的日志文件，比如设置每天 0 点新创建一个 log 文件：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, rotation=&#39;00:00&#39;)
-</code></pre>
+<h3 id="rotation-日志文件分隔">rotation 日志文件分隔</h3>
+<p><code>add()</code> 函数的 rotation 参数，可以实现按照固定时间创建新的日志文件，比如设置每天 0 点新创建一个 log 文件：</p>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, rotation=<span class="hljs-string">&#x27;00:00&#x27;</span>)</code></pre>
 <p>设置超过 500 MB 新创建一个 log 文件：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, rotation=&quot;500 MB&quot;)
-</code></pre>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, rotation=<span class="hljs-string">&quot;500 MB&quot;</span>)</code></pre>
 <p>设置每隔一个周新创建一个 log 文件：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, rotation=&#39;1 week&#39;)
-</code></pre>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, rotation=<span class="hljs-string">&#x27;1 week&#x27;</span>)</code></pre>
 <hr>
-<h3 id="retention-日志保留时间"><a href="#retention-日志保留时间" class="headerlink" title="retention 日志保留时间"></a>retention 日志保留时间</h3><p><code>add()</code> 函数的 retention 参数，可以设置日志的最长保留时间，比如设置日志文件最长保留 15 天：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, retention=&#39;15 days&#39;)
-</code></pre>
+<h3 id="retention-日志保留时间">retention 日志保留时间</h3>
+<p><code>add()</code> 函数的 retention 参数，可以设置日志的最长保留时间，比如设置日志文件最长保留 15 天：</p>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, retention=<span class="hljs-string">&#x27;15 days&#x27;</span>)</code></pre>
 <p>设置日志文件最多保留 10 个：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, retention=10)
-</code></pre>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, retention=<span class="hljs-number">10</span>)</code></pre>
 <p>也可以是一个 <code>datetime.timedelta</code> 对象，比如设置日志文件最多保留 5 个小时：</p>
-<pre><code class="python">import datetime
-from loguru import logger
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> datetime
+<span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
 
-logger.add(&#39;runtime_&#123;time&#125;.log&#39;, retention=datetime.timedelta(hours=5))
-</code></pre>
+logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, retention=datetime.timedelta(hours=<span class="hljs-number">5</span>))</code></pre>
 <hr>
-<h3 id="compression-日志压缩格式"><a href="#compression-日志压缩格式" class="headerlink" title="compression 日志压缩格式"></a>compression 日志压缩格式</h3><p><code>add()</code> 函数的 compression 参数，可以配置日志文件的压缩格式，这样可以更加节省存储空间，比如设置使用 zip 文件格式保存：</p>
-<pre><code class="python">logger.add(&#39;runtime_&#123;time&#125;.log&#39;, compression=&#39;zip&#39;)
-</code></pre>
+<h3 id="compression-日志压缩格式">compression 日志压缩格式</h3>
+<p><code>add()</code> 函数的 compression 参数，可以配置日志文件的压缩格式，这样可以更加节省存储空间，比如设置使用 zip 文件格式保存：</p>
+<pre><code class="hljs python">logger.add(<span class="hljs-string">&#x27;runtime_&#123;time&#125;.log&#x27;</span>, compression=<span class="hljs-string">&#x27;zip&#x27;</span>)</code></pre>
 <p>其格式支持：<code>gz</code>、<code>bz2</code>、<code>xz</code>、<code>lzma</code>、<code>tar</code>、<code>tar.gz</code>、<code>tar.bz2</code>、<code>tar.xz</code></p>
 <hr>
-<h3 id="字符串格式化"><a href="#字符串格式化" class="headerlink" title="字符串格式化"></a>字符串格式化</h3><p>Loguru 在输出 log 的时候还提供了非常友好的字符串格式化功能，相当于 <code>str.format()</code>：</p>
-<pre><code class="python">logger.info(&#39;If you are using Python &#123;&#125;, prefer &#123;feature&#125; of course!&#39;, 3.6, feature=&#39;f-strings&#39;)
-</code></pre>
+<h3 id="字符串格式化">字符串格式化</h3>
+<p>Loguru 在输出 log 的时候还提供了非常友好的字符串格式化功能，相当于 <code>str.format()</code>：</p>
+<pre><code class="hljs python">logger.info(<span class="hljs-string">&#x27;If you are using Python &#123;&#125;, prefer &#123;feature&#125; of course!&#x27;</span>, <span class="hljs-number">3.6</span>, feature=<span class="hljs-string">&#x27;f-strings&#x27;</span>)</code></pre>
 <p>输出：</p>
-<pre><code class="python">2021-10-19 14:59:06.412 | INFO     | __main__:&lt;module&gt;:3 - If you are using Python 3.6, prefer f-strings of course!
-</code></pre>
+<pre><code class="hljs python"><span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> <span class="hljs-number">14</span>:<span class="hljs-number">59</span>:<span class="hljs-number">06.412</span> | INFO     | __main__:&lt;module&gt;:<span class="hljs-number">3</span> - If you are using Python <span class="hljs-number">3.6</span>, prefer f-strings of course!</code></pre>
 <hr>
-<h3 id="异常追溯"><a href="#异常追溯" class="headerlink" title="异常追溯"></a>异常追溯</h3><p>在 Loguru 里可以直接使用它提供的装饰器就可以直接进行异常捕获，而且得到的日志是无比详细的：</p>
-<pre><code class="python">from loguru import logger
+<h3 id="异常追溯">异常追溯</h3>
+<p>在 Loguru 里可以直接使用它提供的装饰器就可以直接进行异常捕获，而且得到的日志是无比详细的：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
 
 
-@logger.catch
-def my_function(x, y, z):
-    # An error? It&#39;s caught anyway!
-    return 1 / (x + y + z)
+<span class="hljs-meta">@logger.catch</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_function</span>(<span class="hljs-params">x, y, z</span>):</span>
+    <span class="hljs-comment"># An error? It&#x27;s caught anyway!</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (x + y + z)
 
 
-my_function(0, 0, 0)
-</code></pre>
+my_function(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)</code></pre>
 <p>日志输出：</p>
-<pre><code class="python">2021-10-19 15:04:51.675 | ERROR    | __main__:&lt;module&gt;:10 - An error has been caught in function &#39;&lt;module&gt;&#39;, process &#39;MainProcess&#39; (30456), thread &#39;MainThread&#39; (26268):
+<pre><code class="hljs python"><span class="hljs-number">2021</span>-<span class="hljs-number">10</span>-<span class="hljs-number">19</span> <span class="hljs-number">15</span>:04:<span class="hljs-number">51.675</span> | ERROR    | __main__:&lt;module&gt;:<span class="hljs-number">10</span> - An error has been caught <span class="hljs-keyword">in</span> function <span class="hljs-string">&#x27;&lt;module&gt;&#x27;</span>, process <span class="hljs-string">&#x27;MainProcess&#x27;</span> (<span class="hljs-number">30456</span>), thread <span class="hljs-string">&#x27;MainThread&#x27;</span> (<span class="hljs-number">26268</span>):
 Traceback (most recent call last):
 
-&gt; File &quot;D:/python3Project\test.py&quot;, line 10, in &lt;module&gt;
-    my_function(0, 0, 0)
-    └ &lt;function my_function at 0x014CDFA8&gt;
+&gt; File <span class="hljs-string">&quot;D:/python3Project\test.py&quot;</span>, line <span class="hljs-number">10</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+    my_function(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    └ &lt;function my_function at <span class="hljs-number">0x014CDFA8</span>&gt;
 
-  File &quot;D:/python3Project\test.py&quot;, line 7, in my_function
-    return 1 / (x + y + z)
-                │   │   └ 0
-                │   └ 0
-                └ 0
+  File <span class="hljs-string">&quot;D:/python3Project\test.py&quot;</span>, line <span class="hljs-number">7</span>, <span class="hljs-keyword">in</span> my_function
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> / (x + y + z)
+                │   │   └ <span class="hljs-number">0</span>
+                │   └ <span class="hljs-number">0</span>
+                └ <span class="hljs-number">0</span>
 
-ZeroDivisionError: division by zero
-</code></pre>
+ZeroDivisionError: division by zero</code></pre>
 <p>在控制台的输出是这样的：</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/3b7fd75ef2a10a5a0dde917280d9224c.png" alt="04.png"></p>
 <p>相比 Logging，Loguru 无论是在配置方面、日志输出样式还是异常追踪，都远优于 Logging，使用 Loguru 无疑能提升开发人员效率。本文仅介绍了一些常用的方法，想要详细了解可参考 <a target="_blank" rel="noopener" href="https://loguru.readthedocs.io/">Loguru 官方文档</a>或关注 <a target="_blank" rel="noopener" href="https://github.com/Delgan/loguru">Loguru GitHub</a>。</p>
 
-        
-                <blockquote style="margin: 2em 0 0;padding: 0.5em 1em;border-left: 8px solid #F44336;background-color: #F5F5F5;list-style: none;">
-                    <p>
-                        <strong>本文链接：</strong><a href="https://www.itbob.cn/article/042/">https://www.itbob.cn/article/042/</a>
-                        <br>
-                        <strong>
-                             
-                                本站所有原创文章采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 许可协议进行许可！
-                            
-                        </strong>
-                    </p>
-                </blockquote>
-        
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/044/" 
+                            class="post-title gt-a-link">【JS 逆向】某空气质量监测平台无限 debugger 以及数据动态加密分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/041/" 
+                            class="post-title gt-a-link">认识 SM1/SM2/SM3/SM4/SM7/SM9/ZUC 国密算法</a>
+                    </div>
+                </div>
+            
+        </div>
+    
     
 
     
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 
+    <div id="gitalk-container"></div>
 
-                
-
-                <!-- Post Comments -->
-                
-                    
-    <!-- 使用 Gitalk -->
-<div id="gitalk-comment">
-    <!-- Gitalk 评论框 -->
-<div id="gitalk-container"></div>
-
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-<script>
+    <script>
     var gitalk = new Gitalk({
-            clientID: 'd19a84b9d9a2ddb2c6b9',
-            clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
-            repo: 'trhx.github.io',
-            owner: 'TRHX',
-            admin: ['TRHX'],
-            // facebook-like distraction free mode
-            distractionFreeMode: false
-        })
-   gitalk.render('gitalk-container')
-</script>
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
 </div>
-<style>
-    #gitalk-comment {
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
 
-                
-            </div>
-
-            <!-- Post Prev & Next Nav -->
-            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-    <!-- Prev Nav -->
-    
-        <a href="/article/044/" id="post_nav-newer" class="prev-content">
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_back</i>
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            新篇
-        </a>
-    
-
-    <!-- Section Spacer -->
-    <div class="section-spacer"></div>
-
-    <!-- Next Nav -->
-    
-        <a href="/article/041/" id="post_nav-older" class="next-content">
-            旧篇
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
-                <i class="material-icons">arrow_forward</i>
-            </button>
-        </a>
-    
-</nav>
-
-        </div>
-    </div>
-
-
-
-                    
-                        <!-- Overlay For Active Sidebar -->
-<div class="sidebar-overlay"></div>
-
-<!-- Material sidebar -->
-<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
-    <div id="sidebar-main">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
-    <!-- Top bar -->
-    <div class="top-bar"></div>
-
-    <!-- Sidebar toggle button -->
-    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
-        <i class="material-icons">clear_all</i>
-        <span class="mdl-button__ripple-container">
-            <span class="mdl-ripple">
-            </span>
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
         </span>
-    </button>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">256.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
 
-    <!-- Sidebar Avatar -->
-    <div class="sidebar-image">
-        <img src="/img/BOB.png" alt="BOB's avatar">
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="timeDate">正在载入天数...</span><span id="times">正在载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/10/2018 17:38:00"); //在此处修改建站时间，格式：月/日/年 时:分:秒
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                    document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
     </div>
-
-    <!-- Sidebar Email -->
-    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
-        YWRtaW5AaXRib2IuY24=
-        <b class="caret"></b>
-    </a>
 </div>
 
-
-        <!-- Sidebar Navigation  -->
-        <ul class="nav sidebar-nav">
-    <!-- User dropdown  -->
-    <li class="dropdown">
-        <ul id="settings-dropdown" class="dropdown-menu">
-            
-                <li>
-                    <a href="mailto: admin@itrhx.com" target="_blank" title="邮件联系我">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
-                        
-                        邮件联系我
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://itrhx.blog.csdn.net/" target="_blank" title="关注 CSDN">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">donut_small</i>
-                        
-                        关注 CSDN
-                    </a>
-                </li>
-            
-                <li>
-                    <a href="https://github.com/TRHX" target="_blank" title="关注 GitHub">
-                        
-                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">code</i>
-                        
-                        关注 GitHub
-                    </a>
-                </li>
-            
-        </ul>
-    </li>
-
-    <!-- Homepage -->
-    
-        <li id="sidebar-first-li">
-            <a href="/">
-                
-                    <i class="material-icons sidebar-material-icons">home</i>
-                
-                主页
-            </a>
-        </li>
-        
-    
-
-    <!-- Archives  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">inbox</i>
-                
-                    归档
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-            <li>
-                <a class="sidebar_archives-link" href="/archives/2022/05/">五月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/04/">四月 2022<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/03/">三月 2022<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/02/">二月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2022/01/">一月 2022<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/11/">十一月 2021<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/10/">十月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2021/07/">七月 2021<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/11/">十一月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/10/">十月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/06/">六月 2020<span class="sidebar_archives-count">13</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/05/">五月 2020<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/04/">四月 2020<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2020/03/">三月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/09/">九月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/08/">八月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/06/">六月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/02/">二月 2019<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/08/">八月 2018<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Categories  -->
-    
-        <li class="dropdown">
-            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
-                
-                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
-                
-                分类
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                <a class="sidebar_archives-link" href="/categories/Hexo/">Hexo<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/categories/JS-%E9%80%86%E5%90%91/">JS 逆向<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/categories/Python/">Python<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%88%AC%E8%99%AB/">爬虫<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/%E7%AE%97%E6%B3%95/">算法<span class="sidebar_archives-count">3</span></a>
-            </ul>
-        </li>
-        
-    
-
-    <!-- Pages  -->
-    
-        <li>
-            <a href="/tags/" title="标签云">
-                
-                    <i class="material-icons sidebar-material-icons">local_offer</i>
-                
-                标签云
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/timeline/" title="时光机">
-                
-                    <i class="material-icons sidebar-material-icons">send</i>
-                
-                时光机
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/friends/" title="友人帐">
-                
-                    <i class="material-icons sidebar-material-icons">group_add</i>
-                
-                友人帐
-            </a>
-        </li>
-        
-    
-        <li>
-            <a href="/comments/" title="关于我 &amp; 留言板">
-                
-                    <i class="material-icons sidebar-material-icons">chat</i>
-                
-                关于我 &amp; 留言板
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Number  -->
-    
-        <li>
-            <a href="/archives/">
-                文章总数
-                <span class="sidebar-badge">52</span>
-            </a>
-        </li>
-        
-    
-
-    <!-- Article Wordcount  -->
-    
-        <li>
-            <a href="">
-                字数统计
-                <span class="sidebar-badge">257.5k</span>
-            </a>
-        </li>
-        
-            <li class="divider"></li>
-        
-    
-</ul>
-
-
-        <!-- Sidebar Footer -->
-        <!--
-I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
-If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
-It will not impact the appearance and can give developers a lot of support :)
-
-很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
-如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
-它不会影响美观并可以给开发者很大的支持和动力。 :)
--->
-
-<!-- Sidebar Divider -->
-
-
-<!-- Theme Material -->
-
-
-<!-- QQ Group -->
-
-    <a href="https://jq.qq.com/?_wv=1027&k=MwSEZmIi" alt="爬虫逆向交流群" title="群号：941013658" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            爬虫逆向交流群
-            <span class="sidebar-badge badge-circle">i</span>
+            </div>
         </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=Ag6AZkYC" alt="Hexo 博客交流一群" title="群号：924812033" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流一群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-    <a href="https://jq.qq.com/?_wv=1027&k=ymhpQ0jb" alt="Hexo 博客交流二群" title="群号：735861501" class="sidebar-footer-text-a" target="_blank">
-        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-            Hexo 博客交流二群
-            <span class="sidebar-badge badge-circle">i</span>
-        </div>
-    </a>
-
-
-<!-- Help & Support -->
-<!--
-
--->
-
-<!-- Feedback -->
-<!--
-
--->
-
-<!-- About Theme -->
-<!--
-
--->
-
-    </div>
-
-    <!-- Sidebar Image -->
-    
-
-</aside>
-
-                    
-
-                    
-                        <!-- Footer Top Button -->
-                        <div id="back-to-top" class="toTop-wrap">
-    <a href="#top" class="toTop">
-        <i class="material-icons footer_top-i">expand_less</i>
-    </a>
-</div>
-
-                    
-
-                    <!--Footer-->
-<footer class="mdl-mini-footer" id="bottom">
-    
-        <!-- Paradox Footer Left Section -->
-        <div class="mdl-mini-footer--left-section sns-list">
-    <!-- Github -->
-    
-        <a href="https://github.com/TRHX" target="_blank" title="Github">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
-                <span class="visuallyhidden">Github</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- CSDN -->
-    
-        <a href="https://itrhx.blog.csdn.net/" target="_blank" title="CSDN">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-csdn">
-                <span class="visuallyhidden">CSDN</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- Zhihu -->
-    
-        <a href="https://www.zhihu.com/people/itrhx" target="_blank" title="Zhihu">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-zhihu">
-                <span class="visuallyhidden">Zhihu</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Email -->
-    
-        <a href="mailto:admin@itbob.cn" target="_blank" title="Email">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-envelope">
-                <span class="visuallyhidden">Email</span>
-            </button><!--
-     --></a>
-    
-
-    <!-- QQ -->
-    
-        <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2273902448&amp;site=qq&amp;menu=yes" target="_blank" title="QQ">
-            <button class="mdl-mini-footer--social-btn social-btn footer-sns-qq">
-                <span class="visuallyhidden">QQ</span>
-            </button><!--
-        --></a>
-    
-
-    <!-- Twitter -->
-    
-
-    <!-- Facebook -->
-    
-
-    <!-- Google + -->
-    
-
-    <!-- Weibo -->
-    
-
-    <!-- Instagram -->
-    
-
-    <!-- Tumblr -->
-    
-
-    <!-- LinkedIn -->
-    
-
-    <!-- Bilibili -->
-    
-
-    <!-- Telegram -->
-    
-
-    <!-- V2EX -->
-    
-
-    <!-- Segmentfault -->
-    
-</div>
-
-
-            <!--Copyright-->
-            <div id="copyright">
-
-                
-                    <div class="itbob-footer-text">
-                        
-                                    <img src="/img/icp.png" alt="ICP" style="width:18px; height:18px; margin-bottom:5px"> <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备19003281号-6</a>丨 <img src="/img/moeicp.png" alt="MOE ICP" style="width:16px; height:16px; margin-bottom:5px"> <a href="https://icp.gov.moe/" target="_blank">萌ICP备20202022号</a>丨 <a href="https://cloud.tencent.com/" target="_blank"> <img src="/img/tencent_cloud.svg" style="height:17px; margin-bottom:5px"></a>
-                                        
-                    </div>
-                    
-
-                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
-
-                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
-                        <script>
-                            var now = new Date();
-
-                            function createtime() {
-                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
-                                now.setTime(now.getTime() + 250);
-                                days = (now - grt) / 1000 / 60 / 60 / 24;
-                                dnum = Math.floor(days);
-                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                                hnum = Math.floor(hours);
-                                if (String(hnum).length == 1) {
-                                    hnum = "0" + hnum;
-                                }
-                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                                mnum = Math.floor(minutes);
-                                if (String(mnum).length == 1) {
-                                    mnum = "0" + mnum;
-                                }
-                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                                snum = Math.round(seconds);
-                                if (String(snum).length == 1) {
-                                    snum = "0" + snum;
-                                }
-                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
-                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-                            }
-                            setInterval("createtime()", 250);
-                        </script>
-
-
-            </div>
-
-            <!-- All Site UV -->
-            <!-- 
-        <br />
-        <span id="busuanzi_container_site_uv">本站访客数
-            <span id="busuanzi_value_site_uv">
-            </span>
-        </span>|
-        <span id="busuanzi_container_site_pv">本站总访问量
-            <span id="busuanzi_value_site_pv">
-                
-            </span>
-        </span>|
-        <i class="material-icons">keyboard</i>站点总字数<span class="post-count">257.5k</span>
-        
-        </div> -->
-            <!-- Paradox Footer Right Section -->
-
-            <!--
-        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
-        It will not impact the appearance and can give developers a lot of support :)
-
-        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
-        它不会影响美观并可以给开发者很大的支持。 :)
-        -->
-
-            <!-- <div class="mdl-mini-footer--right-section">
-            <div>
-                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
-                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
-            </div>
-        </div> -->
-
-            <div class="mdl-mini-footer--right-section">
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">PV</span>
-                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Powered</span>
-                        <span class="badge-value bg-blue">Hexo</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">UV</span>
-                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
-                    </div>
-                    <div class="itbob-github-badge">
-                        <span class="badge-subject">Theme</span>
-                        <span class="badge-value bg-orange">Material</span>
-                    </div>
-                </div>
-            </div>
-            
-</footer>
-
-                    <!-- Import JS File -->
-
-    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
-
-
-
-    <script>lsloader.load("js_js","/js/js.min.js?Bn9UzEm8RrBSxqyZB0zPjA==", true)</script>
-
-
-
-    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
-
-
-<script type="text/ls-javascript" id="NProgress-script">
-    NProgress.configure({
-        showSpinner: true
-    });
-    NProgress.start();
-    $('#nprogress .bar').css({
-        'background': '#29d'
-    });
-    $('#nprogress .peg').css({
-        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
-    });
-    $('#nprogress .spinner-icon').css({
-        'border-top-color': '#29d',
-        'border-left-color': '#29d'
-    });
-    setTimeout(function() {
-        NProgress.done();
-        $('.fade').removeClass('out');
-    }, 800);
-</script>
-
-
-
-
-
-
-
-    <!-- Busuanzi -->
-    <script src="/js/busuanzi.pure.mini.js"></script>
-
-
-
-   <!-- GitTalk -->
-
-
-
-
-
-<!-- Browser Check -->
-<script>
-	var agent = navigator.userAgent.toLowerCase();
-    // UC
-	if(agent.indexOf('ucbrowser') > -1 || agent.indexOf('ubrowser') > -1) {
-        /* document.write('
-<link rel="stylesheet" href="/css/uc.css">
-'); */
-        alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-	}
-    // IE
-    if (agent.indexOf("compatible") > -1 && agent.indexOf("MSIE") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    };
-    // IE 11
-    if (agent.indexOf('Trident') > -1 && agent.indexOf("rv:11.0") > -1) {
-        alert('由于 IE 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n\n为了您能更好的浏览，强烈推荐使用 Chrome 或 Firefox 浏览器！\n\n继续浏览极有可能会出现一些样式问题！');
-    }
-</script>
-
-<!-- Blog Title JS -->
-
-    
-            <script>lsloader.load("binft","/js/binft.js?eZhLXqFFh9+v03Tp9mCu6g==", true)</script>
-    
-
-
-<!-- Import prettify js  -->
-
-    
-        
-            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
-        
-    
-
-
-
-<!-- Window Load -->
-<!-- add class for prettify -->
-<script type="text/ls-javascript" id="window-load">
-    $(window).on('load', function() {
-        // Post_Toc parent position fixed
-        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
-    });
-
-    
-        
-            $(function() {
-                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-                prettyPrint();
-                })
-        
-    
-    
-</script>
-
-<!-- MathJax Load-->
-
-
-<!-- Bing Background -->
-
-
-<script type="text/ls-javascript" id="lazy-load">
-    // Offer LazyLoad
-    queue.offer(function(){
-        $('.lazy').lazyload({
-            effect : 'show'
-        });
-    });
-
-    // Start Queue
-    $(document).ready(function(){
-        setInterval(function(){
-            queue.execNext();
-        },200);
-    });
-</script>
-
-<!-- Custom Footer -->
-
-
-
-<script>
-    var copyrightNow = new Date().getFullYear();
-    var textContent = document.querySelector('span[year]')
-
-    copyrightSince = 2018;
-    if (copyrightSince === copyrightNow||copyrightSince === 0000) {
-        textContent.textContent = copyrightNow
-    } else {
-        textContent.textContent = copyrightSince + ' - ' + copyrightNow
-    }
-
-    (function(){
-        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
-
-        for (var i = 0; i < scriptList.length; ++i) {
-            var item = scriptList[i];
-            lsloader.runInlineScript(item.id,item.id);
-        }
-    })()
-console.log("\n %c © Material Theme | Version: 1.5.6 | https://github.com/viosey/hexo-theme-material %c \n", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;", "color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;");
-console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-console.log("\n %c © ITRHX'S BLOG %c https://www.itrhx.com \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;");
-</script>
-
-                </main>
-            </div>
-        </body>
-    
+    </body>
 </html>
