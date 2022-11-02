@@ -1,0 +1,590 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Title -->
+<title>APP 逆向，Frida 初体验，root 检测与加密字符串定位 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
+
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="/img/travelling.gif" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">APP 逆向，Frida 初体验，root 检测与加密字符串定位</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2022-09-12 ·</time>
+                
+                    
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            #爬虫</a>
+                    
+                        <a href="/tags/APP-%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            #APP 逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><img src="/img/cover/app_reverse.png" alt="app_reverse"></p>
+<h2 id="声明">声明</h2>
+<p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
+<p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
+<h2 id="逆向目标">逆向目标</h2>
+<ul>
+<li>设备：Google Pixel4，Android 10，已 root</li>
+<li>APP：UnCrackable-Level1.apk（来源：<a target="_blank" rel="noopener" href="https://github.com/OWASP/owasp-mastg/tree/master/Crackmes">https://github.com/OWASP/owasp-mastg/tree/master/Crackmes</a> ）</li>
+<li>APP 检测了 root，如果手机 root 了，会强制退出 APP，过了 root 检测后，还需要输入一个字符串进行校验。</li>
+</ul>
+<h2 id="安装-ADB">安装 ADB</h2>
+<p>adb（Android Debug Bridge）即安卓调试桥，安装后可以在电脑上与手机进行交互，Android Studio 等工具里面会自带 adb，有时候我们并不想下载这么大的工具，所以这里介绍一下 Android SDK Platform-Tools，它是 Android SDK 的一个组件，它包括与 Android 平台交互的工具，主要是 adb 和 fastboot，官方下载地址：<a target="_blank" rel="noopener" href="https://developer.android.com/studio/releases/platform-tools">https://developer.android.com/studio/releases/platform-tools</a> ，下载完成后将该目录添加到环境变量，USB 连接手机，手机上设置允许 USB 调试，使用命令 <code>adb version</code> 可查看版本信息，<code>adb devices</code> 可以查看当前连接的设备，如下图所示：</p>
+<p><img src="/img/article/055/01.png" alt="01"></p>
+<h2 id="安装-Frida">安装 Frida</h2>
+<p>Frida 是一款基于 Python + JavaScript 的 Hook 与调试框架，首先电脑端使用命令 <code>pip install frida-tools</code> 安装 frida 模块（此命令默认会安装最新版的 frida 和 frida-tools，如），然后下载 frida-server，下载地址：<a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a></p>
+<p>frida-server 要根据你电脑端安装的 frida 版本和手机的 CPU 架构来选择对应的，使用命令 <code>frida --version</code> 可以查看 frida 版本，使用命令 <code>adb shell</code> 进入手机，输入 <code>getprop ro.product.cpu.abi</code> 查看 CPU 架构，如下图所示，我这里 frida 是 15.2.2 版本，手机 CPU 为 arm64，所以我下载的是 <code>frida-server-15.2.2-android-arm64.xz</code>。</p>
+<p>某些 Android 低版本使用高版本 frida 可能有问题，遇到问题可尝试降低 frida 版本来解决。</p>
+<p><img src="/img/article/055/02.png" alt="02"></p>
+<p><img src="/img/article/055/03.png" alt="03"></p>
+<p>将下载好的 frida-server 使用 <code>adb push</code> 命令传到手机的 <code>/data/local/tmp/</code> 目录下，并给予 777 读、写、执行的权限，然后直接运行 frida-server，正常不会有任何输出，当然也可以使用 &amp; 等方式让其在后台运行。</p>
+<p><img src="/img/article/055/04.png" alt="04"></p>
+<p>然后另开一个 cmd 使用命令 <code>frida-ps -U </code> 可查看手机进程，有输出则正常。</p>
+<p><img src="/img/article/055/05.png" alt="05"></p>
+<h2 id="逆向分析">逆向分析</h2>
+<p>使用 <code>adb install</code> 命令安装 UnCrackable-Level1.apk，打开该 APP，会检测到 root，出现 <code>Root detected!</code> 的提示，如下图所示：</p>
+<p><img src="/img/article/055/06.png" alt="06"></p>
+<p>使用 JEB、JADX、GDA 等工具反编译 apk，直接搜索关键字 <code>Root detected!</code> 即可定位到检测的地方：</p>
+<p><img src="/img/article/055/07.png" alt="07"></p>
+<p>可以看到图中有三个检测方法 <code>c.a()</code>、<code>c.b()</code>、<code>c.c()</code>，其中一个返回为真，则弹出 <code>Root detected!</code>，然后前面还有一个 <code>onClick</code> 方法，如果点击 OK 按钮，则触发 <code>System.exit(0);</code>，即退出 APP，先点进三个检测方法看看：</p>
+<p><code>a()</code> 方法通过检测 Android 系统环境变量中是否有 su 文件来判断是否被 root；</p>
+<p><code>b()</code> 方法通过检测 <code>Build.TAGS</code> 中是否包含字符串 <code>test-keys</code> 来判断是否被 root；</p>
+<p><code>c()</code> 方法通过检测指定路径下是否包含指定的文件来判断是否被 root。</p>
+<p><img src="/img/article/055/08.png" alt="08"></p>
+<p>所以我们这里就有多种过掉检测的方法：</p>
+<p>方法一：Hook 三个检测方法，让它们都返回 false，不再执行后续的 a 方法，就不会退出 APP 了：</p>
+<pre><code class="hljs javascript">Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook begin&quot;</span>)
+        <span class="hljs-keyword">var</span> vantagePoint = Java.use(<span class="hljs-string">&quot;sg.vantagepoint.a.c&quot;</span>)
+        vantagePoint.a.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook vantagepoint.a.c.a&quot;</span>)
+            <span class="hljs-built_in">this</span>.a();
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        vantagePoint.b.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook vantagepoint.a.c.b&quot;</span>)
+            <span class="hljs-built_in">this</span>.b();
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        vantagePoint.c.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook vantagepoint.a.c.c&quot;</span>)
+            <span class="hljs-built_in">this</span>.c();
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+    &#125;
+)</code></pre>
+<p>方法二：Hook <code>a()</code> 方法，置空，什么都不做，不弹出对话框，也不退出 APP：</p>
+<pre><code class="hljs javascript">Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook begin&quot;</span>)
+        <span class="hljs-keyword">var</span> mainActivity = Java.use(<span class="hljs-string">&quot;sg.vantagepoint.uncrackable1.MainActivity&quot;</span>);
+        mainActivity.a.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook mainActivity.a&quot;</span>)
+        &#125;
+    &#125;
+)</code></pre>
+<p>方法三：Hook <code>onClick()</code> 方法，点击 OK 后不让其退出 APP，注意这里是内部类的 Hook 写法：</p>
+<pre><code class="hljs javascript">Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook begin&quot;</span>)
+        <span class="hljs-keyword">var</span> mainActivity$<span class="hljs-number">1</span> = Java.use(<span class="hljs-string">&quot;sg.vantagepoint.uncrackable1.MainActivity$1&quot;</span>);
+        mainActivity$<span class="hljs-number">1.</span>onClick.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook mainActivity$1.onClick&quot;</span>)
+        &#125;
+    &#125;
+)</code></pre>
+<p>方法四：Hook <code>System.exit()</code> 方法，点击 OK 后不让其退出 APP：</p>
+<pre><code class="hljs javascript">Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook begin&quot;</span>)
+        <span class="hljs-keyword">var</span> javaSystem = Java.use(<span class="hljs-string">&quot;java.lang.System&quot;</span>);
+        javaSystem.exit.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook system.exit&quot;</span>)
+        &#125;
+    &#125;
+)</code></pre>
+<p>root 检测过掉之后，APP 还要输入一个字符串，输入错误会提示 <code>That's not it. Try again.</code>，如下图所示：</p>
+<p><img src="/img/article/055/09.png" alt="09"></p>
+<p>分析 Java 代码，有一个 <code>if-else</code> 判断，obj 为输入的字符串，<code>a.a(obj)</code> 判断为真，就表示输入正确。</p>
+<p><img src="/img/article/055/10.png" alt="10"></p>
+<p>跟到 <code>a.a()</code> 方法，可以看到 <code>bArr</code> 是内置的字符串，通过 <code>equals()</code> 方法比较输入的 <code>str</code> 是否和 <code>bArr</code> 相等：</p>
+<p><img src="/img/article/055/11.png" alt="11"></p>
+<p><code>bArr</code> 的值，主要经过 <code>sg.vantagepoint.a.a.a()</code> 方法处理后得到，继续跟进去可以发现是 AES 加密算法：</p>
+<p><img src="/img/article/055/12.png" alt="12"></p>
+<p>这里就可以直接 Hook <code>sg.vantagepoint.a.a.a()</code>，直接拿到加密后的值，也就是我们要的正确字符串，由于这里返回的是 ASCII 码，所以我们还需要在 JavaScript 代码中使用 <code>String.fromCharCode()</code> 将其转换成正常字符，Hook 代码如下：</p>
+<pre><code class="hljs javascript">Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-keyword">var</span> cryptoAES = Java.use(<span class="hljs-string">&quot;sg.vantagepoint.a.a&quot;</span>);
+        cryptoAES.a.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bArr, bArr2</span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook cryptoAES&quot;</span>)
+            <span class="hljs-keyword">var</span> secret = <span class="hljs-string">&quot;&quot;</span>;
+            <span class="hljs-keyword">var</span> decryptValue = <span class="hljs-built_in">this</span>.a(bArr, bArr2);
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] DecryptValue:&quot;</span>, decryptValue)
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; decryptValue.length; i++)&#123;
+              secret += <span class="hljs-built_in">String</span>.fromCharCode(decryptValue[i]);
+            &#125;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Secret:&quot;</span>, secret)
+            <span class="hljs-keyword">return</span> decryptValue;
+        &#125;
+    &#125;
+)</code></pre>
+<p>运行 Hook 脚本有两种方式，一是结合 Python 使用，二是直接通过 frida 命令使用脚本，注入 Hook 代码也有个时机问题，有时候需要在 APP 启动就开始 Hook，有时候可以等 APP 启动加载完毕了再 Hook，本例中，过 root 检测的时候，如果采用第一、二种方法，即 Hook 三个检测方法或者 a 方法，那就需要在 APP 启动的时候就 Hook，如果采用第三、四种方法，即 Hook  <code>onClick()</code> 或者 <code>System.exit()</code> 方法，那么等 APP 启动了再 Hook 也可以。</p>
+<h3 id="结合-Python-使用">结合 Python 使用</h3>
+<p>首先来看一下结合 Python 怎么使用，JavaScript 代码如下（frida-hook.js）：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
+<span class="hljs-comment"># @Time    : 2022-08-29</span>
+<span class="hljs-comment"># @Author  : ITBOB.CN</span>
+<span class="hljs-comment"># @FileName: frida-hook.js</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ================================== */</span>
+
+
+Java.perform(
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook begin&quot;</span>)
+
+        <span class="hljs-comment">// 方法一：Hook 三个检测方法，让它们都返回 false，不再执行后续的 a 方法，就不会退出 APP 了</span>
+        <span class="hljs-comment">// var vantagePoint = Java.use(&quot;sg.vantagepoint.a.c&quot;)</span>
+        <span class="hljs-comment">// vantagePoint.a.implementation = function()&#123;</span>
+        <span class="hljs-comment">//     console.log(&quot;[*] Hook vantagepoint.a.c.a&quot;)</span>
+        <span class="hljs-comment">//     this.a();</span>
+        <span class="hljs-comment">//     return false;</span>
+        <span class="hljs-comment">// &#125;</span>
+        <span class="hljs-comment">// vantagePoint.b.implementation = function()&#123;</span>
+        <span class="hljs-comment">//     console.log(&quot;[*] Hook vantagepoint.a.c.b&quot;)</span>
+        <span class="hljs-comment">//     this.b();</span>
+        <span class="hljs-comment">//     return false;</span>
+        <span class="hljs-comment">// &#125;</span>
+        <span class="hljs-comment">// vantagePoint.c.implementation = function()&#123;</span>
+        <span class="hljs-comment">//     console.log(&quot;[*] Hook vantagepoint.a.c.c&quot;)</span>
+        <span class="hljs-comment">//     this.c();</span>
+        <span class="hljs-comment">//     return false;</span>
+        <span class="hljs-comment">// &#125;</span>
+
+        <span class="hljs-comment">// 方法二：Hook a() 方法，置空，什么都不做，不弹出对话框，也不退出 APP</span>
+        <span class="hljs-comment">// var mainActivity = Java.use(&quot;sg.vantagepoint.uncrackable1.MainActivity&quot;);</span>
+        <span class="hljs-comment">// mainActivity.a.implementation = function()&#123;</span>
+        <span class="hljs-comment">//    console.log(&quot;[*] Hook mainActivity.a&quot;)</span>
+        <span class="hljs-comment">// &#125;</span>
+
+        <span class="hljs-comment">// 方法三：Hook onClick() 方法，点击 OK 后不让其退出 APP</span>
+        <span class="hljs-comment">// var mainActivity$1 = Java.use(&quot;sg.vantagepoint.uncrackable1.MainActivity$1&quot;);</span>
+        <span class="hljs-comment">// mainActivity$1.onClick.implementation = function()&#123;</span>
+        <span class="hljs-comment">//     console.log(&quot;[*] Hook mainActivity$1.onClick&quot;)</span>
+        <span class="hljs-comment">// &#125;</span>
+
+        <span class="hljs-comment">// 方法四：Hook System.exit 方法，点击 OK 后不让其退出 APP</span>
+        <span class="hljs-keyword">var</span> javaSystem = Java.use(<span class="hljs-string">&quot;java.lang.System&quot;</span>);
+        javaSystem.exit.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook system.exit&quot;</span>)
+        &#125;
+
+        <span class="hljs-keyword">var</span> cryptoAES = Java.use(<span class="hljs-string">&quot;sg.vantagepoint.a.a&quot;</span>);
+        cryptoAES.a.implementation = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">bArr, bArr2</span>)</span>&#123;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Hook cryptoAES&quot;</span>)
+            <span class="hljs-keyword">var</span> secret = <span class="hljs-string">&quot;&quot;</span>;
+            <span class="hljs-keyword">var</span> decryptValue = <span class="hljs-built_in">this</span>.a(bArr, bArr2);
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] DecryptValue:&quot;</span>, decryptValue)
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; decryptValue.length; i++)&#123;
+              secret += <span class="hljs-built_in">String</span>.fromCharCode(decryptValue[i]);
+            &#125;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;[*] Secret:&quot;</span>, secret)
+            <span class="hljs-keyword">return</span> decryptValue;
+        &#125;
+    &#125;
+)</code></pre>
+<p>Python 代码如下（<a target="_blank" rel="noopener" href="http://frida-hook.py">frida-hook.py</a>）：</p>
+<pre><code class="hljs python"><span class="hljs-comment"># ==================================</span>
+<span class="hljs-comment"># --*-- coding: utf-8 --*--</span>
+<span class="hljs-comment"># @Time    : 2022-08-29</span>
+<span class="hljs-comment"># @Author  : ITBOB.CN</span>
+<span class="hljs-comment"># @FileName: frida-hook.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ==================================</span>
+
+
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> frida
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_message</span>(<span class="hljs-params">message, data</span>):</span>
+    <span class="hljs-keyword">if</span> message[<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;send&#x27;</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[*] &#123;0&#125;&quot;</span>.<span class="hljs-built_in">format</span>(message[<span class="hljs-string">&#x27;payload&#x27;</span>]))
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-built_in">print</span>(message)
+
+
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;./frida-hook.js&quot;</span>, <span class="hljs-string">&quot;r&quot;</span>, encoding=<span class="hljs-string">&quot;utf-8&quot;</span>) <span class="hljs-keyword">as</span> fp:
+    hook_string = fp.read()
+
+<span class="hljs-comment"># 方式一：attach 模式，已经启动的 APP</span>
+process = frida.get_usb_device(-<span class="hljs-number">1</span>).attach(<span class="hljs-string">&quot;Uncrackable1&quot;</span>)
+script = process.create_script(hook_string)
+script.on(<span class="hljs-string">&quot;message&quot;</span>, on_message)
+script.load()
+sys.stdin.read()
+
+<span class="hljs-comment"># 方式二，spawn 模式，重启 APP</span>
+<span class="hljs-comment"># device = frida.get_usb_device(-1)</span>
+<span class="hljs-comment"># pid = device.spawn([&quot;owasp.mstg.uncrackable1&quot;])</span>
+<span class="hljs-comment"># process = device.attach(pid)</span>
+<span class="hljs-comment"># script = process.create_script(hook_string)</span>
+<span class="hljs-comment"># script.on(&quot;message&quot;, on_message)</span>
+<span class="hljs-comment"># script.load()</span>
+<span class="hljs-comment"># device.resume(pid)</span>
+<span class="hljs-comment"># sys.stdin.read()</span></code></pre>
+<p>Python 代码中，attach 模式 Hook 已经存在的进程，spawn 模式会重启 APP，启动一个新的进程并挂起，在启动的同时注入 frida 代码，适用于在进程启动前的一些 Hook，attach 模式传入的是 APP 名称，spawn 模式传入的是 APP 包名，查看 APP 名称和包名的方法有很多，这里介绍两个 frida 命令，<code>frida-ps -Uai</code>：列出安装的程序，<code>frida-ps -Ua</code>：列出正在运行中的程序，如下图所示，本例中 <code>Uncrackable1</code> 就是 APP 名称，<code>owasp.mstg.uncrackable1</code> 就是包名：</p>
+<p><img src="/img/article/055/13.png" alt="13"></p>
+<p>运行 Python 代码，注意手机端也要启动 frida-server，过掉 root 检测后，先随便输入字符串，点击 VERIFY 就会 Hook 到正确的字符串为 <code>I want to believe</code>，再次输入正确的字符串，即可验证成功。</p>
+<p><img src="/img/article/055/14.png" alt="14"></p>
+<h3 id="frida-命令">frida 命令</h3>
+<p>不使用 Python，也可以直接使用 frida 命令来实现，和前面 Python  一样也有两种模式，同样的一个是 APP 名一个是包名：</p>
+<p><code>frida -U Uncrackable1 -l .\frida-hook.js</code>：attach 模式，APP 启动后注入 frida 代码；</p>
+<p><code>frida -U -f owasp.mstg.uncrackable1 -l .\frida-hook.js --no-pause</code>：spawn 模式，重启 APP，启动的同时注入 frida 代码。</p>
+<p><img src="/img/article/055/15.png" alt="15"></p>
+<p>至此，我们完美绕过了 root 检测，并成功找到了正确的字符串。</p>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/056/" 
+                            class="post-title gt-a-link">某音短视频 X-Bogus 逆向分析，JSVMP 纯算法还原</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/054/" 
+                            class="post-title gt-a-link">国内 Web 防护天花板，瑞数 5 代 JS 逆向分析</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">275.9k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span>
+            <img src="/img/footer/icp.png" alt="ICP" style="width:auto; height:18px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-6</a> 丨
+            <img src="/img/footer/moeicp.png" alt="MOE ICP" style="width:auto; height:16px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" alt="腾讯云开发 Webify" style="width:auto; height:20px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 腾讯云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" alt="十年之约" style="width:auto; height:14px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright © 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="本站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

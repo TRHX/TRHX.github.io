@@ -131,7 +131,7 @@
     </script>
     <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
         <i class="gt-c-content-color-first" style="font-size: 18px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
                 <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
             </svg>
         </i>
@@ -229,7 +229,7 @@
 <p>M3U8 文件是 M3U 的一种，只不过文件中存储的文本使用 UTF-8 字符编码，在极少数情况下，M3U8 文件可能会以 M3UP 扩展名保存。M3U8 文件是各种音频和视频播放程序使用的播放列表文件，它包含了媒体文件或媒体文件夹的路径或 URL，以及有关播放列表的相关信息。</p>
 <p>TS 全称为 MPEG2-TS，TS 即 Transport Stream 传输流，又称 MPEG-TS、MTS、TP，这种格式的特点就是从视频流的任一片段开始都是可以独立解码的。</p>
 <p>针对 TS 格式的文件，如果是未加密的，一般的播放器就能够直接播放，也可以使用 FFmpeg 等工具转换为其他格式，FFmpeg 也可以直接处理 M3U8 文件，自动解密合并转换 TS 文件，当然也有其他大佬写好的小工具，拖入 M3U8 文件就直接给你处理好了。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/04101c9e3b5b32d096045bf6be06f40a.png" alt="01"></p>
+<p><img src="/img/article/046/01.png" alt="01.png"></p>
 <p>M3U8 文件内容的大致格式示例如下：</p>
 <pre><code class="hljs awk"><span class="hljs-comment">#EXTM3U</span>
 <span class="hljs-comment">#EXT-X-VERSION:3</span>
@@ -269,11 +269,11 @@ https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp
 <h2 id="SAZ-分析">SAZ 分析</h2>
 <p>在 Fiddler 软件中，使用 SAZ 格式用来保存和读取 HTTP/HTTPS 请求信息，打开该文件可以注意到一些重要的请求：script.bundle.js、live.m3u8、drm 以及八个 ts 视频流文件。</p>
 <p>先来看看 m3u8 文件，可以看到是 AES-128 加密，加密的 key 文件地址为 <code>key://live</code>，如下图所示：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/082996c240d55cb83e787c489961d98b.png" alt="02.png"></p>
+<p><img src="/img/article/046/02.png" alt="02.png"></p>
 <p>一般情况下，要想解密 ts，必然会去请求 key 的地址，拿到 key 后再解密 ts，很显然此题的 key 地址不是一个合法的 URL 地址，当然此题的抓包记录可能是出题人伪造的，因为这个 Host 是 52tube.mmxxii，也不是一个合法的域名，最主要的是，抓包记录里没有 <code>key://live</code> 这条请求，那么很大概率真实的地址隐藏在 JS 里，从另一个方面来思考，如果这是完整的抓包记录，不管真实的 key 地址是啥，必然会在记录里出现！</p>
 <p>有经验的朋友应该一眼就能看出来 drm 这条请求最有可能是拿 key 的操作了，第一是 drm 这个关键词在 ts 解密里经常会出现，搞得多的朋友应该见过不少，第二 ping 请求返回的 success，通过其名称和返回值来看也不像 key，剩下就只有 drm 了，查看返回值是乱码的，查看 Hex 值，32 位 16 进制数据，而正常的 key 应该是 16 位 16 进制数据，所以你如果直接拿这个数据当作 key 去解密，肯定也是失败的。</p>
 <p>到这里我们应该有如下猜想：drm 返回的数据，经过了 script.bundle.js 二次处理就能得到正确的 key。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/2bbab0520ed00218eebede697b3ab165.png" alt="03"></p>
+<p><img src="/img/article/046/03.png" alt="03.png"></p>
 <h2 id="JS-逆向">JS 逆向</h2>
 <p>我们把抓包记录的 script.bundle.js，右键，save - response - response body，保存到本地。</p>
 <p>格式化之后有 15000+ 行代码，又不能动态调试，从哪里找加密入口呢？可以大胆尝试一下：</p>
@@ -281,9 +281,9 @@ https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp
 <li>JS 里可能会检测到 m3u8 里存在 key 的 URI 之后，发送 /api/drm/ 这个请求，可以直接搜索 <code>/api/drm/</code> 或者 <code>key://live</code> 定位；</li>
 <li>drm 是一个 post 请求，带有 h 和 id 两个参数，可以直接搜索 <code>post</code>、<code>id</code>、<code>h</code> 定位到大致位置。</li>
 </ul>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/ed46b7c9427b23de1fca4ce85d46f1f5.png" alt="04"></p>
+<p><img src="/img/article/046/04.png" alt="04.png"></p>
 <p>通过搜索可以发现如下可疑代码片段：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/2dd7603630340ef2fd14cace1e7fc58e.png" alt="05"></p>
+<p><img src="/img/article/046/05.png" alt="05.png"></p>
 <p>将关键代码提炼一下：</p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">n</span>(<span class="hljs-params">t</span>) </span>&#123;
     <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Uint8Array</span>(t)].map((<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.toString(<span class="hljs-number">16</span>).padStart(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;0&quot;</span>))).join(<span class="hljs-string">&quot;&quot;</span>)
@@ -379,23 +379,23 @@ getKey()
 <p>通过 JS 逆向我们拿到了 16进制和 base64 形式的  key，不管什么形式都可以拿来解密，这里介绍两种对 TS 媒体流解密、合并、转换的方法。</p>
 <p>第一种方法是使用 FFmpeg 工具，FFmpeg 是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。官网地址：<a target="_blank" rel="noopener" href="https://ffmpeg.org/">https://ffmpeg.org/</a> ，下载编译好的程序，将 bin 目录添加到环境变量即可。</p>
 <p>首先我们要把 m3u8 文件和 ts 媒体流保存到同一个文件夹，由于是虚假的 Host，所以不能直接浏览器访问保存，可以直接在 Fiddler 里，右键，save - response - response body，保存到本地，如下图所示：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/749cfe83e0a6e2fc1abc53d6f014af20.png" alt="06"></p>
+<p><img src="/img/article/046/06.png" alt="06.png"></p>
 <p>然后就是保存密钥文件，这里要求密钥文件必须是16进制的数据，如果你直接将 key 以字符串形式保存的话，解密也是失败的，编辑 16 进制文件有专门的工具，比如 HxD、010 editor、winhex 等，以 HxD 为例，新建文件，写入我们前面通过 JS 逆向得到的 key 的 16 进制数据，存为 .key 文件，如下图所示：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/c967091a3fe77ae7e1431d7611b724aa.png" alt="07"></p>
+<p><img src="/img/article/046/07.png" alt="07.png"></p>
 <p>然后修改 m3u8 文件里 key 的地址、名称，建议将 key、m3u8、ts 文件都放同一个文件夹，这样 m3u8 文件里就不用添加资源路径了，不容易出错。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/bc34af23050758b3b320b24f057bdfb9.png" alt="08"></p>
+<p><img src="/img/article/046/08.png" alt="08.png"></p>
 <p>然后在当前文件夹，打开命令行输入命令：<code>ffmpeg -allowed_extensions ALL -i live.m3u8 -c copy live.mp4</code>，即可自动解密 ts，并合并转换为 .mp4 格式：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/0a7a0cf737aeae4d01bc9217e07c60f1.png" alt="09"></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/db9fdff0a45c6d41333c6d475a12ae08.png" alt="10"></p>
+<p><img src="/img/article/046/09.png" alt="09.png"></p>
+<p><img src="/img/article/046/10.png" alt="10.png"></p>
 <p>第二种方法就是使用大佬写的第三方小工具，这里推荐吾爱大佬逍遥一仙写的 M3U8 批量下载器，下载地址、使用方法见原贴：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1374045-1-1.html">https://www.52pojie.cn/thread-1374045-1-1.html</a></p>
 <p>我们可以直接拖入处理好的 M3U8 文件，自动处理：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/985f2c1a952e14b41d264c5e172092be.png" alt="11"></p>
+<p><img src="/img/article/046/11.png" alt="11.png"></p>
 <p>也可以选择其他 - 工具 - 合并助手，添加所有 TS 文件，输入 key 后自动处理：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/71c5a02310dcc053f385d80116196775.png" alt="12"></p>
+<p><img src="/img/article/046/12.png" alt="12.png"></p>
 <p>处理完毕后的 mp4 文件默认在软件目录的 output 文件夹里面，解密后是一段动画，往后看会找到 flag：<code>flag&#123;like_sub_52tube&#125;</code> 为正确答案。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/270c7e60d56bc2ea20a33f11c1eb042f.png" alt="13"></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/362caaedb5b649cfd650aefd326ae615.png" alt="14"></p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/4dd28112ed306fd0ba26f946f8531891.png" alt="15"></p>
+<p><img src="/img/article/046/13.png" alt="13.png"></p>
+<p><img src="/img/article/046/14.png" alt="14.png"></p>
+<p><img src="/img/article/046/15.png" alt="15.png"></p>
 
             </div>
         </article>
@@ -469,7 +469,7 @@ getKey()
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">256.8k</span>
+                <span class="badge-value bg-firebrick post-count">275.9k</span>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">Powered</span>

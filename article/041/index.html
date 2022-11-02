@@ -131,7 +131,7 @@
     </script>
     <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
         <i class="gt-c-content-color-first" style="font-size: 18px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
                 <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
             </svg>
         </i>
@@ -215,13 +215,14 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <h2 id="font-color-B01B15-简介-font"><font color=#B01B15>简介</font></h2>
+                <p><img src="/img/cover/sm_algorithm.png" alt="sm_algorithm"></p>
+<h2 id="简介">简介</h2>
 <p>国密即国家密码局认定的国产加密算法，爬虫工程师在做 JS 逆向的时候，会遇到各种各样的加密算法，其中 RSA、AES、SHA 等算法是最常见的，这些算法都是国外的，在我以前的文章里也有介绍：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/119250052">《史上最全总结！爬虫常见加密解密算法》</a></p>
 <p>事实上从 2010 年开始，我国国家密码管理局就已经开始陆续发布了一系列国产加密算法，这其中就包括 SM1、SM2、SM3 、SM4、SM7、SM9、ZUC（祖冲之加密算法）等，SM 代表商密，即商业密码，是指用于商业的、不涉及国家秘密的密码技术。<strong>SM1 和 SM7 的算法不公开</strong>，其余算法都已成为 ISO/IEC 国际标准。</p>
 <p>在这些国产加密算法中，<strong><font color=#B01B15>SM2、SM3、SM4 三种加密算法是比较常见的</font></strong>，在爬取部分 gov 网站时，也可能会遇到这些算法，所以作为爬虫工程师是有必要了解一下这些算法的，如下图所示某 gov 网站就使用了 SM2 和 SM4 加密算法：</p>
 <p><img src="https://img-blog.csdnimg.cn/758cb19d1fbc4ec5ad7cc33781c2f34e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAVFJIWCDigKIg6bKN5YuD,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt=""></p>
 <hr>
-<h2 id="font-color-B01B15-算法概述-font"><font color=#B01B15>算法概述</font></h2>
+<h2 id="算法概述">算法概述</h2>
 <table>
 <thead>
 <tr>
@@ -277,7 +278,7 @@
 </tbody>
 </table>
 <hr>
-<h2 id="font-color-B01B15-算法详解-font"><font color=#B01B15>算法详解</font></h2>
+<h2 id="算法详解">算法详解</h2>
 <h3 id="SM1-分组加密算法">SM1 分组加密算法</h3>
 <p>SM1 为分组加密算法，对称加密，分组长度和密钥长度都为 128 位，故对消息进行加解密时，若消息长度过长，需要进行分组，要消息长度不足，则要进行填充。算法安全保密强度及相关软硬件实现性能与 AES 相当，该算法不公开，仅以 IP 核的形式存在于芯片中，调用该算法时，需要通过加密芯片的接口进行调用，采用该算法已经研制了系列芯片、智能 IC 卡、智能密码钥匙、加密卡、加密机等安全产品，广泛应用于电子政务、电子商务及国民经济的各个应用领域（包括国家政务通、警务通等重要领域），一般了解的人比较少，爬虫工程师也不会遇到这种加密算法。</p>
 <h3 id="椭圆曲线公钥加密算法">椭圆曲线公钥加密算法</h3>
@@ -358,7 +359,7 @@
 <h3 id="祖冲之算法">祖冲之算法</h3>
 <p>ZUC 为流密码算法，对称加密，该机密性算法可适用于 3GPP LTE 通信中的加密和解密，该算法包括祖冲之算法（ZUC）、机密性算法（128-EEA3）和完整性算法（128-EIA3）三个部分。已经被国际组织 3GPP 推荐为 4G 无线通信的第三套国际加密和完整性标准的候选算法。</p>
 <hr>
-<h2 id="font-color-B01B15-编程语言实现-font"><font color=#B01B15>编程语言实现</font></h2>
+<h2 id="编程语言实现">编程语言实现</h2>
 <h3 id="Python-语言实现">Python 语言实现</h3>
 <p>在 Python 里面并没有比较官方的库来实现国密算法，这里仅列出了其中两个较为完善的第三方库，需要注意的是，SM1 和 SM7 算法不公开，目前大多库仅实现了 SM2、SM3、SM4 三种密算法。</p>
 <ul>
@@ -466,7 +467,7 @@ verify = sm2_crypt.verify(sign, data)
 <li>密码标准委员会：<a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/">http://www.gmbz.org.cn/</a></li>
 </ul>
 <hr>
-<h2 id="font-color-B01B15-附：GM-T-密码行业标准-font"><font color=#B01B15>附：GM/T 密码行业标准</font></h2>
+<h2 id="附：GM-T-密码行业标准">附：GM/T 密码行业标准</h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180117202410524608.html">GM/T 0001.1-2012：祖冲之序列密码算法：第1部分：算法描述</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180107233806310781.html">GM/T 0001.2-2012：祖冲之序列密码算法：第2部分：基于祖冲之算法的机密性算法</a></li>
@@ -557,7 +558,7 @@ verify = sm2_crypt.verify(sign, data)
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">256.8k</span>
+                <span class="badge-value bg-firebrick post-count">275.9k</span>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">Powered</span>

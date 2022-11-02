@@ -131,7 +131,7 @@
     </script>
     <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
         <i class="gt-c-content-color-first" style="font-size: 18px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
                 <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
             </svg>
         </i>
@@ -212,7 +212,8 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <h2 id="font-color-FFB11B-简介-font"><font color=#FFB11B>简介</font></h2>
+                <p><img src="/img/cover/webpack.png" alt="webpack"></p>
+<h2 id="简介">简介</h2>
 <p>在分析一些站点的 JavaScript 代码时，比较简单的代码，函数通常都是一个一个的，例如：</p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;a&quot;</span>)&#125;
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;a&quot;</span>)&#125;
@@ -243,7 +244,7 @@
 <p>运行以上代码，会输出 <code>module0: hello world!</code>，相信通过浅显易懂的变量名和函数名，应该就可以看懂大致含义了，调用 <code>useModule(0)</code>，从所有函数里选择第一个，将 <code>hello world!</code> 传递给 <code>module0</code> 并输出。</p>
 <p>仔细观察以上代码，我们会发现主要用到了 <code>!function()&#123;&#125;()</code> 和 <code>function.call()</code> 语法，接下来就一一介绍一下。</p>
 <hr>
-<h2 id="font-color-FFB11B-函数声明与函数表达式-font"><font color=#FFB11B>函数声明与函数表达式</font></h2>
+<h2 id="函数声明与函数表达式">函数声明与函数表达式</h2>
 <p>在 ECMAScript（JavaScript 的一个标准）中，有两个最常用的创建函数对象的方法，即使用函数声明或者函数表达式，ECMAScript 规范明确了一点，即函数声明必须始终带有一个标识符，也就是我们所说的函数名，而函数表达式则可以省略。</p>
 <p>函数声明，会给函数指定一个名字，会在代码执行以前被加载到作用域中，所以<strong>调用函数在函数声明之前或之后都是可以的</strong>：</p>
 <pre><code class="hljs javascript">test(<span class="hljs-string">&quot;Hello World!&quot;</span>)
@@ -258,7 +259,7 @@
 
 test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 <hr>
-<h2 id="font-color-FFB11B-IIFE-立即调用函数表达式-font"><font color=#FFB11B>IIFE 立即调用函数表达式</font></h2>
+<h2 id="IIFE-立即调用函数表达式">IIFE 立即调用函数表达式</h2>
 <p>IIFE 全称 Immediately-invoked Function Expressions，译为立即调用函数表达式，也称为自执行函数、立即执行函数、自执行匿名函数等，IIFE 是一种语法，这种模式本质上就是函数表达式（命名的或者匿名的）在创建后立即执行。当函数变成立即执行的函数表达式时，表达式中的变量不能从外部访问。IIFE 主要用来隔离作用域，避免污染。</p>
 <hr>
 <h3 id="IIFE-基本语法">IIFE 基本语法</h3>
@@ -333,7 +334,7 @@ test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 
 <span class="hljs-comment">// 15</span></code></pre>
 <hr>
-<h2 id="font-color-FFB11B-Function-prototype-call-apply-bind-font"><font color=#FFB11B>Function.prototype.call() / apply() / bind()</font></h2>
+<h2 id="Function-prototype-call-apply-bind">Function.prototype.call() / apply() / bind()</h2>
 <p><code>Function.prototype.call()</code>、<code>Function.prototype.apply()</code>、<code>Function.prototype.bind()</code> 都是比较常用的方法。它们的作用一模一样，即<strong>改变函数中的 <code>this</code> 指向</strong>，它们的区别如下：</p>
 <ul>
 <li><code>call()</code> 方法会立即执行这个函数，接受一个多个参数，参数之间用逗号隔开；</li>
@@ -389,7 +390,7 @@ test.bind(<span class="hljs-literal">null</span>, <span class="hljs-number">1</s
 <span class="hljs-keyword">var</span> data = &#123;<span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;Doe&quot;</span>&#125;
 test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
 <hr>
-<h2 id="font-color-FFB11B-理解-webpack-font"><font color=#FFB11B>理解 webpack</font></h2>
+<h2 id="理解-webpack">理解 webpack</h2>
 <p>有了以上知识后，我们再来理解一下模块化编程，也就是前面所说的 webpack 写法：</p>
 <pre><code class="hljs javascript">!<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">allModule</span>) </span>&#123;
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useModule</span>(<span class="hljs-params">whichModule</span>) </span>&#123;
@@ -403,7 +404,7 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
 ]);</code></pre>
 <p>首先，这整个代码是一个 IIFE 立即调用函数表达式，传递的参数是一个数组，里面包含三个方法，分别是 <code>module0</code>、<code>module1</code> 和 <code>module2</code>，可以将其视为三个模块，那么 IIFE 接受的参数 <code>allModule</code> 就包含这三个模块，IIFE 里面还包含一个函数 <code>useModule()</code>，可以将其视为模块加载器，即要使用哪个模块，示例中 <code>useModule(0)</code> 即表示调用第一个模块，函数里面使用 <code>call()</code> 方法改变函数中的 <code>this</code> 指向并传递参数，调用相应的模块进行输出。</p>
 <hr>
-<h2 id="font-color-FFB11B-改写-webpack-font"><font color=#FFB11B>改写 webpack</font></h2>
+<h2 id="改写-webpack">改写 webpack</h2>
 <p>对于我们爬虫逆向当中经常遇到的 webpack 模块化的写法，可以很容易对其进行改写，以下以一段加密代码为例：</p>
 <pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;crypto-js&quot;</span>)
 
@@ -560,7 +561,7 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">256.8k</span>
+                <span class="badge-value bg-firebrick post-count">275.9k</span>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">Powered</span>

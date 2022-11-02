@@ -131,7 +131,7 @@
     </script>
     <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
         <i class="gt-c-content-color-first" style="font-size: 18px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
                 <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
             </svg>
         </i>
@@ -236,12 +236,12 @@ num = <span class="hljs-number">0</span>
 loop = asyncio.get_event_loop()
 loop.run_until_complete(asyncio.wait(tasks()))</code></pre>
 <p>在打印 500 次左右后就会出现以下报错：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/f70f58344164e7929022924cd757a85e.png" alt="01.png"></p>
+<p><img src="/img/article/048/01.png" alt="01.png"></p>
 <h2 id="问题分析">问题分析</h2>
 <p>好像这个报错和 select 有关，那什么是 select 呢？要怎么解决呢？别急，我们首先来了解一下 asyncio 中的事件循环，即 EventLoop。</p>
 <h3 id="事件循环-EventLoop">事件循环 EventLoop</h3>
 <p>事件循环是 asyncio 的核心，异步任务的运行、任务完成之后的回调、网络 I/O 操作、子进程的运行，都是通过事件循环完成的，通俗来讲，事件循环所做的就是等待事件发生，然后再将每个事件与我们已明确与所述事件类型匹配的函数进行匹配。下图很好的展示了协程、事件循环之间的相互作用：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/91dc097882fc67be9195869f3b179174.png" alt="02.png"></p>
+<p><img src="/img/article/048/02.png" alt="02.png"></p>
 <p>在 asyncio 中，主要提供了两种不同事件循环的实现方法：</p>
 <ul>
 <li>
@@ -253,22 +253,22 @@ loop.run_until_complete(asyncio.wait(tasks()))</code></pre>
 </ul>
 <p>那么这两种方法有什么区别呢？在 asyncio 中什么时候用什么方法呢？</p>
 <p>我们不妨看一下 asyncio 的源码，在 Python 3.7 中，无论在 Windows 还是 Linux 中都可以看到其默认的设置是 SelectorEventLoop：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/7d650aeaed8ffcd845b1042a2a790501.png" alt="03.png"></p>
+<p><img src="/img/article/048/03.png" alt="03.png"></p>
 <p>我们也可以分别在 Windows 平台和 Linux 平台打印一下 EventLoop 对象（Python 3.7），可以看到默认都是 SelectorEventLoop：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> asyncio
 
 loop = asyncio.get_event_loop()
 <span class="hljs-built_in">print</span>(loop)</code></pre>
 <p>Windows：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/bcfeab7170f5de6e7ad605d76aa5868a.png" alt="04.png"></p>
+<p><img src="/img/article/048/04.png" alt="04.png"></p>
 <p>Linux：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/efb7794e5f2ba360cb3d0f0523061d6e.png" alt="05.png"></p>
+<p><img src="/img/article/048/05.png" alt="05.png"></p>
 <p>事实上，在 Python 3.7 以及之前的版本中，   所有平台默认使用的都是 SelectorEventLoop，在 Python 3.8 以及以后的版本中，Unix 平台默认使用的是 SelectorEventLoop，Windows 平台默认使用的是 ProactorEventLoop，这个差异可以在官方文档中看到。</p>
 <ul>
 <li>Python 3.7 文档：<a target="_blank" rel="noopener" href="https://docs.python.org/3.7/library/asyncio-eventloop.html#event-loop-implementations">https://docs.python.org/3.7/library/asyncio-eventloop.html#event-loop-implementations</a></li>
 <li>Python 3.8 文档：<a target="_blank" rel="noopener" href="https://docs.python.org/3.8/library/asyncio-eventloop.html#event-loop-implementations">https://docs.python.org/3.8/library/asyncio-eventloop.html#event-loop-implementations</a></li>
 </ul>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/30387729cf1d1eaafe4114fb3a4a847d.png" alt="06.png"></p>
+<p><img src="/img/article/048/06.png" alt="06.png"></p>
 <p>说了这么多，这和 <code>ValueError: too many file descriptors in select()</code> 的报错问题有什么关系呢？select 到底是什么东西呢？</p>
 <h3 id="I-O-多路复用">I/O 多路复用</h3>
 <p>要了解 select，我们还要了解一下什么是 I/O 多路复用（I/O multiplexing），服务器端编程经常需要构造高性能的 I/O 模型，常见的 I/O 模型有同步阻塞 I/O、同步非阻塞 I/O、I/O 多路复用等；当需要同时处理多个客户端接入请求时，可以利用多线程或者 I/O 多路复用技术进行处理，I/O 多路复用技术就是为了解决进程或线程阻塞到某个 I/O 系统调用而出现的技术，使进程不阻塞于某个特定的 I/O 系统调用。</p>
@@ -457,7 +457,7 @@ loop.run_until_complete(asyncio.wait(tasks()))</code></pre>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">256.8k</span>
+                <span class="badge-value bg-firebrick post-count">275.9k</span>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">Powered</span>
