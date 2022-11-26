@@ -291,7 +291,7 @@
 <li><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-261414.htm">给&quot;某音&quot;的js虚拟机写一个编译器</a></li>
 </ul>
 <h2 id="JSVMP-逆向方法有哪些？">JSVMP 逆向方法有哪些？</h2>
-<p>就目前来讲，JSVMP 的逆向方法有三种（自动化不算）：RPC 远程调用，补环境，日志断点还原算法，其中日志断点也称为插桩，找到关键位置，输出关键参数的日志信息，从结果往上倒推生成逻辑，以达到算法还原的目的，RPC 技术K哥以前写过文章，补环境的方式以后有时间再写，本文主要介绍如何使用插桩来还原算法。</p>
+<p>就目前来讲，JSVMP 的逆向方法有三种（自动化不算）：RPC 远程调用，补环境，日志断点还原算法，其中日志断点也称为插桩，找到关键位置，输出关键参数的日志信息，从结果往上倒推生成逻辑，以达到算法还原的目的，RPC 技术以前写过文章，补环境的方式以后有时间再写，本文主要介绍如何使用插桩来还原算法。</p>
 <h2 id="抓包情况">抓包情况</h2>
 <p>随便来到某个博主主页，抓包后搜索可发现一个接口，返回的是 JSON 数据，里面包含了博主某音号，认证信息、签名，关注、粉丝、获赞等，请求 <code>Query String Parameters</code> 里包含了一个 <code>X-Bogus</code> 参数，每次请求会改变，此外还有 <code>sec_user_id</code> 是博主主页 URL 后面那一串，<code>webid</code> 直接请求主页返回内容里就有，<code>msToken</code> 与 cookie 有关，清除 cookie 访问，就没这个参数了，实测该接口不验证 <code>webid</code> 和 <code>msToken</code>，直接置空即可。</p>
 <p><img src="/img/article/056/04.png" alt="04"></p>
@@ -300,7 +300,7 @@
 <p>这条请求是 XHR 请求，所以直接下个 XHR 断点，当 URL 中包含 <code>X-Bogus</code> 参数时就断下：</p>
 <p><img src="/img/article/056/06.png" alt="06"></p>
 <p><img src="/img/article/056/07.png" alt="07"></p>
-<p>往前跟栈，来到一个叫 webmssdk.js 的 JS 文件，这里就是生成参数的主要 JS 逻辑了，也就是 JSVMP，整体上做了一个混淆，这里可以使用 AST 来解混淆，K哥以前同样也写过 AST 的文章，这里还原混淆不是重点，咱们直接使用 V 佬的插件 <a target="_blank" rel="noopener" href="https://github.com/cilame/v_jstools">v_jstools</a> 来还原：</p>
+<p>往前跟栈，来到一个叫 webmssdk.js 的 JS 文件，这里就是生成参数的主要 JS 逻辑了，也就是 JSVMP，整体上做了一个混淆，这里可以使用 AST 来解混淆，以前同样也写过 AST 的文章，这里还原混淆不是重点，咱们直接使用 V 佬的插件 <a target="_blank" rel="noopener" href="https://github.com/cilame/v_jstools">v_jstools</a> 来还原：</p>
 <p><img src="/img/article/056/08.png" alt="08"></p>
 <p>还原后使用浏览器的 Overrides 替换功能将 webmssdk.js 替换掉，往上跟栈，如下图所示，到 W 这里就已经生成了 <code>X-Bogus</code> 了，<code>this.openArgs[1]</code> 就是携带了 <code>X-Bogus</code> 的完整 URL，仔细观察这段代码，有很多三元表达式，当 M 的值为 15 时，就会走到这段逻辑，U 的值生成之后，有一个 <code>S[C] = U</code> 的操作。</p>
 <p><img src="/img/article/056/09.png" alt="09"></p>
@@ -316,14 +316,14 @@
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> obj1 = &#123;<span class="hljs-attr">key1</span>: <span class="hljs-string">&#x27;value1&#x27;</span>, <span class="hljs-attr">key2</span>: <span class="hljs-string">&#x27;value2&#x27;</span>&#125;
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">changeValue</span>(<span class="hljs-params">key, value</span>) </span>&#123;
     <span class="hljs-keyword">if</span> (value == <span class="hljs-string">&#x27;value2&#x27;</span>) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;公众号：K哥爬虫&#x27;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;ITBOB&#x27;</span>
     &#125; <span class="hljs-keyword">return</span> value
 &#125;
 <span class="hljs-keyword">var</span> obj2 = <span class="hljs-built_in">JSON</span>.stringify(obj1, changeValue)
 <span class="hljs-built_in">console</span>.log(obj2)
 
-<span class="hljs-comment">// 输出：&#123;&quot;key1&quot;:&quot;value1&quot;,&quot;key2&quot;:&quot;公众号：K哥爬虫&quot;&#125;</span></code></pre>
-<p>上面的代码中 <code>JSON.stringify</code> 传入了一个函数，当 <code>value</code> 为 <code>value2</code> 的时候就将其替换成字符串 <code>公众号：K哥爬虫</code>，接下来我们演示一下当 <code>value</code> 为 <code>window</code> 时，会发生什么：</p>
+<span class="hljs-comment">// 输出：&#123;&quot;key1&quot;:&quot;value1&quot;,&quot;key2&quot;:&quot;ITBOB&quot;&#125;</span></code></pre>
+<p>上面的代码中 <code>JSON.stringify</code> 传入了一个函数，当 <code>value</code> 为 <code>value2</code> 的时候就将其替换成字符串 <code>ITBOB</code>，接下来我们演示一下当 <code>value</code> 为 <code>window</code> 时，会发生什么：</p>
 <p><img src="/img/article/056/12.png" alt="12"></p>
 <p>根据报错我们可以看到这里由于循环引用导致异常，要知道在插桩的时候，如果插桩内容有报错，就会导致不能正常输出日志，这样就会缺失一部分日志，这种情况我们就可以加个函数处理一下，让 value 为 window 的时候，JSON 处理的时候函数返回 undefined，排除该成员，其他成员正常输出，如下图所示：</p>
 <p><img src="/img/article/056/13.png" alt="13"></p>
@@ -626,6 +626,13 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
     
         <div class="next-prev-post">
             
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/057/" 
+                            class="post-title gt-a-link">安某客滑动验证码逆向分析</a>
+                    </div>
+                </div>
+            
             
                 <div class="next-post">
                     <div class="next gt-c-content-color-first">
@@ -684,7 +691,7 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">275.9k</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
             </div>
             <div class="itbob-github-badge">
                 <span class="badge-subject">Powered</span>

@@ -1,0 +1,606 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Title -->
+<title>安某客滑动验证码逆向分析 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.png">
+
+<!-- Fonts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- 不蒜子 -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="/js/busuanzi.pure.mini.js"></script>
+
+<!-- 打字效果 -->
+<!-- https://www.typeitjs.com/ -->
+<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- 图片点击放大 -->
+
+    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="/js/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">安某客滑动验证码逆向分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2022-11-08丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 2k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 9分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            爬虫</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            验证码逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><img src="/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
+<h2 id="声明">声明</h2>
+<p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
+<p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
+<h2 id="逆向目标">逆向目标</h2>
+<ul>
+<li>目标：安某客滑动验证码逆向分析</li>
+<li>主页：<code>aHR0cHM6Ly93d3cuYW5qdWtlLmNvbS9jYXB0Y2hhLXZlcmlmeS8/Y2FsbGJhY2s9c2hpZWxkJmZyb209YW50aXNwYW0=</code></li>
+</ul>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvQw4.png" alt="01"></p>
+<h2 id="抓包分析">抓包分析</h2>
+<p>首页请求，有个初始化函数，其中有个 <code>sessionId</code> 后续会用到。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvlTJ.png" alt="02"></p>
+<p>然后有个 <code>getInfoTp</code> 的请求，<code>Form Data</code> 里有个 <code>dInfo</code> 是加密参数，返回值里 <code>info</code> 也是加密的，包含了图片信息，返回值 <code>responseId</code> 在后续的请求也会用到。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztv3k9.png" alt="03"></p>
+<p>滑动之后，有个 <code>checkInfoTp</code> 请求，<code>Form Data</code> 里有个 <code>data</code> 是加密参数，包含了轨迹信息，返回值 <code>message</code> 可以看到是否校验成功。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztv8YR.png" alt="04"></p>
+<p>整体流程就是：请求首页获取 <code>sessionId</code>，请求 <code>getInfoTp</code> 获取图片信息和 <code>responseId</code>，请求 <code>checkInfoTp</code> 校验是否成功，中间涉及到 <code>dInfo</code> 和 <code>data</code> 两个加密参数，以及 <code>getInfoTp</code> 返回得到的 <code>info</code> 的解密。</p>
+<h2 id="dInfo-生成">dInfo 生成</h2>
+<p>先来看 <code>getInfoTp</code> 请求的 <code>dInfo</code> 参数，直接搜索可定位，刷新断下，大致就可以看出是 AES 加密，传入了 <code>sessionId</code> 和一个 <code>_taN()</code> 函数的返回值：</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvMmF.png" alt="05"></p>
+<p><code>_taN()</code> 函数是一些 URL，UA 之类的信息，可以写死：</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvGf1.png" alt="06"></p>
+<p>往里跟就可以看到 AES 算法了：</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvYSx.png" alt="07"></p>
+<p>这里简简单单扣一下，JavaScript 代码如下：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
+<span class="hljs-comment"># @Time    : 2021-12-14</span>
+<span class="hljs-comment"># @Author  : ITBOB.CN</span>
+<span class="hljs-comment"># @FileName: ajk.js</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ================================== */</span>
+
+
+<span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">AESEncrypt</span>(<span class="hljs-params">_cRV, _2undefinedp</span>) </span>&#123;
+    _2undefinedp = _2undefinedp.split(<span class="hljs-string">&quot;&quot;</span>).reduce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">_PUi, _JrX, _JP9</span>) </span>&#123;
+        <span class="hljs-keyword">return</span> _JP9 % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> ? _PUi + <span class="hljs-string">&quot;&quot;</span> : _PUi + _JrX;
+    &#125;, <span class="hljs-string">&quot;&quot;</span>);
+    _2undefinedp = CryptoJS.enc.Utf8.parse(_2undefinedp);
+    _cRV = <span class="hljs-string">&quot;string&quot;</span> == <span class="hljs-keyword">typeof</span> _cRV ? _cRV : <span class="hljs-built_in">JSON</span>.stringify(_cRV);
+    _cRV = CryptoJS.AES.encrypt(_cRV, _2undefinedp, &#123;
+        <span class="hljs-attr">iv</span>: _2undefinedp,
+        <span class="hljs-attr">mode</span>: CryptoJS.mode.CBC,
+        <span class="hljs-attr">padding</span>: CryptoJS.pad.Pkcs7
+    &#125;);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">encodeURIComponent</span>(_cRV.toString())
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">u</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-string">&quot;sdkv&quot;</span>: <span class="hljs-string">&quot;3.0.1&quot;</span>,
+        <span class="hljs-string">&quot;busurl&quot;</span>: <span class="hljs-string">&quot;https://www.脱敏处理.com/captcha-verify/?callback=shield&amp;from=antispam&quot;</span>,
+        <span class="hljs-string">&quot;useragent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36&quot;</span>,
+        <span class="hljs-string">&quot;clienttype&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>
+    &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDInfo</span>(<span class="hljs-params">sessionId</span>)</span>&#123;
+    <span class="hljs-keyword">return</span> AESEncrypt(u(), sessionId)
+&#125;
+
+<span class="hljs-comment">// 测试样例</span>
+<span class="hljs-keyword">var</span> sessionId = <span class="hljs-string">&quot;a8b339ec0c26459598786fee1cce8dc2&quot;</span>
+<span class="hljs-built_in">console</span>.log(getDInfo(sessionId))</code></pre>
+<p>这段逻辑也可以用 Python 来实现，关键代码如下（脱敏处理，不能直接运行）：</p>
+<pre><code class="hljs python"><span class="hljs-comment"># ==================================</span>
+<span class="hljs-comment"># --*-- coding: utf-8 --*--</span>
+<span class="hljs-comment"># @Time    : 2021-12-14</span>
+<span class="hljs-comment"># @Author  : ITBOB.CN</span>
+<span class="hljs-comment"># @FileName: ajk.py</span>
+<span class="hljs-comment"># @Software: PyCharm</span>
+<span class="hljs-comment"># ==================================</span>
+
+
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree
+<span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger
+<span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> quote_plus
+<span class="hljs-keyword">from</span> Crypto.Cipher <span class="hljs-keyword">import</span> AES
+<span class="hljs-keyword">from</span> Crypto.Util.Padding <span class="hljs-keyword">import</span> pad, unpad
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AESAlgorithm</span>:</span>
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encrypt</span>(<span class="hljs-params">aes_key_iv, text</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot; 对明文进行加密 &quot;&quot;&quot;</span>
+        cipher = AES.new(key=<span class="hljs-built_in">bytes</span>(aes_key_iv, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>), mode=AES.MODE_CBC, iv=<span class="hljs-built_in">bytes</span>(aes_key_iv, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+        result = base64.b64encode(cipher.encrypt(pad(text.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>), <span class="hljs-number">16</span>))).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+        result = quote_plus(result)
+        <span class="hljs-keyword">return</span> result
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decrypt</span>(<span class="hljs-params">aes_key_iv, text</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot; 对密文进行解密 &quot;&quot;&quot;</span>
+        cipher = AES.new(key=<span class="hljs-built_in">bytes</span>(aes_key_iv, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>), mode=AES.MODE_CBC, iv=<span class="hljs-built_in">bytes</span>(aes_key_iv, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+        result = unpad(cipher.decrypt(base64.b64decode(text)), <span class="hljs-number">16</span>).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+        <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AJKSlide</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, index_url, user_agent</span>):</span>
+        self.aes = AESAlgorithm()
+        self.index_url = index_url
+        self.user_agent = user_agent
+        self.headers = &#123;<span class="hljs-string">&quot;user-agent&quot;</span>: self.user_agent&#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_session_id</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot; 获取 sessionId &quot;&quot;&quot;</span>
+        response = requests.get(url=self.index_url, headers=self.headers).text
+        session_id = etree.HTML(response).xpath(<span class="hljs-string">&quot;//input[@name=&#x27;sessionId&#x27;]/@value&quot;</span>)[<span class="hljs-number">0</span>]
+        logger.info(<span class="hljs-string">f&quot;sessionId ==&gt; <span class="hljs-subst">&#123;session_id&#125;</span>&quot;</span>)
+        <span class="hljs-keyword">return</span> session_id
+
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_aes_key_iv</span>(<span class="hljs-params">session_id</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;设置 AES key 和 iv&quot;&quot;&quot;</span>
+        aes_key_iv = <span class="hljs-string">&#x27;&#x27;</span>
+        <span class="hljs-keyword">for</span> index, value <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(session_id):
+            <span class="hljs-keyword">if</span> index % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>:
+                aes_key_iv += value
+        logger.info(<span class="hljs-string">f&quot;处理 sessionId 获取 aes key iv ==&gt; <span class="hljs-subst">&#123;aes_key_iv&#125;</span>&quot;</span>)
+        <span class="hljs-keyword">return</span> aes_key_iv
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_d_info</span>(<span class="hljs-params">self, aes_key_iv</span>):</span>
+        <span class="hljs-string">&quot;&quot;&quot;获取 dInfo&quot;&quot;&quot;</span>
+        sdk_info = &#123;
+            <span class="hljs-string">&quot;sdkv&quot;</span>: <span class="hljs-string">&quot;3.0.1&quot;</span>,
+            <span class="hljs-string">&quot;busurl&quot;</span>: self.index_url,
+            <span class="hljs-string">&quot;useragent&quot;</span>: self.user_agent,
+            <span class="hljs-string">&quot;clienttype&quot;</span>: <span class="hljs-number">1</span>
+        &#125;
+        d_info = self.aes.encrypt(aes_key_iv, json.dumps(sdk_info))
+        logger.info(<span class="hljs-string">f&#x27;dInfo ==&gt; <span class="hljs-subst">&#123;d_info&#125;</span>&#x27;</span>)
+        <span class="hljs-keyword">return</span> d_info
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, session_id=<span class="hljs-literal">None</span></span>):</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> session_id:
+            session_id = self.get_session_id()
+        aes_key_iv = self.get_aes_key_iv(session_id)
+        self.get_d_info(aes_key_iv)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    UA = <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36&quot;</span>
+    index_url_ = <span class="hljs-string">&quot;https://www.脱敏处理.com/captcha-verify/?callback=shield&amp;from=antispam&quot;</span>
+    ajk_slide = AJKSlide(index_url_, UA)
+    ajk_slide.run()</code></pre>
+<h2 id="getInfoTp-解密">getInfoTp 解密</h2>
+<p><code>getInfoTp</code> 这个接口返回的 <code>info</code> 的值是加密的，前面我们已经知道用到了 AES 加密算法，这里可以直接猜测也是用的的 AES 来解密的，找到 <code>AESDecrypt</code> 这个方法，下个断点，刷新发现断下之后传入了两个参数，第一个正是 <code>info</code> 的内容，第二个则是 <code>sessionId</code>。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvN6K.png" alt="08"></p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvtl6.png" alt="09"></p>
+<p>解密结果可以看到滑块的图片地址等信息：</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvUOO.png" alt="10"></p>
+<h2 id="data-生成">data 生成</h2>
+<p>接下来就是 <code>checkInfoTp</code> 提交验证了，要搞清楚提交的 <code>data</code> 是什么东西，同样搜索打断点，如下图所示 <code>_5DD</code> 就是 <code>data</code> 值，传过来的。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvdmD.png" alt="11"></p>
+<p>往上跟栈，可以看到 <code>_Ug0</code> 里面有个 <code>track</code> 参数，这明显就是轨迹了，同样最后的结果经过了 AES 加密。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvw0e.png" alt="12"></p>
+<p>再往上跟，可以看到 <code>_Ug0</code> 由三个参数组成，<code>x</code> 是水平滑动的距离，<code>track</code> 是轨迹，<code>p</code> 是定值。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztv0TH.png" alt="13"></p>
+<h2 id="轨迹处理">轨迹处理</h2>
+<p>轨迹生成前，得先识别缺口得到要滑动的距离，方式有很多，比如 <code>OpenCV</code>、开源的 <code>ddddocr</code>，或者直接打码平台都行，这里唯一要注意的一点就是图片是有缩放的，原始尺寸 <code>480 × 270 px</code> 渲染后的尺寸 <code>280 × 158 px</code>，比例大概是 <code>1:0.5833333333333333</code>，可以先将图片进行缩放后再识别，也可以先识别距离后再将距离进行缩放。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvDkd.png" alt="14"></p>
+<p>轨迹的处理，该站点校验并不太严格，所以可以自己写一下，关于滑块的轨迹处理，主要有缩放法、本地轨迹库、根据一些函数来生成轨迹，如缓动函数、贝塞尔曲线等，以后再单独写一篇文章来介绍，本例中可以使用缩放法，先采集一条正常的，手动滑出来的轨迹，然后根据识别出的实际距离和样本轨迹中的距离相比，得到一个比值，然后将样本中的 x 值和时间值都做一个对应的缩放，生成新的轨迹，主要代码如下：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_track</span>(<span class="hljs-params">distance</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;生成轨迹，样本距离为 126&quot;&quot;&quot;</span>
+    ratio = distance / <span class="hljs-number">126</span>
+    new_track = <span class="hljs-string">&quot;&quot;</span>
+    base_track = <span class="hljs-string">&quot;29,11,0|29,11,11|29,11,26|33,11,56|34,11,66|36,11,67|39,11,76|41,11,83|43,11,86|46,11,92|49,11,98|50,11,102|52,11,106|53,11,111|55,11,116|57,11,118|59,11,123|60,11,126|62,11,132|64,12,134|65,12,138|66,12,142|68,12,148|69,12,151|70,13,155|71,13,158|72,13,164|74,13,166|75,13,170|76,14,174|77,14,180|79,14,182|81,14,186|82,14,196|84,14,198|86,14,207|87,15,212|89,15,219|90,15,223|92,15,230|93,15,234|94,15,239|95,15,243|98,15,246|100,15,250|102,15,260|105,15,262|106,15,266|108,15,270|109,16,276|111,16,278|113,16,283|115,16,286|117,16,291|118,16,294|119,16,298|121,16,302|123,16,309|124,16,311|125,16,315|126,16,319|129,16,324|130,16,327|131,16,331|132,16,334|132,16,388|132,16,522|133,16,566|134,16,574|135,16,575|136,16,594|137,16,620|138,16,625|139,16,652|140,16,657|141,17,676|141,18,680|142,18,684|143,18,688|144,18,716|145,18,724|146,18,796|147,19,828|148,19,860|149,19,888|149,19,890|150,19,916|151,20,932|152,20,936|152,20,1021|153,20,1150|154,20,1152|155,20,1236|155,20,1388|155,20,1522|155,20,1717|&quot;</span>
+    base_track = base_track.split(<span class="hljs-string">&quot;|&quot;</span>)[:-<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">for</span> track <span class="hljs-keyword">in</span> base_track:
+        t = track.split(<span class="hljs-string">&quot;,&quot;</span>)
+        new_track += <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(<span class="hljs-built_in">int</span>(t[<span class="hljs-number">0</span>]) * ratio)) + <span class="hljs-string">&quot;,&quot;</span> + <span class="hljs-built_in">str</span>(t[<span class="hljs-number">1</span>]) + <span class="hljs-string">&quot;,&quot;</span> + <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(<span class="hljs-built_in">int</span>(t[<span class="hljs-number">2</span>]) * ratio)) + <span class="hljs-string">&quot;|&quot;</span>
+        logger.info(<span class="hljs-string">f&quot;new_track ==&gt; <span class="hljs-subst">&#123;new_track&#125;</span>&quot;</span>)
+        <span class="hljs-keyword">return</span> new_track</code></pre>
+<h2 id="结果验证">结果验证</h2>
+<p>整个过程比较简单，验证成功。</p>
+<p><img src="https://s1.ax1x.com/2022/11/26/ztvrtA.png" alt="15"></p>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/058/" 
+                            class="post-title gt-a-link">某片行为验证，滑动验证码和点选验证码逆向分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/056/" 
+                            class="post-title gt-a-link">某音短视频 X-Bogus 逆向分析，JSVMP 纯算法还原</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span>
+            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a> 丨
+            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a> 丨
+            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a> 丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-1px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="本站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+
+            <script>
+                var copyrightNow = new Date().getFullYear();
+                document.getElementById("displayDateTime").innerHTML = copyrightNow;
+            </script>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>
