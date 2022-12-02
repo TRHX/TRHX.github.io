@@ -1,0 +1,1837 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（九）：时间序列 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（九）：时间序列</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-25丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 11.2k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 58分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106947061</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】时间序列-font"><font color=#FF0000>【01x00】时间序列</font></h2>
+<p>官网对于时间序列的介绍：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html</a></p>
+<p>时间序列（time series）是一种重要的结构化数据形式，应用于多个领域，包括金融学、经济学、生态学、神经科学、物理学等。在多个时间点观察或测量到的任何事物都可以形成一段时间序列。很多时间序列是固定频率的，也就是说，数据点是根据某种规律定期出现的（比如每15秒、每5分钟、每月出现一次）。时间序列也可以是不定期的，没有固定的时间单位或单位之间的偏移量。时间序列数据的意义取决于具体的应用场景，主要有以下几种：</p>
+<ul>
+<li>
+<p><font color=#4169E1><strong>时间戳（timestamp），表示某个具体的时间点，例如 2020-6-24 15:30；</strong></font></p>
+</li>
+<li>
+<p><font color=#4169E1><strong>固定周期（period），表示某个时间周期，例如 2020-01；</strong></font></p>
+</li>
+<li>
+<p><font color=#4169E1><strong>时间间隔（timedelta），持续时间，即两个日期或时间之间的差异。</strong></font></p>
+</li>
+<li>
+<p><font color=#FFA500><strong>针对时间戳数据，Pandas 提供了 Timestamp 类型。它本质上是 Python 的原生 datetime 类型的替代品，但是在性能更好的 numpy.datetime64 类型的基础上创建。对应的索引数据结构是 DatetimeIndex。</strong></font></p>
+</li>
+<li>
+<p><font color=#FFA500><strong>针对时间周期数据，Pandas 提供了 Period 类型。这是利用 numpy.datetime64 类型将固定频率的时间间隔进行编码。对应的索引数据结构是 PeriodIndex。</strong></font></p>
+</li>
+<li>
+<p><font color=#FFA500><strong>针对时间增量或持续时间，Pandas 提供了 Timedelta 类型。Timedelta 是一种代替 Python 原生datetime.timedelta 类型的高性能数据结构，同样是基于 numpy.timedelta64 类型。对应的索引数据结构是 TimedeltaIndex。</strong></font></p>
+</li>
+</ul>
+<h2 id="font-color-FF0000-【02x00】Timestamp-时间戳-font"><font color=#FF0000>【02x00】Timestamp 时间戳</font></h2>
+<h3 id="font-color-4876FF-【02x01】pandas-Timestamp-font"><font color=#4876FF>【02x01】pandas.Timestamp</font></h3>
+<p>在 pandas 中，<code>pandas.Timestamp</code> 方法用来代替 Python 中的 <code>datetime.datetime</code> 方法。</p>
+<p>Timestamp 与 Python 的 Datetime 等效，在大多数情况下都可以互换。 此类型用于组成 DatetimeIndex 以及 Pandas 中其他面向时间序列的数据结构。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Timestamp.html">https://pandas.pydata.org/docs/reference/api/pandas.Timestamp.html</a></p>
+<p>基本语法：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">pandas</span>.<span class="hljs-title">Timestamp</span>(<span class="hljs-params">ts_input=&lt;<span class="hljs-built_in">object</span> <span class="hljs-built_in">object</span>&gt;, </span></span>
+<span class="hljs-params"><span class="hljs-class">					   freq=<span class="hljs-literal">None</span>, tz=<span class="hljs-literal">None</span>, unit=<span class="hljs-literal">None</span>, </span></span>
+<span class="hljs-params"><span class="hljs-class">					   year=<span class="hljs-literal">None</span>, month=<span class="hljs-literal">None</span>, day=<span class="hljs-literal">None</span>, </span></span>
+<span class="hljs-params"><span class="hljs-class">					   hour=<span class="hljs-literal">None</span>, minute=<span class="hljs-literal">None</span>, second=<span class="hljs-literal">None</span>, </span></span>
+<span class="hljs-params"><span class="hljs-class">					   microsecond=<span class="hljs-literal">None</span>, nanosecond=<span class="hljs-literal">None</span>, tzinfo=<span class="hljs-literal">None</span></span>)</span></code></pre>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ts_input</td>
+<td>要转换为时间戳的对象，可以是 datetime-like，str，int，float 类型</td>
+</tr>
+<tr>
+<td>freq</td>
+<td>时间戳将具有的偏移量，可以是 str，日期偏移量类型，取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+<tr>
+<td>tz</td>
+<td>时间戳将具有的时区</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>如果 ts_input 是整数或浮点数，该参数用于设置其单位（D、s、ms、us、ns）</td>
+</tr>
+</tbody>
+</table>
+<p>简单示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timestamp(<span class="hljs-string">&#x27;2017-01-01T12&#x27;</span>)
+Timestamp(<span class="hljs-string">&#x27;2017-01-01 12:00:00&#x27;</span>)</code></pre>
+<p>设置 <code>unit='s'</code>，即待转换对象单位为秒：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timestamp(<span class="hljs-number">1513393355.5</span>, unit=<span class="hljs-string">&#x27;s&#x27;</span>)
+Timestamp(<span class="hljs-string">&#x27;2017-12-16 03:02:35.500000&#x27;</span>)</code></pre>
+<p>使用 <code>tz</code> 参数设置时区：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timestamp(<span class="hljs-number">1513393355</span>, unit=<span class="hljs-string">&#x27;s&#x27;</span>, tz=<span class="hljs-string">&#x27;US/Pacific&#x27;</span>)
+Timestamp(<span class="hljs-string">&#x27;2017-12-15 19:02:35-0800&#x27;</span>, tz=<span class="hljs-string">&#x27;US/Pacific&#x27;</span>)</code></pre>
+<p>单独设置年月日：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timestamp(year=<span class="hljs-number">2020</span>, month=<span class="hljs-number">6</span>, day=<span class="hljs-number">24</span>, hour=<span class="hljs-number">12</span>)
+Timestamp(<span class="hljs-string">&#x27;2020-06-24 12:00:00&#x27;</span>)</code></pre>
+<h3 id="font-color-4876FF-【02x02】freq-频率部分取值-font"><font color=#4876FF>【02x02】freq 频率部分取值</font></h3>
+<p>完整取值参见官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases">https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D</td>
+<td>Day</td>
+<td>每日历日</td>
+</tr>
+<tr>
+<td>B</td>
+<td>BusinessDay</td>
+<td>每工作日</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Hour</td>
+<td>每小时</td>
+</tr>
+<tr>
+<td>T 或 min</td>
+<td>Minute</td>
+<td>每分</td>
+</tr>
+<tr>
+<td>S</td>
+<td>Second</td>
+<td>每秒</td>
+</tr>
+<tr>
+<td>L 或 ms</td>
+<td>Milli</td>
+<td>每毫秒（即每千分之一秒）</td>
+</tr>
+<tr>
+<td>U</td>
+<td>Micro</td>
+<td>每微秒（即每百万分之一秒）</td>
+</tr>
+<tr>
+<td>M</td>
+<td>MonthEnd</td>
+<td>每月最后一个日历日</td>
+</tr>
+<tr>
+<td>BM</td>
+<td>BusinessMonthEnd</td>
+<td>每月最后一个工作日</td>
+</tr>
+<tr>
+<td>MS</td>
+<td>MonthBegin</td>
+<td>每月第一个日历日</td>
+</tr>
+<tr>
+<td>BMS</td>
+<td>BusinessMonthBegin</td>
+<td>每月第一个工作日</td>
+</tr>
+<tr>
+<td>W-MON、W-TUE…</td>
+<td>Week</td>
+<td>从指定的星期几（MON、TUE、 WED、THU、FR、SAT、SUN）开始算起，每周</td>
+</tr>
+<tr>
+<td>WoM-1MON、WOM-2MON…</td>
+<td>WeekOfMonth</td>
+<td>产生每月第一、第二、第三或第四周的星期几。例如，WoM-3FRI 表示每月第3个星期五</td>
+</tr>
+<tr>
+<td>Q-JAN、Q-FEB…</td>
+<td>QuarterEnd</td>
+<td>对于以指定月份（JAN、FEB、MAR、APR、MAY、JUN、JUL、AUG、SEP、OCT、NOV、DEC）结束的年度，每季度最后一月的最后个日历日</td>
+</tr>
+<tr>
+<td>BQ-JAN、BQ-FEB…</td>
+<td>BusinessQuarterEnd</td>
+<td>对于以指定月份结束的年度，每季度最后一月的最后一个工作日</td>
+</tr>
+<tr>
+<td>QS-JAN、QS-FEB…</td>
+<td>QuarterBegin</td>
+<td>对于以指定月份结束的年度，每季度最后一月的第一个日历日</td>
+</tr>
+<tr>
+<td>BQS-JAN、 BQS-FEB…</td>
+<td>BusinessQuarterBegin</td>
+<td>对于以指定月份结束的年度，每季度最后一月的第一个工作日</td>
+</tr>
+<tr>
+<td>A-JAN、A-FEB…</td>
+<td>YearEnd</td>
+<td>每年指定月份（JAN、FEB、MAR、APR、MAY、JUN、JUL、AUG、SEP、 OCT、NOV、DEC）的最后一个日历日</td>
+</tr>
+<tr>
+<td>BA-JAN、BA-FEB…</td>
+<td>BusinessYearEnd</td>
+<td>每年指定月份的最后一个工作日</td>
+</tr>
+<tr>
+<td>AS-JAN、AS-FEB…</td>
+<td>YearBegin</td>
+<td>每年指定月份的第一个历日日</td>
+</tr>
+<tr>
+<td>BAS-JAN、BAS-FEB…</td>
+<td>BusinessYearBegin</td>
+<td>每年指定月份的第一个工作日</td>
+</tr>
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【02x03】to-datetime-font"><font color=#4876FF>【02x03】to_datetime</font></h3>
+<p>在 Python 中，datetime 库提供了日期和时间处理方法，利用 <code>str</code> 或 <code>strftime</code> 方法可以将 datetime 对象转化成字符串，具体用法可参见<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36759224/article/details/104427220">【Python 标准库学习】日期和时间处理库 — datetime</a>。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime
+<span class="hljs-meta">&gt;&gt;&gt; </span>stamp = datetime(<span class="hljs-number">2020</span>, <span class="hljs-number">6</span>, <span class="hljs-number">24</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>stamp
+datetime.datetime(<span class="hljs-number">2020</span>, <span class="hljs-number">6</span>, <span class="hljs-number">24</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">str</span>(stamp)
+<span class="hljs-string">&#x27;2020-06-24 00:00:00&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>stamp.strftime(<span class="hljs-string">&#x27;%Y-%m-%d&#x27;</span>)
+<span class="hljs-string">&#x27;2020-06-24&#x27;</span></code></pre>
+<p><font color=#FF0000><strong>在 pandas 中 to_datetime 方法可以将字符串解析成多种不同的 Timestamp（时间戳） 对象：</strong></font></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>datestrs = <span class="hljs-string">&#x27;2011-07-06 12:00:00&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(datestrs)
+&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">str</span>&#x27;&gt;</span>
+<span class="hljs-class">&gt;&gt;&gt; </span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">pd</span>.<span class="hljs-title">to_datetime</span>(<span class="hljs-params">datestrs</span>)</span>
+<span class="hljs-class"><span class="hljs-title">Timestamp</span>(<span class="hljs-params"><span class="hljs-string">&#x27;2011-07-06 12:00:00&#x27;</span></span>)</span></code></pre>
+<p>基本语法：</p>
+<pre><code class="hljs python">pandas.to_datetime(arg, errors=<span class="hljs-string">&#x27;raise&#x27;</span>, dayfirst=<span class="hljs-literal">False</span>, 
+                   yearfirst=<span class="hljs-literal">False</span>, utc=<span class="hljs-literal">None</span>, <span class="hljs-built_in">format</span>=<span class="hljs-literal">None</span>, 
+                   exact=<span class="hljs-literal">True</span>, unit=<span class="hljs-literal">None</span>, infer_datetime_format=<span class="hljs-literal">False</span>, 
+                   origin=<span class="hljs-string">&#x27;unix&#x27;</span>, cache=<span class="hljs-literal">True</span>)</code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html">https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>arg</td>
+<td>要转换为日期时间的对象，可以接受 int, float, str, datetime, list, tuple, 1-d array, Series DataFrame/dict-like 类型</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>如果字符串不满足时间戳的形式，是否会发生异常<br><code>ignore</code>：不引发异常，返回原始输入；<code>raise</code>：无效解析将引发异常（默认）；<code>coerce</code>：无效解析将被设置为NaT</td>
+</tr>
+<tr>
+<td>dayfirst</td>
+<td>bool 类型，默认 False，如果 arg 是 str 或列表，是否首先解析为日期<br>例如 dayfirst 为 True，<code>10/11/12</code> 被解析为 <code>2012-11-10</code>，为 False 则解析为 <code>2012-10-11</code></td>
+</tr>
+<tr>
+<td>yearfirst</td>
+<td>bool 类型，默认 False，如果 arg 是 str 或列表，是否首先解析为年份<br>例如 dayfirst 为 True，<code>10/11/12</code> 被解析为 <code>2010-11-12</code>，为 False 则解析为 <code>2012-10-11</code><br>如果 dayfirst 和 yearfirst 都为 True，则优先 yearfirst</td>
+</tr>
+<tr>
+<td>utc</td>
+<td>bool 类型，是否转换为协调世界时，默认 None</td>
+</tr>
+<tr>
+<td>format</td>
+<td>格式化时间，如 <code>21/2/20 16:10</code> 使用 <code>%d/%m/%y %H:%M</code> 会被解析为 <code>2020-02-21 16:10:00</code><br>符号含义常见文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36759224/article/details/104427220">【Python 标准库学习】日期和时间处理库 — datetime</a> 或者<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior">官方文档</a></td>
+</tr>
+<tr>
+<td>exact</td>
+<td>如果为 True，则需要精确的格式匹配。如果为 False，则允许格式与目标字符串中的任何位置匹配</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>如果 arg 是整数或浮点数，该参数用于设置其单位（D、s、ms、us、ns）</td>
+</tr>
+</tbody>
+</table>
+<p>简单应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;year&#x27;</span>: [<span class="hljs-number">2015</span>, <span class="hljs-number">2016</span>], <span class="hljs-string">&#x27;month&#x27;</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-string">&#x27;day&#x27;</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   year  month  day
+<span class="hljs-number">0</span>  <span class="hljs-number">2015</span>      <span class="hljs-number">2</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2016</span>      <span class="hljs-number">3</span>    <span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(obj)
+<span class="hljs-number">0</span>   <span class="hljs-number">2015</span>-02-04
+<span class="hljs-number">1</span>   <span class="hljs-number">2016</span>-03-05
+dtype: datetime64[ns]</code></pre>
+<p>设置 <code>format</code> 和 <code>errors</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-string">&#x27;13000101&#x27;</span>, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;%Y%m%d&#x27;</span>, errors=<span class="hljs-string">&#x27;ignore&#x27;</span>)
+datetime.datetime(<span class="hljs-number">1300</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-string">&#x27;13000101&#x27;</span>, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;%Y%m%d&#x27;</span>, errors=<span class="hljs-string">&#x27;coerce&#x27;</span>)
+NaT
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-string">&#x27;13000101&#x27;</span>, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;%Y%m%d&#x27;</span>, errors=<span class="hljs-string">&#x27;raise&#x27;</span>)
+Traceback (most recent call last):
+...
+pandas._libs.tslibs.np_datetime.OutOfBoundsDatetime: Out of bounds nanosecond timestamp: <span class="hljs-number">1300</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span></code></pre>
+<p>设置 <code>unit</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-number">1490195805</span>, unit=<span class="hljs-string">&#x27;s&#x27;</span>)
+Timestamp(<span class="hljs-string">&#x27;2017-03-22 15:16:45&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-number">1490195805433502912</span>, unit=<span class="hljs-string">&#x27;ns&#x27;</span>)
+Timestamp(<span class="hljs-string">&#x27;2017-03-22 15:16:45.433502912&#x27;</span>)</code></pre>
+<h3 id="font-color-4876FF-【02x04】date-range-font"><font color=#4876FF>【02x04】date_range</font></h3>
+<p><code>pandas.date_range</code> 方法可用于根据指定的频率生成指定长度的 DatetimeIndex。</p>
+<p>基本语法：</p>
+<pre><code class="hljs python">pandas.date_range(start=<span class="hljs-literal">None</span>, end=<span class="hljs-literal">None</span>, periods=<span class="hljs-literal">None</span>, freq=<span class="hljs-literal">None</span>, 
+                  tz=<span class="hljs-literal">None</span>, normalize=<span class="hljs-literal">False</span>, name=<span class="hljs-literal">None</span>, closed=<span class="hljs-literal">None</span>, 
+                  **kwargs) → pandas.core.indexes.datetimes.DatetimeIndex</code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.date_range.html">https://pandas.pydata.org/docs/reference/api/pandas.date_range.html</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td>end</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>periods</td>
+<td>int 类型，要生成的时段数（天）</td>
+</tr>
+<tr>
+<td>freq</td>
+<td>频率字符串，即按照某种特定的频率来生成日期，取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+<tr>
+<td>tz</td>
+<td>设置时区，例如 “Asia/Hong_Kong”</td>
+</tr>
+<tr>
+<td>normalize</td>
+<td>bool 类型，默认 False，是否在生成日期之前对其进行规范化（仅保留年月日）</td>
+</tr>
+<tr>
+<td>name</td>
+<td>结果 DatetimeIndex 的名称</td>
+</tr>
+<tr>
+<td>closed</td>
+<td><code>None</code>：默认值，同时保留开始日期和结束日期<br><code>'left'</code>：保留开始日期，不保留结束日期<br><code>'right'</code>：保留结束日期，不保留开始日期</td>
+</tr>
+</tbody>
+</table>
+<p>简单示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;1/1/2018&#x27;</span>, end=<span class="hljs-string">&#x27;1/08/2018&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-01-01&#x27;</span>, <span class="hljs-string">&#x27;2018-01-02&#x27;</span>, <span class="hljs-string">&#x27;2018-01-03&#x27;</span>, <span class="hljs-string">&#x27;2018-01-04&#x27;</span>,
+               <span class="hljs-string">&#x27;2018-01-05&#x27;</span>, <span class="hljs-string">&#x27;2018-01-06&#x27;</span>, <span class="hljs-string">&#x27;2018-01-07&#x27;</span>, <span class="hljs-string">&#x27;2018-01-08&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>指定 <code>periods</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2012-04-01&#x27;</span>, periods=<span class="hljs-number">20</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2012-04-01&#x27;</span>, <span class="hljs-string">&#x27;2012-04-02&#x27;</span>, <span class="hljs-string">&#x27;2012-04-03&#x27;</span>, <span class="hljs-string">&#x27;2012-04-04&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-04-05&#x27;</span>, <span class="hljs-string">&#x27;2012-04-06&#x27;</span>, <span class="hljs-string">&#x27;2012-04-07&#x27;</span>, <span class="hljs-string">&#x27;2012-04-08&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-04-09&#x27;</span>, <span class="hljs-string">&#x27;2012-04-10&#x27;</span>, <span class="hljs-string">&#x27;2012-04-11&#x27;</span>, <span class="hljs-string">&#x27;2012-04-12&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-04-13&#x27;</span>, <span class="hljs-string">&#x27;2012-04-14&#x27;</span>, <span class="hljs-string">&#x27;2012-04-15&#x27;</span>, <span class="hljs-string">&#x27;2012-04-16&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-04-17&#x27;</span>, <span class="hljs-string">&#x27;2012-04-18&#x27;</span>, <span class="hljs-string">&#x27;2012-04-19&#x27;</span>, <span class="hljs-string">&#x27;2012-04-20&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(end=<span class="hljs-string">&#x27;2012-06-01&#x27;</span>, periods=<span class="hljs-number">20</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2012-05-13&#x27;</span>, <span class="hljs-string">&#x27;2012-05-14&#x27;</span>, <span class="hljs-string">&#x27;2012-05-15&#x27;</span>, <span class="hljs-string">&#x27;2012-05-16&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-05-17&#x27;</span>, <span class="hljs-string">&#x27;2012-05-18&#x27;</span>, <span class="hljs-string">&#x27;2012-05-19&#x27;</span>, <span class="hljs-string">&#x27;2012-05-20&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-05-21&#x27;</span>, <span class="hljs-string">&#x27;2012-05-22&#x27;</span>, <span class="hljs-string">&#x27;2012-05-23&#x27;</span>, <span class="hljs-string">&#x27;2012-05-24&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-05-25&#x27;</span>, <span class="hljs-string">&#x27;2012-05-26&#x27;</span>, <span class="hljs-string">&#x27;2012-05-27&#x27;</span>, <span class="hljs-string">&#x27;2012-05-28&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-05-29&#x27;</span>, <span class="hljs-string">&#x27;2012-05-30&#x27;</span>, <span class="hljs-string">&#x27;2012-05-31&#x27;</span>, <span class="hljs-string">&#x27;2012-06-01&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2018-04-24&#x27;</span>, end=<span class="hljs-string">&#x27;2018-04-27&#x27;</span>, periods=<span class="hljs-number">3</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-04-24 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;2018-04-25 12:00:00&#x27;</span>, <span class="hljs-string">&#x27;2018-04-27 00:00:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2018-04-24&#x27;</span>, end=<span class="hljs-string">&#x27;2018-04-28&#x27;</span>, periods=<span class="hljs-number">3</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-04-24&#x27;</span>, <span class="hljs-string">&#x27;2018-04-26&#x27;</span>, <span class="hljs-string">&#x27;2018-04-28&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)</code></pre>
+<p>指定 <code>freq='M'</code> 会按照每月最后一个日历日的频率生成日期，指定 <code>freq='3M'</code> 会每隔3个月按照每月最后一个日历日的频率生成日期：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;1/1/2018&#x27;</span>, periods=<span class="hljs-number">5</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-01-31&#x27;</span>, <span class="hljs-string">&#x27;2018-02-28&#x27;</span>, <span class="hljs-string">&#x27;2018-03-31&#x27;</span>, <span class="hljs-string">&#x27;2018-04-30&#x27;</span>,
+               <span class="hljs-string">&#x27;2018-05-31&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;1/1/2018&#x27;</span>, periods=<span class="hljs-number">5</span>, freq=<span class="hljs-string">&#x27;3M&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-01-31&#x27;</span>, <span class="hljs-string">&#x27;2018-04-30&#x27;</span>, <span class="hljs-string">&#x27;2018-07-31&#x27;</span>, <span class="hljs-string">&#x27;2018-10-31&#x27;</span>,
+               <span class="hljs-string">&#x27;2019-01-31&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;3M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span></code></pre>
+<p>使用 <code>tz</code> 参数设置时区：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;1/1/2018&#x27;</span>, periods=<span class="hljs-number">5</span>, tz=<span class="hljs-string">&#x27;Asia/Tokyo&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2018-01-01 00:00:00+09:00&#x27;</span>, <span class="hljs-string">&#x27;2018-01-02 00:00:00+09:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2018-01-03 00:00:00+09:00&#x27;</span>, <span class="hljs-string">&#x27;2018-01-04 00:00:00+09:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2018-01-05 00:00:00+09:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns, Asia/Tokyo]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;6/24/2020&#x27;</span>, periods=<span class="hljs-number">5</span>, tz=<span class="hljs-string">&#x27;Asia/Hong_Kong&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2020-06-24 00:00:00+08:00&#x27;</span>, <span class="hljs-string">&#x27;2020-06-25 00:00:00+08:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2020-06-26 00:00:00+08:00&#x27;</span>, <span class="hljs-string">&#x27;2020-06-27 00:00:00+08:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2020-06-28 00:00:00+08:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns, Asia/Hong_Kong]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>设置 <code>normalize</code> 参数，在生成时间戳之前对其进行格式化操作：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(<span class="hljs-string">&#x27;2020-06-24 12:56:31&#x27;</span>, periods=<span class="hljs-number">5</span>, normalize=<span class="hljs-literal">True</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2020-06-24&#x27;</span>, <span class="hljs-string">&#x27;2020-06-25&#x27;</span>, <span class="hljs-string">&#x27;2020-06-26&#x27;</span>, <span class="hljs-string">&#x27;2020-06-27&#x27;</span>,
+               <span class="hljs-string">&#x27;2020-06-28&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>设置 <code>closed</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2020-06-20&#x27;</span>, end=<span class="hljs-string">&#x27;2020-06-24&#x27;</span>, closed=<span class="hljs-literal">None</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2020-06-20&#x27;</span>, <span class="hljs-string">&#x27;2020-06-21&#x27;</span>, <span class="hljs-string">&#x27;2020-06-22&#x27;</span>, <span class="hljs-string">&#x27;2020-06-23&#x27;</span>,
+               <span class="hljs-string">&#x27;2020-06-24&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2020-06-20&#x27;</span>, end=<span class="hljs-string">&#x27;2020-06-24&#x27;</span>, closed=<span class="hljs-string">&#x27;left&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2020-06-20&#x27;</span>, <span class="hljs-string">&#x27;2020-06-21&#x27;</span>, <span class="hljs-string">&#x27;2020-06-22&#x27;</span>, <span class="hljs-string">&#x27;2020-06-23&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(start=<span class="hljs-string">&#x27;2020-06-20&#x27;</span>, end=<span class="hljs-string">&#x27;2020-06-24&#x27;</span>, closed=<span class="hljs-string">&#x27;right&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2020-06-21&#x27;</span>, <span class="hljs-string">&#x27;2020-06-22&#x27;</span>, <span class="hljs-string">&#x27;2020-06-23&#x27;</span>, <span class="hljs-string">&#x27;2020-06-24&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<h3 id="font-color-4876FF-【02x05】索引与切片-font"><font color=#4876FF>【02x05】索引与切片</font></h3>
+<p>Pandas 最基本的时间序列类型就是以时间戳（通常以 Python 字符串或 datatime 对象表示）为索引的Series，这些 datetime 对象实际上是被放在 DatetimeIndex 中的，可以使用类似 pandas.Series 对象的切片方法对其进行索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>dates = [datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>), datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>),
+             datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>), datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">8</span>),
+             datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>), datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">1</span>, <span class="hljs-number">12</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">6</span>), index=dates)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2011</span>-01-02   -<span class="hljs-number">0.407110</span>
+<span class="hljs-number">2011</span>-01-05   -<span class="hljs-number">0.186661</span>
+<span class="hljs-number">2011</span>-01-07   -<span class="hljs-number">0.731080</span>
+<span class="hljs-number">2011</span>-01-08    <span class="hljs-number">0.860970</span>
+<span class="hljs-number">2011</span>-01-<span class="hljs-number">10</span>    <span class="hljs-number">1.929973</span>
+<span class="hljs-number">2011</span>-01-<span class="hljs-number">12</span>   -<span class="hljs-number">0.168599</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index
+DatetimeIndex([<span class="hljs-string">&#x27;2011-01-02&#x27;</span>, <span class="hljs-string">&#x27;2011-01-05&#x27;</span>, <span class="hljs-string">&#x27;2011-01-07&#x27;</span>, <span class="hljs-string">&#x27;2011-01-08&#x27;</span>,
+               <span class="hljs-string">&#x27;2011-01-10&#x27;</span>, <span class="hljs-string">&#x27;2011-01-12&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index[<span class="hljs-number">0</span>]
+Timestamp(<span class="hljs-string">&#x27;2011-01-02 00:00:00&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]
+DatetimeIndex([<span class="hljs-string">&#x27;2011-01-02&#x27;</span>, <span class="hljs-string">&#x27;2011-01-05&#x27;</span>, <span class="hljs-string">&#x27;2011-01-07&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)</code></pre>
+<p>另外还可以传入一个可以被解释为日期的字符串，或者只需传入“年”或“年月”即可轻松选取数据的切片：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">1000</span>), index=pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">1000</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2000</span>-01-01   -<span class="hljs-number">1.142284</span>
+<span class="hljs-number">2000</span>-01-02    <span class="hljs-number">1.198785</span>
+<span class="hljs-number">2000</span>-01-03    <span class="hljs-number">2.466909</span>
+<span class="hljs-number">2000</span>-01-04   -<span class="hljs-number">0.086728</span>
+<span class="hljs-number">2000</span>-01-05   -<span class="hljs-number">0.978437</span>
+                ...   
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">22</span>   -<span class="hljs-number">0.252240</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">23</span>    <span class="hljs-number">0.148561</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">24</span>   -<span class="hljs-number">1.330409</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">25</span>   -<span class="hljs-number">0.673471</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">26</span>   -<span class="hljs-number">0.253271</span>
+Freq: D, Length: <span class="hljs-number">1000</span>, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;26/9/2002&#x27;</span>]
+-<span class="hljs-number">0.25327100684233356</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;2002&#x27;</span>]
+<span class="hljs-number">2002</span>-01-01    <span class="hljs-number">1.058715</span>
+<span class="hljs-number">2002</span>-01-02    <span class="hljs-number">0.900859</span>
+<span class="hljs-number">2002</span>-01-03    <span class="hljs-number">1.993508</span>
+<span class="hljs-number">2002</span>-01-04   -<span class="hljs-number">0.103211</span>
+<span class="hljs-number">2002</span>-01-05   -<span class="hljs-number">0.950090</span>
+                ...   
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">22</span>   -<span class="hljs-number">0.252240</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">23</span>    <span class="hljs-number">0.148561</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">24</span>   -<span class="hljs-number">1.330409</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">25</span>   -<span class="hljs-number">0.673471</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">26</span>   -<span class="hljs-number">0.253271</span>
+Freq: D, Length: <span class="hljs-number">269</span>, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;2002-09&#x27;</span>]
+<span class="hljs-number">2002</span>-09-01   -<span class="hljs-number">0.995528</span>
+<span class="hljs-number">2002</span>-09-02    <span class="hljs-number">0.501528</span>
+<span class="hljs-number">2002</span>-09-03   -<span class="hljs-number">0.486753</span>
+<span class="hljs-number">2002</span>-09-04   -<span class="hljs-number">1.083906</span>
+<span class="hljs-number">2002</span>-09-05    <span class="hljs-number">1.458975</span>
+<span class="hljs-number">2002</span>-09-06   -<span class="hljs-number">1.331685</span>
+<span class="hljs-number">2002</span>-09-07    <span class="hljs-number">0.195338</span>
+<span class="hljs-number">2002</span>-09-08   -<span class="hljs-number">0.429613</span>
+<span class="hljs-number">2002</span>-09-09    <span class="hljs-number">1.125823</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">10</span>    <span class="hljs-number">1.607051</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">11</span>    <span class="hljs-number">0.530387</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">12</span>   -<span class="hljs-number">0.015938</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">13</span>    <span class="hljs-number">1.781043</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">14</span>   -<span class="hljs-number">0.277123</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">15</span>    <span class="hljs-number">0.344569</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">16</span>   -<span class="hljs-number">1.010810</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">17</span>    <span class="hljs-number">0.463001</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">18</span>    <span class="hljs-number">1.883636</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">19</span>    <span class="hljs-number">0.274520</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">20</span>    <span class="hljs-number">0.624184</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">21</span>   -<span class="hljs-number">1.203057</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">22</span>   -<span class="hljs-number">0.252240</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">23</span>    <span class="hljs-number">0.148561</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">24</span>   -<span class="hljs-number">1.330409</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">25</span>   -<span class="hljs-number">0.673471</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">26</span>   -<span class="hljs-number">0.253271</span>
+Freq: D, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;20/9/2002&#x27;</span>:<span class="hljs-string">&#x27;26/9/2002&#x27;</span>]
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">20</span>    <span class="hljs-number">0.624184</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">21</span>   -<span class="hljs-number">1.203057</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">22</span>   -<span class="hljs-number">0.252240</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">23</span>    <span class="hljs-number">0.148561</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">24</span>   -<span class="hljs-number">1.330409</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">25</span>   -<span class="hljs-number">0.673471</span>
+<span class="hljs-number">2002</span>-09-<span class="hljs-number">26</span>   -<span class="hljs-number">0.253271</span>
+Freq: D, dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【02x06】移动数据与数据偏移-font"><font color=#4876FF>【02x06】移动数据与数据偏移</font></h3>
+<p>移动（shifting）指的是沿着时间轴将数据前移或后移。Series 和 DataFrame 都有一个 shift 方法用于执行单纯的前移或后移操作，保持索引不变：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">4</span>),
+            index=pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">4</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>   -<span class="hljs-number">0.100217</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>    <span class="hljs-number">1.177834</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.644353</span>
+<span class="hljs-number">2000</span>-04-<span class="hljs-number">30</span>   -<span class="hljs-number">1.954679</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.shift(<span class="hljs-number">2</span>)
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>         NaN
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>         NaN
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.100217</span>
+<span class="hljs-number">2000</span>-04-<span class="hljs-number">30</span>    <span class="hljs-number">1.177834</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.shift(-<span class="hljs-number">2</span>)
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>   -<span class="hljs-number">0.644353</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>   -<span class="hljs-number">1.954679</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>         NaN
+<span class="hljs-number">2000</span>-04-<span class="hljs-number">30</span>         NaN
+Freq: M, dtype: float64</code></pre>
+<p>因为简单的移位操作不会修改索引，所以部分数据会被丢弃并引入 NaN（缺失值）。因此，如果频率已知，则可以将其传给 shift 以便实现对时间戳进行位移而不是对数据进行简单位移：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">4</span>),
+            index=pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">4</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>   -<span class="hljs-number">0.100217</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>    <span class="hljs-number">1.177834</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.644353</span>
+<span class="hljs-number">2000</span>-04-<span class="hljs-number">30</span>   -<span class="hljs-number">1.954679</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.shift(<span class="hljs-number">2</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.100217</span>
+<span class="hljs-number">2000</span>-04-<span class="hljs-number">30</span>    <span class="hljs-number">1.177834</span>
+<span class="hljs-number">2000</span>-05-<span class="hljs-number">31</span>   -<span class="hljs-number">0.644353</span>
+<span class="hljs-number">2000</span>-06-<span class="hljs-number">30</span>   -<span class="hljs-number">1.954679</span>
+Freq: M, dtype: float64</code></pre>
+<p>Pandas 中的频率是由一个基础频率（base frequency）和一个乘数组成的。基础频率通常以一个字符串别名表示，比如 <code>&quot;M&quot;</code> 表示每月，<code>&quot;H&quot;</code> 表示每小时。对于每个基础频率，都有一个被称为日期偏移量（date offset）的对象与之对应。例如，按小时计算的频率可以用 <code>Hour</code> 类表示：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Hour, Minute
+<span class="hljs-meta">&gt;&gt;&gt; </span>hour = Hour()
+<span class="hljs-meta">&gt;&gt;&gt; </span>hour
+&lt;Hour&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>four_hours = Hour(<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>four_hours
+&lt;<span class="hljs-number">4</span> * Hours&gt;</code></pre>
+<p>一般来说，无需明确创建这样的对象，只需使用诸如 <code>&quot;H&quot;</code> 或 <code>&quot;4H&quot;</code> 这样的字符串别名即可。在基础频率前面放上一个整数即可创建倍数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(<span class="hljs-string">&#x27;2000-01-01&#x27;</span>, <span class="hljs-string">&#x27;2000-01-03 23:59&#x27;</span>, freq=<span class="hljs-string">&#x27;4h&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2000-01-01 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 04:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 08:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 12:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 16:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 20:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-02 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-02 04:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-02 08:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-02 12:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-02 16:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-02 20:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-03 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-03 04:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-03 08:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-03 12:00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-03 16:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-03 20:00:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;4H&#x27;</span>)</code></pre>
+<p>大部分偏移量对象都可通过加法进行连接：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Hour, Minute
+<span class="hljs-meta">&gt;&gt;&gt; </span>Hour(<span class="hljs-number">2</span>) + Minute(<span class="hljs-number">30</span>)
+&lt;<span class="hljs-number">150</span> * Minutes&gt;</code></pre>
+<p>对于 <code>freq</code> 参数也可以传入频率字符串（如 <code>&quot;2h30min&quot;</code>），这种字符串可以被高效地解析为等效的表达式：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.date_range(<span class="hljs-string">&#x27;2000-01-01&#x27;</span>, periods=<span class="hljs-number">10</span>, freq=<span class="hljs-string">&#x27;1h30min&#x27;</span>)
+DatetimeIndex([<span class="hljs-string">&#x27;2000-01-01 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 01:30:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 03:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 04:30:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 06:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 07:30:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 09:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 10:30:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2000-01-01 12:00:00&#x27;</span>, <span class="hljs-string">&#x27;2000-01-01 13:30:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;90T&#x27;</span>)</code></pre>
+<p>这种偏移量还可以用在 datetime 或 Timestamp 对象上：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Day, MonthEnd
+<span class="hljs-meta">&gt;&gt;&gt; </span>now = datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">11</span>, <span class="hljs-number">17</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>now + <span class="hljs-number">3</span> * Day()
+Timestamp(<span class="hljs-string">&#x27;2011-11-20 00:00:00&#x27;</span>)</code></pre>
+<p>如果加的是锚点偏移量，比如 MonthEnd，第一次增量会将原日期向前滚动到符合频率规则的下一个日期：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Day, MonthEnd
+<span class="hljs-meta">&gt;&gt;&gt; </span>now = datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">11</span>, <span class="hljs-number">17</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>now + MonthEnd()
+Timestamp(<span class="hljs-string">&#x27;2011-11-30 00:00:00&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>now + MonthEnd(<span class="hljs-number">2</span>)
+Timestamp(<span class="hljs-string">&#x27;2011-12-31 00:00:00&#x27;</span>)</code></pre>
+<p>通过锚点偏移量的 rollforward 和 rollback 方法，可明确地将日期向前或向后滚动：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Day, MonthEnd
+<span class="hljs-meta">&gt;&gt;&gt; </span>now = datetime(<span class="hljs-number">2011</span>, <span class="hljs-number">11</span>, <span class="hljs-number">17</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>offset = MonthEnd()
+<span class="hljs-meta">&gt;&gt;&gt; </span>offset.rollforward(now)
+Timestamp(<span class="hljs-string">&#x27;2011-11-30 00:00:00&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>offset.rollback(now)
+Timestamp(<span class="hljs-string">&#x27;2011-10-31 00:00:00&#x27;</span>)</code></pre>
+<p>与 <code>groupby</code> 方法结合使用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">from</span> pandas.tseries.offsets <span class="hljs-keyword">import</span> Day, MonthEnd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">20</span>),
+            index=pd.date_range(<span class="hljs-string">&#x27;1/15/2000&#x27;</span>, periods=<span class="hljs-number">20</span>, freq=<span class="hljs-string">&#x27;4d&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">15</span>   -<span class="hljs-number">0.591729</span>
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">19</span>   -<span class="hljs-number">0.775844</span>
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">23</span>   -<span class="hljs-number">0.745603</span>
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">27</span>   -<span class="hljs-number">0.076439</span>
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>    <span class="hljs-number">1.796417</span>
+<span class="hljs-number">2000</span>-02-04   -<span class="hljs-number">0.500349</span>
+<span class="hljs-number">2000</span>-02-08    <span class="hljs-number">0.515851</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">12</span>   -<span class="hljs-number">0.344171</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">16</span>    <span class="hljs-number">0.419657</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">20</span>    <span class="hljs-number">0.307288</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">24</span>    <span class="hljs-number">0.115113</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">28</span>   -<span class="hljs-number">0.362585</span>
+<span class="hljs-number">2000</span>-03-03    <span class="hljs-number">1.074892</span>
+<span class="hljs-number">2000</span>-03-07    <span class="hljs-number">1.111366</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">11</span>    <span class="hljs-number">0.949910</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">15</span>   -<span class="hljs-number">1.535727</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">19</span>    <span class="hljs-number">0.545944</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">23</span>   -<span class="hljs-number">0.810139</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">27</span>   -<span class="hljs-number">1.260627</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.128403</span>
+Freq: 4D, dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>offset = MonthEnd()
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.groupby(offset.rollforward).mean()
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>   -<span class="hljs-number">0.078640</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>    <span class="hljs-number">0.021543</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>   -<span class="hljs-number">0.006598</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【02x07】时区处理-font"><font color=#4876FF>【02x07】时区处理</font></h3>
+<p>在 Python 中，时区信息来自第三方库 pytz，使用 <code>pytz.common_timezones</code> 方法可以查看所有的时区名称，使用 <code>pytz.timezone</code> 方法从 pytz 中获取时区对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pytz
+<span class="hljs-meta">&gt;&gt;&gt; </span>pytz.common_timezones
+[<span class="hljs-string">&#x27;Africa/Abidjan&#x27;</span>, <span class="hljs-string">&#x27;Africa/Accra&#x27;</span>, <span class="hljs-string">&#x27;Africa/Addis_Ababa&#x27;</span>, ..., <span class="hljs-string">&#x27;UTC&#x27;</span>]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>tz = pytz.timezone(<span class="hljs-string">&#x27;Asia/Shanghai&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>tz
+&lt;DstTzInfo <span class="hljs-string">&#x27;Asia/Shanghai&#x27;</span> LMT+<span class="hljs-number">8</span>:06:<span class="hljs-number">00</span> STD&gt;  <span class="hljs-comment"># 表示与 UTC 时间相差8小时6分</span></code></pre>
+<p>在 <code>date_range</code> 方法中，<code>tz</code> 参数用于指定时区，默认为 None，可以使用 <code>tz_localize</code> 方法将其进行本地化时区转换，如下示例中，将无时区转本地化 UTC 时区：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = pd.date_range(<span class="hljs-string">&#x27;3/9/2012 9:30&#x27;</span>, periods=<span class="hljs-number">6</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts = pd.Series(np.random.randn(<span class="hljs-built_in">len</span>(rng)), index=rng)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts
+<span class="hljs-number">2012</span>-03-09 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.527913</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">10</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.116101</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">11</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0.359358</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">12</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">0.475920</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">13</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">0.336570</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">14</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.075952</span>
+Freq: D, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(ts.index.tz)
+<span class="hljs-literal">None</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts_utc = ts.tz_localize(<span class="hljs-string">&#x27;UTC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts_utc
+<span class="hljs-number">2012</span>-03-09 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.527913</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">10</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.116101</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">11</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0.359358</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">12</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">0.475920</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">13</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">0.336570</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">14</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+<span class="hljs-number">00</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.075952</span>
+Freq: D, dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts_utc.index
+DatetimeIndex([<span class="hljs-string">&#x27;2012-03-09 09:30:00+00:00&#x27;</span>, <span class="hljs-string">&#x27;2012-03-10 09:30:00+00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-03-11 09:30:00+00:00&#x27;</span>, <span class="hljs-string">&#x27;2012-03-12 09:30:00+00:00&#x27;</span>,
+               <span class="hljs-string">&#x27;2012-03-13 09:30:00+00:00&#x27;</span>, <span class="hljs-string">&#x27;2012-03-14 09:30:00+00:00&#x27;</span>],
+              dtype=<span class="hljs-string">&#x27;datetime64[ns, UTC]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>时间序列被本地化到某个特定时区后，就可以用 <code>tz_convert</code> 方法将其转换到别的时区了：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = pd.date_range(<span class="hljs-string">&#x27;3/9/2012 9:30&#x27;</span>, periods=<span class="hljs-number">6</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts = pd.Series(np.random.randn(<span class="hljs-built_in">len</span>(rng)), index=rng)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts
+<span class="hljs-number">2012</span>-03-09 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0.480303</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">10</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.461039</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">11</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">1.512749</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">12</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>   -<span class="hljs-number">2.185421</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">13</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>    <span class="hljs-number">1.657845</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">14</span> 09:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0.175633</span>
+Freq: D, dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts.tz_localize(<span class="hljs-string">&#x27;UTC&#x27;</span>).tz_convert(<span class="hljs-string">&#x27;Asia/Shanghai&#x27;</span>)
+<span class="hljs-number">2012</span>-03-09 <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>    <span class="hljs-number">0.480303</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">10</span> <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>   -<span class="hljs-number">1.461039</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">11</span> <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>   -<span class="hljs-number">1.512749</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">12</span> <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>   -<span class="hljs-number">2.185421</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">13</span> <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>    <span class="hljs-number">1.657845</span>
+<span class="hljs-number">2012</span>-03-<span class="hljs-number">14</span> <span class="hljs-number">17</span>:<span class="hljs-number">30</span>:<span class="hljs-number">00</span>+08:<span class="hljs-number">00</span>    <span class="hljs-number">0.175633</span>
+Freq: D, dtype: float64</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106947061</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【03x00】period-固定时期-font"><font color=#FF0000>【03x00】period 固定时期</font></h2>
+<h3 id="font-color-4876FF-【03x01】pandas-Period-font"><font color=#4876FF>【03x01】pandas.Period</font></h3>
+<p>固定时期（period）表示的是时间区间，比如数日、数月、数季、数年等。Period 类所表示的就是这种数据类型，其构造函数需要用到一个字符串或整数。</p>
+<p>基本语法：</p>
+<pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">pandas</span>.<span class="hljs-title">Period</span>(<span class="hljs-params">value=<span class="hljs-literal">None</span>, freq=<span class="hljs-literal">None</span>, ordinal=<span class="hljs-literal">None</span>, </span></span>
+<span class="hljs-params"><span class="hljs-class">					year=<span class="hljs-literal">None</span>, month=<span class="hljs-literal">None</span>, quarter=<span class="hljs-literal">None</span>, </span></span>
+<span class="hljs-params"><span class="hljs-class">					day=<span class="hljs-literal">None</span>, hour=<span class="hljs-literal">None</span>, minute=<span class="hljs-literal">None</span>, second=<span class="hljs-literal">None</span></span>)</span></code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Period.html">https://pandas.pydata.org/docs/reference/api/pandas.Period.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>时间段</td>
+</tr>
+<tr>
+<td>freq</td>
+<td>时间戳将具有的偏移量，可以是 str，日期偏移量类型，取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+</tbody>
+</table>
+<p>以下示例中，Period 对象表示的是从2020年1月1日到2020年12月31日之间的整段时间</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Period(<span class="hljs-number">2020</span>, freq=<span class="hljs-string">&#x27;A-DEC&#x27;</span>)
+Period(<span class="hljs-string">&#x27;2020&#x27;</span>, <span class="hljs-string">&#x27;A-DEC&#x27;</span>)</code></pre>
+<p>利用加减法对其按照频率进行位移：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Period(<span class="hljs-number">2020</span>, freq=<span class="hljs-string">&#x27;A-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+Period(<span class="hljs-string">&#x27;2020&#x27;</span>, <span class="hljs-string">&#x27;A-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj + <span class="hljs-number">5</span>
+Period(<span class="hljs-string">&#x27;2025&#x27;</span>, <span class="hljs-string">&#x27;A-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj - <span class="hljs-number">5</span>
+Period(<span class="hljs-string">&#x27;2015&#x27;</span>, <span class="hljs-string">&#x27;A-DEC&#x27;</span>)</code></pre>
+<p>PeriodIndex 类保存了一组 Period，它可以在任何 pandas 数据结构中被用作轴索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = [pd.Period(<span class="hljs-string">&#x27;2000-01&#x27;</span>), pd.Period(<span class="hljs-string">&#x27;2000-02&#x27;</span>), pd.Period(<span class="hljs-string">&#x27;2000-03&#x27;</span>), 
+           pd.Period(<span class="hljs-string">&#x27;2000-04&#x27;</span>), pd.Period(<span class="hljs-string">&#x27;2000-05&#x27;</span>), pd.Period(<span class="hljs-string">&#x27;2000-06&#x27;</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">6</span>), index=rng)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">2000</span>-01    <span class="hljs-number">0.229092</span>
+<span class="hljs-number">2000</span>-02    <span class="hljs-number">1.515498</span>
+<span class="hljs-number">2000</span>-03   -<span class="hljs-number">0.334401</span>
+<span class="hljs-number">2000</span>-04   -<span class="hljs-number">0.492681</span>
+<span class="hljs-number">2000</span>-05   -<span class="hljs-number">2.012818</span>
+<span class="hljs-number">2000</span>-06    <span class="hljs-number">0.338804</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index
+PeriodIndex([<span class="hljs-string">&#x27;2000-01&#x27;</span>, <span class="hljs-string">&#x27;2000-02&#x27;</span>, <span class="hljs-string">&#x27;2000-03&#x27;</span>, <span class="hljs-string">&#x27;2000-04&#x27;</span>, <span class="hljs-string">&#x27;2000-05&#x27;</span>, <span class="hljs-string">&#x27;2000-06&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>values = [<span class="hljs-string">&#x27;2001Q3&#x27;</span>, <span class="hljs-string">&#x27;2002Q2&#x27;</span>, <span class="hljs-string">&#x27;2003Q1&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.PeriodIndex(values, freq=<span class="hljs-string">&#x27;Q-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>index
+PeriodIndex([<span class="hljs-string">&#x27;2001Q3&#x27;</span>, <span class="hljs-string">&#x27;2002Q2&#x27;</span>, <span class="hljs-string">&#x27;2003Q1&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[Q-DEC]&#x27;</span>, freq=<span class="hljs-string">&#x27;Q-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span></code></pre>
+<h3 id="font-color-4876FF-【03x02】period-range-font"><font color=#4876FF>【03x02】period_range</font></h3>
+<p><code>pandas.period_range</code> 方法可根据指定的频率生成指定长度的 PeriodIndex。</p>
+<p>基本语法：</p>
+<p><code>pandas.period_range(start=None, end=None, periods=None, freq=None, name=None) → pandas.core.indexes.period.PeriodIndex</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.period_range.html">https://pandas.pydata.org/docs/reference/api/pandas.period_range.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>起始日期</td>
+</tr>
+<tr>
+<td>end</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>periods</td>
+<td>要生成的时段数</td>
+</tr>
+<tr>
+<td>freq</td>
+<td>时间戳将具有的偏移量，可以是 str，日期偏移量类型，取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+<tr>
+<td>name</td>
+<td>结果 PeriodIndex 对象名称</td>
+</tr>
+</tbody>
+</table>
+<p>简单应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.period_range(start=<span class="hljs-string">&#x27;2019-01-01&#x27;</span>, end=<span class="hljs-string">&#x27;2020-01-01&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+PeriodIndex([<span class="hljs-string">&#x27;2019-01&#x27;</span>, <span class="hljs-string">&#x27;2019-02&#x27;</span>, <span class="hljs-string">&#x27;2019-03&#x27;</span>, <span class="hljs-string">&#x27;2019-04&#x27;</span>, <span class="hljs-string">&#x27;2019-05&#x27;</span>, <span class="hljs-string">&#x27;2019-06&#x27;</span>,
+             <span class="hljs-string">&#x27;2019-07&#x27;</span>, <span class="hljs-string">&#x27;2019-08&#x27;</span>, <span class="hljs-string">&#x27;2019-09&#x27;</span>, <span class="hljs-string">&#x27;2019-10&#x27;</span>, <span class="hljs-string">&#x27;2019-11&#x27;</span>, <span class="hljs-string">&#x27;2019-12&#x27;</span>,
+             <span class="hljs-string">&#x27;2020-01&#x27;</span>],
+            dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.period_range(start=pd.Period(<span class="hljs-string">&#x27;2017Q1&#x27;</span>, freq=<span class="hljs-string">&#x27;Q&#x27;</span>),
+                	end=pd.Period(<span class="hljs-string">&#x27;2017Q2&#x27;</span>, freq=<span class="hljs-string">&#x27;Q&#x27;</span>), freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+PeriodIndex([<span class="hljs-string">&#x27;2017-03&#x27;</span>, <span class="hljs-string">&#x27;2017-04&#x27;</span>, <span class="hljs-string">&#x27;2017-05&#x27;</span>, <span class="hljs-string">&#x27;2017-06&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)</code></pre>
+<h3 id="font-color-4876FF-【03x03】asfreq-时期频率转换-font"><font color=#4876FF>【03x03】asfreq 时期频率转换</font></h3>
+<p>Period 和 PeriodIndex 对象都可以通过 asfreq 方法被转换成别的频率。</p>
+<p>基本语法：<code>PeriodIndex.asfreq(self, *args, **kwargs)</code></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>freq</td>
+<td>新的频率（偏移量），取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+<tr>
+<td>how</td>
+<td>按照开始或者结束对齐，<code>'E'</code> or <code>'END'</code> or <code>'FINISH'</code>；<code>'S'</code> or <code>'START'</code> or <code>'BEGIN'</code></td>
+</tr>
+</tbody>
+</table>
+<p>应用示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pidx = pd.period_range(<span class="hljs-string">&#x27;2010-01-01&#x27;</span>, <span class="hljs-string">&#x27;2015-01-01&#x27;</span>, freq=<span class="hljs-string">&#x27;A&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>pidx
+PeriodIndex([<span class="hljs-string">&#x27;2010&#x27;</span>, <span class="hljs-string">&#x27;2011&#x27;</span>, <span class="hljs-string">&#x27;2012&#x27;</span>, <span class="hljs-string">&#x27;2013&#x27;</span>, <span class="hljs-string">&#x27;2014&#x27;</span>, <span class="hljs-string">&#x27;2015&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[A-DEC]&#x27;</span>, freq=<span class="hljs-string">&#x27;A-DEC&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pidx.asfreq(<span class="hljs-string">&#x27;M&#x27;</span>)
+PeriodIndex([<span class="hljs-string">&#x27;2010-12&#x27;</span>, <span class="hljs-string">&#x27;2011-12&#x27;</span>, <span class="hljs-string">&#x27;2012-12&#x27;</span>, <span class="hljs-string">&#x27;2013-12&#x27;</span>, <span class="hljs-string">&#x27;2014-12&#x27;</span>, <span class="hljs-string">&#x27;2015-12&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pidx.asfreq(<span class="hljs-string">&#x27;M&#x27;</span>, how=<span class="hljs-string">&#x27;S&#x27;</span>)
+PeriodIndex([<span class="hljs-string">&#x27;2010-01&#x27;</span>, <span class="hljs-string">&#x27;2011-01&#x27;</span>, <span class="hljs-string">&#x27;2012-01&#x27;</span>, <span class="hljs-string">&#x27;2013-01&#x27;</span>, <span class="hljs-string">&#x27;2014-01&#x27;</span>, <span class="hljs-string">&#x27;2015-01&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)</code></pre>
+<h3 id="font-color-4876FF-【03x04】to-period-与-to-timestamp-font"><font color=#4876FF>【03x04】to_period 与 to_timestamp()</font></h3>
+<p><code>to_period</code> 方法可以将 Timestamp（时间戳） 转换为 Period（固定时期）；</p>
+<p><code>to_timestamp</code> 方法可以将 Period（固定时期）转换为 Timestamp（时间戳） 。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = pd.date_range(<span class="hljs-string">&#x27;2000-01-01&#x27;</span>, periods=<span class="hljs-number">3</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts = pd.Series(np.random.randn(<span class="hljs-number">3</span>), index=rng)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts
+<span class="hljs-number">2000</span>-01-<span class="hljs-number">31</span>    <span class="hljs-number">0.220759</span>
+<span class="hljs-number">2000</span>-02-<span class="hljs-number">29</span>   -<span class="hljs-number">0.108221</span>
+<span class="hljs-number">2000</span>-03-<span class="hljs-number">31</span>    <span class="hljs-number">0.819433</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts = ts.to_period()
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts
+<span class="hljs-number">2000</span>-01    <span class="hljs-number">0.220759</span>
+<span class="hljs-number">2000</span>-02   -<span class="hljs-number">0.108221</span>
+<span class="hljs-number">2000</span>-03    <span class="hljs-number">0.819433</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts2 = pts.to_timestamp()
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts2
+<span class="hljs-number">2000</span>-01-01    <span class="hljs-number">0.220759</span>
+<span class="hljs-number">2000</span>-02-01   -<span class="hljs-number">0.108221</span>
+<span class="hljs-number">2000</span>-03-01    <span class="hljs-number">0.819433</span>
+Freq: MS, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>ts.index
+DatetimeIndex([<span class="hljs-string">&#x27;2000-01-31&#x27;</span>, <span class="hljs-string">&#x27;2000-02-29&#x27;</span>, <span class="hljs-string">&#x27;2000-03-31&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts.index
+PeriodIndex([<span class="hljs-string">&#x27;2000-01&#x27;</span>, <span class="hljs-string">&#x27;2000-02&#x27;</span>, <span class="hljs-string">&#x27;2000-03&#x27;</span>], dtype=<span class="hljs-string">&#x27;period[M]&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pts2.index
+DatetimeIndex([<span class="hljs-string">&#x27;2000-01-01&#x27;</span>, <span class="hljs-string">&#x27;2000-02-01&#x27;</span>, <span class="hljs-string">&#x27;2000-03-01&#x27;</span>], dtype=<span class="hljs-string">&#x27;datetime64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;MS&#x27;</span>)</code></pre>
+<h2 id="font-color-FF0000-【04x00】timedelta-时间间隔-font"><font color=#FF0000>【04x00】timedelta 时间间隔</font></h2>
+<h3 id="font-color-4876FF-【04x01】pandas-Timedelta-font"><font color=#4876FF>【04x01】pandas.Timedelta</font></h3>
+<p>Timedelta 表示持续时间，即两个日期或时间之间的差。</p>
+<p>Timedelta 相当于 Python 的 datetime.timedelta，在大多数情况下两者可以互换。</p>
+<p>基本语法：<code>class pandas.Timedelta(value=&lt;object object&gt;, unit=None, **kwargs)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html">https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>传入的值，可以是 Timedelta，timedelta，np.timedelta64，string 或 integer 对象</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>用于设置 value 的单位，具体取值参见官方文档</td>
+</tr>
+</tbody>
+</table>
+<p>表示两个 datetime 对象之间的时间差：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_datetime(<span class="hljs-string">&#x27;2020-6-24&#x27;</span>) - pd.to_datetime(<span class="hljs-string">&#x27;2016-1-1&#x27;</span>)
+Timedelta(<span class="hljs-string">&#x27;1636 days 00:00:00&#x27;</span>)</code></pre>
+<p>通过字符串传递参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timedelta(<span class="hljs-string">&#x27;3 days 3 hours 3 minutes 30 seconds&#x27;</span>)
+Timedelta(<span class="hljs-string">&#x27;3 days 03:03:30&#x27;</span>)</code></pre>
+<p>通过整数传递参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Timedelta(<span class="hljs-number">5</span>,unit=<span class="hljs-string">&#x27;h&#x27;</span>)
+Timedelta(<span class="hljs-string">&#x27;0 days 05:00:00&#x27;</span>)</code></pre>
+<p>获取属性：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Timedelta(<span class="hljs-string">&#x27;3 days 3 hours 3 minutes 30 seconds&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+Timedelta(<span class="hljs-string">&#x27;3 days 03:03:30&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.days
+<span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.seconds
+<span class="hljs-number">11010</span></code></pre>
+<h3 id="font-color-4876FF-【04x02】to-timedelta-font"><font color=#4876FF>【04x02】to_timedelta</font></h3>
+<p>to_timedelta 方法可以将传入的对象转换成 timedelta 对象。</p>
+<p>基本语法：<code>pandas.to_timedelta(arg, unit='ns', errors='raise')</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.to_timedelta.html">https://pandas.pydata.org/docs/reference/api/pandas.to_timedelta.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>arg</td>
+<td>要转换为 timedelta 的对象，可以是 str，timedelta，list-like 或 Series 对象</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>用于设置 arg 的单位，具体取值参见官方文档</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>如果 arg 不满足时间戳的形式，是否会发生异常<br><code>ignore</code>：不引发异常，返回原始输入；<code>raise</code>：无效解析将引发异常（默认）；<code>coerce</code>：无效解析将被设置为NaT</td>
+</tr>
+</tbody>
+</table>
+<p>将单个字符串解析为 timedelta 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_timedelta(<span class="hljs-string">&#x27;1 days 06:05:01.00003&#x27;</span>)
+Timedelta(<span class="hljs-string">&#x27;1 days 06:05:01.000030&#x27;</span>)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_timedelta(<span class="hljs-string">&#x27;15.5us&#x27;</span>)
+Timedelta(<span class="hljs-string">&#x27;0 days 00:00:00.000015&#x27;</span>)</code></pre>
+<p>将字符串列表或数组解析为  timedelta 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_timedelta([<span class="hljs-string">&#x27;1 days 06:05:01.00003&#x27;</span>, <span class="hljs-string">&#x27;15.5us&#x27;</span>, <span class="hljs-string">&#x27;nan&#x27;</span>])
+TimedeltaIndex([<span class="hljs-string">&#x27;1 days 06:05:01.000030&#x27;</span>, <span class="hljs-string">&#x27;0 days 00:00:00.000015&#x27;</span>, NaT], dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)</code></pre>
+<p>指定 <code>unit</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_timedelta(np.arange(<span class="hljs-number">5</span>), unit=<span class="hljs-string">&#x27;s&#x27;</span>)
+TimedeltaIndex([<span class="hljs-string">&#x27;00:00:00&#x27;</span>, <span class="hljs-string">&#x27;00:00:01&#x27;</span>, <span class="hljs-string">&#x27;00:00:02&#x27;</span>, <span class="hljs-string">&#x27;00:00:03&#x27;</span>, <span class="hljs-string">&#x27;00:00:04&#x27;</span>], dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.to_timedelta(np.arange(<span class="hljs-number">5</span>), unit=<span class="hljs-string">&#x27;d&#x27;</span>)
+TimedeltaIndex([<span class="hljs-string">&#x27;0 days&#x27;</span>, <span class="hljs-string">&#x27;1 days&#x27;</span>, <span class="hljs-string">&#x27;2 days&#x27;</span>, <span class="hljs-string">&#x27;3 days&#x27;</span>, <span class="hljs-string">&#x27;4 days&#x27;</span>], dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-literal">None</span>)</code></pre>
+<h3 id="font-color-4876FF-【04x03】timedelta-range-font"><font color=#4876FF>【04x03】timedelta_range</font></h3>
+<p><code>timedelta_range</code> 方法可根据指定的频率生成指定长度的 TimedeltaIndex。</p>
+<p>基本语法：</p>
+<pre><code class="hljs python">pandas.timedelta_range(start=<span class="hljs-literal">None</span>, end=<span class="hljs-literal">None</span>, periods=<span class="hljs-literal">None</span>,
+                       freq=<span class="hljs-literal">None</span>, name=<span class="hljs-literal">None</span>, closed=<span class="hljs-literal">None</span>) → pandas.core.indexes.timedeltas.TimedeltaIndex</code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.timedelta_range.html">https://pandas.pydata.org/docs/reference/api/pandas.timedelta_range.html</a></p>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td>end</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>periods</td>
+<td>int 类型，要生成的时段数</td>
+</tr>
+<tr>
+<td>freq</td>
+<td>频率字符串，即按照某种特定的频率来生成日期，取值参见<a href="#t4">【02x02】freq 频率部分取值</a></td>
+</tr>
+<tr>
+<td>name</td>
+<td>结果 TimedeltaIndex 的名称</td>
+</tr>
+<tr>
+<td>closed</td>
+<td><code>None</code>：默认值，同时保留开始日期和结束日期<br><code>'left'</code>：保留开始日期，不保留结束日期<br><code>'right'</code>：保留结束日期，不保留开始日期</td>
+</tr>
+</tbody>
+</table>
+<p>应用示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.timedelta_range(start=<span class="hljs-string">&#x27;1 day&#x27;</span>, periods=<span class="hljs-number">4</span>)
+TimedeltaIndex([<span class="hljs-string">&#x27;1 days&#x27;</span>, <span class="hljs-string">&#x27;2 days&#x27;</span>, <span class="hljs-string">&#x27;3 days&#x27;</span>, <span class="hljs-string">&#x27;4 days&#x27;</span>], dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>closed 参数指定保留哪个端点。默认保留两个端点：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.timedelta_range(start=<span class="hljs-string">&#x27;1 day&#x27;</span>, periods=<span class="hljs-number">4</span>, closed=<span class="hljs-string">&#x27;right&#x27;</span>)
+TimedeltaIndex([<span class="hljs-string">&#x27;2 days&#x27;</span>, <span class="hljs-string">&#x27;3 days&#x27;</span>, <span class="hljs-string">&#x27;4 days&#x27;</span>], dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)</code></pre>
+<p>freq 参数指定 TimedeltaIndex 的频率。只接受固定频率，非固定频率如 <code>'M'</code> 将会报错：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.timedelta_range(start=<span class="hljs-string">&#x27;1 day&#x27;</span>, end=<span class="hljs-string">&#x27;2 days&#x27;</span>, freq=<span class="hljs-string">&#x27;6H&#x27;</span>)
+TimedeltaIndex([<span class="hljs-string">&#x27;1 days 00:00:00&#x27;</span>, <span class="hljs-string">&#x27;1 days 06:00:00&#x27;</span>, <span class="hljs-string">&#x27;1 days 12:00:00&#x27;</span>,
+                <span class="hljs-string">&#x27;1 days 18:00:00&#x27;</span>, <span class="hljs-string">&#x27;2 days 00:00:00&#x27;</span>],
+               dtype=<span class="hljs-string">&#x27;timedelta64[ns]&#x27;</span>, freq=<span class="hljs-string">&#x27;6H&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.timedelta_range(start=<span class="hljs-string">&#x27;1 day&#x27;</span>, end=<span class="hljs-string">&#x27;2 days&#x27;</span>, freq=<span class="hljs-string">&#x27;M&#x27;</span>)
+Traceback (most recent call last):
+...
+ValueError: &lt;MonthEnd&gt; <span class="hljs-keyword">is</span> a non-fixed frequency</code></pre>
+<h2 id="font-color-FF0000-【05x00】重采样及频率转换-font"><font color=#FF0000>【05x00】重采样及频率转换</font></h2>
+<p>重采样（resampling）指的是将时间序列从一个频率转换到另一个频率的处理过程。将高频率数据聚合到低频率称为降采样（downsampling），而将低频率数据转换到高频率则称为升采样（upsampling）。并不是所有的重采样都能被划分到这两个大类中。例如，将 W-WED（每周三）转换为 W-FRI 既不是降采样也不是升采样。</p>
+<p>Pandas 中提供了 resample 方法来帮助我们实现重采样。Pandas 对象都带有一个 resample 方法，它是各种频率转换工作的主力函数。</p>
+<p>基本语法：</p>
+<pre><code class="hljs python">Series.resample(self, rule, axis=<span class="hljs-number">0</span>, 
+                closed: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                label: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                convention: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;start&#x27;</span>, 
+                kind: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                loffset=<span class="hljs-literal">None</span>, base: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>, 
+                on=<span class="hljs-literal">None</span>, level=<span class="hljs-literal">None</span>)</code></pre>
+<pre><code class="hljs python">DataFrame.resample(self, rule, axis=<span class="hljs-number">0</span>, 
+                   closed: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                   label: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                   convention: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;start&#x27;</span>, 
+                   kind: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, NoneType] = <span class="hljs-literal">None</span>, 
+                   loffset=<span class="hljs-literal">None</span>, base: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>, 
+                   on=<span class="hljs-literal">None</span>, level=<span class="hljs-literal">None</span>)</code></pre>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rule</td>
+<td></td>
+</tr>
+<tr>
+<td>axis</td>
+<td>重采样的轴，默认 0</td>
+</tr>
+<tr>
+<td>closed</td>
+<td>在重采样中，各时间段的哪一端是闭合（即包含）的，<br>除 <code>'M'</code>、<code>'A'</code>、<code>'Q'</code>、<code>'BM'</code>、<code>'BA'</code>、<code>'BQ'</code> 和 <code>'W'</code> 默认值为 ‘right’ 外，其他默认值为 'left‘</td>
+</tr>
+<tr>
+<td>label</td>
+<td>在重采样中，如何设置聚合值的标签， right 或 left，默认为 None，<br>例如，9:30 到 9:35 之间的这 5 分钟会被标记为 9:30 或 9:35</td>
+</tr>
+<tr>
+<td>convention</td>
+<td>仅用于 PeriodIndex（固定时期），对周期进行重采样，<code>'start'</code> or <code>'s'</code>，<code>'end'</code> or <code>'e'</code></td>
+</tr>
+<tr>
+<td>on</td>
+<td>对于 DataFrame 对象，可用该参数指定重采样后的数据的 index（行索引） 为原数据中的某列</td>
+</tr>
+<tr>
+<td>level</td>
+<td>对于具有层级索引（MultiIndex）的 DataFrame 对象，可以使用该参数来指定需要在哪个级别上进行重新采样</td>
+</tr>
+</tbody>
+</table>
+<p>将序列重采样到三分钟的频率，并将每个频率的值相加：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;3T&#x27;</span>).<span class="hljs-built_in">sum</span>()
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>     <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">12</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">21</span>
+Freq: 3T, dtype: int64</code></pre>
+<p>设置 <code>label='right'</code>，即每个索引 index 会使用靠右侧（较大值）的标签：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;3T&#x27;</span>, label=<span class="hljs-string">&#x27;right&#x27;</span>).<span class="hljs-built_in">sum</span>()
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>     <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">12</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:09:<span class="hljs-number">00</span>    <span class="hljs-number">21</span>
+Freq: 3T, dtype: int64</code></pre>
+<p>设置 <code>closed='right'</code>，即结果中会包含原数据中最右侧（较大）的值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;3T&#x27;</span>, label=<span class="hljs-string">&#x27;right&#x27;</span>, closed=<span class="hljs-string">&#x27;right&#x27;</span>).<span class="hljs-built_in">sum</span>()
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>     <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>     <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">15</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:09:<span class="hljs-number">00</span>    <span class="hljs-number">15</span>
+Freq: 3T, dtype: int64</code></pre>
+<p>以下示例将序列重采样到30秒的频率，<code>asfreq()[0:5]</code> 用于选择前5行数据：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;30S&#x27;</span>).asfreq()[<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">30</span>    NaN
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">30</span>    NaN
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2.0</span>
+Freq: 30S, dtype: float64</code></pre>
+<p>使用 <code>pad</code> 方法向后填充缺失值（NaN）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;30S&#x27;</span>).pad()[<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">30</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">30</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+Freq: 30S, dtype: int64</code></pre>
+<p>使用 <code>bfill</code> 方法向前填充缺失值（NaN）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;30S&#x27;</span>).bfill()[<span class="hljs-number">0</span>:<span class="hljs-number">5</span>]
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">30</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">30</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+Freq: 30S, dtype: int64</code></pre>
+<p>通过 <code>apply</code> 方法传递自定义函数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">9</span>, freq=<span class="hljs-string">&#x27;T&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>), index=index)
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:01:<span class="hljs-number">00</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:02:<span class="hljs-number">00</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:04:<span class="hljs-number">00</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:05:<span class="hljs-number">00</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:07:<span class="hljs-number">00</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:08:<span class="hljs-number">00</span>    <span class="hljs-number">8</span>
+Freq: T, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">custom_resampler</span>(<span class="hljs-params">array_like</span>):</span>
+    <span class="hljs-keyword">return</span> np.<span class="hljs-built_in">sum</span>(array_like) + <span class="hljs-number">5</span>
+
+<span class="hljs-meta">&gt;&gt;&gt; </span>series.resample(<span class="hljs-string">&#x27;3T&#x27;</span>).apply(custom_resampler)
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>     <span class="hljs-number">8</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:03:<span class="hljs-number">00</span>    <span class="hljs-number">17</span>
+<span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:06:<span class="hljs-number">00</span>    <span class="hljs-number">26</span>
+Freq: 3T, dtype: int64</code></pre>
+<p>convention 参数的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>s = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], index=pd.period_range(<span class="hljs-string">&#x27;2012-01-01&#x27;</span>, freq=<span class="hljs-string">&#x27;A&#x27;</span>, periods=<span class="hljs-number">2</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>s
+<span class="hljs-number">2012</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2013</span>    <span class="hljs-number">2</span>
+Freq: A-DEC, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>s.resample(<span class="hljs-string">&#x27;Q&#x27;</span>, convention=<span class="hljs-string">&#x27;start&#x27;</span>).asfreq()
+2012Q1    <span class="hljs-number">1.0</span>
+2012Q2    NaN
+2012Q3    NaN
+2012Q4    NaN
+2013Q1    <span class="hljs-number">2.0</span>
+2013Q2    NaN
+2013Q3    NaN
+2013Q4    NaN
+Freq: Q-DEC, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>s.resample(<span class="hljs-string">&#x27;Q&#x27;</span>, convention=<span class="hljs-string">&#x27;end&#x27;</span>).asfreq()
+2012Q4    <span class="hljs-number">1.0</span>
+2013Q1    NaN
+2013Q2    NaN
+2013Q3    NaN
+2013Q4    <span class="hljs-number">2.0</span>
+Freq: Q-DEC, dtype: float64</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>q = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>], index=pd.period_range(<span class="hljs-string">&#x27;2018-01-01&#x27;</span>, freq=<span class="hljs-string">&#x27;Q&#x27;</span>, periods=<span class="hljs-number">4</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>q
+2018Q1    <span class="hljs-number">1</span>
+2018Q2    <span class="hljs-number">2</span>
+2018Q3    <span class="hljs-number">3</span>
+2018Q4    <span class="hljs-number">4</span>
+Freq: Q-DEC, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>q.resample(<span class="hljs-string">&#x27;M&#x27;</span>, convention=<span class="hljs-string">&#x27;end&#x27;</span>).asfreq()
+<span class="hljs-number">2018</span>-03    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2018</span>-04    NaN
+<span class="hljs-number">2018</span>-05    NaN
+<span class="hljs-number">2018</span>-06    <span class="hljs-number">2.0</span>
+<span class="hljs-number">2018</span>-07    NaN
+<span class="hljs-number">2018</span>-08    NaN
+<span class="hljs-number">2018</span>-09    <span class="hljs-number">3.0</span>
+<span class="hljs-number">2018</span>-<span class="hljs-number">10</span>    NaN
+<span class="hljs-number">2018</span>-<span class="hljs-number">11</span>    NaN
+<span class="hljs-number">2018</span>-<span class="hljs-number">12</span>    <span class="hljs-number">4.0</span>
+Freq: M, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>q.resample(<span class="hljs-string">&#x27;M&#x27;</span>, convention=<span class="hljs-string">&#x27;start&#x27;</span>).asfreq()
+<span class="hljs-number">2018</span>-01    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2018</span>-02    NaN
+<span class="hljs-number">2018</span>-03    NaN
+<span class="hljs-number">2018</span>-04    <span class="hljs-number">2.0</span>
+<span class="hljs-number">2018</span>-05    NaN
+<span class="hljs-number">2018</span>-06    NaN
+<span class="hljs-number">2018</span>-07    <span class="hljs-number">3.0</span>
+<span class="hljs-number">2018</span>-08    NaN
+<span class="hljs-number">2018</span>-09    NaN
+<span class="hljs-number">2018</span>-<span class="hljs-number">10</span>    <span class="hljs-number">4.0</span>
+<span class="hljs-number">2018</span>-<span class="hljs-number">11</span>    NaN
+<span class="hljs-number">2018</span>-<span class="hljs-number">12</span>    NaN
+Freq: M, dtype: float64</code></pre>
+<p>对于 DataFrame 对象，可以使用关键字 on 来指定原数据中的某列为重采样后数据的行索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = <span class="hljs-built_in">dict</span>(&#123;<span class="hljs-string">&#x27;price&#x27;</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">9</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">18</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>],
+          	  <span class="hljs-string">&#x27;volume&#x27;</span>: [<span class="hljs-number">50</span>, <span class="hljs-number">60</span>, <span class="hljs-number">40</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>df = pd.DataFrame(d)
+<span class="hljs-meta">&gt;&gt;&gt; </span>df[<span class="hljs-string">&#x27;week_starting&#x27;</span>] = pd.date_range(<span class="hljs-string">&#x27;01/01/2018&#x27;</span>, periods=<span class="hljs-number">8</span>, freq=<span class="hljs-string">&#x27;W&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>df
+   price  volume week_starting
+<span class="hljs-number">0</span>     <span class="hljs-number">10</span>      <span class="hljs-number">50</span>    <span class="hljs-number">2018</span>-01-07
+<span class="hljs-number">1</span>     <span class="hljs-number">11</span>      <span class="hljs-number">60</span>    <span class="hljs-number">2018</span>-01-<span class="hljs-number">14</span>
+<span class="hljs-number">2</span>      <span class="hljs-number">9</span>      <span class="hljs-number">40</span>    <span class="hljs-number">2018</span>-01-<span class="hljs-number">21</span>
+<span class="hljs-number">3</span>     <span class="hljs-number">13</span>     <span class="hljs-number">100</span>    <span class="hljs-number">2018</span>-01-<span class="hljs-number">28</span>
+<span class="hljs-number">4</span>     <span class="hljs-number">14</span>      <span class="hljs-number">50</span>    <span class="hljs-number">2018</span>-02-04
+<span class="hljs-number">5</span>     <span class="hljs-number">18</span>     <span class="hljs-number">100</span>    <span class="hljs-number">2018</span>-02-<span class="hljs-number">11</span>
+<span class="hljs-number">6</span>     <span class="hljs-number">17</span>      <span class="hljs-number">40</span>    <span class="hljs-number">2018</span>-02-<span class="hljs-number">18</span>
+<span class="hljs-number">7</span>     <span class="hljs-number">19</span>      <span class="hljs-number">50</span>    <span class="hljs-number">2018</span>-02-<span class="hljs-number">25</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>df.resample(<span class="hljs-string">&#x27;M&#x27;</span>, on=<span class="hljs-string">&#x27;week_starting&#x27;</span>).mean()
+               price  volume
+week_starting               
+<span class="hljs-number">2018</span>-01-<span class="hljs-number">31</span>     <span class="hljs-number">10.75</span>    <span class="hljs-number">62.5</span>
+<span class="hljs-number">2018</span>-02-<span class="hljs-number">28</span>     <span class="hljs-number">17.00</span>    <span class="hljs-number">60.0</span></code></pre>
+<p>对于具有层级索引（MultiIndex）的 DataFrame 对象，可以使用关键字 <code>level</code> 来指定需要在哪个级别上进行重新采样：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>days = pd.date_range(<span class="hljs-string">&#x27;1/1/2000&#x27;</span>, periods=<span class="hljs-number">4</span>, freq=<span class="hljs-string">&#x27;D&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>d2 = <span class="hljs-built_in">dict</span>(&#123;<span class="hljs-string">&#x27;price&#x27;</span>: [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">9</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">18</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>],
+           	   <span class="hljs-string">&#x27;volume&#x27;</span>: [<span class="hljs-number">50</span>, <span class="hljs-number">60</span>, <span class="hljs-number">40</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>df2 = pd.DataFrame(d2, index=pd.MultiIndex.from_product([days, [<span class="hljs-string">&#x27;morning&#x27;</span>, <span class="hljs-string">&#x27;afternoon&#x27;</span>]]))
+<span class="hljs-meta">&gt;&gt;&gt; </span>df2
+                      price  volume
+<span class="hljs-number">2000</span>-01-01 morning       <span class="hljs-number">10</span>      <span class="hljs-number">50</span>
+           afternoon     <span class="hljs-number">11</span>      <span class="hljs-number">60</span>
+<span class="hljs-number">2000</span>-01-02 morning        <span class="hljs-number">9</span>      <span class="hljs-number">40</span>
+           afternoon     <span class="hljs-number">13</span>     <span class="hljs-number">100</span>
+<span class="hljs-number">2000</span>-01-03 morning       <span class="hljs-number">14</span>      <span class="hljs-number">50</span>
+           afternoon     <span class="hljs-number">18</span>     <span class="hljs-number">100</span>
+<span class="hljs-number">2000</span>-01-04 morning       <span class="hljs-number">17</span>      <span class="hljs-number">40</span>
+           afternoon     <span class="hljs-number">19</span>      <span class="hljs-number">50</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>df2.resample(<span class="hljs-string">&#x27;D&#x27;</span>, level=<span class="hljs-number">0</span>).<span class="hljs-built_in">sum</span>()
+            price  volume
+<span class="hljs-number">2000</span>-01-01     <span class="hljs-number">21</span>     <span class="hljs-number">110</span>
+<span class="hljs-number">2000</span>-01-02     <span class="hljs-number">22</span>     <span class="hljs-number">140</span>
+<span class="hljs-number">2000</span>-01-03     <span class="hljs-number">32</span>     <span class="hljs-number">150</span>
+<span class="hljs-number">2000</span>-01-04     <span class="hljs-number">36</span>      <span class="hljs-number">90</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106947061</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/034/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（十）：数据读写</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/032/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（八）：数据重塑/重复数据处理/数据替换</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

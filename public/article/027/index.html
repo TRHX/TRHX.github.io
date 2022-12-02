@@ -1,0 +1,1023 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-14丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.3k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 22分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】Pandas-算术运算-font"><font color=#FF0000>【01x00】Pandas 算术运算</font></h2>
+<p>Pandas 继承了 NumPy 的功能，NumPy 的基本能力之一是快速对每个元素进行运算，既包括基本算术运算（加、减、乘、除），也包括更复杂的运算（三角函数、指数函数和对数函数等）。具体可以参考 NumPy 系列文章。</p>
+<h3 id="font-color-4876FF-【01x01】使用-NumPy-通用函数-font"><font color=#4876FF>【01x01】使用 NumPy 通用函数</font></h3>
+<p>因为 Pandas 是建立在 NumPy 基础之上的，所以 NumPy 的通用函数同样适用于 Pandas 的 Series 和 DataFrame 对象，如下所示：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = np.random.RandomState(<span class="hljs-number">42</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ser = pd.Series(rng.randint(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">4</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>ser
+<span class="hljs-number">0</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+dtype: int32
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(rng.randint(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)), columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B  C  D
+<span class="hljs-number">0</span>  <span class="hljs-number">6</span>  <span class="hljs-number">9</span>  <span class="hljs-number">2</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">7</span>  <span class="hljs-number">4</span>  <span class="hljs-number">3</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">7</span>  <span class="hljs-number">2</span>  <span class="hljs-number">5</span>  <span class="hljs-number">4</span></code></pre>
+<p>使用 NumPy 通用函数，生成的结果是另一个保留索引的 Pandas 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>rng = np.random.RandomState(<span class="hljs-number">42</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ser = pd.Series(rng.randint(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">4</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>ser
+<span class="hljs-number">0</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">7</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+dtype: int32
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.exp(ser)
+<span class="hljs-number">0</span>     <span class="hljs-number">403.428793</span>
+<span class="hljs-number">1</span>      <span class="hljs-number">20.085537</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">1096.633158</span>
+<span class="hljs-number">3</span>      <span class="hljs-number">54.598150</span>
+dtype: float64</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(rng.randint(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)), columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.sin(obj * np.pi / <span class="hljs-number">4</span>)
+          A             B         C             D
+<span class="hljs-number">0</span> -<span class="hljs-number">1.000000</span>  <span class="hljs-number">7.071068e-01</span>  <span class="hljs-number">1.000000</span> -<span class="hljs-number">1.000000e+00</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.224647e-16</span>  <span class="hljs-number">0.707107</span> -<span class="hljs-number">7.071068e-01</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.000000e+00</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.224647e-16</span></code></pre>
+<h3 id="font-color-4876FF-【01x02】数据对齐-font"><font color=#4876FF>【01x02】数据对齐</font></h3>
+<p>Pandas 最重要的一个功能是，它可以对不同索引的对象进行算术运算。在将对象相加时，如果存在不同的索引对，则结果的索引就是该索引对的并集。自动的数据对齐操作会在不重叠的索引处引入缺失值，即 <font color=#FF0000>NaN</font>，缺失值会在算术运算过程中传播。</p>
+<p>Series 对象的数据对齐操作：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-number">7.3</span>, -<span class="hljs-number">2.5</span>, <span class="hljs-number">3.4</span>, <span class="hljs-number">1.5</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([-<span class="hljs-number">2.1</span>, <span class="hljs-number">3.6</span>, -<span class="hljs-number">1.5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3.1</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;f&#x27;</span>, <span class="hljs-string">&#x27;g&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+a    <span class="hljs-number">7.3</span>
+c   -<span class="hljs-number">2.5</span>
+d    <span class="hljs-number">3.4</span>
+e    <span class="hljs-number">1.5</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+a   -<span class="hljs-number">2.1</span>
+c    <span class="hljs-number">3.6</span>
+e   -<span class="hljs-number">1.5</span>
+f    <span class="hljs-number">4.0</span>
+g    <span class="hljs-number">3.1</span>
+dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 + obj2
+a    <span class="hljs-number">5.2</span>
+c    <span class="hljs-number">1.1</span>
+d    NaN
+e    <span class="hljs-number">0.0</span>
+f    NaN
+g    NaN
+dtype: float64</code></pre>
+<p>DataFrame 对象的数据对齐操作会同时发生在行和列上：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(np.arange(<span class="hljs-number">9.</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;bcd&#x27;</span>), index=[<span class="hljs-string">&#x27;Ohio&#x27;</span>, <span class="hljs-string">&#x27;Texas&#x27;</span>, <span class="hljs-string">&#x27;Colorado&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">4</span>, <span class="hljs-number">3</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;bde&#x27;</span>), index=[<span class="hljs-string">&#x27;Utah&#x27;</span>, <span class="hljs-string">&#x27;Ohio&#x27;</span>, <span class="hljs-string">&#x27;Texas&#x27;</span>, <span class="hljs-string">&#x27;Oregon&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+            b    c    d
+Ohio      <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>
+Texas     <span class="hljs-number">3.0</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">5.0</span>
+Colorado  <span class="hljs-number">6.0</span>  <span class="hljs-number">7.0</span>  <span class="hljs-number">8.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+          b     d     e
+Utah    <span class="hljs-number">0.0</span>   <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>
+Ohio    <span class="hljs-number">3.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">5.0</span>
+Texas   <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>   <span class="hljs-number">8.0</span>
+Oregon  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 + obj2
+            b   c     d   e
+Colorado  NaN NaN   NaN NaN
+Ohio      <span class="hljs-number">3.0</span> NaN   <span class="hljs-number">6.0</span> NaN
+Oregon    NaN NaN   NaN NaN
+Texas     <span class="hljs-number">9.0</span> NaN  <span class="hljs-number">12.0</span> NaN
+Utah      NaN NaN   NaN NaN</code></pre>
+<h3 id="font-color-4876FF-【01x03】DataFrame-与-Series-之间的运算-font"><font color=#4876FF>【01x03】DataFrame 与 Series 之间的运算</font></h3>
+<p>首先回忆 NumPy 中的广播（参见：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/104988137">《Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割》</a>），跟不同维度的 NumPy 数组一样，DataFrame 和 Series 之间算术运算也是有明确规定的。首先回忆一下 NumPy 中不同维度的数组之间的运算：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>arr = np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>arr
+array([[ <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">2.</span>,  <span class="hljs-number">3.</span>],
+       [ <span class="hljs-number">4.</span>,  <span class="hljs-number">5.</span>,  <span class="hljs-number">6.</span>,  <span class="hljs-number">7.</span>],
+       [ <span class="hljs-number">8.</span>,  <span class="hljs-number">9.</span>, <span class="hljs-number">10.</span>, <span class="hljs-number">11.</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>arr[<span class="hljs-number">0</span>]
+array([<span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>arr - arr[<span class="hljs-number">0</span>]
+array([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>],
+       [<span class="hljs-number">4.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">4.</span>],
+       [<span class="hljs-number">8.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">8.</span>]])</code></pre>
+<p>可以看到每一行都进行了减法运算，这正是 NumPy 中的广播，而 DataFrame 与 Series 之间的运算也类似，默认情况下，DataFrame 和 Series 之间的算术运算会将 Series 的索引匹配到 DataFrame 的列，然后沿着行一直向下广播：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">4</span>, <span class="hljs-number">3</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;bde&#x27;</span>), index=[<span class="hljs-string">&#x27;AA&#x27;</span>, <span class="hljs-string">&#x27;BB&#x27;</span>, <span class="hljs-string">&#x27;CC&#x27;</span>, <span class="hljs-string">&#x27;DD&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame
+      b     d     e
+AA  <span class="hljs-number">0.0</span>   <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>
+BB  <span class="hljs-number">3.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">5.0</span>
+CC  <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>   <span class="hljs-number">8.0</span>
+DD  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = frame.iloc[<span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+b    <span class="hljs-number">0.0</span>
+d    <span class="hljs-number">1.0</span>
+e    <span class="hljs-number">2.0</span>
+Name: AA, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame - series
+      b    d    e
+AA  <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">0.0</span>
+BB  <span class="hljs-number">3.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">3.0</span>
+CC  <span class="hljs-number">6.0</span>  <span class="hljs-number">6.0</span>  <span class="hljs-number">6.0</span>
+DD  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span></code></pre>
+<p>如果某个索引值在 DataFrame 的列或 Series 的索引中找不到，则参与运算的两个对象就会被重新索引以形成并集：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">4</span>, <span class="hljs-number">3</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;bde&#x27;</span>), index=[<span class="hljs-string">&#x27;AA&#x27;</span>, <span class="hljs-string">&#x27;BB&#x27;</span>, <span class="hljs-string">&#x27;CC&#x27;</span>, <span class="hljs-string">&#x27;DD&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame
+      b     d     e
+AA  <span class="hljs-number">0.0</span>   <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>
+BB  <span class="hljs-number">3.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">5.0</span>
+CC  <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>   <span class="hljs-number">8.0</span>
+DD  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>), index=[<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;f&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+b    <span class="hljs-number">0</span>
+e    <span class="hljs-number">1</span>
+f    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame + series
+      b   d     e   f
+AA  <span class="hljs-number">0.0</span> NaN   <span class="hljs-number">3.0</span> NaN
+BB  <span class="hljs-number">3.0</span> NaN   <span class="hljs-number">6.0</span> NaN
+CC  <span class="hljs-number">6.0</span> NaN   <span class="hljs-number">9.0</span> NaN
+DD  <span class="hljs-number">9.0</span> NaN  <span class="hljs-number">12.0</span> NaN</code></pre>
+<p>如果希望匹配行且在列上广播，则必须使用算术运算方法，在方法中传入的轴（axis）就是希望匹配的轴。在下例中，我们的目的是匹配 DataFrame 的行索引（axis=‘index’ or axis=0）并进行广播：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">4</span>, <span class="hljs-number">3</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;bde&#x27;</span>), index=[<span class="hljs-string">&#x27;AA&#x27;</span>, <span class="hljs-string">&#x27;BB&#x27;</span>, <span class="hljs-string">&#x27;CC&#x27;</span>, <span class="hljs-string">&#x27;DD&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame
+      b     d     e
+AA  <span class="hljs-number">0.0</span>   <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>
+BB  <span class="hljs-number">3.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">5.0</span>
+CC  <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>   <span class="hljs-number">8.0</span>
+DD  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>series = frame[<span class="hljs-string">&#x27;d&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>series
+AA     <span class="hljs-number">1.0</span>
+BB     <span class="hljs-number">4.0</span>
+CC     <span class="hljs-number">7.0</span>
+DD    <span class="hljs-number">10.0</span>
+Name: d, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>frame.sub(series, axis=<span class="hljs-string">&#x27;index&#x27;</span>)
+      b    d    e
+AA -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>
+BB -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>
+CC -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>
+DD -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span></code></pre>
+<h3 id="font-color-4876FF-【01x04】Pandas-算术方法-font"><font color=#4876FF>【01x04】Pandas 算术方法</font></h3>
+<p>完整的 Pandas 算术方法见下表：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>副本</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>add()</td>
+<td>radd()</td>
+<td>加法（+）</td>
+</tr>
+<tr>
+<td>sub()、subtract()</td>
+<td>rsub()</td>
+<td>减法（-）</td>
+</tr>
+<tr>
+<td>mul()、multiply()</td>
+<td>rmul()</td>
+<td>乘法（*）</td>
+</tr>
+<tr>
+<td>pow()</td>
+<td>rpow()</td>
+<td>指数（**）</td>
+</tr>
+<tr>
+<td>truediv()、div()、divide()</td>
+<td>rdiv()</td>
+<td>除法（/）</td>
+</tr>
+<tr>
+<td>floordiv()</td>
+<td>rfloordiv()</td>
+<td>底除（//）</td>
+</tr>
+<tr>
+<td>mod()</td>
+<td>rmod()</td>
+<td>求余（%）</td>
+</tr>
+</tbody>
+</table>
+<p>副本均为原方法前加了个 <code>r</code>，它会翻转参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;abcd&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     a    b     c     d
+<span class="hljs-number">0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>   <span class="hljs-number">3.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">5.0</span>   <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">8.0</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">1</span> / obj
+       a         b         c         d
+<span class="hljs-number">0</span>    inf  <span class="hljs-number">1.000000</span>  <span class="hljs-number">0.500000</span>  <span class="hljs-number">0.333333</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">0.250</span>  <span class="hljs-number">0.200000</span>  <span class="hljs-number">0.166667</span>  <span class="hljs-number">0.142857</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">0.125</span>  <span class="hljs-number">0.111111</span>  <span class="hljs-number">0.100000</span>  <span class="hljs-number">0.090909</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.rdiv(<span class="hljs-number">1</span>)
+       a         b         c         d
+<span class="hljs-number">0</span>    inf  <span class="hljs-number">1.000000</span>  <span class="hljs-number">0.500000</span>  <span class="hljs-number">0.333333</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">0.250</span>  <span class="hljs-number">0.200000</span>  <span class="hljs-number">0.166667</span>  <span class="hljs-number">0.142857</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">0.125</span>  <span class="hljs-number">0.111111</span>  <span class="hljs-number">0.100000</span>  <span class="hljs-number">0.090909</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【02x00】处理缺失值-font"><font color=#FF0000>【02x00】处理缺失值</font></h2>
+<p>在现实中遇到的数据很少是干净整齐的，许多数据集都会有数据缺失的现象，缺失值主要有三种形式：null、NaN（NAN，nan） 或 NA。</p>
+<h3 id="font-color-4876FF-【02x01】fill-value-指定值与缺失值进行运算-font"><font color=#4876FF>【02x01】fill_value() 指定值与缺失值进行运算</font></h3>
+<p>使用 <code>add</code>, <code>sub</code>, <code>div</code>, <code>mul</code> 等算术方法时，通过 <code>fill_value</code> 指定填充值，未对齐的数据将和填充值做运算。</p>
+<p>Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-number">6</span>, <span class="hljs-number">7</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">5</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+<span class="hljs-number">0</span>    <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">7</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.add(obj2)
+<span class="hljs-number">0</span>    <span class="hljs-number">7.0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">9.0</span>
+<span class="hljs-number">2</span>    NaN
+<span class="hljs-number">3</span>    NaN
+<span class="hljs-number">4</span>    NaN
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.add(obj2, fill_value=-<span class="hljs-number">1</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">7.0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">9.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4.0</span>
+dtype: float64</code></pre>
+<p>DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;abcd&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(np.arange(<span class="hljs-number">20.</span>).reshape((<span class="hljs-number">4</span>, <span class="hljs-number">5</span>)), columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;abcde&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2.loc[<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>] = np.nan
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+     a    b     c     d
+<span class="hljs-number">0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>   <span class="hljs-number">3.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">4.0</span>  <span class="hljs-number">5.0</span>   <span class="hljs-number">6.0</span>   <span class="hljs-number">7.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">8.0</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+      a     b     c     d     e
+<span class="hljs-number">0</span>   <span class="hljs-number">0.0</span>   <span class="hljs-number">1.0</span>   <span class="hljs-number">2.0</span>   <span class="hljs-number">3.0</span>   <span class="hljs-number">4.0</span>
+<span class="hljs-number">1</span>   <span class="hljs-number">5.0</span>   NaN   <span class="hljs-number">7.0</span>   <span class="hljs-number">8.0</span>   <span class="hljs-number">9.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">10.0</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12.0</span>  <span class="hljs-number">13.0</span>  <span class="hljs-number">14.0</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">15.0</span>  <span class="hljs-number">16.0</span>  <span class="hljs-number">17.0</span>  <span class="hljs-number">18.0</span>  <span class="hljs-number">19.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 + obj2
+      a     b     c     d   e
+<span class="hljs-number">0</span>   <span class="hljs-number">0.0</span>   <span class="hljs-number">2.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">6.0</span> NaN
+<span class="hljs-number">1</span>   <span class="hljs-number">9.0</span>   NaN  <span class="hljs-number">13.0</span>  <span class="hljs-number">15.0</span> NaN
+<span class="hljs-number">2</span>  <span class="hljs-number">18.0</span>  <span class="hljs-number">20.0</span>  <span class="hljs-number">22.0</span>  <span class="hljs-number">24.0</span> NaN
+<span class="hljs-number">3</span>   NaN   NaN   NaN   NaN NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.add(obj2, fill_value=<span class="hljs-number">10</span>)
+      a     b     c     d     e
+<span class="hljs-number">0</span>   <span class="hljs-number">0.0</span>   <span class="hljs-number">2.0</span>   <span class="hljs-number">4.0</span>   <span class="hljs-number">6.0</span>  <span class="hljs-number">14.0</span>
+<span class="hljs-number">1</span>   <span class="hljs-number">9.0</span>  <span class="hljs-number">15.0</span>  <span class="hljs-number">13.0</span>  <span class="hljs-number">15.0</span>  <span class="hljs-number">19.0</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">18.0</span>  <span class="hljs-number">20.0</span>  <span class="hljs-number">22.0</span>  <span class="hljs-number">24.0</span>  <span class="hljs-number">24.0</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">25.0</span>  <span class="hljs-number">26.0</span>  <span class="hljs-number">27.0</span>  <span class="hljs-number">28.0</span>  <span class="hljs-number">29.0</span></code></pre>
+<h3 id="font-color-4876FF-【02x02】isnull-notnull-判断缺失值-font"><font color=#4876FF>【02x02】isnull() / notnull() 判断缺失值</font></h3>
+<p><code>isnull()</code>：为缺失值时为 <code>True</code>，否则为 <code>False</code>；</p>
+<p><code>notnull()</code> 为缺失值时为 <code>False</code>，否则为 <code>True</code>。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, np.nan, <span class="hljs-string">&#x27;hello&#x27;</span>, <span class="hljs-literal">None</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>        <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      NaN
+<span class="hljs-number">2</span>    hello
+<span class="hljs-number">3</span>     <span class="hljs-literal">None</span>
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.isnull()
+<span class="hljs-number">0</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">1</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">3</span>     <span class="hljs-literal">True</span>
+dtype: <span class="hljs-built_in">bool</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.notnull()
+<span class="hljs-number">0</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+dtype: <span class="hljs-built_in">bool</span></code></pre>
+<h3 id="font-color-4876FF-【02x03】dropna-删除缺失值-font"><font color=#4876FF>【02x03】dropna() 删除缺失值</font></h3>
+<p><code>dropna()</code> 方法用于返回一个删除了缺失值的新 Series 或 DataFrame 对象。</p>
+<p>在 Series 对象当中，<code>dropna()</code> 方法的语法如下（其他参数用法可参考在 DataFrame 中的应用）：</p>
+<p><code>Series.dropna(self, axis=0, inplace=False, how=None)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.dropna.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.dropna.html</a></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, np.nan, <span class="hljs-string">&#x27;hello&#x27;</span>, <span class="hljs-literal">None</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>        <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      NaN
+<span class="hljs-number">2</span>    hello
+<span class="hljs-number">3</span>     <span class="hljs-literal">None</span>
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna()
+<span class="hljs-number">0</span>        <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    hello
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>在 DataFrame 对象中，<code>dropna()</code> 方法的语法如下：</p>
+<p><code>DataFrame.dropna(self, axis=0, how='any', thresh=None, subset=None, inplace=False)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>确定是否删除包含缺失值的行或列<br><code>0</code> 或 <code>'index'</code>：删除包含缺失值的行。<code>1</code> 或 <code>'columns'</code>：删除包含缺失值的列</td>
+</tr>
+<tr>
+<td>how</td>
+<td><code>'any'</code>：如果存在任何NA值，则删除该行或列。<code>'all'</code>：如果所有值都是NA，则删除该行或列</td>
+</tr>
+<tr>
+<td>thresh</td>
+<td>设置行或列中<strong>非缺失值</strong>的最小数量</td>
+</tr>
+</tbody>
+</table>
+<p>不传递任何参数，将会删除任何包含缺失值的整行数据：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna()
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span></code></pre>
+<p>指定 axis 参数，删除包含缺失值的行或列：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna(axis=<span class="hljs-string">&#x27;columns&#x27;</span>)
+   <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">6</span></code></pre>
+<p>指定 how 参数，<code>'any'</code>：如果存在任何NA值，则删除该行或列。<code>'all'</code>：如果所有值都是NA，则删除该行或列：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>, np.nan], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, np.nan], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, np.nan]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span> NaN
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span> NaN
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span> NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna(axis=<span class="hljs-string">&#x27;columns&#x27;</span>, how=<span class="hljs-string">&#x27;all&#x27;</span>)
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span></code></pre>
+<p>指定 thresh 参数，设置行或列中<font color=#FF0000><strong>非缺失值</strong></font>的最小数量，以下示例中，第一行和第三行只有两个非缺失值，所以会被删除：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>, np.nan], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, np.nan], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, np.nan]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span> NaN
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span> NaN
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span> NaN
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna(axis=<span class="hljs-string">&#x27;rows&#x27;</span>, thresh=<span class="hljs-number">3</span>)
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span> NaN</code></pre>
+<h3 id="font-color-4876FF-【02x04】fillna-填充缺失值-font"><font color=#4876FF>【02x04】fillna() 填充缺失值</font></h3>
+<p><code>fillna()</code> 方法可以将缺失值替换成有效的数值。</p>
+<p>在 Series 对象中，<code>fillna()</code> 方法的语法如下：</p>
+<p><code>Series.fillna(self, value=None, method=None, axis=None, inplace=False, limit=None, downcast=None)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.fillna.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.fillna.html</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>用于填充的值（例如 0），或者是一个 dict / Series / DataFrame 值<br>指定要用于每个 index（对于 Series）或column（对于 DataFrame）的值<br>不在dict / Series / DataFrame中的值将不被填充。此值不能是列表</td>
+</tr>
+<tr>
+<td>method</td>
+<td>填充方法：<code>None</code><br><code>‘pad’</code> / <code>‘ffill’</code>：将上一个有效观测值向前传播到下一个有效观测值<br><code>‘backfill’</code> / <code>‘bfill’</code>：使用下一个有效观察值来填补空白</td>
+</tr>
+<tr>
+<td>axis</td>
+<td><code>0</code> or <code>‘index’</code>，要填充缺失值的轴</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">3</span>], index=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;abcde&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1.0</span>
+b    NaN
+c    <span class="hljs-number">2.0</span>
+d    NaN
+e    <span class="hljs-number">3.0</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.fillna(<span class="hljs-number">0</span>)
+a    <span class="hljs-number">1.0</span>
+b    <span class="hljs-number">0.0</span>
+c    <span class="hljs-number">2.0</span>
+d    <span class="hljs-number">0.0</span>
+e    <span class="hljs-number">3.0</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.fillna(method=<span class="hljs-string">&#x27;ffill&#x27;</span>)
+a    <span class="hljs-number">1.0</span>
+b    <span class="hljs-number">1.0</span>
+c    <span class="hljs-number">2.0</span>
+d    <span class="hljs-number">2.0</span>
+e    <span class="hljs-number">3.0</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.fillna(method=<span class="hljs-string">&#x27;bfill&#x27;</span>)
+a    <span class="hljs-number">1.0</span>
+b    <span class="hljs-number">2.0</span>
+c    <span class="hljs-number">2.0</span>
+d    <span class="hljs-number">3.0</span>
+e    <span class="hljs-number">3.0</span>
+dtype: float64</code></pre>
+<p>在 DataFrame 对象中，<code>fillna()</code> 方法的语法如下：</p>
+<p><code>DataFrame.fillna(self, value=None, method=None, axis=None, inplace=False, limit=None, downcast=None)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>用于填充的值（例如 0），或者是一个 dict / Series / DataFrame 值<br>指定要用于每个 index（对于 Series）或column（对于 DataFrame）的值<br>不在dict / Series / DataFrame中的值将不被填充。此值不能是列表</td>
+</tr>
+<tr>
+<td>method</td>
+<td>填充方法：<code>None</code><br><code>‘pad’</code> / <code>‘ffill’</code>：将上一个有效观测值向前传播到下一个有效观测值<br><code>‘backfill’</code> / <code>‘bfill’</code>：使用下一个有效观察值来填补空白</td>
+</tr>
+<tr>
+<td>axis</td>
+<td><code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，要填充缺失值的轴</td>
+</tr>
+</tbody>
+</table>
+<p>在 DataFrame 对象中的用法和在 Series 对象中的用法大同小异，只不过 axis 参数多了一个选择：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>, np.nan], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, np.nan], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, np.nan]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span> NaN
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span> NaN
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span> NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.fillna(method=<span class="hljs-string">&#x27;ffill&#x27;</span>, axis=<span class="hljs-number">1</span>)
+     <span class="hljs-number">0</span>    <span class="hljs-number">1</span>    <span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">2.0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5.0</span>  <span class="hljs-number">5.0</span>
+<span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6.0</span>  <span class="hljs-number">6.0</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/028/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/026/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

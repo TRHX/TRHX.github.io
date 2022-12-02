@@ -1,0 +1,1203 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-04-08丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.7k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 21分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/NumPy/" class="post-tag">
+                            NumPy</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>NumPy 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/008/">Python 数据分析三剑客之 NumPy（一）：理解 NumPy / 数组基础</a></li>
+<li><a href="https://www.itbob.cn/article/009/">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a></li>
+<li><a href="https://www.itbob.cn/article/010/">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a></li>
+<li><a href="https://www.itbob.cn/article/011/">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a></li>
+<li><a href="https://www.itbob.cn/article/012/">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a></li>
+<li><a href="https://www.itbob.cn/article/013/">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a></li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105350414</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-ff0000-【01】NumPy-字符串函数速查表-font"><font color=#ff0000>【01】NumPy 字符串函数速查表</font></h2>
+<p>和 Python 一样，NumPy 也可以进行字符串相关操作。字符串函数在字符数组类（<code>numpy.char</code>）中定义。</p>
+<table><tr><td bgcolor=#7FFFD4>NumPy 字符串函数速查表</td></tr></table>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>add()</td>
+<td>对两个数组的字符串元素进行连接</td>
+</tr>
+<tr>
+<td>join()</td>
+<td>通过指定分隔符来连接数组中的元素</td>
+</tr>
+<tr>
+<td>mod()</td>
+<td>格式化字符串，相当于 Python 字符串中的 % 和 format</td>
+</tr>
+<tr>
+<td>multiply()</td>
+<td>按照给定值返回元素多重连接后的字符串</td>
+</tr>
+<tr>
+<td>capitalize()</td>
+<td>将字符串（字符串可同时包含字母和数字，只要是连续的都会被视为一个同字符串）第一个字母转换为大写</td>
+</tr>
+<tr>
+<td>title()</td>
+<td>将单词（仅包含字母，若同时包含数字和字母，则数字之后元素被视为另一个单词）第一个字母转换为大写</td>
+</tr>
+<tr>
+<td>lower()</td>
+<td>将数组中所有的元素转换为小写</td>
+</tr>
+<tr>
+<td>upper()</td>
+<td>将数组中所有的元素转换为大写</td>
+</tr>
+<tr>
+<td>swapcase()</td>
+<td>将数组中每个元素字母大写转为小写，小写转为大写</td>
+</tr>
+<tr>
+<td>center()</td>
+<td>居中字符串，并使用指定字符在左右侧进行填充</td>
+</tr>
+<tr>
+<td>ljust()</td>
+<td>左对齐字符串，并使用指定字符在右侧进行填充</td>
+</tr>
+<tr>
+<td>rjust()</td>
+<td>右对齐字符串，并使用指定字符在左侧进行填充</td>
+</tr>
+<tr>
+<td>zfill()</td>
+<td>在数组元素的左边填充指定个数的数字 0</td>
+</tr>
+<tr>
+<td>strip()</td>
+<td>移除数组每个元素开头和者结尾处的特定字符</td>
+</tr>
+<tr>
+<td>lstrip()</td>
+<td>移除数组每个元素开头（最左边）的特定字符</td>
+</tr>
+<tr>
+<td>rstrip()</td>
+<td>移除数组每个元素结尾（最右边）的特定字符</td>
+</tr>
+<tr>
+<td>partition()</td>
+<td>指定分割符对字符串进行分割（从最左边的分割符开始分割，仅分割一次，返回三个元素）</td>
+</tr>
+<tr>
+<td>rpartition()</td>
+<td>指定分割符对字符串进行分割（从最右边的分割符开始分割，仅分割一次，返回三个元素）</td>
+</tr>
+<tr>
+<td>split()</td>
+<td>指定分割符对字符串进行分割（从最左边的分割符开始分割，可指定分割次数，返回多个元素）</td>
+</tr>
+<tr>
+<td>rsplit()</td>
+<td>指定分割符对字符串进行分割（从最右边的分割符开始分割，可指定分割次数，返回多个元素）</td>
+</tr>
+<tr>
+<td>replace()</td>
+<td>使用新字符串替换原字符串中的子字符串</td>
+</tr>
+<tr>
+<td>splitlines()</td>
+<td>以换行符作为分隔符来分割字符串</td>
+</tr>
+<tr>
+<td>translate()</td>
+<td>将数组元素字符串按照给定的转换表进行映射</td>
+</tr>
+<tr>
+<td>encode()</td>
+<td>编码操作，数组元素依次调用 str.encode</td>
+</tr>
+<tr>
+<td>decode()</td>
+<td>解码操作，数组元素依次调用 str.decode</td>
+</tr>
+</tbody>
+</table>
+<h2 id="font-color-ff0000-【02】numpy-char-add-font"><font color=#ff0000>【02】numpy.char.add()</font></h2>
+<p>numpy.char.add() 函数用于对两个数组的字符串元素进行连接。</p>
+<p>基本语法：<code>numpy.char.add(x1, x2)</code>，数组 x1 和 x2 必须具有相同的形状。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x1</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>x2</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.add([<span class="hljs-string">&#x27;hello&#x27;</span>],[<span class="hljs-string">&#x27; world&#x27;</span>]))
+[<span class="hljs-string">&#x27;hello world&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.add([<span class="hljs-string">&#x27;123&#x27;</span>, <span class="hljs-string">&#x27;abc&#x27;</span>], [<span class="hljs-string">&#x27; 456&#x27;</span>, <span class="hljs-string">&#x27; def&#x27;</span>]))
+[<span class="hljs-string">&#x27;123 456&#x27;</span> <span class="hljs-string">&#x27;abc def&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【03】numpy-char-join-font"><font color=#ff0000>【03】numpy.char.join()</font></h2>
+<p>numpy.char.join() 函数通过指定分隔符来连接数组中的元素。</p>
+<p>基本语法：<code>numpy.char.join(sep1, seq2)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>seq1</td>
+<td>分割符，str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>seq2</td>
+<td>被分割的 str 或 unicode 数组</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.join(<span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-string">&#x27;python&#x27;</span>))
+p-y-t-h-o-n
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.join([<span class="hljs-string">&#x27;+&#x27;</span>,<span class="hljs-string">&#x27;-&#x27;</span>],[<span class="hljs-string">&#x27;python&#x27;</span>,<span class="hljs-string">&#x27;java&#x27;</span>]))
+[<span class="hljs-string">&#x27;p+y+t+h+o+n&#x27;</span> <span class="hljs-string">&#x27;j-a-v-a&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【04】numpy-char-mod-font"><font color=#ff0000>【04】numpy.char.mod()</font></h2>
+<p>numpy.char.mod() 函数用于格式化字符串，相当于 Python 字符串中的 % 和 format。</p>
+<p>基本语法：<code>numpy.char.mod(value , a)</code></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.mod(<span class="hljs-string">&#x27;value=%.2f&#x27;</span>, np.arange(<span class="hljs-number">6</span>)))
+[<span class="hljs-string">&#x27;value=0.00&#x27;</span> <span class="hljs-string">&#x27;value=1.00&#x27;</span> <span class="hljs-string">&#x27;value=2.00&#x27;</span> <span class="hljs-string">&#x27;value=3.00&#x27;</span> <span class="hljs-string">&#x27;value=4.00&#x27;</span> <span class="hljs-string">&#x27;value=5.00&#x27;</span>]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.mod(<span class="hljs-string">&#x27;value=%.4f&#x27;</span>, [[<span class="hljs-number">1.1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3.021</span>], [<span class="hljs-number">4.12</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6.1</span>]]))
+[[<span class="hljs-string">&#x27;value=1.1000&#x27;</span> <span class="hljs-string">&#x27;value=2.0000&#x27;</span> <span class="hljs-string">&#x27;value=3.0210&#x27;</span>]
+ [<span class="hljs-string">&#x27;value=4.1200&#x27;</span> <span class="hljs-string">&#x27;value=5.0000&#x27;</span> <span class="hljs-string">&#x27;value=6.1000&#x27;</span>]]</code></pre>
+<h2 id="font-color-ff0000-【05】numpy-char-multiply-font"><font color=#ff0000>【05】numpy.char.multiply()</font></h2>
+<p>numpy.char.multiply() 函数用于元素的多重连接，即返回 <code>a*i</code>。</p>
+<p>基本语法：<code>numpy.char.multiply(a, i)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>i</td>
+<td>整数数组</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.multiply(<span class="hljs-string">&#x27;Python &#x27;</span>, <span class="hljs-number">4</span>))
+Python Python Python Python</code></pre>
+<h2 id="font-color-ff0000-【06】numpy-char-capitalize-font"><font color=#ff0000>【06】numpy.char.capitalize()</font></h2>
+<p>numpy.char.capitalize() 函数将字符串第一个字母转换为大写。</p>
+<p>基本语法：<code>numpy.char.capitalize(a)</code></p>
+<p>参数解释：<code>a</code>：要处理的 str 或 unicode 数组。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.capitalize(<span class="hljs-string">&#x27;python&#x27;</span>))
+Python
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.capitalize([<span class="hljs-string">&#x27;a1b2&#x27;</span>,<span class="hljs-string">&#x27;1b2a&#x27;</span>,<span class="hljs-string">&#x27;b2a1&#x27;</span>,<span class="hljs-string">&#x27;2a1b&#x27;</span>]))
+[<span class="hljs-string">&#x27;A1b2&#x27;</span> <span class="hljs-string">&#x27;1b2a&#x27;</span> <span class="hljs-string">&#x27;B2a1&#x27;</span> <span class="hljs-string">&#x27;2a1b&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【07】numpy-char-title-font"><font color=#ff0000>【07】numpy.char.title()</font></h2>
+<p>numpy.char.title() 函数将数组元素字符串的每个单词的第一个字母转换为大写。<font color=#ff0000>注意：如果一个字符串中间有非字母，则非字母之后的字符串会被视为另一个单词。</font></p>
+<p>基本语法：<code>numpy.char.title(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.title(<span class="hljs-string">&#x27;i love python!&#x27;</span>))
+I Love Python!
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.title(<span class="hljs-string">&#x27;a1bc2def3h&#x27;</span>))
+A1Bc2Def3H
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.title([<span class="hljs-string">&#x27;a1bc&#x27;</span>, <span class="hljs-string">&#x27;a 1bc&#x27;</span>, <span class="hljs-string">&#x27;a1 bc&#x27;</span>, <span class="hljs-string">&#x27;a1b c&#x27;</span>]))
+[<span class="hljs-string">&#x27;A1Bc&#x27;</span> <span class="hljs-string">&#x27;A 1Bc&#x27;</span> <span class="hljs-string">&#x27;A1 Bc&#x27;</span> <span class="hljs-string">&#x27;A1B C&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【08】numpy-char-lower-font"><font color=#ff0000>【08】numpy.char.lower()</font></h2>
+<p>numpy.char.lower() 函数将数组中所有的元素转换为小写。</p>
+<p>基本语法：<code>numpy.char.lower(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.lower(<span class="hljs-string">&#x27;PYTHON&#x27;</span>))
+python
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.lower([<span class="hljs-string">&#x27;PYTHON&#x27;</span>, <span class="hljs-string">&#x27;A123C&#x27;</span>, <span class="hljs-string">&#x27;Ba1A&#x27;</span>]))
+[<span class="hljs-string">&#x27;python&#x27;</span> <span class="hljs-string">&#x27;a123c&#x27;</span> <span class="hljs-string">&#x27;ba1a&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【09】numpy-char-upper-font"><font color=#ff0000>【09】numpy.char.upper()</font></h2>
+<p>numpy.char.upper() 函数将数组中所有的元素转换为大写。</p>
+<p>基本语法：<code>numpy.char.upper(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.upper(<span class="hljs-string">&#x27;python&#x27;</span>))
+PYTHON
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.upper([<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-string">&#x27;a123c&#x27;</span>, <span class="hljs-string">&#x27;ba1A&#x27;</span>]))
+[<span class="hljs-string">&#x27;PYTHON&#x27;</span> <span class="hljs-string">&#x27;A123C&#x27;</span> <span class="hljs-string">&#x27;BA1A&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【10】numpy-char-swapcase-font"><font color=#ff0000>【10】numpy.char.swapcase()</font></h2>
+<p>numpy.char.swapcase() 函数将数组中每个元素字母大写转为小写，小写转为大写。</p>
+<p>基本语法：<code>numpy.char.swapcase(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.swapcase(<span class="hljs-string">&#x27;Abc123DEf456gHI&#x27;</span>))
+aBC123deF456Ghi
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.swapcase([<span class="hljs-string">&#x27;Abc&#x27;</span>, <span class="hljs-string">&#x27;1De&#x27;</span>, <span class="hljs-string">&#x27;23F&#x27;</span>, <span class="hljs-string">&#x27;Ghi&#x27;</span>]))
+[<span class="hljs-string">&#x27;aBC&#x27;</span> <span class="hljs-string">&#x27;1dE&#x27;</span> <span class="hljs-string">&#x27;23f&#x27;</span> <span class="hljs-string">&#x27;gHI&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【11】numpy-char-center-font"><font color=#ff0000>【11】numpy.char.center()</font></h2>
+<p>numpy.char.center() 函数用于<font color=#FF000000><strong>居中</strong></font>字符串，并使用指定字符在<font color=#FF000000><strong>左右侧</strong></font>进行填充。</p>
+<p>基本语法：<code>numpy.char.center(a, width[, fillchar=' '])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>width</td>
+<td>int 类型，结果字符串的总长度</td>
+</tr>
+<tr>
+<td>fillchar</td>
+<td>可选项，str 或 unicode 数组，要使用的填充字符，默认为空格</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.center(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">10</span>))
+  python  
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.center(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">12</span>, fillchar=<span class="hljs-string">&#x27;-&#x27;</span>))
+---python---
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.center(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">11</span>, fillchar=<span class="hljs-string">&#x27;-&#x27;</span>))
+---python--</code></pre>
+<h2 id="font-color-ff0000-【12】numpy-char-ljust-font"><font color=#ff0000>【12】numpy.char.ljust()</font></h2>
+<p>numpy.char.ljust() 函数用于<font color=#FF000000><strong>左对齐</strong></font>字符串，并使用指定字符在<font color=#FF000000><strong>右侧</strong></font>进行填充。</p>
+<p>基本语法：<code>numpy.char.ljust(a, width[, fillchar=' '])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>width</td>
+<td>int 类型，结果字符串的总长度</td>
+</tr>
+<tr>
+<td>fillchar</td>
+<td>可选项，str 或 unicode 数组，要使用的填充字符，默认为空格</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.ljust(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">10</span>, fillchar=<span class="hljs-string">&#x27;-&#x27;</span>))
+python----</code></pre>
+<h2 id="font-color-ff0000-【13】numpy-char-rjust-font"><font color=#ff0000>【13】numpy.char.rjust()</font></h2>
+<p>numpy.char.ljust() 函数用于<font color=#FF000000><strong>右对齐</strong></font>字符串，并使用指定字符在<font color=#FF000000><strong>左侧</strong></font>进行填充。</p>
+<p>基本语法：<code>numpy.char.rjust(a, width[, fillchar=' '])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>width</td>
+<td>int 类型，结果字符串的总长度</td>
+</tr>
+<tr>
+<td>fillchar</td>
+<td>可选项，str 或 unicode 数组，要使用的填充字符，默认为空格</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rjust(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">10</span>, fillchar=<span class="hljs-string">&#x27;-&#x27;</span>))
+----python</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105350414</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-ff0000-【14】numpy-char-zfill-font"><font color=#ff0000>【14】numpy.char.zfill()</font></h2>
+<p>numpy.char.zfill() 函数在数组元素的左边填充指定个数的数字 0。</p>
+<p>基本语法：<code>numpy.char.zfill(a, width)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>width</td>
+<td>int 类型，数组字符串在左边填充 0 后整个字符串的宽度<br>如果宽度小于原字符串的宽度，则结果会去掉原字符串中多余的元素</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.zfill(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">3</span>))
+pyt
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.zfill(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-number">10</span>))
+0000python</code></pre>
+<h2 id="font-color-ff0000-【15】numpy-char-strip-font"><font color=#ff0000>【15】numpy.char.strip()</font></h2>
+<p>numpy.char.strip() 函数用于移除开头和结尾处的特定字符。</p>
+<p>基本语法：<code>numpy.char.strip(a[, chars=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>chars</td>
+<td>可选项，str 类型，指定要删除的字符集，如果省略或者为 None，则默认为删除空白</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.strip(<span class="hljs-string">&#x27;alibaba&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+libab
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.strip([<span class="hljs-string">&#x27;Alibaba&#x27;</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;java&#x27;</span>, <span class="hljs-string">&#x27;ABBA&#x27;</span>],<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;Alibab&#x27;</span> <span class="hljs-string">&#x27;dmin&#x27;</span> <span class="hljs-string">&#x27;jav&#x27;</span> <span class="hljs-string">&#x27;ABBA&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【16】numpy-char-lstrip-font"><font color=#ff0000>【16】numpy.char.lstrip()</font></h2>
+<p>numpy.char.lstrip() 函数用于移除数组每个元素最右边的特定字符。</p>
+<p>基本语法：<code>numpy.char.lstrip(a[, chars=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>chars</td>
+<td>可选项，str 类型，指定要删除的字符集，如果省略或者为 None，则默认为删除空白</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.lstrip(<span class="hljs-string">&#x27;alibaba&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+libaba
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.lstrip([<span class="hljs-string">&#x27;Alibaba&#x27;</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;java&#x27;</span>, <span class="hljs-string">&#x27;aBBa&#x27;</span>],<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;Alibaba&#x27;</span> <span class="hljs-string">&#x27;dmin&#x27;</span> <span class="hljs-string">&#x27;java&#x27;</span> <span class="hljs-string">&#x27;BBa&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【17】numpy-char-rstrip-font"><font color=#ff0000>【17】numpy.char.rstrip()</font></h2>
+<p>numpy.char.rstrip() 函数用于移除数组每个元素最右边的特定字符。</p>
+<p>基本语法：<code>numpy.char.rstrip(a[, chars=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>chars</td>
+<td>可选项，str 类型，指定要删除的字符集，如果省略或者为 None，则默认为删除空白</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rstrip(<span class="hljs-string">&#x27;alibaba&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+alibab
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rstrip([<span class="hljs-string">&#x27;Alibaba&#x27;</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;java&#x27;</span>, <span class="hljs-string">&#x27;aBBa&#x27;</span>],<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;Alibab&#x27;</span> <span class="hljs-string">&#x27;admin&#x27;</span> <span class="hljs-string">&#x27;jav&#x27;</span> <span class="hljs-string">&#x27;aBB&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【18】numpy-char-partition-font"><font color=#ff0000>【18】numpy.char.partition()</font></h2>
+<p>numpy.char.partition() 函数通过指定分割符对字符串进行分割，从<font color=#FF0000><strong>最左边</strong></font>第一次出现的分割符开始分割，仅分割一次，返回三个元素。</p>
+<p>基本语法：<code>numpy.char.partition(a, sep)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>sep</td>
+<td>分割字符，str 或 unicode 类型，返回三个元素：分割字符前的字符，分割字符，分割字符后的字符<br>如果元素包含多个分割字符，以<font color=#FF0000><strong>最左边</strong></font>的为准，如果找不到分隔符，则返回三个元素：<font color=#FF0000><strong>字符串本身以及两个空字符串</strong></font></td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.partition(<span class="hljs-string">&#x27;111a222&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;111&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;222&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.partition(<span class="hljs-string">&#x27;111a222a333&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;111&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;222a333&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.partition(<span class="hljs-string">&#x27;111a222a333&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>))
+[<span class="hljs-string">&#x27;111a222a333&#x27;</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-string">&#x27;&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.partition([<span class="hljs-string">&#x27;111a222&#x27;</span>, <span class="hljs-string">&#x27;23a45&#x27;</span>],<span class="hljs-string">&#x27;a&#x27;</span>))
+[[<span class="hljs-string">&#x27;111&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;222&#x27;</span>]
+ [<span class="hljs-string">&#x27;23&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;45&#x27;</span>]]</code></pre>
+<h2 id="font-color-ff0000-【19】numpy-char-rpartition-font"><font color=#ff0000>【19】numpy.char.rpartition()</font></h2>
+<p>numpy.char.partition() 函数通过指定分割符对字符串进行分割，从<font color=#FF0000><strong>最右边</strong></font>第一次出现的分割符开始分割，仅分割一次，返回三个元素。</p>
+<p>基本语法：<code>numpy.char.rpartition(a, sep)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>sep</td>
+<td>分割字符，str 或 unicode 类型，返回三个元素：分割字符前的字符，分割字符，分割字符后的字符<br>如果元素包含多个分割字符，以<font color=#FF0000><strong>最右边</strong></font>的为准，如果找不到分隔符，则返回三个元素：<font color=#FF0000><strong>两个空字符串以及字符串本身</strong></font></td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rpartition(<span class="hljs-string">&#x27;111a222a333&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>))
+[<span class="hljs-string">&#x27;111a222&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;333&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rpartition(<span class="hljs-string">&#x27;111a222a333&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>))
+[<span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-string">&#x27;111a222a333&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rpartition([<span class="hljs-string">&#x27;111a222a333&#x27;</span>, <span class="hljs-string">&#x27;23a45&#x27;</span>],<span class="hljs-string">&#x27;a&#x27;</span>))
+[[<span class="hljs-string">&#x27;111a222&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;333&#x27;</span>]
+ [<span class="hljs-string">&#x27;23&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;45&#x27;</span>]]</code></pre>
+<h2 id="font-color-ff0000-【20】numpy-char-split-font"><font color=#ff0000>【20】numpy.char.split()</font></h2>
+<p>numpy.char.split() 函数通过指定分割符对字符串进行分割，从<font color=#FF0000><strong>最左边</strong></font>的分割符开始分割，可指定分割次数，返回多个元素。</p>
+<p>基本语法：<code>numpy.char.split(a[, sep=None, maxsplit=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>sep</td>
+<td>分隔符，可选项，str 或者 unicode 类型，如果 sep 未指定或者为 None，则默认为空格</td>
+</tr>
+<tr>
+<td>maxsplit</td>
+<td>可选项，int 类型，如果指定 maxsplit，则最多完成 maxsplit 次分割</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.split(<span class="hljs-string">&#x27;I love python!&#x27;</span>))
+[<span class="hljs-string">&#x27;I&#x27;</span>, <span class="hljs-string">&#x27;love&#x27;</span>, <span class="hljs-string">&#x27;python!&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.split(<span class="hljs-string">&#x27;www.itrhx.com&#x27;</span>, sep=<span class="hljs-string">&#x27;.&#x27;</span>))
+[<span class="hljs-string">&#x27;www&#x27;</span>, <span class="hljs-string">&#x27;itrhx&#x27;</span>, <span class="hljs-string">&#x27;com&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.split(<span class="hljs-string">&#x27;one.two.itrhx.com&#x27;</span>, sep=<span class="hljs-string">&#x27;.&#x27;</span>, maxsplit=<span class="hljs-number">2</span>))
+[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;itrhx.com&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.split(<span class="hljs-string">&#x27;one.two.itrhx.com&#x27;</span>, <span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-number">2</span>))
+[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;itrhx.com&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【21】numpy-char-rsplit-font"><font color=#ff0000>【21】numpy.char.rsplit()</font></h2>
+<p>numpy.char.split() 函数通过指定分割符对字符串进行分割，从<font color=#FF0000><strong>最右边</strong></font>的分割符开始分割，可指定分割次数，返回多个元素。</p>
+<p>基本语法：<code>numpy.char.rsplit(a[, sep=None, maxsplit=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>sep</td>
+<td>分隔符，可选项，str 或者 unicode 类型，如果 sep 未指定或者为 None，则默认为空格</td>
+</tr>
+<tr>
+<td>maxsplit</td>
+<td>可选项，int 类型，如果指定 maxsplit，则最多完成 maxsplit 次分割</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.rsplit(<span class="hljs-string">&#x27;one.two.itrhx.com&#x27;</span>, <span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-number">2</span>))
+[<span class="hljs-string">&#x27;one.two&#x27;</span>, <span class="hljs-string">&#x27;itrhx&#x27;</span>, <span class="hljs-string">&#x27;com&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【22】numpy-char-replace-font"><font color=#ff0000>【22】numpy.char.replace()</font></h2>
+<p>numpy.char.replace() 函数可以使用新字符串来替换原字符串中的子字符串。</p>
+<p>基本语法：<code>numpy.char.replace(a, old, new[, count=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>old</td>
+<td>旧的字符串，即要替换的字符串，str 或 unicode 类型</td>
+</tr>
+<tr>
+<td>new</td>
+<td>新的字符串，即替换的字符串，str 或 unicode 类型</td>
+</tr>
+<tr>
+<td>count</td>
+<td>int 类型，如果指定该值 N，则会替换 old 中出现的前 N 个字符串</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.replace(<span class="hljs-string">&#x27;i like python&#x27;</span>, <span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-string">&#x27;java&#x27;</span>))
+i like java
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.replace(<span class="hljs-string">&#x27;aaaaaaa&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, count=<span class="hljs-number">3</span>))
+bbbaaaa
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.replace(<span class="hljs-string">&#x27;a111a11a1a111aa&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;A&#x27;</span>, count=<span class="hljs-number">3</span>))
+A111A11A1a111aa</code></pre>
+<h2 id="font-color-ff0000-【23】numpy-char-splitlines-font"><font color=#ff0000>【23】numpy.char.splitlines()</font></h2>
+<p>numpy.char.splitlines() 函数以换行符作为分隔符来分割字符串，并返回数组。</p>
+<p>基本语法：<code>numpy.char.splitlines(a[, keepends=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>keepends</td>
+<td>如果指定 keepends 为 True，则换行符会包含在结果列表中，否则不包含</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.splitlines(<span class="hljs-string">&#x27;hi python!\nhi java!&#x27;</span>))
+[<span class="hljs-string">&#x27;hi python!&#x27;</span>, <span class="hljs-string">&#x27;hi java!&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.splitlines(<span class="hljs-string">&#x27;hi python!\nhi java!&#x27;</span>, keepends=<span class="hljs-literal">True</span>))
+[<span class="hljs-string">&#x27;hi python!\n&#x27;</span>, <span class="hljs-string">&#x27;hi java!&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【24】numpy-char-translate-font"><font color=#ff0000>【24】numpy.char.translate()</font></h2>
+<p>numpy.char.translate() 函数将数组元素字符串按照给定的转换表进行映射。</p>
+<p>基本语法：<code>numpy.char.translate(a, table[, deletechars=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>table</td>
+<td>包含 256 个字符的映射表，映射表通过 <code>str.maketrans()</code> 方法转换而来</td>
+</tr>
+<tr>
+<td>deletechars</td>
+<td>可选项，str 类型，字符串中要过滤的字符列表</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>intab = <span class="hljs-string">&#x27;abcdef&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>outtab = <span class="hljs-string">&#x27;123456&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>table = <span class="hljs-built_in">str</span>.maketrans(intab, outtab)    <span class="hljs-comment">#  制作映射表</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.translate(<span class="hljs-string">&#x27;this is a translate example!&#x27;</span>, table))
+this <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> tr1nsl1t5 5x1mpl5!</code></pre>
+<h2 id="font-color-ff0000-【25】numpy-char-encode-font"><font color=#ff0000>【25】numpy.char.encode()</font></h2>
+<p>numpy.char.encode() 函数用于编码操作，数组元素依次调用 str.encode，可以使用 Python 标准库中的编解码器。</p>
+<p>基本语法：<code>numpy.char.encode(a[, encoding=None, errors=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>编码名称，可选项，str 类型，默认编码为 utf-8</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>指定如何处理编码错误，可选项，str 类型</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.encode(<span class="hljs-string">&#x27;python&#x27;</span>, <span class="hljs-string">&#x27;cp500&#x27;</span>))
+<span class="hljs-string">b&#x27;\x97\xa8\xa3\x88\x96\x95&#x27;</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.encode([<span class="hljs-string">&#x27;aAaAaA&#x27;</span>, <span class="hljs-string">&#x27;  aA  &#x27;</span>, <span class="hljs-string">&#x27;abBABba&#x27;</span>], <span class="hljs-string">&#x27;cp037&#x27;</span>))
+[<span class="hljs-string">b&#x27;\x81\xc1\x81\xc1\x81\xc1&#x27;</span> <span class="hljs-string">b&#x27;@@\x81\xc1@@&#x27;</span> <span class="hljs-string">b&#x27;\x81\x82\xc2\xc1\xc2\x82\x81&#x27;</span>]</code></pre>
+<h2 id="font-color-ff0000-【26】numpy-char-decode-font"><font color=#ff0000>【26】numpy.char.decode()</font></h2>
+<p>numpy.char.decode() 函数用于解码操作，数组元素依次调用 str.decode，可以使用 Python 标准库中的编解码器。</p>
+<p>基本语法：<code>numpy.char.decode(a[, encoding=None, errors=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要处理的 str 或 unicode 数组</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>编码名称，可选项，str 类型，默认编码为 utf-8</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>指定如何处理编码错误，可选项，str 类型</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.decode(<span class="hljs-string">b&#x27;\x97\xa8\xa3\x88\x96\x95&#x27;</span>, <span class="hljs-string">&#x27;cp500&#x27;</span>))
+python
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.char.decode([<span class="hljs-string">b&#x27;\x81\xc1\x81\xc1\x81\xc1&#x27;</span> <span class="hljs-string">b&#x27;@@\x81\xc1@@&#x27;</span> <span class="hljs-string">b&#x27;\x81\x82\xc2\xc1\xc2\x82\x81&#x27;</span>], <span class="hljs-string">&#x27;cp500&#x27;</span>))
+[<span class="hljs-string">&#x27;aAaAaA  aA  abBABba&#x27;</span>]</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105350414</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/012/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/010/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,938 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-05-05丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.1k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 14分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Matplotlib/" class="post-tag">
+                            Matplotlib</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/016/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/017/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/018/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/019/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/020/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/021/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/022/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105914929</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【1x00】方法描述-font"><font color=#FF0000>【1x00】方法描述</font></h2>
+<p><code>matplotlib.pyplot.scatter()</code> 方法可用于绘制散点图。</p>
+<p>本文用到的其他图像属性可参考前面的两篇文章：</p>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a><br>
+<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图等基本图像属性》</a></p>
+<p>基本语法：<code>matplotlib.pyplot.scatter(x, y, s=None, c=None, marker=None, cmap=None, alpha=None, linewidths=None, edgecolors=None, \*\*kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x,y</td>
+<td>数据位置，标量或类似数组的形式</td>
+</tr>
+<tr>
+<td>s</td>
+<td>标记的大小，以磅为单位，默认 <code>rcParams['lines.markersize'] ** 2</code>，即 6**2=36</td>
+</tr>
+<tr>
+<td>color / c</td>
+<td>标记的颜色，可以是单个颜色或者一个颜色列表<br>支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>marker</td>
+<td>标记的样式，默认为 <code>rcParams[&quot;scatter.marker&quot;] = 'o'</code>，更多样式参见<font color=#FF0000><strong>表一</strong></font></td>
+</tr>
+<tr>
+<td>cmap</td>
+<td>将浮点数映射成颜色的颜色映射表，即一个 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap">Colormap</a> 实例或注册的颜色表名，仅当 c 是浮点数数组时才使用 cmap</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>标记的透明度，float 类型，取值范围：[0, 1]，默认为 1.0，即不透明</td>
+</tr>
+<tr>
+<td>linewidths</td>
+<td>标记边缘的线宽，默认为 <code>rcParams[&quot;lines.linewidth&quot;] = 1.5</code></td>
+</tr>
+<tr>
+<td>edgecolors</td>
+<td>标记边缘的颜色，可以是单个颜色或者一个颜色列表<br>支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color="FF0000" size=3px>表一：marker 标记的样式</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;.&quot;</code></td>
+<td>点</td>
+</tr>
+<tr>
+<td><code>&quot;,&quot;</code></td>
+<td>像素点</td>
+</tr>
+<tr>
+<td><code>&quot;o&quot;</code></td>
+<td>圆圈</td>
+</tr>
+<tr>
+<td><code>&quot;v&quot;</code></td>
+<td>倒三角</td>
+</tr>
+<tr>
+<td><code>&quot;^&quot;</code></td>
+<td>正三角</td>
+</tr>
+<tr>
+<td><code>&quot;&lt;&quot;</code></td>
+<td>左三角</td>
+</tr>
+<tr>
+<td><code>&quot;&gt;&quot;</code></td>
+<td>右三角</td>
+</tr>
+<tr>
+<td><code>&quot;1&quot;</code></td>
+<td>倒三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;2&quot;</code></td>
+<td>正三叉星（类似奔驰车标形状）</td>
+</tr>
+<tr>
+<td><code>&quot;3&quot;</code></td>
+<td>左三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;4&quot;</code></td>
+<td>右三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;8&quot;</code></td>
+<td>八边形</td>
+</tr>
+<tr>
+<td><code>&quot;s&quot;</code></td>
+<td>正方形</td>
+</tr>
+<tr>
+<td><code>&quot;p&quot;</code></td>
+<td>五边形</td>
+</tr>
+<tr>
+<td><code>&quot;P&quot;</code></td>
+<td>填充的加号（粗加号）</td>
+</tr>
+<tr>
+<td><code>&quot;+&quot;</code></td>
+<td>加号</td>
+</tr>
+<tr>
+<td><code>&quot;*&quot;</code></td>
+<td>星形</td>
+</tr>
+<tr>
+<td><code>&quot;h&quot;</code></td>
+<td>六边形（底部是角）</td>
+</tr>
+<tr>
+<td><code>&quot;H&quot;</code></td>
+<td>六边形（底部是边）</td>
+</tr>
+<tr>
+<td><code>&quot;x&quot;</code></td>
+<td>x 号</td>
+</tr>
+<tr>
+<td><code>&quot;X&quot;</code></td>
+<td>填充的 x 号（粗 x 号）</td>
+</tr>
+<tr>
+<td><code>&quot;D&quot;</code></td>
+<td>粗菱形（对角线相等）</td>
+</tr>
+<tr>
+<td><code>&quot;d&quot;</code></td>
+<td>细菱形（对角线不等）</td>
+</tr>
+<tr>
+<td>`&quot;</td>
+<td>&quot;`</td>
+</tr>
+<tr>
+<td><code>&quot;_&quot;</code></td>
+<td>水平线</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>水平线靠左</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>水平线靠右</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>垂直线靠上</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>垂直线靠下</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>左三角（比 <code>&quot;&lt;&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>右三角（比 <code>&quot;&gt;&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>6</code></td>
+<td>正三角（比 <code>&quot;^&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>7</code></td>
+<td>倒三角（比 <code>&quot;v&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>8</code></td>
+<td>左三角（比 <code>&quot;&lt;&quot;</code> 更细，靠左显示）</td>
+</tr>
+<tr>
+<td><code>9</code></td>
+<td>右三角（比 <code>&quot;&gt;&quot;</code> 更细，靠右显示）</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td>正三角（比 <code>&quot;^&quot;</code> 更细，靠上显示）</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td>倒三角（比 <code>&quot;v&quot;</code> 更细，靠下显示）</td>
+</tr>
+<tr>
+<td><code>&quot;None&quot;</code> / <code>&quot; &quot;</code> / <code>&quot;&quot;</code></td>
+<td>无样式</td>
+</tr>
+<tr>
+<td><code>'$...$'</code></td>
+<td>支持 LaTeX 数学公式，表达式用美元符号包围起来</td>
+</tr>
+</tbody>
+</table>
+<h2 id="font-color-FF0000-【2x00】简单示例-font"><font color=#FF0000>【2x00】简单示例</font></h2>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+x = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>)
+y = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>])
+plt.scatter(x, y)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/01.png" alt="01"></p>
+<h2 id="font-color-FF0000-【3x00】多条数据-font"><font color=#FF0000>【3x00】多条数据</font></h2>
+<p>绘制多条数据，设置不同数据，然后多次调用 <code>plt.scatter()</code> 函数即可，不同数据的线条颜色会不同，系统随机，可单独指定不同颜色。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+x = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">1</span>)
+y1 = np.sin(<span class="hljs-number">3</span>*x)/x
+y2 = np.sin(<span class="hljs-number">2</span>*x)/x
+y3 = np.sin(<span class="hljs-number">1</span>*x)/x
+plt.title(<span class="hljs-string">&#x27;多数据散点图示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+
+plt.scatter(x, y1)
+plt.scatter(x, y2)
+plt.scatter(x, y3)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/02.png" alt="02"></p>
+<h2 id="font-color-FF0000-【4x00】设置颜色-样式-图例-font"><font color=#FF0000>【4x00】设置颜色 / 样式 / 图例</font></h2>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+x = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">1</span>)
+y1 = np.sin(<span class="hljs-number">3</span>*x)/x
+y2 = np.sin(<span class="hljs-number">2</span>*x)/x
+y3 = np.sin(<span class="hljs-number">1</span>*x)/x
+plt.title(<span class="hljs-string">&#x27;散点图自定义样式示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+
+plt.scatter(x, y1, color=<span class="hljs-string">&#x27;g&#x27;</span>, s=<span class="hljs-number">30</span>, label=<span class="hljs-string">&#x27;(x, y1)&#x27;</span>)              <span class="hljs-comment"># 默认绿色样式</span>
+plt.scatter(x, y2, color=<span class="hljs-string">&#x27;r&#x27;</span>, s=<span class="hljs-number">40</span>, marker=<span class="hljs-string">&#x27;d&#x27;</span>, label=<span class="hljs-string">&#x27;(x, y2)&#x27;</span>)  <span class="hljs-comment"># 红色菱形</span>
+plt.scatter(x, y3, color=<span class="hljs-string">&#x27;b&#x27;</span>, s=<span class="hljs-number">50</span>, marker=<span class="hljs-string">&#x27;2&#x27;</span>, label=<span class="hljs-string">&#x27;(x, y3)&#x27;</span>)  <span class="hljs-comment"># 蓝色正三叉星</span>
+
+plt.legend(framealpha=<span class="hljs-number">0</span>)    <span class="hljs-comment"># 显示图例，设置为全透明</span>
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/03.png" alt="03"></p>
+<h2 id="font-color-FF0000-【5x00】指定位置显示文本注释-font"><font color=#FF0000>【5x00】指定位置显示文本注释</font></h2>
+<p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定位置显示文本注释，参数解释常见前文：<br>
+<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+x = [<span class="hljs-number">0.13</span>, <span class="hljs-number">0.22</span>, <span class="hljs-number">0.39</span>, <span class="hljs-number">0.59</span>, <span class="hljs-number">0.68</span>, <span class="hljs-number">0.74</span>, <span class="hljs-number">0.93</span>]
+y = [<span class="hljs-number">0.75</span>, <span class="hljs-number">0.34</span>, <span class="hljs-number">0.44</span>, <span class="hljs-number">0.52</span>, <span class="hljs-number">0.80</span>, <span class="hljs-number">0.25</span>, <span class="hljs-number">0.55</span>]
+
+plt.title(<span class="hljs-string">&#x27;散点图添加文本注释示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+plt.xlim([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>])       <span class="hljs-comment"># 设置 x 轴刻度的范围</span>
+plt.ylim([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>])       <span class="hljs-comment"># 设置 y 轴刻度的范围</span>
+
+plt.scatter(x, y, marker=<span class="hljs-string">&#x27;o&#x27;</span>, s=<span class="hljs-number">50</span>)
+<span class="hljs-keyword">for</span> m, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(x, y):
+    plt.annotate(<span class="hljs-string">&#x27;(%s,%s)&#x27;</span> % (m, n),
+                 xy=(m, n),
+                 xytext=(<span class="hljs-number">0</span>, -<span class="hljs-number">10</span>),
+                 textcoords=<span class="hljs-string">&#x27;offset points&#x27;</span>,
+                 ha=<span class="hljs-string">&#x27;center&#x27;</span>,      <span class="hljs-comment"># 点在注释文本的中心</span>
+                 va=<span class="hljs-string">&#x27;top&#x27;</span>)         <span class="hljs-comment"># 点在注释文本的上方</span>
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/04.png" alt="04"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105914929</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【6x00】随机数据散点图-font"><font color=#FF0000>【6x00】随机数据散点图</font></h2>
+<p>随机数据可以用 numpy 的 random 模块来实现。</p>
+<p><code>numpy.random.rand(d0, d1, …, dn)</code>：根据给定维度生成 [0,1) 之间的数据。</p>
+<p><code>numpy.random.randn(d0, d1, …, dn)</code> ：返回一个或一组具有标准正态分布的样本。</p>
+<p><code>numpy.random.randint(low, high, size)</code>：返回随机整数，范围区间为 [low,high），size 为数组维度大小</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">1000</span>
+x = np.random.randn(N)
+y = np.random.randn(N)
+
+plt.title(<span class="hljs-string">&#x27;散点图随机数据示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+plt.scatter(x, y, alpha=<span class="hljs-number">0.5</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/05.png" alt="05"></p>
+<h2 id="font-color-FF0000-【7x00】随机颜色与色条-font"><font color=#FF0000>【7x00】随机颜色与色条</font></h2>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">1000</span>
+x = np.random.randn(N)
+y = np.random.randn(N)
+
+color = np.random.rand(N)
+size = np.random.rand(N) * <span class="hljs-number">1000</span>
+
+plt.figure(figsize=(<span class="hljs-number">8.4</span>, <span class="hljs-number">5.8</span>))    <span class="hljs-comment"># 设置画布大小 840x580</span>
+plt.title(<span class="hljs-string">&#x27;散点图随机大小颜色示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+plt.scatter(x, y, c=color, s=size, alpha=<span class="hljs-number">0.5</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/06.png" alt="06"></p>
+<p>可以用 <code>pyplot.colorbar()</code> 方法绘制颜色对照条。</p>
+<p>基本语法：<code>matplotlib.pyplot.colorbar([mappable=None, cax=None, ax=None, **kw])</code></p>
+<p>部分参数解释如下表，其他参数，如长度，宽度等请参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a>。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mappable</td>
+<td>要设置色条的图像对象，该参数对于 <code>Figure.colorbar</code> 方法是必需的，但对于 <code>pyplot.colorbar</code> 函数是可选的</td>
+</tr>
+<tr>
+<td>cax</td>
+<td>可选项，要绘制色条的轴</td>
+</tr>
+<tr>
+<td>ax</td>
+<td>可选项，设置色条的显示位置，通常在一个画布上有多个子图时使用</td>
+</tr>
+<tr>
+<td>**kw</td>
+<td>可选项，其他关键字参数，参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">1000</span>
+x = np.random.randn(N)
+y = np.random.randn(N)
+
+color = np.random.rand(N)
+size = np.random.rand(N) * <span class="hljs-number">1000</span>
+
+plt.figure(figsize=(<span class="hljs-number">8.4</span>, <span class="hljs-number">5.8</span>))
+plt.title(<span class="hljs-string">&#x27;散点图颜色对照条示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+plt.scatter(x, y, c=color, s=size, alpha=<span class="hljs-number">0.5</span>)
+plt.colorbar()
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/07.png" alt="07"></p>
+<h2 id="font-color-FF0000-【8x00】不同图像之间的层级调整-font"><font color=#FF0000>【8x00】不同图像之间的层级调整</font></h2>
+<p><code>zorder</code> 参数用于设置不同图像之间的层级关系，数字越大，所处的层级越大，即显示越靠上。</p>
+<p>未设置 <code>zorder</code> 参数前：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+x1 = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">0.01</span>)
+y1 = np.sin(<span class="hljs-number">3</span>*x1)/x1
+x2 = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">1</span>)
+y2 = np.sin(<span class="hljs-number">3</span>*x2)/x2
+
+plt.title(<span class="hljs-string">&#x27;不同图像之间层级调整示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+
+plt.plot(x1, y1, c=<span class="hljs-string">&#x27;b&#x27;</span>, linewidth=<span class="hljs-number">3.5</span>, label=<span class="hljs-string">&#x27;线性图&#x27;</span>)
+plt.scatter(x2, y2, c=<span class="hljs-string">&#x27;r&#x27;</span>, s=<span class="hljs-number">40</span>, label=<span class="hljs-string">&#x27;散点图&#x27;</span>)
+plt.legend()
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/08.png" alt="08"></p>
+<p>设置 <code>zorder</code> 参数后：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+x1 = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">0.01</span>)
+y1 = np.sin(<span class="hljs-number">3</span>*x1)/x1
+x2 = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">1</span>)
+y2 = np.sin(<span class="hljs-number">3</span>*x2)/x2
+
+plt.title(<span class="hljs-string">&#x27;不同图像之间层级调整示例&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+
+plt.plot(x1, y1, zorder=<span class="hljs-number">1</span>, c=<span class="hljs-string">&#x27;b&#x27;</span>, linewidth=<span class="hljs-number">3.5</span>, label=<span class="hljs-string">&#x27;线性图&#x27;</span>)
+plt.scatter(x2, y2, zorder=<span class="hljs-number">2</span>, c=<span class="hljs-string">&#x27;r&#x27;</span>, s=<span class="hljs-number">40</span>, label=<span class="hljs-string">&#x27;散点图&#x27;</span>)
+plt.legend()
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/09.png" alt="09"></p>
+<h2 id="font-color-FF0000-【9x00】框选部分数据-font"><font color=#FF0000>【9x00】框选部分数据</font></h2>
+<p>有时候我们希望能够框选一部分数据来强调其重要性，<code>matplotlib.patches.Polygon()</code> 方法的作用是生成不规则的多边形补丁，<code>matplotlib.patches</code> 还有另外的方法可以生成矩形、圆形等其他图形，具体参见前面的文章<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a>，生成补丁之后，通过 <code>axes.add_patch()</code> 方法将其添加到绘图区（axes）即可。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> matplotlib.patches <span class="hljs-keyword">as</span> mpathes
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+plt.figure(figsize=(<span class="hljs-number">8.4</span>, <span class="hljs-number">5.8</span>))
+
+x1 = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">10</span>)
+y1 = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">100</span>)
+x2 = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">500</span>, <span class="hljs-number">10</span>)
+y2 = np.random.randint(<span class="hljs-number">200</span>, <span class="hljs-number">800</span>, <span class="hljs-number">50</span>)
+x3 = np.random.randint(<span class="hljs-number">50</span>, <span class="hljs-number">800</span>, <span class="hljs-number">80</span>)
+y3 = np.random.randint(<span class="hljs-number">50</span>, <span class="hljs-number">800</span>, <span class="hljs-number">80</span>)
+x4 = np.array([<span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">300</span>, <span class="hljs-number">400</span>, <span class="hljs-number">350</span>, <span class="hljs-number">500</span>, <span class="hljs-number">450</span>, <span class="hljs-number">367</span>, <span class="hljs-number">420</span>, <span class="hljs-number">490</span>])
+y4 = np.array([<span class="hljs-number">267</span>, <span class="hljs-number">800</span>, <span class="hljs-number">453</span>, <span class="hljs-number">500</span>, <span class="hljs-number">600</span>, <span class="hljs-number">420</span>, <span class="hljs-number">380</span>, <span class="hljs-number">503</span>, <span class="hljs-number">390</span>, <span class="hljs-number">600</span>])
+
+plt.title(<span class="hljs-string">&#x27;散点图数据框选示例&#x27;</span>, fontsize=<span class="hljs-number">15</span>)
+plt.xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>, fontsize=<span class="hljs-number">15</span>)
+plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>, fontsize=<span class="hljs-number">15</span>)
+plt.scatter(x1, y1, c=<span class="hljs-string">&#x27;r&#x27;</span>, s=<span class="hljs-number">50</span>, alpha=<span class="hljs-number">0.7</span>, label=<span class="hljs-string">&#x27;RED&#x27;</span>)
+plt.scatter(x2, y2, c=<span class="hljs-string">&#x27;b&#x27;</span>, s=<span class="hljs-number">100</span>, alpha=<span class="hljs-number">0.7</span>, label=<span class="hljs-string">&#x27;BLUE&#x27;</span>)
+plt.scatter(x3, y3, c=<span class="hljs-string">&#x27;g&#x27;</span>, s=<span class="hljs-number">150</span>, alpha=<span class="hljs-number">0.7</span>, label=<span class="hljs-string">&#x27;GREEN&#x27;</span>)
+plt.scatter(x4, y4, c=<span class="hljs-string">&#x27;y&#x27;</span>, s=<span class="hljs-number">250</span>, alpha=<span class="hljs-number">0.7</span>, label=<span class="hljs-string">&#x27;YELLOW&#x27;</span>)
+plt.legend(loc=<span class="hljs-string">&#x27;upper right&#x27;</span>, borderpad=<span class="hljs-number">1</span>, edgecolor=<span class="hljs-string">&#x27;k&#x27;</span>, framealpha=<span class="hljs-number">1</span>, labelspacing=<span class="hljs-number">1</span>)
+
+Polygon_point = [[<span class="hljs-number">100</span>, <span class="hljs-number">800</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">267</span>], [<span class="hljs-number">500</span>, <span class="hljs-number">420</span>], [<span class="hljs-number">490</span>, <span class="hljs-number">600</span>]]        <span class="hljs-comment"># 多边形补丁的顶点坐标</span>
+polygon = mpathes.Polygon(Polygon_point, color=<span class="hljs-string">&#x27;#FF69B4&#x27;</span>, alpha=<span class="hljs-number">0.3</span>)  <span class="hljs-comment"># 绘制补丁，框选部分数据</span>
+ax = plt.gca()          <span class="hljs-comment"># 获取当前绘图区（gca = Get Current Axes）</span>
+ax.add_patch(polygon)   <span class="hljs-comment"># 将补丁添加到当前绘图区</span>
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/018/10.png" alt="10"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105914929</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/019/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/017/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

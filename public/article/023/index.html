@@ -1,0 +1,1420 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-08丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 5.9k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 27分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Matplotlib/" class="post-tag">
+                            Matplotlib</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/016/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/017/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/018/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/019/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/020/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/021/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/022/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106558131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】了解-mplot3d-Toolkit-font"><font color=#FF0000>【01x00】了解 mplot3d Toolkit</font></h2>
+<p>mplot3d Toolkit 即 mplot3d 工具包，在 matplotlib 中使用 mplot3d 工具包可以绘制 3D 图。</p>
+<p>mplot3d 官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/toolkits/mplot3d.html">https://matplotlib.org/tutorials/toolkits/mplot3d.html</a></p>
+<p>在 matplotlib 中，figure 为画布，axes 为绘图区，<code>fig.add_subplot()</code>、<code>plt.subplot()</code> 方法均可以创建子图，在绘制 3D 图时，某些 2D 图的参数也适用于 3D 图，在本文的示例中，可能会用到的一些没有具体解释的函数或者参数，其用法均可在前面的系列文章中找到：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105638122">《Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></p>
+</li>
+</ul>
+<p><font color=#FF0000><strong>绘制 3D 图的步骤：创建 Axes3D 对象，然后调用 Axes3D 的不同方法来绘制不同类型的 3D 图。以下介绍三种 Axes3D 对象创建的方法。</strong></font></p>
+<h3 id="font-color-4876FF-【01x01】Axes3D-对象创建方法一：Axes3D-fig-font"><font color=##4876FF>【01x01】Axes3D 对象创建方法一：Axes3D(fig)</font></h3>
+<p>在 Matplotlib 1.0.0 版本中，绘制 3D 图需要先导入 Axes3D 包，获取 figure 画布对象 fig 后，通过 Axes3D(fig) 方法来创建 Axes3D 对象，具体方法如下：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> mpl_toolkits.mplot3d <span class="hljs-keyword">import</span> Axes3D
+
+<span class="hljs-comment"># 获取 figure 画布并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = Axes3D(fig)
+
+<span class="hljs-comment"># 数据坐标</span>
+z = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">15</span>, <span class="hljs-number">1000</span>)
+x = np.sin(z)
+y = np.cos(z)
+
+<span class="hljs-comment"># 绘制线性图</span>
+ax.plot(x, y, z)
+plt.show()</code></pre>
+<h3 id="font-color-4876FF-【01x02】Axes3D-对象创建方法二：add-subplot-font"><font color=##4876FF>【01x02】Axes3D 对象创建方法二：add_subplot</font></h3>
+<p>在 Matplotlib 3.2.0 版本中，绘制 3D 图可以通过创建子图，然后指定 projection 参数 为 3d 即可，返回的 ax 为 Axes3D 对象，以下两种方法均可：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 数据坐标</span>
+z = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">15</span>, <span class="hljs-number">1000</span>)
+x = np.sin(z)
+y = np.cos(z)
+
+<span class="hljs-comment"># 绘制线性图</span>
+ax.plot(x, y, z)
+plt.show()</code></pre>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 通过子图创建 Axes3D 对象</span>
+ax = plt.subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 数据坐标</span>
+z = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">15</span>, <span class="hljs-number">1000</span>)
+x = np.sin(z)
+y = np.cos(z)
+
+<span class="hljs-comment"># 绘制线性图</span>
+ax.plot(x, y, z)
+plt.show()</code></pre>
+<h3 id="font-color-4876FF-【01x03】Axes3D-对象创建方法三：gca-font"><font color=##4876FF>【01x03】Axes3D 对象创建方法三：gca</font></h3>
+<p>除了以上两种方法以外，还可以先获取画布对象 fig，再通过 <code>fig.gca()</code> 方法获取当前绘图区（gca = Get Current Axes），然后指定 projection 参数 为 3d 即可，返回的 ax 为 Axes3D 对象。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 依次获取画布和绘图区并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 数据坐标</span>
+z = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">15</span>, <span class="hljs-number">1000</span>)
+x = np.sin(z)
+y = np.cos(z)
+
+<span class="hljs-comment"># 绘制线性图</span>
+ax.plot(x, y, z)
+plt.show()</code></pre>
+<p>以上三种方法运行结果均为下图：</p>
+<p><img src="https://cdn.itbob.cn/img/article/023/01.png" alt="01"></p>
+<h2 id="font-color-FF0000-【02x00】cmap-与-colorbar-font"><font color=#FF0000>【02x00】cmap 与 colorbar</font></h2>
+<p>默认情况下，散点图、线性图、曲面图等将以纯色着色，但可以通过提供 cmap 参数支持颜色映射。cmap 参数用于设置一些特殊的颜色组合，如渐变色等，参数取值通常为 Colormap 中的值，具体取值可参见下图：</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/colors/colormaps.html">https://matplotlib.org/tutorials/colors/colormaps.html</a></p>
+<p><img src="https://cdn.itbob.cn/img/article/023/02.png" alt="02"></p>
+<p>如果使用了 cmap 参数，则可以使用 <code>pyplot.colorbar()</code> 函数来绘制一个色条，即颜色对照条。</p>
+<p>基本语法：<code>matplotlib.pyplot.colorbar([mappable=None, cax=None, ax=None, **kw])</code></p>
+<p>部分参数解释如下表，其他参数，如长度，宽度等请参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a>。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mappable</td>
+<td>要设置色条的图像对象，该参数对于 <code>Figure.colorbar</code> 方法是必需的，但对于 <code>pyplot.colorbar</code> 函数是可选的</td>
+</tr>
+<tr>
+<td>cax</td>
+<td>可选项，要绘制色条的轴</td>
+</tr>
+<tr>
+<td>ax</td>
+<td>可选项，设置色条的显示位置，通常在一个画布上有多个子图时使用</td>
+</tr>
+<tr>
+<td>**kw</td>
+<td>可选项，其他关键字参数，参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="font-color-FF0000-【03x00】3D-线性图：Axes3D-plot-font"><font color=#FF0000>【03x00】3D 线性图：Axes3D.plot</font></h2>
+<p>基本方法：<code>Axes3D.plot(xs, ys[, zs, zdir='z', *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xs</td>
+<td>一维数组，点的 x 轴坐标</td>
+</tr>
+<tr>
+<td>ys</td>
+<td>一维数组，点的 y 轴坐标</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>一维数组，可选项，点的 z 轴坐标</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html">matplotlib.axes.Axes.plot</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 设置中文显示</span>
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 依次获取画布和绘图区并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 第一条3D线性图数据</span>
+theta = np.linspace(-<span class="hljs-number">4</span> * np.pi, <span class="hljs-number">4</span> * np.pi, <span class="hljs-number">100</span>)
+z1 = np.linspace(-<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">100</span>)
+r = z1**<span class="hljs-number">2</span> + <span class="hljs-number">1</span>
+x1 = r * np.sin(theta)
+y1 = r * np.cos(theta)
+
+<span class="hljs-comment"># 第二条3D线性图数据</span>
+z2 = np.linspace(-<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">100</span>)
+x2 = np.sin(z2)
+y2 = np.cos(z2)
+
+<span class="hljs-comment"># 绘制3D线性图</span>
+ax.plot(x1, y1, z1, color=<span class="hljs-string">&#x27;b&#x27;</span>, label=<span class="hljs-string">&#x27;3D 线性图一&#x27;</span>)
+ax.plot(x2, y2, z2, color=<span class="hljs-string">&#x27;r&#x27;</span>, label=<span class="hljs-string">&#x27;3D 线性图二&#x27;</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel、plt.legend...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 线性图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>, color=<span class="hljs-string">&#x27;r&#x27;</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>, color=<span class="hljs-string">&#x27;g&#x27;</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>, color=<span class="hljs-string">&#x27;b&#x27;</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.legend()
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/03.png" alt="03"></p>
+<h2 id="font-color-FF0000-【04x00】3D-散点图：Axes3D-scatter-font"><font color=#FF0000>【04x00】3D 散点图：Axes3D.scatter</font></h2>
+<p>基本方法：<code>Axes3D.scatter(xs, ys[, zs=0, zdir='z', s=20, c=None, depthshade=True, *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xs</td>
+<td>一维数组，点的 x 轴坐标</td>
+</tr>
+<tr>
+<td>ys</td>
+<td>一维数组，点的 y 轴坐标</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>一维数组，可选项，点的 z 轴坐标</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>s</td>
+<td>标量或数组类型，可选项，标记的大小，默认 20</td>
+</tr>
+<tr>
+<td>c</td>
+<td>标记的颜色，可选项，可以是单个颜色或者一个颜色列表<br>支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>depthshade</td>
+<td>bool 值，可选项，默认 True，是否为散点标记着色以提供深度外观</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.scatter.html">scatter</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 依次获取画布和绘图区并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+n = <span class="hljs-number">100</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">randrange</span>(<span class="hljs-params">n, vmin, vmax</span>):</span>
+    <span class="hljs-keyword">return</span> (vmax - vmin)*np.random.rand(n) + vmin
+
+
+<span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">定义绘制 n 个随机点，设置每一组数据点的样式和范围</span>
+<span class="hljs-string">x轴数据位于[23，32]区间，y轴数据位于[0，100]区间，z轴数据位于[zlow，zhigh]区间</span>
+<span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-keyword">for</span> m, zlow, zhigh <span class="hljs-keyword">in</span> [(<span class="hljs-string">&#x27;o&#x27;</span>, -<span class="hljs-number">50</span>, -<span class="hljs-number">25</span>), (<span class="hljs-string">&#x27;^&#x27;</span>, -<span class="hljs-number">30</span>, -<span class="hljs-number">5</span>)]:
+    xs = randrange(n, <span class="hljs-number">23</span>, <span class="hljs-number">32</span>)
+    ys = randrange(n, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>)
+    zs = randrange(n, zlow, zhigh)
+    ax.scatter(xs, ys, zs, marker=m)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 散点图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>, color=<span class="hljs-string">&#x27;b&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>, color=<span class="hljs-string">&#x27;b&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>, color=<span class="hljs-string">&#x27;b&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/04.png" alt="04"></p>
+<h2 id="font-color-FF0000-【05x00】3D-线框图：Axes3D-plot-wireframe-font"><font color=#FF0000>【05x00】3D 线框图：Axes3D.plot_wireframe</font></h2>
+<p>基本方法：<code>Axes3D.plot_wireframe(X, Y, Z[, *args, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>二维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>二维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>二维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，如线条样式颜色等，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Line3DCollection.html">Line3DCollection</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+
+<span class="hljs-comment"># 定义Z轴坐标的生成方法</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span>(<span class="hljs-params">m, n</span>):</span>
+    <span class="hljs-keyword">return</span> np.sin(np.sqrt(m ** <span class="hljs-number">2</span> + n ** <span class="hljs-number">2</span>))
+
+
+<span class="hljs-comment"># 设置3D线框图数据</span>
+x = np.linspace(-<span class="hljs-number">6</span>, <span class="hljs-number">6</span>, <span class="hljs-number">30</span>)
+y = np.linspace(-<span class="hljs-number">6</span>, <span class="hljs-number">6</span>, <span class="hljs-number">30</span>)
+<span class="hljs-comment"># 生成网格点坐标矩阵，该方法在系列文章八中有具体介绍</span>
+X, Y = np.meshgrid(x, y)
+Z = f(X, Y)
+
+<span class="hljs-comment"># 绘制3D线框图</span>
+ax.plot_wireframe(X, Y, Z, color=<span class="hljs-string">&#x27;c&#x27;</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 线框图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/05.png" alt="05"></p>
+<h2 id="font-color-FF0000-【06x00】3D-曲面图：Axes3D-plot-surface-font"><font color=#FF0000>【06x00】3D 曲面图：Axes3D.plot_surface</font></h2>
+<p>基本方法：<code>Axes3D.plot_surface(X, Y, Z[, *args, vmin=None, vmax=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>二维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>二维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>二维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>vmin / vmax</td>
+<td>规定数据界限</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，如线条样式颜色等，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Line3DCollection.html">Line3DCollection</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 设置3D曲面图数据</span>
+X = np.arange(-<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0.25</span>)
+Y = np.arange(-<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0.25</span>)
+<span class="hljs-comment"># 生成网格点坐标矩阵，该方法在系列文章八中有具体介绍</span>
+X, Y = np.meshgrid(X, Y)
+R = np.sqrt(X**<span class="hljs-number">2</span> + Y**<span class="hljs-number">2</span>)
+Z = np.sin(R)
+
+<span class="hljs-comment"># 绘制3D曲面图并添加色条（长度0.8）</span>
+surface = ax.plot_surface(X, Y, Z, cmap=<span class="hljs-string">&#x27;rainbow&#x27;</span>, antialiased=<span class="hljs-literal">False</span>)
+fig.colorbar(surface, shrink=<span class="hljs-number">0.8</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 曲面图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+<span class="hljs-comment"># 调整观察角度和方位角，俯仰角25度，方位角40度</span>
+ax.view_init(<span class="hljs-number">25</span>, <span class="hljs-number">40</span>)
+<span class="hljs-comment"># 设置Z轴刻度界限</span>
+ax.set_zlim(-<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/06.png" alt="06"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106558131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【07x00】3D-柱状图：Axes3D-bar-font"><font color=#FF0000>【07x00】3D 柱状图：Axes3D.bar</font></h2>
+<p>基本方法：<code>Axes3D.bar(left, height, zs=0, zdir='z', *args, **kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>left</td>
+<td>一维数组，柱状图最左侧位置的 x 坐标</td>
+</tr>
+<tr>
+<td>height</td>
+<td>一维数组，柱状图的高度（y 坐标）</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>第 i 个多边形将出现在平面 y=zs[i] 上</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.bar.html">matplotlib.axes.Axes.bar</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+colors = [<span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-string">&#x27;g&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;y&#x27;</span>]
+yticks = [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>]
+
+<span class="hljs-comment"># 设置3D柱状图数据并绘制图像</span>
+<span class="hljs-keyword">for</span> c, k <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(colors, yticks):
+    xs = np.arange(<span class="hljs-number">20</span>)
+    ys = np.random.rand(<span class="hljs-number">20</span>)
+    cs = [c] * <span class="hljs-built_in">len</span>(xs)
+    ax.bar(xs, ys, zs=k, zdir=<span class="hljs-string">&#x27;y&#x27;</span>, color=cs, alpha=<span class="hljs-number">0.8</span>)
+
+<span class="hljs-comment"># 设置图像标题、坐标标签以及范围</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 柱状图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;X 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;Y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;Z 轴&#x27;</span>)
+ax.set_yticks(yticks)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/07.png" alt="07"></p>
+<h2 id="font-color-FF0000-【08x00】3D-箭头图：Axes3D-quiver-font"><font color=#FF0000>【08x00】3D 箭头图：Axes3D.quiver</font></h2>
+<p>基本方法：<code>Axes3D.quiver(X, Y, Z, U, V, W, length=1, arrow_length_ratio=0.3, pivot='tail', normalize=False, **kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X, Y, Z</td>
+<td>数组形式，箭头位置的 x、y 和 z 轴坐标（默认为箭头尾部）</td>
+</tr>
+<tr>
+<td>U, V, W</td>
+<td>数组形式，箭头向量的 x、y 和 z 轴分量</td>
+</tr>
+<tr>
+<td>length</td>
+<td>float 类型，每个箭筒的长度，默认为 1.0</td>
+</tr>
+<tr>
+<td>arrow_length_ratio</td>
+<td>float 类型，箭头相对于箭身的比率，默认为 0.3</td>
+</tr>
+<tr>
+<td>pivot</td>
+<td>箭头在网格点上的位置；箭头围绕该点旋转，因此命名为 pivot，默认为 ‘tail’<br>可选项：<code>'tail'</code>：尾部；<code>'middle'</code>：中间；<code>'tip'</code>：尖端</td>
+</tr>
+<tr>
+<td>normalize</td>
+<td>bool 类型，如果为 True，则所有箭头的长度都将相同<br>默认为 False，即箭头的长度取决于 U、V、W 的值</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection">LineCollection</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 依次获取画布和绘图区并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 设置箭头位置</span>
+x, y, z = np.meshgrid(np.arange(-<span class="hljs-number">0.8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.2</span>),
+                      np.arange(-<span class="hljs-number">0.8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.2</span>),
+                      np.arange(-<span class="hljs-number">0.8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.8</span>))
+
+<span class="hljs-comment"># 设置箭头数据</span>
+u = np.sin(np.pi * x) * np.cos(np.pi * y) * np.cos(np.pi * z)
+v = -np.cos(np.pi * x) * np.sin(np.pi * y) * np.cos(np.pi * z)
+w = (np.sqrt(<span class="hljs-number">2.0</span> / <span class="hljs-number">3.0</span>) * np.cos(np.pi * x) * np.cos(np.pi * y) * np.sin(np.pi * z))
+
+<span class="hljs-comment"># 绘制 3D 箭头图</span>
+ax.quiver(x, y, z, u, v, w, length=<span class="hljs-number">0.1</span>, normalize=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># 设置图像标题、坐标标签</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 箭头图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;X 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;Y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;Z 轴&#x27;</span>)
+
+<span class="hljs-comment"># 调整观察角度，俯仰角20度</span>
+ax.view_init(<span class="hljs-number">20</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/08.png" alt="08"></p>
+<h2 id="font-color-FF0000-【09x00】3D-等高线图：Axes3D-contour-font"><font color=#FF0000>【09x00】3D 等高线图：Axes3D.contour</font></h2>
+<p>基本方法：<code>Axes3D.contour(X, Y, Z[, *args, extend3d=False, stride=5, zdir='z', offset=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>extend3d</td>
+<td>bool 值，可选项，是否以 3D 延伸轮廓，默认 False</td>
+</tr>
+<tr>
+<td>stride</td>
+<td>int 类型，可选项，用于延伸轮廓的步长</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>标量，可选项，如果指定，则在垂直于 zdir 的平面上的位置绘制轮廓线的投影</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html">matplotlib.axes.Axes.contour</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure(figsize=(<span class="hljs-number">8</span>, <span class="hljs-number">4.8</span>))
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 设置等高线数据</span>
+X = np.arange(-<span class="hljs-number">2.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">0.01</span>)
+Y = np.arange(-<span class="hljs-number">2.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">0.01</span>)
+<span class="hljs-comment"># 生成网格点坐标矩阵</span>
+m, n = np.meshgrid(X, Y)
+
+
+<span class="hljs-comment"># 指定一个函数用于计算每个点的高度，也可以直接使用二维数组储存每个点的高度</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> - b ** <span class="hljs-number">5</span> + a ** <span class="hljs-number">5</span>) * np.exp(-a ** <span class="hljs-number">2</span> - b ** <span class="hljs-number">2</span>)
+
+
+<span class="hljs-comment"># 绘制3D等高线图并添加色条图（长度0.8）</span>
+contour = ax.contour(X, Y, f(m, n), cmap=<span class="hljs-string">&#x27;rainbow&#x27;</span>)
+fig.colorbar(contour, shrink=<span class="hljs-number">0.8</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 等高线图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/09.png" alt="09"></p>
+<h2 id="font-color-FF0000-【10x00】3D-等高线填充图：Axes3D-contourf-font"><font color=#FF0000>【10x00】3D 等高线填充图：Axes3D.contourf</font></h2>
+<p>基本语法：<code>Axes3D.contourf(X, Y, Z[, *args, zdir='z', offset=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>标量，可选项，如果指定，则在垂直于 zdir 的平面上的位置绘制轮廓线的投影</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，可选项，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contourf.html">matplotlib.axes.Axes.contourf</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure(figsize=(<span class="hljs-number">8</span>, <span class="hljs-number">4.8</span>))
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 设置等高线数据</span>
+X = np.arange(-<span class="hljs-number">2.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">0.01</span>)
+Y = np.arange(-<span class="hljs-number">2.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">0.01</span>)
+<span class="hljs-comment"># 生成网格点坐标矩阵</span>
+m, n = np.meshgrid(X, Y)
+
+
+<span class="hljs-comment"># 指定一个函数用于计算每个点的高度，也可以直接使用二维数组储存每个点的高度</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> - b ** <span class="hljs-number">5</span> + a ** <span class="hljs-number">5</span>) * np.exp(-a ** <span class="hljs-number">2</span> - b ** <span class="hljs-number">2</span>)
+
+
+<span class="hljs-comment"># 绘制3D等高线图并添加色条图（长度0.8）</span>
+contourf = ax.contourf(X, Y, f(m, n), cmap=<span class="hljs-string">&#x27;rainbow&#x27;</span>)
+fig.colorbar(contourf, shrink=<span class="hljs-number">0.8</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 等高线填充图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/10.png" alt="10"></p>
+<h2 id="font-color-FF0000-【11x00】3D-三角曲面图：Axes3D-plot-trisurf-font"><font color=#FF0000>【11x00】3D 三角曲面图：Axes3D.plot_trisurf</font></h2>
+<p>基本方法：<code>Axes3D.plot_trisurf(X, Y, Z[, *args, color=None, vmin=None, vmax=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X</td>
+<td>一维数组，x 轴数据</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>一维数组，y 轴数据</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>一维数组，z 轴数据</td>
+</tr>
+<tr>
+<td>color</td>
+<td>曲面表面的颜色</td>
+</tr>
+<tr>
+<td>vmin / vmax</td>
+<td>规定数据界限</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>可选项，其他关键字参数，可参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/mpl_toolkits.mplot3d.art3d.Poly3DCollection.html">Poly3DCollection</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 获取 figure 画布并通过子图创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.add_subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+n_radii = <span class="hljs-number">8</span>
+n_angles = <span class="hljs-number">36</span>
+
+radii = np.linspace(<span class="hljs-number">0.125</span>, <span class="hljs-number">1.0</span>, n_radii)
+angles = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>*np.pi, n_angles, endpoint=<span class="hljs-literal">False</span>)[..., np.newaxis]
+x = np.append(<span class="hljs-number">0</span>, (radii*np.cos(angles)).flatten())
+y = np.append(<span class="hljs-number">0</span>, (radii*np.sin(angles)).flatten())
+z = np.sin(-x*y)
+
+<span class="hljs-comment"># 绘制3D三角曲面图并添加色条（长度0.8）</span>
+trisurf = ax.plot_trisurf(x, y, z, cmap=<span class="hljs-string">&#x27;rainbow&#x27;</span>)
+fig.colorbar(trisurf, shrink=<span class="hljs-number">0.8</span>)
+
+<span class="hljs-comment"># 设置标题、轴标签、图例，也可以直接使用 plt.title、plt.xlabel...</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 三角曲面图示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/11.png" alt="11"></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> matplotlib.tri <span class="hljs-keyword">as</span> mtri
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+fig = plt.figure(figsize=(<span class="hljs-number">15</span>, <span class="hljs-number">6</span>))
+
+<span class="hljs-comment"># ============ 第一个示例图 ============ #</span>
+
+ax = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+u = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">2.0</span> * np.pi, endpoint=<span class="hljs-literal">True</span>, num=<span class="hljs-number">50</span>)
+v = np.linspace(-<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, endpoint=<span class="hljs-literal">True</span>, num=<span class="hljs-number">10</span>)
+u, v = np.meshgrid(u, v)
+u, v = u.flatten(), v.flatten()
+
+x = (<span class="hljs-number">1</span> + <span class="hljs-number">0.5</span> * v * np.cos(u / <span class="hljs-number">2.0</span>)) * np.cos(u)
+y = (<span class="hljs-number">1</span> + <span class="hljs-number">0.5</span> * v * np.cos(u / <span class="hljs-number">2.0</span>)) * np.sin(u)
+z = <span class="hljs-number">0.5</span> * v * np.sin(u / <span class="hljs-number">2.0</span>)
+
+tri = mtri.Triangulation(u, v)
+
+trisurf_1 = ax.plot_trisurf(x, y, z, triangles=tri.triangles, cmap=<span class="hljs-string">&#x27;cool&#x27;</span>)
+fig.colorbar(trisurf_1, shrink=<span class="hljs-number">0.8</span>)
+ax.set_zlim(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 三角曲面图示例一&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+<span class="hljs-comment"># ============ 第二个示例图 ============ #</span>
+
+ax = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+n_angles = <span class="hljs-number">36</span>
+n_radii = <span class="hljs-number">8</span>
+min_radius = <span class="hljs-number">0.25</span>
+radii = np.linspace(min_radius, <span class="hljs-number">0.95</span>, n_radii)
+
+angles = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>*np.pi, n_angles, endpoint=<span class="hljs-literal">False</span>)
+angles = np.repeat(angles[..., np.newaxis], n_radii, axis=<span class="hljs-number">1</span>)
+angles[:, <span class="hljs-number">1</span>::<span class="hljs-number">2</span>] += np.pi/n_angles
+
+x = (radii*np.cos(angles)).flatten()
+y = (radii*np.sin(angles)).flatten()
+z = (np.cos(radii)*np.cos(<span class="hljs-number">3</span>*angles)).flatten()
+
+triang = mtri.Triangulation(x, y)
+
+xmid = x[triang.triangles].mean(axis=<span class="hljs-number">1</span>)
+ymid = y[triang.triangles].mean(axis=<span class="hljs-number">1</span>)
+mask = xmid**<span class="hljs-number">2</span> + ymid**<span class="hljs-number">2</span> &lt; min_radius**<span class="hljs-number">2</span>
+triang.set_mask(mask)
+
+trisurf_2 = ax.plot_trisurf(triang, z, cmap=<span class="hljs-string">&#x27;hsv&#x27;</span>)
+fig.colorbar(trisurf_2, shrink=<span class="hljs-number">0.8</span>)
+
+ax.set_title(<span class="hljs-string">&#x27;绘制 3D 三角曲面图示例二&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;x 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/12.png" alt="12"></p>
+<h2 id="font-color-FF0000-【12x00】将-2D-图像聚合到-3D-图像中：Axes3D-add-collection3d-font"><font color=#FF0000>【12x00】将 2D 图像聚合到 3D 图像中：Axes3D.add_collection3d</font></h2>
+<p>基本方法：<code>Axes3D.add_collection3d(col, zs=0, zdir='z')</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col</td>
+<td><a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=polycollection#matplotlib.collections.PolyCollection">PolyCollection</a> / <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=linecollection#matplotlib.collections.LineCollection">LineCollection</a> / <a target="_blank" rel="noopener" href="https://matplotlib.org/api/collections_api.html?highlight=patchcollection#matplotlib.collections.PatchCollection">PatchCollection</a> 对象</td>
+</tr>
+<tr>
+<td>zs</td>
+<td>第 i 个多边形将出现在平面 y=zs[i] 上</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，在 3D 轴上绘制 2D 数据时，数据必须以 xs，ys 的形式传递，<br>若此时将 zdir 设置为 ‘y’，数据将会被绘制到 x-z 轴平面上，默认为 ‘z’</td>
+</tr>
+</tbody>
+</table>
+<p>该函数一般用来向图形中添加 3D 集合对象，以下用一个示例来展示某个地区在不同年份和不同月份的降水量：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> matplotlib.collections <span class="hljs-keyword">import</span> PolyCollection
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+np.random.seed(<span class="hljs-number">59</span>)
+month = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">13</span>)
+years = [<span class="hljs-number">2017</span>, <span class="hljs-number">2018</span>, <span class="hljs-number">2019</span>, <span class="hljs-number">2020</span>]
+
+precipitation = []
+<span class="hljs-keyword">for</span> year <span class="hljs-keyword">in</span> years:
+    value = np.random.rand(<span class="hljs-built_in">len</span>(month)) * <span class="hljs-number">300</span>
+    value[<span class="hljs-number">0</span>], value[-<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+    precipitation.append(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">zip</span>(month, value)))
+
+poly = PolyCollection(precipitation, facecolors=[<span class="hljs-string">&#x27;r&#x27;</span>, <span class="hljs-string">&#x27;g&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;y&#x27;</span>], alpha=<span class="hljs-number">.6</span>)
+ax.add_collection3d(poly, zs=years, zdir=<span class="hljs-string">&#x27;y&#x27;</span>)
+
+ax.set_title(<span class="hljs-string">&#x27;2D 图像聚合到 3D 图像示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;月份&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;年份&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;降水量&#x27;</span>)
+ax.set_xlim3d(<span class="hljs-number">0</span>, <span class="hljs-number">12</span>)
+ax.set_ylim3d(<span class="hljs-number">2016</span>, <span class="hljs-number">2021</span>)
+ax.set_zlim3d(<span class="hljs-number">0</span>, <span class="hljs-number">300</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/13.png" alt="13"></p>
+<p>此外，该方法也常被用于绘制 3D 多边形图，即多边体，示例如下：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> mpl_toolkits.mplot3d.art3d <span class="hljs-keyword">import</span> Poly3DCollection, Line3DCollection
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># 六面体顶点和面</span>
+verts = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)]
+faces = [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>]]
+
+<span class="hljs-comment"># 获取每个面的顶点</span>
+poly3d = [[verts[vert_id] <span class="hljs-keyword">for</span> vert_id <span class="hljs-keyword">in</span> face] <span class="hljs-keyword">for</span> face <span class="hljs-keyword">in</span> faces]
+
+<span class="hljs-comment"># 绘制顶点</span>
+x, y, z = <span class="hljs-built_in">zip</span>(*verts)
+ax.scatter(x, y, z)
+<span class="hljs-comment"># 绘制多边形面</span>
+ax.add_collection3d(Poly3DCollection(poly3d, facecolors=<span class="hljs-string">&#x27;w&#x27;</span>, linewidths=<span class="hljs-number">1</span>, alpha=<span class="hljs-number">0.5</span>))
+<span class="hljs-comment"># 绘制多边形的边</span>
+ax.add_collection3d(Line3DCollection(poly3d, colors=<span class="hljs-string">&#x27;k&#x27;</span>, linewidths=<span class="hljs-number">0.5</span>, linestyles=<span class="hljs-string">&#x27;:&#x27;</span>))
+
+<span class="hljs-comment"># 设置图像标题、坐标标签以及范围</span>
+ax.set_title(<span class="hljs-string">&#x27;绘制多边体示例&#x27;</span>, pad=<span class="hljs-number">15</span>, fontsize=<span class="hljs-string">&#x27;12&#x27;</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;X 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;Y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;Z 轴&#x27;</span>)
+ax.set_xlim3d(-<span class="hljs-number">0.5</span>, <span class="hljs-number">1.5</span>)
+ax.set_ylim3d(-<span class="hljs-number">0.5</span>, <span class="hljs-number">1.5</span>)
+ax.set_zlim3d(-<span class="hljs-number">0.5</span>, <span class="hljs-number">1.5</span>)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/14.png" alt="14"></p>
+<h2 id="font-color-FF0000-【13x00】3D-图添加文本描述：Axes3D-text-font"><font color=#FF0000>【13x00】3D 图添加文本描述：Axes3D.text</font></h2>
+<p>基本方法：<code>Axes3D.text(x, y, z, s[, zdir=None, **kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x, y, z</td>
+<td>文本位置的 x、y、z 轴坐标</td>
+</tr>
+<tr>
+<td>s</td>
+<td>要添加的文本</td>
+</tr>
+<tr>
+<td>zdir</td>
+<td>可选项，若将 zdir 设置为 ‘y’，文本将会被投影到 x-z 轴平面上，默认为 None</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html">matplotlib.text</a></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+<span class="hljs-comment"># 依次获取画布和绘图区并创建 Axes3D 对象</span>
+fig = plt.figure()
+ax = fig.gca(projection=<span class="hljs-string">&#x27;3d&#x27;</span>)
+
+<span class="hljs-comment"># Demo 1: zdir 参数用法</span>
+zdirs = (<span class="hljs-literal">None</span>, <span class="hljs-string">&#x27;x&#x27;</span>, <span class="hljs-string">&#x27;y&#x27;</span>, <span class="hljs-string">&#x27;z&#x27;</span>, (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>))
+xs = (<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>)
+ys = (<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+zs = (<span class="hljs-number">10</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">8</span>)
+
+<span class="hljs-keyword">for</span> zdir, x, y, z <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(zdirs, xs, ys, zs):
+    label = <span class="hljs-string">&#x27;(%d, %d, %d), dir=%s&#x27;</span> % (x, y, z, zdir)
+    ax.text(x, y, z, label, zdir)
+
+<span class="hljs-comment"># Demo 2：设置颜色</span>
+ax.text(<span class="hljs-number">9</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;red&quot;</span>, color=<span class="hljs-string">&#x27;red&#x27;</span>)
+
+<span class="hljs-comment"># Demo 3: text2D，位置(0，0)为左下角，(1，1)为右上角。</span>
+ax.text2D(<span class="hljs-number">0.05</span>, <span class="hljs-number">0.95</span>, <span class="hljs-string">&quot;2D Text&quot;</span>, transform=ax.transAxes)
+
+<span class="hljs-comment"># 设置坐标轴界限和标签</span>
+ax.set_xlim(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+ax.set_ylim(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+ax.set_zlim(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+ax.set_xlabel(<span class="hljs-string">&#x27;X 轴&#x27;</span>)
+ax.set_ylabel(<span class="hljs-string">&#x27;Y 轴&#x27;</span>)
+ax.set_zlabel(<span class="hljs-string">&#x27;Z 轴&#x27;</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/023/15.png" alt="15"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106558131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/024/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/022/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（九）：极区图/极坐标图/雷达图的绘制</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

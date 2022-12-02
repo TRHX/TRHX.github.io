@@ -1,0 +1,1392 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（八）：数据重塑/重复数据处理/数据替换 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（八）：数据重塑/重复数据处理/数据替换</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-22丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.9k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 26分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】数据重塑-font"><font color=#FF0000>【01x00】数据重塑</font></h2>
+<p>有许多用于重新排列表格型数据的基础运算。这些函数也称作重塑（reshape）或轴向旋转（pivot）运算。重塑层次化索引主要有以下两个方法：</p>
+<ul>
+<li>
+<p><code>stack</code>：将数据的列转换成行；</p>
+</li>
+<li>
+<p><code>unstack</code>：将数据的行转换成列。</p>
+</li>
+</ul>
+<h3 id="font-color-4876FF-【01x01】stack-font"><font color=#4876FF>【01x01】stack</font></h3>
+<p><code>stack</code> 方法用于将数据的列转换成为行；</p>
+<p>基本语法：<code>DataFrame.stack(self, level=-1, dropna=True)</code></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html</a></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>level</td>
+<td>从列转换到行，指定不同层级的列索引或列标签、由列索引或列标签组成的数组，默认-1</td>
+</tr>
+<tr>
+<td>dropna</td>
+<td>bool 类型，是否删除重塑后数据中所有值为 NaN 的行，默认 True</td>
+</tr>
+</tbody>
+</table>
+<p>单层列（Single level columns）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]], index=[<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>], columns=[<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;height&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+     weight  height
+cat       <span class="hljs-number">0</span>       <span class="hljs-number">1</span>
+dog       <span class="hljs-number">2</span>       <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack()
+cat  weight    <span class="hljs-number">0</span>
+     height    <span class="hljs-number">1</span>
+dog  weight    <span class="hljs-number">2</span>
+     height    <span class="hljs-number">3</span>
+dtype: int64</code></pre>
+<p>多层列（Multi level columns）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>multicol = pd.MultiIndex.from_tuples([(<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;kg&#x27;</span>), (<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;pounds&#x27;</span>)])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>]], index=[<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>], columns=multicol)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    weight       
+        kg pounds
+cat      <span class="hljs-number">1</span>      <span class="hljs-number">2</span>
+dog      <span class="hljs-number">2</span>      <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack()
+            weight
+cat kg           <span class="hljs-number">1</span>
+    pounds       <span class="hljs-number">2</span>
+dog kg           <span class="hljs-number">2</span>
+    pounds       <span class="hljs-number">4</span></code></pre>
+<p>缺失值填充：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>multicol = pd.MultiIndex.from_tuples([(<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;kg&#x27;</span>), (<span class="hljs-string">&#x27;height&#x27;</span>, <span class="hljs-string">&#x27;m&#x27;</span>)])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>], [<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>]], index=[<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>], columns=multicol)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    weight height
+        kg      m
+cat    <span class="hljs-number">1.0</span>    <span class="hljs-number">2.0</span>
+dog    <span class="hljs-number">3.0</span>    <span class="hljs-number">4.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack()
+        height  weight
+cat kg     NaN     <span class="hljs-number">1.0</span>
+    m      <span class="hljs-number">2.0</span>     NaN
+dog kg     NaN     <span class="hljs-number">3.0</span>
+    m      <span class="hljs-number">4.0</span>     NaN</code></pre>
+<p>通过 <code>level</code> 参数指定不同层级的轴进行重塑：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>multicol = pd.MultiIndex.from_tuples([(<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;kg&#x27;</span>), (<span class="hljs-string">&#x27;height&#x27;</span>, <span class="hljs-string">&#x27;m&#x27;</span>)])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>], [<span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>]], index=[<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>], columns=multicol)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    weight height
+        kg      m
+cat    <span class="hljs-number">1.0</span>    <span class="hljs-number">2.0</span>
+dog    <span class="hljs-number">3.0</span>    <span class="hljs-number">4.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack(level=<span class="hljs-number">0</span>)
+             kg    m
+cat height  NaN  <span class="hljs-number">2.0</span>
+    weight  <span class="hljs-number">1.0</span>  NaN
+dog height  NaN  <span class="hljs-number">4.0</span>
+    weight  <span class="hljs-number">3.0</span>  NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack(level=<span class="hljs-number">1</span>)
+        height  weight
+cat kg     NaN     <span class="hljs-number">1.0</span>
+    m      <span class="hljs-number">2.0</span>     NaN
+dog kg     NaN     <span class="hljs-number">3.0</span>
+    m      <span class="hljs-number">4.0</span>     NaN
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack(level=[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>])
+cat  height  m     <span class="hljs-number">2.0</span>
+     weight  kg    <span class="hljs-number">1.0</span>
+dog  height  m     <span class="hljs-number">4.0</span>
+     weight  kg    <span class="hljs-number">3.0</span>
+dtype: float64</code></pre>
+<p>对于重塑后的数据，若有一行的值均为 NaN，则默认会被删除，可以设置 <code>dropna=False</code> 来保留缺失值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>multicol = pd.MultiIndex.from_tuples([(<span class="hljs-string">&#x27;weight&#x27;</span>, <span class="hljs-string">&#x27;kg&#x27;</span>), (<span class="hljs-string">&#x27;height&#x27;</span>, <span class="hljs-string">&#x27;m&#x27;</span>)])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-literal">None</span>, <span class="hljs-number">1.0</span>], [<span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>]], index=[<span class="hljs-string">&#x27;cat&#x27;</span>, <span class="hljs-string">&#x27;dog&#x27;</span>], columns=multicol)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    weight height
+        kg      m
+cat    NaN    <span class="hljs-number">1.0</span>
+dog    <span class="hljs-number">2.0</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack(dropna=<span class="hljs-literal">False</span>)
+        height  weight
+cat kg     NaN     NaN
+    m      <span class="hljs-number">1.0</span>     NaN
+dog kg     NaN     <span class="hljs-number">2.0</span>
+    m      <span class="hljs-number">3.0</span>     NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.stack(dropna=<span class="hljs-literal">True</span>)
+        height  weight
+cat m      <span class="hljs-number">1.0</span>     NaN
+dog kg     NaN     <span class="hljs-number">2.0</span>
+    m      <span class="hljs-number">3.0</span>     NaN</code></pre>
+<h3 id="font-color-4876FF-【01x02】unstack-font"><font color=#4876FF>【01x02】unstack</font></h3>
+<p><code>unstack</code>：将数据的行转换成列。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.unstack(self, level=-1, fill_value=None)</code></p>
+</li>
+<li>
+<p><code>DataFrame.unstack(self, level=-1, fill_value=None)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.unstack.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.unstack.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.unstack.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.unstack.html</a></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>level</td>
+<td>从行转换到列，指定不同层级的行索引，默认-1</td>
+</tr>
+<tr>
+<td>fill_value</td>
+<td>用于替换 NaN 的值</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 对象中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>], index=pd.MultiIndex.from_product([[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>], [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>]]))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+one  a    <span class="hljs-number">1</span>
+     b    <span class="hljs-number">2</span>
+two  a    <span class="hljs-number">3</span>
+     b    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.unstack()
+     a  b
+one  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+two  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.unstack(level=<span class="hljs-number">0</span>)
+   one  two
+a    <span class="hljs-number">1</span>    <span class="hljs-number">3</span>
+b    <span class="hljs-number">2</span>    <span class="hljs-number">4</span></code></pre>
+<p>和 <code>stack</code> 方法类似，如果值不存在将会引入缺失值（NaN）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], index=[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3 = pd.concat([obj1, obj2], keys=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3
+one  a    <span class="hljs-number">0</span>
+     b    <span class="hljs-number">1</span>
+     c    <span class="hljs-number">2</span>
+     d    <span class="hljs-number">3</span>
+two  c    <span class="hljs-number">4</span>
+     d    <span class="hljs-number">5</span>
+     e    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3.unstack()
+       a    b    c    d    e
+one  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  NaN
+two  NaN  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">5.0</span>  <span class="hljs-number">6.0</span></code></pre>
+<p>在 DataFrame 对象中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">6</span>).reshape((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)),
+               index=pd.Index([<span class="hljs-string">&#x27;Ohio&#x27;</span>,<span class="hljs-string">&#x27;Colorado&#x27;</span>], name=<span class="hljs-string">&#x27;state&#x27;</span>),
+               columns=pd.Index([<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;three&#x27;</span>],
+               name=<span class="hljs-string">&#x27;number&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+number    one  two  three
+state                    
+Ohio        <span class="hljs-number">0</span>    <span class="hljs-number">1</span>      <span class="hljs-number">2</span>
+Colorado    <span class="hljs-number">3</span>    <span class="hljs-number">4</span>      <span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = obj.stack()
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+state     number
+Ohio      one       <span class="hljs-number">0</span>
+          two       <span class="hljs-number">1</span>
+          three     <span class="hljs-number">2</span>
+Colorado  one       <span class="hljs-number">3</span>
+          two       <span class="hljs-number">4</span>
+          three     <span class="hljs-number">5</span>
+dtype: int32
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;left&#x27;</span>: obj2, <span class="hljs-string">&#x27;right&#x27;</span>: obj2 + <span class="hljs-number">5</span>&#125;,
+            columns=pd.Index([<span class="hljs-string">&#x27;left&#x27;</span>, <span class="hljs-string">&#x27;right&#x27;</span>], name=<span class="hljs-string">&#x27;side&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3
+side             left  right
+state    number             
+Ohio     one        <span class="hljs-number">0</span>      <span class="hljs-number">5</span>
+         two        <span class="hljs-number">1</span>      <span class="hljs-number">6</span>
+         three      <span class="hljs-number">2</span>      <span class="hljs-number">7</span>
+Colorado one        <span class="hljs-number">3</span>      <span class="hljs-number">8</span>
+         two        <span class="hljs-number">4</span>      <span class="hljs-number">9</span>
+         three      <span class="hljs-number">5</span>     <span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3.unstack(<span class="hljs-string">&#x27;state&#x27;</span>)
+side   left          right         
+state  Ohio Colorado  Ohio Colorado
+number                             
+one       <span class="hljs-number">0</span>        <span class="hljs-number">3</span>     <span class="hljs-number">5</span>        <span class="hljs-number">8</span>
+two       <span class="hljs-number">1</span>        <span class="hljs-number">4</span>     <span class="hljs-number">6</span>        <span class="hljs-number">9</span>
+three     <span class="hljs-number">2</span>        <span class="hljs-number">5</span>     <span class="hljs-number">7</span>       <span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3.unstack(<span class="hljs-string">&#x27;state&#x27;</span>).stack(<span class="hljs-string">&#x27;side&#x27;</span>)
+state         Colorado  Ohio
+number side                 
+one    left          <span class="hljs-number">3</span>     <span class="hljs-number">0</span>
+       right         <span class="hljs-number">8</span>     <span class="hljs-number">5</span>
+two    left          <span class="hljs-number">4</span>     <span class="hljs-number">1</span>
+       right         <span class="hljs-number">9</span>     <span class="hljs-number">6</span>
+three  left          <span class="hljs-number">5</span>     <span class="hljs-number">2</span>
+       right        <span class="hljs-number">10</span>     <span class="hljs-number">7</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【02x00】重复数据处理-font"><font color=#FF0000>【02x00】重复数据处理</font></h2>
+<ul>
+<li>
+<p><code>duplicated</code>：判断是否为重复值；</p>
+</li>
+<li>
+<p><code>drop_duplicates</code>：删除重复值。</p>
+</li>
+</ul>
+<h3 id="font-color-4876FF-【02x01】duplicated-font"><font color=#4876FF>【02x01】duplicated</font></h3>
+<p><code>duplicated</code> 方法可以判断值是否为重复数据。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.duplicated(self, keep='first')</code></p>
+</li>
+<li>
+<p><code>DataFrame.duplicated(self, subset: Union[Hashable, Sequence[Hashable], NoneType] = None, keep: Union[str, bool] = 'first') → ’Series’</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.duplicated.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.duplicated.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.duplicated.html</a></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keep</td>
+<td>标记重复项的方法，默认 <code>'first'</code><br><code>'first'</code>：将非重复项和第一个重复项标记为 False，其他重复项标记为 True<br><code>'last'</code>：将非重复项和最后一个重复项标记为 False，其他重复项标记为 True<br><code>False</code>：将所有重复项标记为 True，非重复项标记为 False</td>
+</tr>
+<tr>
+<td>subset</td>
+<td>列标签或标签序列，在 DataFrame 对象中才有此参数，<br>用于指定某列，仅标记该列的重复项，默认情况下将考虑所有列</td>
+</tr>
+</tbody>
+</table>
+<p>默认情况下，对于每组重复的值，第一个出现的重复值标记为 False，其他重复项标记为 True，非重复项标记为 False，相当于 <code>keep='first'</code>：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">2</span>      lama
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">4</span>      lama
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated()
+<span class="hljs-number">0</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">1</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">4</span>     <span class="hljs-literal">True</span>
+dtype: <span class="hljs-built_in">bool</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated(keep=<span class="hljs-string">&#x27;first&#x27;</span>)
+<span class="hljs-number">0</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">1</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">4</span>     <span class="hljs-literal">True</span>
+dtype: <span class="hljs-built_in">bool</span></code></pre>
+<p>设置 <code>keep='last'</code>，将每组非重复项和最后一次出现的重复项标记为 False，其他重复项标记为 True，设置 <code>keep=False</code>，则所有重复项均为 True，其他值为 False：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">2</span>      lama
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">4</span>      lama
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated(keep=<span class="hljs-string">&#x27;last&#x27;</span>)
+<span class="hljs-number">0</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">4</span>    <span class="hljs-literal">False</span>
+dtype: <span class="hljs-built_in">bool</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated(keep=<span class="hljs-literal">False</span>)
+<span class="hljs-number">0</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">4</span>     <span class="hljs-literal">True</span>
+dtype: <span class="hljs-built_in">bool</span></code></pre>
+<p>在 DataFrame 对象中，subset 参数用于指定某列，仅标记该列的重复项，默认情况下将考虑所有列：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;data1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>] * <span class="hljs-number">4</span> + [<span class="hljs-string">&#x27;b&#x27;</span>] * <span class="hljs-number">4</span>,
+                       <span class="hljs-string">&#x27;data2&#x27;</span> : np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  data1  data2
+<span class="hljs-number">0</span>     a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>     a      <span class="hljs-number">0</span>
+<span class="hljs-number">2</span>     a      <span class="hljs-number">0</span>
+<span class="hljs-number">3</span>     a      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>     b      <span class="hljs-number">3</span>
+<span class="hljs-number">5</span>     b      <span class="hljs-number">3</span>
+<span class="hljs-number">6</span>     b      <span class="hljs-number">0</span>
+<span class="hljs-number">7</span>     b      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated()
+<span class="hljs-number">0</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">1</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">4</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">5</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">6</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">7</span>    <span class="hljs-literal">False</span>
+dtype: <span class="hljs-built_in">bool</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated(subset=<span class="hljs-string">&#x27;data1&#x27;</span>)
+<span class="hljs-number">0</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">1</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">4</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">5</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">6</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">7</span>     <span class="hljs-literal">True</span>
+dtype: <span class="hljs-built_in">bool</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.duplicated(subset=<span class="hljs-string">&#x27;data2&#x27;</span>, keep=<span class="hljs-string">&#x27;last&#x27;</span>)
+<span class="hljs-number">0</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">4</span>     <span class="hljs-literal">True</span>
+<span class="hljs-number">5</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">6</span>    <span class="hljs-literal">False</span>
+<span class="hljs-number">7</span>    <span class="hljs-literal">False</span>
+dtype: <span class="hljs-built_in">bool</span></code></pre>
+<h3 id="font-color-4876FF-【02x02】drop-duplicates-font"><font color=#4876FF>【02x02】drop_duplicates</font></h3>
+<p><code>drop_duplicates</code> 方法会返回一个删除了重复值的序列。</p>
+<p>基本语法：</p>
+<pre><code class="hljs python">Series.drop_duplicates(self, keep=<span class="hljs-string">&#x27;first&#x27;</span>, inplace=<span class="hljs-literal">False</span>)</code></pre>
+<pre><code class="hljs python">DataFrame.drop_duplicates(self,
+                          subset: <span class="hljs-type">Union</span>[Hashable, <span class="hljs-type">Sequence</span>[Hashable], NoneType] = <span class="hljs-literal">None</span>,
+                          keep: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">bool</span>] = <span class="hljs-string">&#x27;first&#x27;</span>,
+                          inplace: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+                          ignore_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>) → <span class="hljs-type">Union</span>[ForwardRef(‘DataFrame’), NoneType]</code></pre>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.drop_duplicates.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.drop_duplicates.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop_duplicates.html</a></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keep</td>
+<td>删除重复项的方法，默认 <code>'first'</code><br><code>'first'</code>：保留非重复项和第一个重复项，其他重复项标记均删除<br><code>'last'</code>：保留非重复项和最后一个重复项，其他重复项删除<br><code>False</code>：将所有重复项删除，非重复项保留</td>
+</tr>
+<tr>
+<td>inplace</td>
+<td>是否返回删除重复项后的值，默认 False，若设置为 True，则不返回值，直接改变原数据</td>
+</tr>
+<tr>
+<td>subset</td>
+<td>列标签或标签序列，在 DataFrame 对象中才有此参数，<br>用于指定某列，仅标记该列的重复项，默认情况下将考虑所有列</td>
+</tr>
+<tr>
+<td>ignore_index</td>
+<td>bool 类型，在 DataFrame 对象中才有此参数，是否忽略原对象的轴标记，<br>默认 False，如果为 True，则新对象的索引将是 0, 1, 2, …, n-1</td>
+</tr>
+</tbody>
+</table>
+<p>keep 参数的使用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>], name=<span class="hljs-string">&#x27;animal&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">2</span>      lama
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">4</span>      lama
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates()
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates(keep=<span class="hljs-string">&#x27;last&#x27;</span>)
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">4</span>      lama
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates(keep=<span class="hljs-literal">False</span>)
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>如果设置 <code>inplace=True</code>，则不会返回任何值，但原对象的值已被改变：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>], name=<span class="hljs-string">&#x27;animal&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">2</span>      lama
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">4</span>      lama
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = obj1.drop_duplicates()
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2          <span class="hljs-comment"># 有返回值</span>
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3 = obj1.drop_duplicates(inplace=<span class="hljs-literal">True</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3         <span class="hljs-comment"># 无返回值</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1         <span class="hljs-comment"># 原对象的值已改变</span>
+<span class="hljs-number">0</span>      lama
+<span class="hljs-number">1</span>       cow
+<span class="hljs-number">3</span>    beetle
+<span class="hljs-number">5</span>     hippo
+Name: animal, dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>在 DataFrame 对象中的使用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;data1&#x27;</span> : [<span class="hljs-string">&#x27;a&#x27;</span>] * <span class="hljs-number">4</span> + [<span class="hljs-string">&#x27;b&#x27;</span>] * <span class="hljs-number">4</span>,
+                       <span class="hljs-string">&#x27;data2&#x27;</span> : np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  data1  data2
+<span class="hljs-number">0</span>     a      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>     a      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>     a      <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>     a      <span class="hljs-number">2</span>
+<span class="hljs-number">4</span>     b      <span class="hljs-number">1</span>
+<span class="hljs-number">5</span>     b      <span class="hljs-number">2</span>
+<span class="hljs-number">6</span>     b      <span class="hljs-number">0</span>
+<span class="hljs-number">7</span>     b      <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates()
+  data1  data2
+<span class="hljs-number">0</span>     a      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>     a      <span class="hljs-number">1</span>
+<span class="hljs-number">4</span>     b      <span class="hljs-number">1</span>
+<span class="hljs-number">5</span>     b      <span class="hljs-number">2</span>
+<span class="hljs-number">6</span>     b      <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates(subset=<span class="hljs-string">&#x27;data2&#x27;</span>)
+  data1  data2
+<span class="hljs-number">0</span>     a      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>     a      <span class="hljs-number">1</span>
+<span class="hljs-number">6</span>     b      <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.drop_duplicates(subset=<span class="hljs-string">&#x27;data2&#x27;</span>, ignore_index=<span class="hljs-literal">True</span>)
+  data1  data2
+<span class="hljs-number">0</span>     a      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>     a      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>     b      <span class="hljs-number">0</span></code></pre>
+<h2 id="font-color-FF0000-【03x00】数据替换-font"><font color=#FF0000>【03x00】数据替换</font></h2>
+<h3 id="font-color-4876FF-【03x01】replace-font"><font color=#4876FF>【03x01】replace</font></h3>
+<p><code>replace</code> 方法可以根据值的内容进行替换。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.replace(self, to_replace=None, value=None, inplace=False, limit=None, regex=False, method='pad')</code></p>
+</li>
+<li>
+<p><code>DataFrame.replace(self, to_replace=None, value=None, inplace=False, limit=None, regex=False, method='pad')</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.replace.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.replace.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.replace.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.replace.html</a></p>
+</li>
+</ul>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>to_replace</td>
+<td>找到要替换值的方法，可以是：字符串、正则表达式、列表、字典、整数、浮点数、Series 对象或者 None<br>使用不同参数的区别参见官方文档</td>
+</tr>
+<tr>
+<td>value</td>
+<td>用于替换匹配项的值， 对于 DataFrame，可以使用字典的值来指定每列要使用的值，<br>还允许使用此类对象的正则表达式，字符串和列表或字典</td>
+</tr>
+<tr>
+<td>inplace</td>
+<td>bool 类型，是否直接改变原数据且不返回值，默认 False</td>
+</tr>
+<tr>
+<td>regex</td>
+<td>bool 类型或者与 to_replace 相同的类型，<br>当 to_replace 参数为正则表达式时，regex 应为 True，或者直接使用该参数代替 to_replace</td>
+</tr>
+</tbody>
+</table>
+<p><code>to_replace</code> 和 <code>value</code> 参数只传入一个值，单个值替换单个值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64</code></pre>
+<p><code>to_replace</code> 传入多个值，<code>value</code> 传入一个值，多个值替换一个值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-number">4</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64</code></pre>
+<p><code>to_replace</code> 和 <code>value</code> 参数都传入多个值，多个值替换多个值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>])
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64</code></pre>
+<p><code>to_replace</code> 传入字典：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>],
+            <span class="hljs-string">&#x27;B&#x27;</span>: [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>],
+            <span class="hljs-string">&#x27;C&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B  C
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">5</span>  a
+<span class="hljs-number">1</span>  <span class="hljs-number">1</span>  <span class="hljs-number">6</span>  b
+<span class="hljs-number">2</span>  <span class="hljs-number">2</span>  <span class="hljs-number">7</span>  c
+<span class="hljs-number">3</span>  <span class="hljs-number">3</span>  <span class="hljs-number">8</span>  d
+<span class="hljs-number">4</span>  <span class="hljs-number">4</span>  <span class="hljs-number">9</span>  e
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>)
+   A  B  C
+<span class="hljs-number">0</span>  <span class="hljs-number">5</span>  <span class="hljs-number">5</span>  a
+<span class="hljs-number">1</span>  <span class="hljs-number">1</span>  <span class="hljs-number">6</span>  b
+<span class="hljs-number">2</span>  <span class="hljs-number">2</span>  <span class="hljs-number">7</span>  c
+<span class="hljs-number">3</span>  <span class="hljs-number">3</span>  <span class="hljs-number">8</span>  d
+<span class="hljs-number">4</span>  <span class="hljs-number">4</span>  <span class="hljs-number">9</span>  e
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(&#123;<span class="hljs-number">0</span>: <span class="hljs-number">10</span>, <span class="hljs-number">1</span>: <span class="hljs-number">100</span>&#125;)
+     A  B  C
+<span class="hljs-number">0</span>   <span class="hljs-number">10</span>  <span class="hljs-number">5</span>  a
+<span class="hljs-number">1</span>  <span class="hljs-number">100</span>  <span class="hljs-number">6</span>  b
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>  <span class="hljs-number">7</span>  c
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>  <span class="hljs-number">8</span>  d
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>  <span class="hljs-number">9</span>  e
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;B&#x27;</span>: <span class="hljs-number">5</span>&#125;, <span class="hljs-number">100</span>)
+     A    B  C
+<span class="hljs-number">0</span>  <span class="hljs-number">100</span>  <span class="hljs-number">100</span>  a
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>    <span class="hljs-number">6</span>  b
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>    <span class="hljs-number">7</span>  c
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>    <span class="hljs-number">8</span>  d
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>    <span class="hljs-number">9</span>  e
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: &#123;<span class="hljs-number">0</span>: <span class="hljs-number">100</span>, <span class="hljs-number">4</span>: <span class="hljs-number">400</span>&#125;&#125;)
+     A  B  C
+<span class="hljs-number">0</span>  <span class="hljs-number">100</span>  <span class="hljs-number">5</span>  a
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>  <span class="hljs-number">6</span>  b
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>  <span class="hljs-number">7</span>  c
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>  <span class="hljs-number">8</span>  d
+<span class="hljs-number">4</span>  <span class="hljs-number">400</span>  <span class="hljs-number">9</span>  e</code></pre>
+<p><code>to_replace</code> 传入正则表达式：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: [<span class="hljs-string">&#x27;bat&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bait&#x27;</span>],
+            <span class="hljs-string">&#x27;B&#x27;</span>: [<span class="hljs-string">&#x27;abc&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>, <span class="hljs-string">&#x27;xyz&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+      A    B
+<span class="hljs-number">0</span>   bat  abc
+<span class="hljs-number">1</span>   foo  bar
+<span class="hljs-number">2</span>  bait  xyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(to_replace=<span class="hljs-string">r&#x27;^ba.$&#x27;</span>, value=<span class="hljs-string">&#x27;new&#x27;</span>, regex=<span class="hljs-literal">True</span>)
+      A    B
+<span class="hljs-number">0</span>   new  abc
+<span class="hljs-number">1</span>   foo  new
+<span class="hljs-number">2</span>  bait  xyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-string">r&#x27;^ba.$&#x27;</span>&#125;, &#123;<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-string">&#x27;new&#x27;</span>&#125;, regex=<span class="hljs-literal">True</span>)
+      A    B
+<span class="hljs-number">0</span>   new  abc
+<span class="hljs-number">1</span>   foo  bar
+<span class="hljs-number">2</span>  bait  xyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(regex=<span class="hljs-string">r&#x27;^ba.$&#x27;</span>, value=<span class="hljs-string">&#x27;new&#x27;</span>)
+      A    B
+<span class="hljs-number">0</span>   new  abc
+<span class="hljs-number">1</span>   foo  new
+<span class="hljs-number">2</span>  bait  xyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(regex=&#123;<span class="hljs-string">r&#x27;^ba.$&#x27;</span>: <span class="hljs-string">&#x27;new&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>: <span class="hljs-string">&#x27;xyz&#x27;</span>&#125;)
+      A    B
+<span class="hljs-number">0</span>   new  abc
+<span class="hljs-number">1</span>   xyz  new
+<span class="hljs-number">2</span>  bait  xyz
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.replace(regex=[<span class="hljs-string">r&#x27;^ba.$&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>], value=<span class="hljs-string">&#x27;new&#x27;</span>)
+      A    B
+<span class="hljs-number">0</span>   new  abc
+<span class="hljs-number">1</span>   new  new
+<span class="hljs-number">2</span>  bait  xyz</code></pre>
+<h3 id="font-color-4876FF-【03x02】where-font"><font color=#4876FF>【03x02】where</font></h3>
+<p><code>where</code> 方法用于替换条件为 False 的值。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.where(self, cond, other=nan, inplace=False, axis=None, level=None, errors='raise', try_cast=False)</code></p>
+</li>
+<li>
+<p><code>DataFrame.where(self, cond, other=nan, inplace=False, axis=None, level=None, errors='raise', try_cast=False)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.where.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.where.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.where.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.where.html</a></p>
+</li>
+</ul>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cond</td>
+<td>替换条件，如果 cond 为 True，则保留原始值。如果为 False，则替换为来自 other 的相应值</td>
+</tr>
+<tr>
+<td>other</td>
+<td>替换值，如果 cond 为 False，则替换为来自该参数的相应值</td>
+</tr>
+<tr>
+<td>inplace</td>
+<td>bool 类型，是否直接改变原数据且不返回值，默认 False</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.where(obj &gt; <span class="hljs-number">0</span>)
+<span class="hljs-number">0</span>    NaN
+<span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2.0</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3.0</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4.0</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.where(obj &gt; <span class="hljs-number">1</span>, <span class="hljs-number">10</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">10</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">10</span>
+<span class="hljs-number">2</span>     <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>     <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>     <span class="hljs-number">4</span>
+dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">10</span>).reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>m = obj % <span class="hljs-number">3</span> == <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.where(m, -obj)
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span> -<span class="hljs-number">1</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> -<span class="hljs-number">4</span> -<span class="hljs-number">5</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">6</span> -<span class="hljs-number">7</span>
+<span class="hljs-number">4</span> -<span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.where(m, -obj) == np.where(m, obj, -obj)
+      A     B
+<span class="hljs-number">0</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">4</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span></code></pre>
+<h3 id="font-color-4876FF-【03x03】mask-font"><font color=#4876FF>【03x03】mask</font></h3>
+<p><code>mask</code> 方法与 <code>where</code> 方法相反，<code>mask</code> 用于替换条件为 False 的值。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.mask(self, cond, other=nan, inplace=False, axis=None, level=None, errors='raise', try_cast=False)</code></p>
+</li>
+<li>
+<p><code>DataFrame.mask(self, cond, other=nan, inplace=False, axis=None, level=None, errors='raise', try_cast=False)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.mask.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.mask.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mask.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mask.html</a></p>
+</li>
+</ul>
+<p>常用参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cond</td>
+<td>替换条件，如果 cond 为 False，则保留原始值。如果为 True，则替换为来自 other 的相应值</td>
+</tr>
+<tr>
+<td>other</td>
+<td>替换值，如果 cond 为 False，则替换为来自该参数的相应值</td>
+</tr>
+<tr>
+<td>inplace</td>
+<td>bool 类型，是否直接改变原数据且不返回值，默认 False</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(<span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">4</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mask(obj &gt; <span class="hljs-number">0</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">1</span>    NaN
+<span class="hljs-number">2</span>    NaN
+<span class="hljs-number">3</span>    NaN
+<span class="hljs-number">4</span>    NaN
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mask(obj &gt; <span class="hljs-number">1</span>, <span class="hljs-number">10</span>)
+<span class="hljs-number">0</span>     <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>     <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">10</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">10</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">10</span>
+dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">10</span>).reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>m = obj % <span class="hljs-number">3</span> == <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mask(m, -obj)
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">2</span> -<span class="hljs-number">3</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">6</span>  <span class="hljs-number">7</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">8</span> -<span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.where(m, -obj) == obj.mask(~m, -obj)
+      A     B
+<span class="hljs-number">0</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">1</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">2</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">3</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
+<span class="hljs-number">4</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/033/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（九）：时间序列</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/031/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（七）：合并数据集</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

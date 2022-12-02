@@ -1,0 +1,1513 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-04-17丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 7.4k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 35分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/NumPy/" class="post-tag">
+                            NumPy</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>NumPy 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/008/">Python 数据分析三剑客之 NumPy（一）：理解 NumPy / 数组基础</a></li>
+<li><a href="https://www.itbob.cn/article/009/">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a></li>
+<li><a href="https://www.itbob.cn/article/010/">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a></li>
+<li><a href="https://www.itbob.cn/article/011/">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a></li>
+<li><a href="https://www.itbob.cn/article/012/">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a></li>
+<li><a href="https://www.itbob.cn/article/013/">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a></li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105511641</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【1x00】NumPy-矩阵库-font"><font color=#FF0000>【1x00】NumPy 矩阵库</font></h2>
+<p><code>numpy.matlib</code> 模块是 NumPy 的矩阵库，该矩阵库包含多种函数，函数返回的是一个矩阵，而不是 Ndarray 对象。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/routines.matlib.html">https://numpy.org/doc/1.18/reference/routines.matlib.html</a></p>
+<h3 id="font-color-1BC3FB-【1x01】numpy-mat-font"><font color=#1BC3FB>【1x01】numpy.mat()</font></h3>
+<p><code>numpy.mat()</code> 函数将输入数组转换为为矩阵。</p>
+<p>基本语法：<code>numpy.mat(data[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>输入数据，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.mat([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a[<span class="hljs-number">0</span>]
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+<span class="hljs-number">2</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+       [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.mat(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x02】numpy-asmatrix-font"><font color=#1BC3FB>【1x02】numpy.asmatrix()</font></h3>
+<p><code>numpy.asmatrix()</code> 函数将输入数组转换为为矩阵。</p>
+<p>基本语法：<code>numpy.asmatrix(data[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>输入数据，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.asmatrix(a)
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x03】numpy-matrix-font"><font color=#1BC3FB>【1x03】numpy.matrix()</font></h3>
+<p><code>numpy.matrix()</code> 函数从类似数组的对象或数据字符串中返回一个矩阵。</p>
+<p><font color=#FF0000><strong>注意：此函数已经不建议再使用，在未来的版本当中可能会被删除。</strong></font></p>
+<p>基本语法：<code>class numpy.matrix(data[, dtype=None, copy=True])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>数组或者字符串，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>输出矩阵的数据类型，可选项</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>是否复制数据到一个新矩阵，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.matrix(<span class="hljs-string">&#x27;1 2; 3 4&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x04】mat-asmatrix-matrix-的区别-font"><font color=#1BC3FB>【1x04】mat() / asmatrix() / matrix() 的区别</font></h3>
+<p>如果输入已经是一个矩阵或一个数组，则 <code>mat()</code> 和 <code>asmatrix()</code> 函数不会执行复制操作，相当于 <code>matrix(data, copy=False)</code></p>
+<p>对比举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.mat(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.matrix(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.asmatrix(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+       [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>c
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+       [<span class="hljs-number">3</span>, <span class="hljs-number">0</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">0</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>c              <span class="hljs-comment"># matrix() 函数默认执行 copy 操作，所以数据不变</span>
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">0</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x05】numpy-bmat-font"><font color=#1BC3FB>【1x05】numpy.bmat()</font></h3>
+<p><code>numpy.bmat()</code> 函数用于从字符串、嵌套序列或数组生成矩阵对象，一般用于创建复合矩阵。</p>
+<p>基本语法：<code>numpy.bmat(obj[, ldict=None, gdict=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>obj</td>
+<td>数组或者字符串，如果 data 为字符串，则需要用逗号或空格分隔列，用分号分隔行</td>
+</tr>
+<tr>
+<td>ldict</td>
+<td>字典，用于替换当前帧中的本地操作数。如果 obj 不是字符串或 gdict 为 None，则将被忽略</td>
+</tr>
+<tr>
+<td>gdict</td>
+<td>字典，用于替换当前帧中的全局操作数。如果 obj 不是字符串则忽略</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.mat(<span class="hljs-string">&#x27;1 1; 1 1&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.mat(<span class="hljs-string">&#x27;2 2; 2 2&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.mat(<span class="hljs-string">&#x27;3 4; 5 6&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.mat(<span class="hljs-string">&#x27;7 8; 9 0&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bmat([[a, b], [c, d]])
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>],
+        [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bmat(np.r_[np.c_[a, b], np.c_[c, d]])
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>],
+        [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bmat(<span class="hljs-string">&#x27;a,b; c,d&#x27;</span>)
+matrix([[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>],
+        [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x06】numpy-matlib-empty-font"><font color=#1BC3FB>【1x06】numpy.matlib.empty()</font></h3>
+<p><code>numpy.matlib.empty()</code> 函数用于创建一个给定形状和数据类型的新矩阵。</p>
+<p>基本语法：<code>numpy.matlib.empty(shape[, dtype=None, order='C'])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.empty((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)))
+[[<span class="hljs-number">9.90263869e+067</span> <span class="hljs-number">8.01304531e+262</span>]
+ [<span class="hljs-number">2.60799828e-310</span> <span class="hljs-number">0.00000000e+000</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.empty((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>), dtype=<span class="hljs-built_in">int</span>))
+[[ -<span class="hljs-number">793016358</span>  -<span class="hljs-number">243407933</span>]
+ [ -<span class="hljs-number">959331519</span> -<span class="hljs-number">2060787213</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【1x07】numpy-matlib-zeros-font"><font color=#1BC3FB>【1x07】numpy.matlib.zeros()</font></h3>
+<p><code>numpy.matlib.zeros()</code> 函数创建一个以 0 填充的给定形状和类数据型的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.zeros(shape[, dtype=None, order='C'])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.matlib.zeros((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+matrix([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>],
+        [<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x08】numpy-matlib-ones-font"><font color=#1BC3FB>【1x08】numpy.matlib.ones()</font></h3>
+<p><code>numpy.matlib.ones()</code> 函数创建一个以 1 填充的给定形状和类数据型的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.ones(shape[, dtype=None, order='C'])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shape</td>
+<td>定义新矩阵的形状</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.matlib.ones((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+matrix([[<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>],
+        [<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【1x09】numpy-matlib-eye-font"><font color=#1BC3FB>【1x09】numpy.matlib.eye()</font></h3>
+<p><code>numpy.matlib.eye()</code> 函数创建一个对角线元素为 1，其他位置为零的矩阵。</p>
+<p>基本语法：<code>numpy.matlib.eye(n[, M=None, k=0, dtype=&lt;class 'float'&gt;, order='C'])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>返回的矩阵的行数，int 类型</td>
+</tr>
+<tr>
+<td>M</td>
+<td>返回的矩阵的列数，int 类型，可选项，默认为 n</td>
+</tr>
+<tr>
+<td>k</td>
+<td>对角线索引，可选项，0 表示主对角线，正值表示上对角线，负值表示下对角线，该对角线上元素的值将会是 1</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>返回矩阵的数据类型，可选项</td>
+</tr>
+<tr>
+<td>order</td>
+<td>以行优先（C）或列优先（Fortran）的顺序存储多维数据在内存中，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.eye(n=<span class="hljs-number">3</span>, k=<span class="hljs-number">1</span>))
+[[<span class="hljs-number">0.</span> <span class="hljs-number">1.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">1.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.eye(n=<span class="hljs-number">3</span>, k=-<span class="hljs-number">1</span>))
+[[<span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">1.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0.</span>]
+ [<span class="hljs-number">0.</span> <span class="hljs-number">1.</span> <span class="hljs-number">0.</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.eye(n=<span class="hljs-number">3</span>, M=<span class="hljs-number">4</span>, k=<span class="hljs-number">0</span>, dtype=<span class="hljs-built_in">int</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【1x10】numpy-matlib-identity-font"><font color=#1BC3FB>【1x10】numpy.matlib.identity()</font></h3>
+<p><code>numpy.matlib.identity()</code> 函数创建一个给定大小的单位矩阵。</p>
+<p>单位矩阵：在矩阵的乘法中，有一种矩阵起着特殊的作用，如同数的乘法中的1，这种矩阵被称为单位矩阵。它是个方阵，从左上角到右下角的对角线（称为主对角线）上的元素均为1。除此以外全都为0。</p>
+<p>基本语法：<code>numpy.matlib.identity(n[, dtype=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>返回的单位矩阵的大小，int 类型</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，返回的单位矩阵的数据类型</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.identity(<span class="hljs-number">3</span>, dtype=<span class="hljs-built_in">int</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【1x11】numpy-matlib-repmat-font"><font color=#1BC3FB>【1x11】numpy.matlib.repmat()</font></h3>
+<p><code>numpy.matlib.repmat()</code> 函数用于重复数组或矩阵 m*n 次。</p>
+<p>基本语法：<code>numpy.matlib.repmat(a, m, n)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>m,n</td>
+<td>沿第一轴和第二轴重复的次数</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array(<span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+array(<span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+array([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.repmat(a, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.repmat(b, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>))
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【1x12】numpy-matlib-rand-font"><font color=#1BC3FB>【1x12】numpy.matlib.rand()</font></h3>
+<p><code>numpy.matlib.rand()</code> 函数创建一个给定大小的矩阵，其中的数据在 <code>[0, 1)</code> 区间随机取值来填充。</p>
+<p>基本语法：<code>numpy.matlib.rand(*args)</code></p>
+<p>参数解释：<code>*args</code>：输出矩阵的形状，如果给定为 N 个整数，则每个整数指定一维的大小，如果以元组形式给出，则该元组表示输出矩阵完整的形状。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.rand(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+[[<span class="hljs-number">0.27957871</span> <span class="hljs-number">0.48748368</span> <span class="hljs-number">0.0970184</span> ]
+ [<span class="hljs-number">0.71062224</span> <span class="hljs-number">0.92503824</span> <span class="hljs-number">0.72415015</span>]]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.rand((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)))
+[[<span class="hljs-number">0.08814715</span> <span class="hljs-number">0.0307317</span>  <span class="hljs-number">0.77775332</span>]
+ [<span class="hljs-number">0.81158748</span> <span class="hljs-number">0.09173265</span> <span class="hljs-number">0.77497881</span>]]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.rand(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>), <span class="hljs-number">4</span>)     <span class="hljs-comment"># 如果第一个参数是元组，则其他参数将被忽略</span>
+[[<span class="hljs-number">0.53407924</span> <span class="hljs-number">0.56006372</span> <span class="hljs-number">0.63903716</span>]
+ [<span class="hljs-number">0.56132381</span> <span class="hljs-number">0.90300814</span> <span class="hljs-number">0.44074964</span>]] <span class="hljs-number">4</span></code></pre>
+<h3 id="font-color-1BC3FB-【1x13】numpy-matlib-randn-font"><font color=#1BC3FB>【1x13】numpy.matlib.randn()</font></h3>
+<p><code>numpy.matlib.randn()</code> 函数创建一个标准正态分布的随机矩阵。</p>
+<p>标准正态分布，是一个在数学、物理及工程等领域都非常重要的概率分布，在统计学的许多方面有着重大的影响力。期望值<code>μ=0</code>，即曲线图象对称轴为Y轴，标准差 <code>σ=1</code> 条件下的正态分布，记为 <code>N（0，1）</code>。</p>
+<p>标准正态分布又称为 u 分布，是以 0 为均数、以 1 为标准差的正态分布，记为 <code>N（0，1）</code></p>
+<p>基本语法：<code>numpy.matlib.randn(*args)</code></p>
+<p>参数解释：<code>*args</code>：输出矩阵的形状，如果给定为 N 个整数，则每个整数指定一维的大小，如果以元组形式给出，则该元组表示输出矩阵完整的形状。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matlib.randn(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+[[ <span class="hljs-number">0.82976978</span> -<span class="hljs-number">0.9798698</span>   <span class="hljs-number">0.71262414</span>]
+ [ <span class="hljs-number">2.31211127</span> -<span class="hljs-number">0.5090537</span>   <span class="hljs-number">1.12357032</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(<span class="hljs-number">2.5</span> * np.matlib.randn((<span class="hljs-number">2</span>, <span class="hljs-number">4</span>)) + <span class="hljs-number">3</span>)         <span class="hljs-comment"># 2 x 4 矩阵 N(3, 6.25)</span>
+[[-<span class="hljs-number">0.66974538</span>  <span class="hljs-number">4.9354863</span>   <span class="hljs-number">2.46138048</span>  <span class="hljs-number">7.05576713</span>]
+ [ <span class="hljs-number">0.80688217</span>  <span class="hljs-number">1.79017491</span>  <span class="hljs-number">3.78979646</span> -<span class="hljs-number">1.99071372</span>]]</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105511641</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【2x00】NumPy-线性代数库-font"><font color=#FF0000>【2x00】NumPy 线性代数库</font></h2>
+<p>线性代数是数学的一个分支，它的研究对象是向量，向量空间（或称线性空间），线性变换和有限维的线性方程组。NumPy 中也提供了线性代数函数库 <code>numpy.linalg</code>。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/routines.linalg.html">https://numpy.org/doc/1.18/reference/routines.linalg.html</a></p>
+<h3 id="font-color-1BC3FB-【2x01】numpy-dot-font"><font color=#1BC3FB>【2x01】numpy.dot()</font></h3>
+<p><code>numpy.dot()</code> 函数用于计算两个数组的点积。</p>
+<p>基本语法：<code>numpy.dot(a, b[, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>第一个数组</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第二个数组</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如果 a 和 b 均为一维数组，计算的是这两个数组对应下标元素的乘积和（数学上称之为内积）；</li>
+<li>如果 a 和 b 均为二维数组，计算的是两个数组的矩阵乘积；</li>
+<li>如果 a 和 b 均为多维数组，它的通用计算公式为：<code>dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])</code>，即结果数组中的每个元素都是数组 a 的最后一维上的所有元素与数组 b 的倒数第二维上的所有元素的乘积和。</li>
+</ul>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([[<span class="hljs-number">11</span>,<span class="hljs-number">12</span>],[<span class="hljs-number">13</span>,<span class="hljs-number">14</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.dot(a,b))     <span class="hljs-comment"># [[1*11+2*13, 1*12+2*14],[3*11+4*13, 3*12+4*14]]</span>
+[[<span class="hljs-number">37</span> <span class="hljs-number">40</span>]
+ [<span class="hljs-number">85</span> <span class="hljs-number">92</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.arange(<span class="hljs-number">3</span>*<span class="hljs-number">4</span>*<span class="hljs-number">5</span>*<span class="hljs-number">6</span>).reshape((<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.arange(<span class="hljs-number">3</span>*<span class="hljs-number">4</span>*<span class="hljs-number">5</span>*<span class="hljs-number">6</span>)[::-<span class="hljs-number">1</span>].reshape((<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.dot(c, d)[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>])
+<span class="hljs-number">499128</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(c[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,:] * d[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,:,<span class="hljs-number">2</span>]))
+<span class="hljs-number">499128</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x02】numpy-vdot-font"><font color=#1BC3FB>【2x02】numpy.vdot()</font></h3>
+<p><code>numpy.vdot()</code> 函数返回两个向量的点积，如果第一个参数是复数，那么它的共轭复数会用于计算。 如果参数是多维数组，它会被展开。</p>
+<p>共轭复数：两个实部相等，虚部互为相反数的复数互为共轭复数。</p>
+<p>基本语法：<code>numpy.vdot(a, b)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>+<span class="hljs-number">2j</span>, <span class="hljs-number">3</span>+<span class="hljs-number">4j</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">5</span>+<span class="hljs-number">6j</span>, <span class="hljs-number">7</span>+<span class="hljs-number">8j</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.vdot(a, b))       <span class="hljs-comment"># a 的共轭复数用于计算：(1-2j) * (5+6j) + (3-4j) * (7+8j)</span>
+(<span class="hljs-number">70</span>-<span class="hljs-number">8j</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.vdot(b, a))       <span class="hljs-comment"># b 的共轭复数用于计算：(1+2j) * (5-6j) + (3+4j) * (7-8j)</span>
+(<span class="hljs-number">70</span>+<span class="hljs-number">8j</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.array([[<span class="hljs-number">4</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.vdot(c, d))              <span class="hljs-comment"># 1*4 + 4*1 + 5*2 + 6*2</span>
+<span class="hljs-number">30</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x03】numpy-inner-font"><font color=#1BC3FB>【2x03】numpy.inner()</font></h3>
+<p><code>numpy.inner()</code> 函数计算一维数组的点积，对于其他维度，返回最后一个轴上的和的乘积。</p>
+<p>基本语法：<code>numpy.inner(a, b)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([[<span class="hljs-number">11</span>,<span class="hljs-number">12</span>],[<span class="hljs-number">13</span>,<span class="hljs-number">14</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.inner(a,b))       <span class="hljs-comment"># [[1*11+2*12, 1*13+2*14], [3*11+4*12, 3*13+4*14]]</span>
+[[<span class="hljs-number">35</span> <span class="hljs-number">41</span>]
+ [<span class="hljs-number">81</span> <span class="hljs-number">95</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.array([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.array([<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.inner(c,d))      <span class="hljs-comment"># 1*0+2*1+3*0</span>
+<span class="hljs-number">2</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x04】numpy-outer-font"><font color=#1BC3FB>【2x04】numpy.outer()</font></h3>
+<p><code>numpy.outer()</code> 函数计算两个向量的外积。</p>
+<p>基本语法：<code>numpy.outer(a, b[, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>第一个向量，如果不是一维的则在计算前会将其展平</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第一个向量，如果不是一维的则在计算前会将其展平</td>
+</tr>
+<tr>
+<td>out</td>
+<td>结果存储的位置，可选项，类似于 (M, N) 结构的 Ndarray 对象</td>
+</tr>
+</tbody>
+</table>
+<p>外积一般指两个向量的向量积，若两向量：<code>a = [a0, a1, ..., aM]</code>  <code>b = [b0, b1, ..., bN]</code>，外积如下：</p>
+<pre><code class="hljs mipsasm">[[<span class="hljs-built_in">a0</span>*<span class="hljs-keyword">b0 </span> <span class="hljs-built_in">a0</span>*<span class="hljs-keyword">b1 </span>... <span class="hljs-built_in">a0</span>*<span class="hljs-keyword">bN </span>]
+ [<span class="hljs-built_in">a1</span>*<span class="hljs-keyword">b0 </span>   .
+ [ ...          .
+ [aM*<span class="hljs-keyword">b0 </span>           aM*<span class="hljs-keyword">bN </span>]]</code></pre>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.outer(a, b))
+[[ <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>]
+ [<span class="hljs-number">10</span> <span class="hljs-number">12</span> <span class="hljs-number">14</span> <span class="hljs-number">16</span>]
+ [<span class="hljs-number">15</span> <span class="hljs-number">18</span> <span class="hljs-number">21</span> <span class="hljs-number">24</span>]
+ [<span class="hljs-number">20</span> <span class="hljs-number">24</span> <span class="hljs-number">28</span> <span class="hljs-number">32</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.array([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], dtype=<span class="hljs-built_in">object</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.outer(c, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]))
+[[<span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;aa&#x27;</span> <span class="hljs-string">&#x27;aaa&#x27;</span>]
+ [<span class="hljs-string">&#x27;b&#x27;</span> <span class="hljs-string">&#x27;bb&#x27;</span> <span class="hljs-string">&#x27;bbb&#x27;</span>]
+ [<span class="hljs-string">&#x27;c&#x27;</span> <span class="hljs-string">&#x27;cc&#x27;</span> <span class="hljs-string">&#x27;ccc&#x27;</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【2x05】numpy-matmul-font"><font color=#1BC3FB>【2x05】numpy.matmul()</font></h3>
+<p><code>numpy.matmul()</code> 函数计算两个矩阵的乘积。</p>
+<p>矩阵的乘积运算：</p>
+<p>设 A 为 <code>m x p</code> 的矩阵，B 为 <code>p x n</code> 的矩阵，那么称 <code>m x n</code> 的矩阵 C 为矩阵 A 与 B 的乘积，记作 C = AB，其中矩阵 C 中的第 i 行第 j 列元素可以表示为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mi>A</mi><mi>B</mi><msub><mo stretchy="false">)</mo><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>b</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>a</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub><msub><mi>b</mi><mrow><mn>1</mn><mi>j</mi></mrow></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub><msub><mi>b</mi><mrow><mn>2</mn><mi>j</mi></mrow></msub><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>+</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>p</mi></mrow></msub><msub><mi>b</mi><mrow><mi>p</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">(AB)_{ij} = \sum_{k=1}^p a_{ik}b_{kj} = a_{i1}b_{1j} + a_{i2}b_{2j} + ... + a_{ip}b_{pj}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0006em;vertical-align:-1.3021em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6985em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3471em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3021em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ik</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">kj</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">...</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9805em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<hr>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mspace width="2em"/><mi>B</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">A =
+\left[
+\begin{matrix}
+a_{1,1} &amp; a_{1,2} &amp; a_{1,3} \\
+a_{2,1} &amp; a_{2,2} &amp; a_{2,3} 
+\end{matrix}
+\right]
+\qquad\qquad\qquad\qquad\qquad\qquad B =
+\left[
+\begin{matrix}
+b_{1,1} &amp; b_{1,2} \\
+b_{2,1} &amp; b_{2,2} \\
+b_{3,1} &amp; b_{3,2}
+\end{matrix}
+\right]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width='0.667em' height='3.600em' viewBox='0 0 667 3600'><path d='M403 1759 V84 H666 V0 H319 V1759 v0 v1759 h347 v-84
+H403z M403 1759 V0 H319 V1759 v0 v1759 h84z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width='0.667em' height='3.600em' viewBox='0 0 667 3600'><path d='M347 1759 V0 H0 V84 H263 V1759 v0 v1759 H0 v84 H347z
+M347 1759 V0 H263 V1759 v0 v1759 h84z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo>=</mo><mi>A</mi><mi>B</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center center center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>1</mn></mrow></msub><msub><mi>b</mi><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub><msub><mi>b</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo separator="true">,</mo><mn>3</mn></mrow></msub><msub><mi>b</mi><mrow><mn>3</mn><mo separator="true">,</mo><mn>2</mn></mrow></msub></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">C = AB =
+\left[
+\begin{matrix}
+a_{1,1}b_{1,1} &amp; a_{1,2}b_{2,1} &amp; a_{1,3}b_{3,1}, &amp; a_{1,1}b_{1,2} &amp; a_{1,2}b_{2,2} &amp; a_{1,3}b_{3,2} \\
+a_{2,1}b_{1,1} &amp; a_{2,2}b_{2,1} &amp; a_{2,3}b_{3,1}, &amp; a_{2,1}b_{1,2} &amp; a_{2,2}b_{2,2} &amp; a_{2,3}b_{3,2}
+\end{matrix}
+\right]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span></span></span></span></span></p>
+<hr>
+<p>矩阵相乘的条件：</p>
+<ul>
+<li>当矩阵 A 的列数（column）等于矩阵 B 的行数（row）时，A 与 B 可以相乘；</li>
+<li>矩阵 C 的行数等于矩阵 A 的行数，C 的列数等于 B 的列数；</li>
+<li>乘积 C 的第 m 行第 n 列的元素等于矩阵 A 的第 m 行的元素与矩阵 B 的第 n 列对应元素乘积之和。</li>
+</ul>
+<hr>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([[<span class="hljs-number">4</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matmul(a, b))
+[[<span class="hljs-number">4</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">2</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.array([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matmul(c, d))
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matmul(d, c))
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>e = np.arange(<span class="hljs-number">8</span>).reshape(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>f = np.arange(<span class="hljs-number">4</span>).reshape(<span class="hljs-number">2</span>,<span class="hljs-number">2</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.matmul(e, f))
+[[[ <span class="hljs-number">2</span>  <span class="hljs-number">3</span>]
+  [ <span class="hljs-number">6</span> <span class="hljs-number">11</span>]]
+
+ [[<span class="hljs-number">10</span> <span class="hljs-number">19</span>]
+  [<span class="hljs-number">14</span> <span class="hljs-number">27</span>]]]</code></pre>
+<h3 id="font-color-1BC3FB-【2x06】numpy-tensordot-font"><font color=#1BC3FB>【2x06】numpy.tensordot()</font></h3>
+<p><code>numpy.tensordot()</code> 函数计算两个不同维度矩阵的乘积。</p>
+<p>基本语法：<code>numpy.tensordot(a, b, axes=2)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>第一个矩阵</td>
+</tr>
+<tr>
+<td>b</td>
+<td>第二个矩阵</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定收缩的轴<br>如果是一个整型 m，表示指定数组 a 的后 m 个轴和数组 b 的前 m 个轴分别进行内积，即对应位置元素相乘、再整体求和<br>如果是一个列表 [m, n]，那么表示 a 的第 m+1 个 (索引为m) 轴和 b 的第 n+1 (索引为n) 个轴进行内积</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">9</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">9</span>, (<span class="hljs-number">4</span>, <span class="hljs-number">5</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>a
+array([[<span class="hljs-number">4</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>],
+       [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+       [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>],
+       [<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0</span>],
+       [<span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>, <span class="hljs-number">0</span>],
+       [<span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.tensordot(a, b, <span class="hljs-number">1</span>))
+[[<span class="hljs-number">34</span> <span class="hljs-number">69</span> <span class="hljs-number">30</span> <span class="hljs-number">52</span> <span class="hljs-number">30</span>]
+ [<span class="hljs-number">24</span> <span class="hljs-number">54</span> <span class="hljs-number">31</span> <span class="hljs-number">38</span>  <span class="hljs-number">8</span>]
+ [<span class="hljs-number">33</span> <span class="hljs-number">61</span> <span class="hljs-number">27</span> <span class="hljs-number">71</span> <span class="hljs-number">40</span>]]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.array(<span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>)).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>d = np.array((<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>), dtype=<span class="hljs-built_in">object</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>c
+array([[[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+        [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]],
+
+       [[<span class="hljs-number">5</span>, <span class="hljs-number">6</span>],
+        [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>]]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>d
+array([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>],
+       [<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]], dtype=<span class="hljs-built_in">object</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.tensordot(c, d))
+[<span class="hljs-string">&#x27;abbcccdddd&#x27;</span> <span class="hljs-string">&#x27;aaaaabbbbbbcccccccdddddddd&#x27;</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【2x07】numpy-linalg-det-font"><font color=#1BC3FB>【2x07】numpy.linalg.det()</font></h3>
+<p><code>numpy.linalg.det()</code> 函数计算矩阵的行列式。</p>
+<p>阵行列式是指矩阵的全部元素构成的行列式，设 A=(a<sub>ij</sub>) 是数域 P 上的一个 n 阶矩阵，则所有 A=(a<sub>ij</sub>) 中的元素组成的行列式称为矩阵 A 的行列式，记为 <code>|A|</code> 或 <code>det(A)</code></p>
+<p>一个 2×2 矩阵的行列式可表示如下：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>t</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>a</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>b</mi></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>c</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>d</mi></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mo>=</mo><mi>a</mi><mi>d</mi><mo>−</mo><mi>b</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">det = \left[ \begin{matrix} a &amp; b \\ c &amp; d \end{matrix} \right] = ad - bc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">a</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">b</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">c</span></span></span></span></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.linalg.det(a))
+-<span class="hljs-number">2.0000000000000004</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x08】numpy-linalg-solve-font"><font color=#1BC3FB>【2x08】numpy.linalg.solve()</font></h3>
+<p><code>numpy.linalg.solve()</code> 函数求解线性矩阵方程或线性标量方程组。</p>
+<hr>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.25em" columnalign="right" columnspacing=""><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mn>3</mn><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>9</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><mi>x</mi><mo>+</mo><mn>2</mn><mi>y</mi><mo>=</mo><mn>8</mn></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">
+\left \{ 
+\begin{aligned}
+3x+y=9 \\
+x+2y=8
+\end{aligned}
+\right.
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-r"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.75em;"><span style="top:-3.91em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">9</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">8</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.25em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+<p>用矩阵可表示为：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>x</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>y</mi></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>9</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>8</mn></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\left[
+\begin{matrix}
+3 &amp; 1 \\
+1 &amp; 2
+\end{matrix}
+\right]
+\left[
+\begin{matrix}
+x &amp; y
+\end{matrix}
+\right]
+= \left[
+\begin{matrix}
+9 &amp; 8
+\end{matrix}
+\right]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">]</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2em;vertical-align:-0.35em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">]</span></span></span></span></span></span></p>
+<hr>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">9</span>,<span class="hljs-number">8</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.linalg.solve(a, b))
+[<span class="hljs-number">2.</span> <span class="hljs-number">3.</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【2x09】numpy-linalg-inv-font"><font color=#1BC3FB>【2x09】numpy.linalg.inv()</font></h3>
+<p><code>numpy.linalg.inv()</code> 函数计算矩阵的逆矩阵。</p>
+<p>设 A 是数域上的一个 n 阶矩阵，若在相同数域上存在另一个 n 阶矩阵 B，使得：AB = BA = E，则我们称 B 是 A 的逆矩阵，而 A 则被称为可逆矩阵。注：E 为单位矩阵。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.linalg.inv(a)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(b)
+[[-<span class="hljs-number">2.</span>   <span class="hljs-number">1.</span> ]
+ [ <span class="hljs-number">1.5</span> -<span class="hljs-number">0.5</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a * b == b * a
+array([[ <span class="hljs-literal">True</span>,  <span class="hljs-literal">True</span>],
+       [ <span class="hljs-literal">True</span>,  <span class="hljs-literal">True</span>]])</code></pre>
+<h2 id="font-color-FF0000-【3x00】NumPy-IO-操作-font"><font color=#FF0000>【3x00】NumPy IO 操作</font></h2>
+<p>NumPy IO 操作即读写磁盘上的文本数据或二进制数据，在 NumPy 中有专门的 <code>.npy</code> / <code>npy</code> 文件，<code>.npy</code> 文件用于储存单个 Ndarray 对象；<code>.npz</code> 文件用于储存多个 Ndarray 对象。</p>
+<h3 id="font-color-1BC3FB-【3x01】numpy-save-font"><font color=#1BC3FB>【3x01】numpy.save()</font></h3>
+<p><code>numpy.save()</code> 函数将数组保存到二进制文件（<code>.npy</code> 文件）中。</p>
+<p>基本语法：<code>numpy.save(file, arr[, allow_pickle=True, fix_imports=True])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td>要保存的文件名，可以带路径，文件后缀为 <code>.npy</code>，若路径末尾没有后缀，则会默认加上 <code>.npy</code> 后缀</td>
+</tr>
+<tr>
+<td>arr</td>
+<td>要保存的数组</td>
+</tr>
+<tr>
+<td>allow_pickle</td>
+<td>bool 值，可选项，是否允许使用 Python pickle 保存数组对象<br>Python pickle 用于在保存到磁盘文件或从磁盘文件读取之前，对对象进行序列化和反序列化<br>pickle 序列化后的数据，可读性差，人一般无法识别</td>
+</tr>
+<tr>
+<td>fix_imports</td>
+<td>bool 值，可选项，强制以 Python 2 兼容方式对 Python 3 上的数组对象进行处理<br>如果 fix_imports 为True，则 pickle 将尝试将新的 Python 3 名称映射到 Python 2 中使用的旧模块名称，以便 pickle 数据流可被 Python 2 读取</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.save(<span class="hljs-string">&#x27;D:\\file\\outfile.npy&#x27;</span>, a)</code></pre>
+<h3 id="font-color-1BC3FB-【3x02】numpy-load-font"><font color=#1BC3FB>【3x02】numpy.load()</font></h3>
+<p><code>numpy.load()</code> 函数用于读取 <code>.npy</code> / <code>npz</code> 文件里面的内容。</p>
+<p>基本语法：<code>numpy.load(file[, mmap_mode=None, allow_pickle=False, fix_imports=True, encoding='ASCII'])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td>要读取的 <code>npy</code> 文件对象</td>
+</tr>
+<tr>
+<td>mmap_mode</td>
+<td>可选项，读取文件的模式，可选参数  <code>r+</code> <code>r</code> <code>w+</code> <code>c</code>，与 Python 读取文件模式类似，模式含义参见 <a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/generated/numpy.memmap.html">numpy.memmap</a></td>
+</tr>
+<tr>
+<td>allow_pickle</td>
+<td>bool 值，可选项，是否允许使用 Python pickle 保存数组对象<br>Python pickle 用于在保存到磁盘文件或从磁盘文件读取之前，对对象进行序列化和反序列化<br>pickle 序列化后的数据，可读性差，人一般无法识别</td>
+</tr>
+<tr>
+<td>fix_imports</td>
+<td>bool 值，可选项，强制以 Python 2 兼容方式对 Python 3 上的数组对象进行处理<br>如果 fix_imports 为True，则 pickle 将尝试将新的 Python 3 名称映射到 Python 2 中使用的旧模块名称，以便 pickle 数据流可被 Python 2 读取</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，读取 Python2 字符串时使用什么编码<br>仅当在 Python3 中加载 Python 2 生成的 pickled 文件（包括包含对象数组的 npy/npz 文件）时才有用<br>不允许使用 <code>latin1</code>、<code>ASCII</code> 和 <code>bytes</code> 以外的值，因为它们可能损坏数字数据。默认值为 <code>ASCII</code></td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.save(<span class="hljs-string">&#x27;D:\\file\\outfile.npy&#x27;</span>, a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.load(<span class="hljs-string">&#x27;D:\\file\\outfile.npy&#x27;</span>)
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],
+       [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【3x03】numpy-savez-font"><font color=#1BC3FB>【3x03】numpy.savez()</font></h3>
+<p><code>numpy.savez()</code> 函数将多个数组保存到二进制文件（<code>.npz</code> 文件）中。</p>
+<p>基本语法：<code>numpy.savez(file, *args[, **kwds])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td>要保存的文件名，可以带路径，文件后缀为 <code>.npz</code>，若路径末尾没有后缀，则会默认加上 <code>.npz</code> 后缀</td>
+</tr>
+<tr>
+<td>args</td>
+<td>保存的数组，由于 Python 不知道外面 savez 的数组的名称，因此将使用 <code>arr_0</code>，<code>arr_1</code> 等名称保存数组，这些参数可以是任何表达式</td>
+</tr>
+<tr>
+<td>kwds</td>
+<td>关键字参数，可选项，数组将与关键字名称一起保存在文件中</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = np.sin(b)           <span class="hljs-comment"># c 使用关键字参数 sin_array</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savez(<span class="hljs-string">&#x27;D:\\file\\outfile.npz&#x27;</span>, a, b, sin_array=c)
+<span class="hljs-meta">&gt;&gt;&gt; </span>r = np.load(<span class="hljs-string">&#x27;D:\\file\\outfile.npz&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(r.files)         <span class="hljs-comment"># 查看各个数组名称</span>
+[<span class="hljs-string">&#x27;sin_array&#x27;</span>, <span class="hljs-string">&#x27;arr_0&#x27;</span>, <span class="hljs-string">&#x27;arr_1&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(r[<span class="hljs-string">&#x27;arr_0&#x27;</span>])      <span class="hljs-comment"># 数组 a</span>
+[[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(r[<span class="hljs-string">&#x27;arr_1&#x27;</span>])      <span class="hljs-comment"># 数组 b</span>
+[<span class="hljs-number">0.</span>  <span class="hljs-number">0.1</span> <span class="hljs-number">0.2</span> <span class="hljs-number">0.3</span> <span class="hljs-number">0.4</span> <span class="hljs-number">0.5</span> <span class="hljs-number">0.6</span> <span class="hljs-number">0.7</span> <span class="hljs-number">0.8</span> <span class="hljs-number">0.9</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(r[<span class="hljs-string">&#x27;sin_array&#x27;</span>])  <span class="hljs-comment"># 数组 c</span>
+[<span class="hljs-number">0.</span>         <span class="hljs-number">0.09983342</span> <span class="hljs-number">0.19866933</span> <span class="hljs-number">0.29552021</span> <span class="hljs-number">0.38941834</span> <span class="hljs-number">0.47942554</span>
+ <span class="hljs-number">0.56464247</span> <span class="hljs-number">0.64421769</span> <span class="hljs-number">0.71735609</span> <span class="hljs-number">0.78332691</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【3x04】numpy-savetxt-font"><font color=#1BC3FB>【3x04】numpy.savetxt()</font></h3>
+<p><code>numpy.savetxt()</code> 函数将数组保存到文本文件中（txt）。</p>
+<p>基本语法：<code>numpy.savetxt(fname, X[, fmt='%.18e', delimiter=' ', newline='n', header='', footer='', comments='# ', encoding=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fname</td>
+<td>要保存的文件名，可以带路径，如果文件后缀为 <code>.gz</code>，则文件将自动以压缩格式 <code>gzip</code> 保存</td>
+</tr>
+<tr>
+<td>X</td>
+<td>要保存的数组</td>
+</tr>
+<tr>
+<td>fmt</td>
+<td>格式序列或多格式字符串，可选项</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>指定各种分隔符、针对特定列的转换器函数、需要跳过的行数等，可选项</td>
+</tr>
+<tr>
+<td>newline</td>
+<td>字符串或字符分隔线，可选项</td>
+</tr>
+<tr>
+<td>header</td>
+<td>写入文件开头的字符串，可选项</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>写入文件末尾的字符串，可选项</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>注释，在 header 和 footer 字符串之前添加的字符串，可选项</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>对输出文件进行编码，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savetxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>, a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.loadtxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>)
+array([<span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">5.</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">0.5</span>).reshape(<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savetxt(<span class="hljs-string">&#x27;D:\\file\\outfile2.txt&#x27;</span>, b, fmt=<span class="hljs-string">&quot;%d&quot;</span>, delimiter=<span class="hljs-string">&#x27;,&#x27;</span>)  <span class="hljs-comment"># 保存为整数，以逗号分隔</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.loadtxt(<span class="hljs-string">&#x27;D:\\file\\outfile2.txt&#x27;</span>, delimiter=<span class="hljs-string">&#x27;,&#x27;</span>)               <span class="hljs-comment"># 读取数据时也要指定相同的分隔符</span>
+array([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>],
+       [<span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">4.</span>],
+       [<span class="hljs-number">5.</span>, <span class="hljs-number">5.</span>, <span class="hljs-number">6.</span>, <span class="hljs-number">6.</span>, <span class="hljs-number">7.</span>],
+       [<span class="hljs-number">7.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">9.</span>, <span class="hljs-number">9.</span>]])</code></pre>
+<h3 id="font-color-1BC3FB-【3x05】numpy-loadtxt-font"><font color=#1BC3FB>【3x05】numpy.loadtxt()</font></h3>
+<p><code>numpy.loadtxt()</code> 函数用于读取文本文件（txt）里面的内容。</p>
+<p>基本语法：<code>numpy.loadtxt(fname[, dtype=&lt;class 'float'&gt;, comments='#', delimiter=None, converters=None, skiprows=0, usecols=None, unpack=False, ndmin=0, encoding='bytes', max_rows=None])</code></p>
+<p>重要参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fname</td>
+<td>要读取的文件，文件名或生成器。如果文件扩展名是 <code>.gz</code> 或 <code>.bz2</code>，则首先将文件解压缩，注意，生成器应返回字节字符串</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，结果数组的数据类型</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>str 或 str 序列，可选项，用于指示注释开始的字符或字符列表</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>str 类型，可选项，指定分隔符</td>
+</tr>
+<tr>
+<td>skiprows</td>
+<td>int 类型，可选项，跳过前 n 行，一般用于跳过第一行表头</td>
+</tr>
+<tr>
+<td>usecols</td>
+<td>int 类型的索引值，读取指定的列</td>
+</tr>
+<tr>
+<td>unpack</td>
+<td>bool 值，可选项，如果为True，则会对返回的数组进行转置</td>
+</tr>
+<tr>
+<td>ndmin</td>
+<td>int 类型，可选项，返回的数组将至少具有 ndmin 维度，否则一维轴将被压缩</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，用于解码输入文件的编码</td>
+</tr>
+<tr>
+<td>max_rows</td>
+<td>int 类型，可选项，读取 skiprows 行之后的最大行内容。默认值是读取所有行</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savetxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>, a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.loadtxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>)
+array([<span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">5.</span>])</code></pre>
+<h3 id="font-color-1BC3FB-【3x06】numpy-genfromtxt-font"><font color=#1BC3FB>【3x06】numpy.genfromtxt()</font></h3>
+<p><code>numpy.genfromtxt()</code> 函数同样用于读取文本文件（txt）里面的内容。该函数比 <code>loadtxt()</code> 函数功能更加强大，<code>genfromtxt()</code> 主要面向结构数组和缺失数据处理。</p>
+<p>官方文档介绍：<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/generated/numpy.genfromtxt.html">https://numpy.org/doc/1.18/reference/generated/numpy.genfromtxt.html</a></p>
+<p>推荐文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Simplelee/p/8975763.html">https://www.cnblogs.com/Simplelee/p/8975763.html</a></p>
+<p>主要语法：<code>numpy.genfromtxt(fname[, dtype=&lt;class 'float'&gt;, comments='#', delimiter=None, skip_header=0, skip_footer=0, converters=None, missing_values=None, filling_values=None, usecols=None, encoding='bytes'])</code></p>
+<p>主要参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fname</td>
+<td>要读取的文件，文件名或生成器。如果文件扩展名是 <code>.gz</code> 或 <code>.bz2</code>，则首先将文件解压缩，注意，生成器应返回字节字符串</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，结果数组的数据类型</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>str 或 str 序列，可选项，用于指示注释开始的字符或字符列表</td>
+</tr>
+<tr>
+<td>delimiter</td>
+<td>str 类型，可选项，指定分隔符</td>
+</tr>
+<tr>
+<td>skip_header</td>
+<td>int 类型，可选项，文件开头要跳过的行数</td>
+</tr>
+<tr>
+<td>skip_footer</td>
+<td>int 类型，可选项，文件末尾要跳过的行数</td>
+</tr>
+<tr>
+<td>converters</td>
+<td>变量，可选项，将列的数据转换为值的一组函数<br>还可以为丢失的数据提供默认值：<code>converters = &#123;3: lambda s: float(s or 0)&#125;</code></td>
+</tr>
+<tr>
+<td>missing_values</td>
+<td>变量，可选项，与缺少的数据相对应的字符串集，默认情况下使用空格表示缺失</td>
+</tr>
+<tr>
+<td>filling_values</td>
+<td>变量，可选项，缺少数据时用作默认值的一组值</td>
+</tr>
+<tr>
+<td>usecols</td>
+<td>序列，可选项，读取指定的列</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>str 类型，可选项，用于解码输入文件的编码</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savetxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>, a)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.genfromtxt(<span class="hljs-string">&#x27;D:\\file\\outfile.txt&#x27;</span>)
+array([<span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">5.</span>])
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">0.5</span>).reshape(<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.savetxt(<span class="hljs-string">&#x27;D:\\file\\outfile2.txt&#x27;</span>, b, fmt=<span class="hljs-string">&quot;%d&quot;</span>, delimiter=<span class="hljs-string">&quot;,&quot;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.genfromtxt(<span class="hljs-string">&#x27;D:\\file\\outfile2.txt&#x27;</span>, delimiter=<span class="hljs-string">&#x27;,&#x27;</span>)
+array([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>],
+       [<span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">3.</span>, <span class="hljs-number">4.</span>, <span class="hljs-number">4.</span>],
+       [<span class="hljs-number">5.</span>, <span class="hljs-number">5.</span>, <span class="hljs-number">6.</span>, <span class="hljs-number">6.</span>, <span class="hljs-number">7.</span>],
+       [<span class="hljs-number">7.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">8.</span>, <span class="hljs-number">9.</span>, <span class="hljs-number">9.</span>]])</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105511641</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/014/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/012/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

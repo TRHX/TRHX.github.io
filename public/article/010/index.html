@@ -1,0 +1,959 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-04-06丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.2k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 19分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/NumPy/" class="post-tag">
+                            NumPy</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>NumPy 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/008/">Python 数据分析三剑客之 NumPy（一）：理解 NumPy / 数组基础</a></li>
+<li><a href="https://www.itbob.cn/article/009/">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a></li>
+<li><a href="https://www.itbob.cn/article/010/">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a></li>
+<li><a href="https://www.itbob.cn/article/011/">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a></li>
+<li><a href="https://www.itbob.cn/article/012/">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a></li>
+<li><a href="https://www.itbob.cn/article/013/">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a></li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105185337</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-ff0000-【1x00】numpy-nditer-迭代器对象-font"><font color=#ff0000>【1x00】numpy.nditer 迭代器对象</font></h2>
+<p>numpy.nditer 是 NumPy 的迭代器对象，迭代器对象提供了许多灵活的方法来访问一个或多个数组中的所有元素，简单来说，迭代器最基本的任务就是完成对数组元素的访问。</p>
+<h3 id="font-color-1BC3FB-【1x01】单数组的迭代-font"><font color=#1BC3FB>【1x01】单数组的迭代</font></h3>
+<p>单数组迭代示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">10</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a):
+    <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span></code></pre>
+<p>注意：默认对数组元素的访问顺序，既不是以标准 C（行优先） 也不是 Fortran 顺序（列优先），选择的顺序是和数组内存布局一致的，这样做是为了提高访问效率，反映了默认情况下只需要访问每个元素而不关心特定排序的想法。以下用一个数组的转置来理解这种访问机制。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">10</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = a.T
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(b)
+[[<span class="hljs-number">0</span> <span class="hljs-number">5</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">6</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">7</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">8</span>]
+ [<span class="hljs-number">4</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c = a.T.copy(order=<span class="hljs-string">&#x27;C&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(c)
+[[<span class="hljs-number">0</span> <span class="hljs-number">5</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">6</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">7</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">8</span>]
+ [<span class="hljs-number">4</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a):
+    <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> 
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(b):
+    <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> 
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(c):
+    <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">2</span> <span class="hljs-number">7</span> <span class="hljs-number">3</span> <span class="hljs-number">8</span> <span class="hljs-number">4</span> <span class="hljs-number">9</span></code></pre>
+<p>例子中 a 是一个 2 行 5 列的数组，b 数组对 a 进行了转置，而 c 数组则是对 a 进行转置后按照 C order（行优先）的形式复制到新内存中储存，b 数组虽然进行了转置操作，但是其元素在内存当中的储存顺序仍然和 a 一样，所以对其迭代的效果也和 a 一样，c 数组元素在新内存当中的储存顺序不同于 a 和 b，因此对其迭代的效果也不一样。</p>
+<h3 id="font-color-1BC3FB-【1x02】控制迭代顺序-font"><font color=#1BC3FB>【1x02】控制迭代顺序</font></h3>
+<p>如果想要按照特定顺序来对数组进行迭代，nditer 同样也提供了 order 参数，可选值为：<code>C</code> <code>F</code> <code>A</code> <code>K</code></p>
+<ul>
+<li><code>numpy.nditer(a, order='C')</code>：标准 C 顺序，即行优先；</li>
+<li><code>numpy.nditer(a, order='F')</code>： Fortran 顺序，即列优先；</li>
+<li><code>numpy.nditer(a, order='A')</code>：如果所有数组都是 Fortran 顺序的，则 A 表示以 F 顺序，否则以 C 顺序；</li>
+<li><code>numpy.nditer(a, order='K')</code>：默认值，保持原数组在内存当中的顺序。</li>
+</ul>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">12</span>).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[ <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>]
+ [ <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>]
+ [ <span class="hljs-number">8</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, order=<span class="hljs-string">&#x27;C&#x27;</span>):
+    <span class="hljs-built_in">print</span>(i, end= <span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span> 
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, order=<span class="hljs-string">&#x27;F&#x27;</span>):
+    <span class="hljs-built_in">print</span>(i, end= <span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">9</span> <span class="hljs-number">2</span> <span class="hljs-number">6</span> <span class="hljs-number">10</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span> <span class="hljs-number">11</span> 
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, order=<span class="hljs-string">&#x27;K&#x27;</span>):
+    <span class="hljs-built_in">print</span>(i, end= <span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span></code></pre>
+<h3 id="font-color-1BC3FB-【1x03】修改数组元素-font"><font color=#1BC3FB>【1x03】修改数组元素</font></h3>
+<p>nditer 对象提供了可选参数 <code>op_flags</code>，默认情况下，该参数值为 <code>readonly</code>（只读），如果在遍历数组的同时，要实现对数组中元素值的修改，则可指定 <code>op_flags</code> 值为 <code>readwrite</code>（读写） 或者 <code>writeonly</code>（只读）。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">10</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, op_flags=[<span class="hljs-string">&#x27;readwrite&#x27;</span>]):
+        i[...] = i+<span class="hljs-number">1</span>
+
+    
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[ <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>]
+ [ <span class="hljs-number">6</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span>]]</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>li = []
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">12</span>).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[ <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>]
+ [ <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>]
+ [ <span class="hljs-number">8</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, op_flags=[<span class="hljs-string">&#x27;readwrite&#x27;</span>]):
+        li.append(i*<span class="hljs-number">2</span>)
+
+    
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(li)
+[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">12</span>, <span class="hljs-number">14</span>, <span class="hljs-number">16</span>, <span class="hljs-number">18</span>, <span class="hljs-number">20</span>, <span class="hljs-number">22</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【1x04】使用外部循环-font"><font color=#1BC3FB>【1x04】使用外部循环</font></h3>
+<p>nditer 对象支持 <code>flags</code> 参数，该参数最常用的值是 <code>external_loop</code>，表示使给定的值为具有多个值的一维数组。</p>
+<p>通俗来讲，当 Ndarray 的顺序和遍历的顺序一致时，就会将所有元素组成一个一维数组返回；当 Ndarray 的顺序和遍历的顺序不一致时，则返回每次遍历的一维数组</p>
+<p>官方介绍：<a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/arrays.nditer.html#using-an-external-loop">https://docs.scipy.org/doc/numpy/reference/arrays.nditer.html#using-an-external-loop</a></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>], [<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">11</span>]], order=<span class="hljs-string">&#x27;C&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, flags=[<span class="hljs-string">&#x27;external_loop&#x27;</span>], order=<span class="hljs-string">&#x27;C&#x27;</span> ):
+        <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+[ <span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span>] 
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> np.nditer(a, flags=[<span class="hljs-string">&#x27;external_loop&#x27;</span>], order=<span class="hljs-string">&#x27;F&#x27;</span> ):
+        <span class="hljs-built_in">print</span>(i, end=<span class="hljs-string">&#x27; &#x27;</span>)
+
+    
+[<span class="hljs-number">0</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span>] [<span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">9</span>] [ <span class="hljs-number">2</span>  <span class="hljs-number">6</span> <span class="hljs-number">10</span>] [ <span class="hljs-number">3</span>  <span class="hljs-number">7</span> <span class="hljs-number">11</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【1x05】跟踪元素索引-font"><font color=#1BC3FB>【1x05】跟踪元素索引</font></h3>
+<p>在迭代期间，我们有可能希望在计算中使用当前元素的索引值，同样可以通过指定 <code>flags</code> 参数的取值来实现：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c_index</code></td>
+<td>跟踪 C 顺序索引</td>
+</tr>
+<tr>
+<td><code>f_index</code></td>
+<td>跟踪 Fortran 顺序索引</td>
+</tr>
+<tr>
+<td><code>multi_index</code></td>
+<td>跟踪多个索引或每个迭代维度一个索引的元组（多重索引）</td>
+</tr>
+</tbody>
+</table>
+<p>在以下实例当中：</p>
+<p>当参数为 <code>c_index</code> 和 <code>f_index</code> 时，<code>it.index</code> 用于输出元素的索引值</p>
+<p>当参数为 <code>multi_index</code> 时，<code>it.multi_index</code>  用于输出元素的索引值</p>
+<p><code>it.iternext()</code> 表示进入下一次迭代，直到迭代完成为止</p>
+<p><code>multi_index</code> 可理解为对迭代对象进行多重索引</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">6</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>it = np.nditer(a, flags=[<span class="hljs-string">&#x27;c_index&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> it.finished:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;%d &lt;%s&gt;&#x27;</span> %(it[<span class="hljs-number">0</span>], it.index))
+        it.iternext()
+
+    
+<span class="hljs-number">0</span> &lt;<span class="hljs-number">0</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">1</span> &lt;<span class="hljs-number">1</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">2</span> &lt;<span class="hljs-number">2</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">3</span> &lt;<span class="hljs-number">3</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">4</span> &lt;<span class="hljs-number">4</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">5</span> &lt;<span class="hljs-number">5</span>&gt;
+<span class="hljs-literal">False</span></code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/009/01.png" alt="01"></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">6</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>it = np.nditer(a, flags=[<span class="hljs-string">&#x27;f_index&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> it.finished:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;%d &lt;%s&gt;&#x27;</span> %(it[<span class="hljs-number">0</span>], it.index))
+        it.iternext()
+
+    
+<span class="hljs-number">0</span> &lt;<span class="hljs-number">0</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">1</span> &lt;<span class="hljs-number">2</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">2</span> &lt;<span class="hljs-number">4</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">3</span> &lt;<span class="hljs-number">1</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">4</span> &lt;<span class="hljs-number">3</span>&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">5</span> &lt;<span class="hljs-number">5</span>&gt;
+<span class="hljs-literal">False</span></code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/009/02.png" alt="02"></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">6</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>it = np.nditer(a, flags=[<span class="hljs-string">&#x27;multi_index&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> it.finished:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;%d &lt;%s&gt;&#x27;</span> %(it[<span class="hljs-number">0</span>], it.multi_index))
+        it.iternext()
+
+    
+<span class="hljs-number">0</span> &lt;(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">1</span> &lt;(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">2</span> &lt;(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>)&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">3</span> &lt;(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">4</span> &lt;(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)&gt;
+<span class="hljs-literal">True</span>
+<span class="hljs-number">5</span> &lt;(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)&gt;
+<span class="hljs-literal">False</span></code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/009/03.png" alt="03"></p>
+<h3 id="font-color-1BC3FB-【1x06】广播数组迭代-font"><font color=#1BC3FB>【1x06】广播数组迭代</font></h3>
+<p>如果两个数组满足<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/104988137#font_colorff00004x00NumPy_font_429">广播原则</a>，nditer 对象能够同时迭代它们，即广播数组迭代（多数组的迭代）。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">6</span>).reshape(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(b)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> m, n <span class="hljs-keyword">in</span> np.nditer([a,b]):
+    <span class="hljs-built_in">print</span>(m,n)
+
+    
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span></code></pre>
+<p>如果两个数组不满足广播原则，将会抛出异常：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.arange(<span class="hljs-number">6</span>).reshape(<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(b)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> m, n <span class="hljs-keyword">in</span> np.nditer([a,b]):
+        <span class="hljs-built_in">print</span>(m,n)
+
+    
+Traceback (most recent call last):
+  File <span class="hljs-string">&quot;&lt;pyshell#55&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+    <span class="hljs-keyword">for</span> m, n <span class="hljs-keyword">in</span> np.nditer([a,b]):
+ValueError: operands could <span class="hljs-keyword">not</span> be broadcast together <span class="hljs-keyword">with</span> shapes (<span class="hljs-number">4</span>,) (<span class="hljs-number">2</span>,<span class="hljs-number">3</span>)</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105185337</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-ff0000-【2x00】NumPy-位运算-font"><font color=#ff0000>【2x00】NumPy 位运算</font></h2>
+<p>由于位运算是直接对整数在内存中的二进制位进行操作，所以有必要先了解一下如何来表示数字的二进制。</p>
+<p>在 Python 中，提供了一个内置函数 <code>bin()</code>，将整数转换为以 <code>0b</code> 为前缀的二进制字符串，如果要去掉 <code>0b</code> 前缀，则可以使用 <code>format</code> 方法，因为返回的是字符串，所以也可以使用切片等其他方法去掉前缀。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">bin</span>(<span class="hljs-number">3</span>)
+<span class="hljs-string">&#x27;0b11&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">format</span>(<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;b&#x27;</span>)
+<span class="hljs-string">&#x27;11&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">f&#x27;<span class="hljs-subst">&#123;<span class="hljs-number">3</span>:b&#125;</span>&#x27;</span>
+<span class="hljs-string">&#x27;11&#x27;</span></code></pre>
+<p>除了内置函数以外，NumPy 还提供了一个 <code>numpy.binary_repr</code> 函数，该函数的作用也是以字符串形式返回输入数字的二进制表示形式。</p>
+<p>基本语法：<code>numpy.binary_repr(num, width=None)</code></p>
+<p>参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num</td>
+<td>要表示的数，只能是整数形式</td>
+</tr>
+<tr>
+<td>width</td>
+<td>可选项，对于负数，如果未指定 width，则会在前面添加减号，如果指定了 width，则返回该宽度的负数的二进制补码</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">3</span>)
+<span class="hljs-string">&#x27;11&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(-<span class="hljs-number">3</span>)
+<span class="hljs-string">&#x27;-11&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(-<span class="hljs-number">3</span>, width=<span class="hljs-number">4</span>)
+<span class="hljs-string">&#x27;1101&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">3</span>, width=<span class="hljs-number">4</span>)
+<span class="hljs-string">&#x27;0011&#x27;</span></code></pre>
+<hr>
+<p>以下是 NumPy 数组当中用到的位运算函数，各函数与其对应的用操作符计算的作用相同。</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+<th>操作符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bitwise_and</code></td>
+<td>对数组元素进行按位<font color=#FF0000><strong>与（AND）</strong></font>操作</td>
+<td>&amp;</td>
+</tr>
+<tr>
+<td><code>bitwise_or</code></td>
+<td>对数组元素进行按位<font color=#FF0000><strong>或（OR）</strong></font>操作</td>
+<td>|</td>
+</tr>
+<tr>
+<td><code>bitwise_xor</code></td>
+<td>对数组元素执行按位<font color=#FF0000><strong>异或（XOR）</strong></font>操作</td>
+<td>^</td>
+</tr>
+<tr>
+<td><code>invert</code></td>
+<td>对数组元素执行按位<font color=#FF0000><strong>取反（NOT）</strong></font>操作</td>
+<td>~</td>
+</tr>
+<tr>
+<td><code>left_shift</code></td>
+<td>将数组元素的二进制形式向<font color=#FF0000><strong>左移</strong></font>动指定位，右侧附加相等数量的 0</td>
+<td>&lt;&lt;</td>
+</tr>
+<tr>
+<td><code>right_shift</code></td>
+<td>将数组元素的二进制形式向<font color=#FF0000><strong>右移</strong></font>动指定位，左侧附加相等数量的 0</td>
+<td>&gt;&gt;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="font-color-1BC3FB-【2x01】numpy-bitwise-and-font"><font color=#1BC3FB>【2x01】numpy.bitwise_and()</font></h3>
+<p>numpy.bitwise_and() 函数对数组元素进行按位与（AND）操作。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">10</span>), np.binary_repr(<span class="hljs-number">15</span>)
+(<span class="hljs-string">&#x27;1010&#x27;</span>, <span class="hljs-string">&#x27;1111&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_and(<span class="hljs-number">10</span>, <span class="hljs-number">15</span>)
+<span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">10</span>)
+<span class="hljs-string">&#x27;1010&#x27;</span></code></pre>
+<p>numpy.bitwise_and() 函数还支持多个元素同时进行按位与操作：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_and([<span class="hljs-number">14</span>,<span class="hljs-number">3</span>], <span class="hljs-number">13</span>)
+array([<span class="hljs-number">12</span>,  <span class="hljs-number">1</span>], dtype=int32)</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_and([<span class="hljs-number">11</span>,<span class="hljs-number">7</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">25</span>])
+array([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.array([<span class="hljs-number">11</span>,<span class="hljs-number">7</span>]) &amp; np.array([<span class="hljs-number">4</span>,<span class="hljs-number">25</span>])    <span class="hljs-comment"># 函数与 &amp; 操作符作用一样</span>
+array([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], dtype=int32)</code></pre>
+<p>还可以传入布尔值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_and([<span class="hljs-literal">True</span>,<span class="hljs-literal">False</span>,<span class="hljs-literal">True</span>],[<span class="hljs-literal">True</span>,<span class="hljs-literal">True</span>,<span class="hljs-literal">True</span>])
+array([ <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>])</code></pre>
+<h3 id="font-color-1BC3FB-【2x02】numpy-bitwise-or-font"><font color=#1BC3FB>【2x02】numpy.bitwise_or()</font></h3>
+<p>numpy.bitwise_or() 函数对数组元素进行按位或（OR）操作。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">10</span>), np.binary_repr(<span class="hljs-number">14</span>)
+(<span class="hljs-string">&#x27;1010&#x27;</span>, <span class="hljs-string">&#x27;1110&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_or(<span class="hljs-number">10</span>, <span class="hljs-number">14</span>)
+<span class="hljs-number">14</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">14</span>)
+<span class="hljs-string">&#x27;1110&#x27;</span></code></pre>
+<p>和按位与操作一样，numpy.bitwise_or() 函数也支持传入布尔值和多个元素同时进行操作：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_or([<span class="hljs-number">33</span>,<span class="hljs-number">4</span>], <span class="hljs-number">1</span>)
+array([<span class="hljs-number">33</span>,  <span class="hljs-number">5</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_or([<span class="hljs-number">33</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
+array([<span class="hljs-number">33</span>,  <span class="hljs-number">6</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_or(np.array([<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">255</span>]), np.array([<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>]))
+array([  <span class="hljs-number">6</span>,   <span class="hljs-number">5</span>, <span class="hljs-number">255</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.array([<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">255</span>]) | np.array([<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>])   <span class="hljs-comment"># 函数与 | 运算符作用相同</span>
+array([  <span class="hljs-number">6</span>,   <span class="hljs-number">5</span>, <span class="hljs-number">255</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_or([<span class="hljs-literal">True</span>, <span class="hljs-literal">True</span>], [<span class="hljs-literal">False</span>,<span class="hljs-literal">True</span>])
+array([ <span class="hljs-literal">True</span>,  <span class="hljs-literal">True</span>])</code></pre>
+<h3 id="font-color-1BC3FB-【2x03】numpy-bitwise-xor-font"><font color=#1BC3FB>【2x03】numpy.bitwise_xor()</font></h3>
+<p>numpy.bitwise_xor() 函数对数组元素执行按位异或（XOR）操作。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">bin</span>(<span class="hljs-number">13</span>), <span class="hljs-built_in">bin</span>(<span class="hljs-number">17</span>)
+(<span class="hljs-string">&#x27;0b1101&#x27;</span>, <span class="hljs-string">&#x27;0b10001&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_xor(<span class="hljs-number">13</span>,<span class="hljs-number">17</span>)
+<span class="hljs-number">28</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">bin</span>(<span class="hljs-number">28</span>)
+<span class="hljs-string">&#x27;0b11100&#x27;</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_xor([<span class="hljs-number">31</span>,<span class="hljs-number">3</span>], <span class="hljs-number">5</span>)
+array([<span class="hljs-number">26</span>,  <span class="hljs-number">6</span>], dtype=int32)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_xor([<span class="hljs-number">31</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">6</span>])
+array([<span class="hljs-number">26</span>,  <span class="hljs-number">5</span>], dtype=int32)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.array([<span class="hljs-number">31</span>,<span class="hljs-number">3</span>]) ^ np.array([<span class="hljs-number">5</span>,<span class="hljs-number">6</span>])    <span class="hljs-comment"># 函数与 ^ 运算符作用相同</span>
+array([<span class="hljs-number">26</span>,  <span class="hljs-number">5</span>], dtype=int32)
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.bitwise_xor([<span class="hljs-literal">True</span>, <span class="hljs-literal">True</span>], [<span class="hljs-literal">False</span>, <span class="hljs-literal">True</span>])
+array([ <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>])</code></pre>
+<h3 id="font-color-1BC3FB-【2x04】numpy-invert-font"><font color=#1BC3FB>【2x04】numpy.invert()</font></h3>
+<p>numpy.invert() 函数将对数组元素执行按位取反（NOT）操作，注意<font color=#FF0000><strong>按位取反</strong></font>和<font color=#FF0000><strong>取反</strong></font>操作不同。</p>
+<p><font color=#FF0000><strong>按位取反通用公式：~x = -(x+1)</strong></font></p>
+<p>我们将原来的数称为 A，按位取反后的数称为 B，按位取反的步骤如下：<br>
+先求 A 的补码，对 A 的补码每一位取反（包括符号位），得到的数为 B 的补码，将 B 的补码转换为 B 的原码得到最终结果。</p>
+<p>分情况具体讨论：</p>
+<table><tr><td bgcolor=#7FFFD4>正数按位取反步骤</td></tr></table>
+<p>1、将其转换成二进制形式；<br>
+2、求其补码（正数的原码、反码、补码都相同）；<br>
+3、将补码每一位进行取反操作（包括符号位）；<br>
+<font color=#008B00>【经过步骤 3 后的结果为一个二进制形式的负数补码，接下来将这个负数补码转换成原码（负数原码到补码的逆运算）】</font><br>
+4、对步骤 3 得到的负数 -1 得到反码；<br>
+5、对步骤 4 得到的反码再进行取反得到原码；<br>
+6、将步骤 5 得到的原码转回十进制即是最终结果。</p>
+<table><tr><td bgcolor=#7FFFD4>负数按位取反步骤</td></tr></table>
+<p>1、将其转换成二进制形式；<br>
+2、求其补码（先求其反码、符号位不变，末尾 +1 得到其补码）；<br>
+3、将补码每一位进行取反操作（包括符号位）；<br>
+<font color=#008B00>【经过步骤 3 后的结果为一个二进制形式的正数，接下来将这个正数转换成原码即可】</font><br>
+4、由于正数的原码、反码、补码都相同，所以直接将其转换成十进制即为最终结果。</p>
+<p><font color=#FF0000><strong>注意：第 3 步的取反操作，包括符号位都要取反，与求反码不同，求反码时符号位不变。</strong></font></p>
+<p>具体计算举例（二进制前 4 位为符号位）：</p>
+<table><tr><td bgcolor=#7FFFD4>9 的按位取反</td></tr></table>
+<p>① 原码：0000 1001<br>
+② 反码：0000 1001<br>
+③ 补码：0000 1001<br>
+④ 取反：<font color=#FF0000>1111 0110</font>    （包括符号位一起取反，得到新的补码）<br>
+⑤ 反码：1111 0101    （将新的补码 -1 得到其反码）<br>
+⑥ 原码：1111 1010    （将反码取反得到原码）<br>
+⑦ 转为十进制：-10</p>
+<table><tr><td bgcolor=#7FFFD4>-9 的按位取反</td></tr></table>
+<p>① 原码：1111 1001<br>
+② 反码：1111 0110<br>
+③ 补码：1111 0111<br>
+④ 取反：<font color=#FF0000>0000 1000</font>    （包括符号位一起取反，得到新的补码）<br>
+⑤ 原码：0000 1000    （由于新的补码为正数，所以原码补码相同）<br>
+⑥ 转为十进制：8</p>
+<hr>
+<p>其他关于按位取反操作的知识：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiexievv/article/details/8124108">按位取反运计算方法</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1631845959953469880">[干货]按位取反怎么算？~图文详解</a></p>
+</li>
+</ul>
+<hr>
+<p>Python 代码应用示例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">9</span>, width=<span class="hljs-number">8</span>)
+<span class="hljs-string">&#x27;00001001&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.invert(<span class="hljs-number">9</span>)
+-<span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.invert(-<span class="hljs-number">9</span>)
+<span class="hljs-number">8</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x05】numpy-left-shift-font"><font color=#1BC3FB>【2x05】numpy.left_shift()</font></h3>
+<p>numpy.left_shift() 函数将数组元素的二进制形式向左移动指定位，右侧附加相等数量的 0。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">10</span>, width=<span class="hljs-number">8</span>)
+<span class="hljs-string">&#x27;00001010&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.left_shift(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>)
+<span class="hljs-number">40</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">10</span> &lt;&lt; <span class="hljs-number">2</span>         <span class="hljs-comment"># numpy.left_shift 函数相当于 Python 当中的 &lt;&lt; 运算符</span>
+<span class="hljs-number">40</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">40</span>, width=<span class="hljs-number">8</span>)
+<span class="hljs-string">&#x27;00101000&#x27;</span></code></pre>
+<h3 id="font-color-1BC3FB-【2x06】numpy-right-shift-font"><font color=#1BC3FB>【2x06】numpy.right_shift()</font></h3>
+<p>numpy.right_shift() 函数将数组元素的二进制形式向右移动指定位，左侧附加相等数量的 0</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">10</span>, width=<span class="hljs-number">8</span>)
+<span class="hljs-string">&#x27;00001010&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.right_shift(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>)
+<span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">10</span> &gt;&gt; <span class="hljs-number">2</span>         <span class="hljs-comment"># numpy.right_shift 函数相当于 Python 当中的 &gt;&gt; 运算符</span>
+<span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.binary_repr(<span class="hljs-number">2</span>, width=<span class="hljs-number">8</span>)
+<span class="hljs-string">&#x27;00000010&#x27;</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105185337</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/011/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/009/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

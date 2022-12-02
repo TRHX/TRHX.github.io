@@ -1,0 +1,1289 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-04-29丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.8k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 16分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Matplotlib/" class="post-tag">
+                            Matplotlib</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/016/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/017/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/018/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/019/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/020/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/021/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/022/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105828049</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【1x00】添加文本描述-font"><font color=#FF0000>【1x00】添加文本描述</font></h2>
+<h3 id="font-color-1BC3FB-【1x01】添加标题：matplotlib-pyplot-title-font"><font color=#1BC3FB>【1x01】添加标题：matplotlib.pyplot.title()</font></h3>
+<p><code>matplotlib.pyplot.title()</code> 方法可为图表添加标题。</p>
+<p>基本语法：<code>matplotlib.pyplot.title(label[, fontdict=None, loc=None, pad=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td>str 类型，标题文字</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;'fontsize': rcParams['axes.titlesize'], </code><br><code>'fontweight' : rcParams['axes.titleweight'], </code><br><code>'color' : rcParams['axes.titlecolor'], </code><br><code>'verticalalignment': 'baseline', </code><br><code>'horizontalalignment': loc&#125;</code></td>
+</tr>
+<tr>
+<td>loc</td>
+<td>str 类型，可选项，三个可选值：center、left、right，默认为 <code>rcParams[&quot;axes.titlelocation&quot;]</code>（默认为 <code>center</code>）</td>
+</tr>
+<tr>
+<td>pad</td>
+<td>float 类型，可选项，标题距轴顶部的偏移量（以磅为单位）。如果为 None，则默认为 <code>rcParams[&quot;axes.titlepad&quot;]</code>（默认为：6.0）</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+x = <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">2</span>)
+y = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">12</span>)
+plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
+plt.plot(x, y)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/01.png" alt="01"></p>
+<h3 id="font-color-1BC3FB-【1x02】为坐标轴添加标签：matplotlib-pyplot-xlabel-ylabel-font"><font color=#1BC3FB>【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() / ylabel()</font></h3>
+<p><code>matplotlib.pyplot.xlabel()</code>：为 x 轴添加标签；<br>
+<code>matplotlib.pyplot.ylabel()</code>：为 y 轴添加标签。</p>
+<p>基本语法：<br>
+<code>matplotlib.pyplot.xlabel(xlabel[, fontdict=None, labelpad=None])</code><br>
+<code>matplotlib.pyplot.ylabel(ylabel[, fontdict=None, labelpad=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xlabel / ylabel</td>
+<td>str 类型，要添加的文本信息</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;'fontsize': rcParams['axes.titlesize'], </code><br><code>'fontweight' : rcParams['axes.titleweight'], </code><br><code>'color' : rcParams['axes.titlecolor'], </code><br><code>'verticalalignment': 'baseline', </code><br><code>'horizontalalignment': loc&#125;</code></td>
+</tr>
+<tr>
+<td>labelpad</td>
+<td>float 类型，可选项，x 轴标签距离 x 轴的距离</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+x = <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">2</span>)
+y = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">12</span>)
+a = [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;This is x label&#x27;</span>, fontdict=&#123;<span class="hljs-string">&#x27;fontsize&#x27;</span>: <span class="hljs-number">15</span>, <span class="hljs-string">&#x27;fontweight&#x27;</span>: <span class="hljs-string">&#x27;bold&#x27;</span>, <span class="hljs-string">&#x27;color&#x27;</span>: <span class="hljs-string">&#x27;red&#x27;</span>&#125;, labelpad=<span class="hljs-number">15.0</span>)
+plt.ylabel(<span class="hljs-string">&#x27;This is y label&#x27;</span>, fontsize=<span class="hljs-number">10</span>, fontweight=<span class="hljs-string">&#x27;light&#x27;</span>, color=<span class="hljs-string">&#x27;blue&#x27;</span>, labelpad=<span class="hljs-number">15.0</span>)
+
+plt.plot(x, y)
+plt.plot(a, b)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/02.png" alt="02"></p>
+<h3 id="font-color-1BC3FB-【1x03】任意位置添加文本：matplotlib-pyplot-text-font"><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.text()</font></h3>
+<p><code>matplotlib.pyplot.text()</code> 方法可以在画布上任意位置添加文本描述。</p>
+<p>基本语法：<code>matplotlib.pyplot.text(x, y, s[, fontdict=None, withdash=&lt;deprecated parameter&gt;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x, y</td>
+<td>放置文本的坐标位置</td>
+</tr>
+<tr>
+<td>s</td>
+<td>str 类型，要添加的文本信息</td>
+</tr>
+<tr>
+<td>fontdict</td>
+<td>字典类型，控制标题文本外观，可选项，默认值为：<br><code>&#123;'fontsize': rcParams['axes.titlesize'], </code><br><code>'fontweight' : rcParams['axes.titleweight'], </code><br><code>'color' : rcParams['axes.titlecolor'], </code><br><code>'verticalalignment': 'baseline', </code><br><code>'horizontalalignment': loc&#125;</code></td>
+</tr>
+<tr>
+<td>ha</td>
+<td>注释点在注释文本的左边、右边或中间（<code>left</code>、<code>right</code>、<code>center</code>）</td>
+</tr>
+<tr>
+<td>va</td>
+<td>注释点在注释文本的上边、下边、中间或基线 （<code>top</code>、<code>bottom</code>、<code>center</code>、<code>baseline</code>）</td>
+</tr>
+<tr>
+<td>withdash</td>
+<td>bool 类型，可选项，默认为 False，创建一个 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html#matplotlib.text.TextWithDash">TextWithDash</a> 实例而不是一个 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text">Text</a> 实例</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;lines.marker&#x27;</span>] = <span class="hljs-string">&#x27;o&#x27;</span>  <span class="hljs-comment"># 设置线条上点的形状</span>
+a = [<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;This is x label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;This is y label&#x27;</span>)
+
+plt.text(<span class="hljs-number">4</span>, <span class="hljs-number">3.2</span>, <span class="hljs-string">&#x27;text1&#x27;</span>)
+plt.text(<span class="hljs-number">9</span>, <span class="hljs-number">4.2</span>, <span class="hljs-string">&#x27;text2&#x27;</span>)
+plt.text(<span class="hljs-number">14</span>, <span class="hljs-number">5.2</span>, <span class="hljs-string">&#x27;text3&#x27;</span>)
+plt.text(<span class="hljs-number">19</span>, <span class="hljs-number">6.2</span>, <span class="hljs-string">&#x27;text4&#x27;</span>)
+plt.text(<span class="hljs-number">24</span>, <span class="hljs-number">7.2</span>, <span class="hljs-string">&#x27;text5&#x27;</span>)
+plt.text(<span class="hljs-number">27.5</span>, <span class="hljs-number">7.9</span>, <span class="hljs-string">&#x27;text6&#x27;</span>)
+
+plt.plot(a, b)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/03.png" alt="03"></p>
+<h3 id="font-color-1BC3FB-【1x03】任意位置添加文本：matplotlib-pyplot-annotate-font"><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.annotate()</font></h3>
+<p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定坐标点添加文本或 LaTeX 描述，也可以在其他位置添加描述后，使用箭头指向某个坐标点。比 <code>matplotlib.pyplot.text()</code> 更高级。</p>
+<p>基本语法：<code>matplotlib.pyplot.annotate(text, xy, xytext, xycoords, textcoords, ha, va, arrowprops, \*\*kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text</td>
+<td>str 类型，注释的文本</td>
+</tr>
+<tr>
+<td>xy</td>
+<td>被注释的坐标点，格式：<code>(x, y)</code></td>
+</tr>
+<tr>
+<td>xytext</td>
+<td>注释文本的坐标点，格式：<code>(x, y)</code>，默认与 xy 相同</td>
+</tr>
+<tr>
+<td>xycoords</td>
+<td>被注释的坐标点的参考系，取值参见<font color=#FF0000><strong>表一</strong></font>，默认为 ‘data’</td>
+</tr>
+<tr>
+<td>textcoords</td>
+<td>注释文本的坐标点的参考系，取值参见<font color=#FF0000><strong>表二</strong></font>，默认为 xycoords 的值</td>
+</tr>
+<tr>
+<td>ha</td>
+<td>注释点在注释文本的左边、右边或中间（<code>left</code>、<code>right</code>、<code>center</code>）</td>
+</tr>
+<tr>
+<td>va</td>
+<td>注释点在注释文本的上边、下边、中间或基线 （<code>top</code>、<code>bottom</code>、<code>center</code>、<code>baseline</code>）</td>
+</tr>
+<tr>
+<td>arrowprops</td>
+<td>dict 字典类型，箭头的样式<br>如果 arrowprops 不包含键 arrowstyle，则允许的键参见<font color=#FF0000><strong>表三</strong></font><br>如果 arrowprops 包含键 arrowstyle，则允许的键参见<font color=#FF0000><strong>表四</strong></font></td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表一：xycoords 取值类型</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘figure points’</td>
+<td>以画布左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘figure pixels’</td>
+<td>以画布左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘figure fraction’</td>
+<td>以画布左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘axes points’</td>
+<td>以绘图区左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘axes pixels’</td>
+<td>以绘图区左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘axes fraction’</td>
+<td>以绘图区左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘data’</td>
+<td>使用被注释对象的坐标系，即数据的 x, y 轴（默认）</td>
+</tr>
+<tr>
+<td>‘polar’</td>
+<td>使用（θ，r）形式的极坐标系</td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表二：textcoords 取值类型</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘figure points’</td>
+<td>以画布左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘figure pixels’</td>
+<td>以画布左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘figure fraction’</td>
+<td>以画布左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘axes points’</td>
+<td>以绘图区左下角为参考，单位为点数</td>
+</tr>
+<tr>
+<td>‘axes pixels’</td>
+<td>以绘图区左下角为参考，单位为像素</td>
+</tr>
+<tr>
+<td>‘axes fraction’</td>
+<td>以绘图区左下角为参考，单位为百分比</td>
+</tr>
+<tr>
+<td>‘data’</td>
+<td>使用被注释对象的坐标系，即数据的 x, y 轴</td>
+</tr>
+<tr>
+<td>‘polar’</td>
+<td>使用（θ，r）形式的极坐标系</td>
+</tr>
+<tr>
+<td>‘offset points’</td>
+<td>相对于被注释点的坐标 xy 的偏移量，单位是点</td>
+</tr>
+<tr>
+<td>‘offset pixels’</td>
+<td>相对于被注释点的坐标 xy 的偏移量，单位是像素</td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表三：arrowprops 不包含键 arrowstyle 时的取值</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>width</td>
+<td>箭头的宽度，以点为单位</td>
+</tr>
+<tr>
+<td>headwidth</td>
+<td>箭头底部的宽度，以点为单位</td>
+</tr>
+<tr>
+<td>headlength</td>
+<td>箭头的长度，以点为单位</td>
+</tr>
+<tr>
+<td>shrink</td>
+<td>箭头两端收缩占总长的百分比</td>
+</tr>
+<tr>
+<td>?</td>
+<td>其他 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.FancyArrowPatch.html#matplotlib.patches.FancyArrowPatch">matplotlib.patches.FancyArrowPatch</a> 中的关键字，部分常用关键字参见<font color=#FF0000><strong>表五</strong></font></td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表四：arrowprops 包含键 arrowstyle 时的取值</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>取值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'-'</code></td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>'-&gt;'</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td><code>'-['</code></td>
+<td>widthB=1.0,lengthB=0.2,angleB=None</td>
+</tr>
+<tr>
+<td><code>']-'</code></td>
+<td>widthA=1.0, lengthA=0.2, angleA=None</td>
+</tr>
+<tr>
+<td><code>]-[</code></td>
+<td>widthA=1.0, lengthA=0.2, angleA=None, widthB=1.0, lengthB=0.2, angleB=None</td>
+</tr>
+<tr>
+<td>`’</td>
+<td>-</td>
+</tr>
+<tr>
+<td>`'-</td>
+<td>&gt;'`</td>
+</tr>
+<tr>
+<td><code>'&lt;-'</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td><code>'&lt;-&gt;'</code></td>
+<td>head_length=0.4,head_width=0.2</td>
+</tr>
+<tr>
+<td>`'&lt;</td>
+<td>-'`</td>
+</tr>
+<tr>
+<td>`'&lt;</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>'fancy'</code></td>
+<td>head_length=0.4,head_width=0.4,tail_width=0.4</td>
+</tr>
+<tr>
+<td><code>'simple'</code></td>
+<td>head_length=0.5,head_width=0.5,tail_width=0.2</td>
+</tr>
+<tr>
+<td><code>'wedge'</code></td>
+<td>tail_width=0.3,shrink_factor=0.5</td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>表五：matplotlib.patches.FancyArrowPatch 常用的键</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>arrowstyle</td>
+<td>箭头样式，取值参见<font color=#FF0000><strong>表四</strong></font></td>
+</tr>
+<tr>
+<td>connectionstyle</td>
+<td>连接方式，默认为 <code>arc3</code>，有以下五种取值：<br><code>angle</code>：angleA=90, angleB=0, rad=0.0<br><code>angle3</code>：angleA=90, angleB=0<br><code>arc</code>：angleA=0, angleB=0, armA=None, armB=None, rad=0.0<br><code>arc3</code>：rad=0.0<br><code>bar</code>：armA=0.0, armB=0.0, fraction=0.3, angle=None<br>angle 为箭头旋转的角度，rad 为弧度</td>
+</tr>
+<tr>
+<td>relpos</td>
+<td>箭头起始点相对注释文本的位置，默认为 (0.5, 0.5)，即文本的中心<br>（0，0）表示左下角，（1，1）表示右上角</td>
+</tr>
+<tr>
+<td>patchA</td>
+<td>箭头起点处的图形，默认为文本的边框</td>
+</tr>
+<tr>
+<td>patchB</td>
+<td>箭头终点处的图形，默认为空</td>
+</tr>
+<tr>
+<td>shrinkA</td>
+<td>箭头起点的缩进点数，默认为2</td>
+</tr>
+<tr>
+<td>shrinkB</td>
+<td>箭头终点的缩进点数，默认为2</td>
+</tr>
+<tr>
+<td>？</td>
+<td>其他键值，参见官方文档 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.PathPatch.html#matplotlib.patches.PathPatch">matplotlib.patches.PathPatch</a></td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>connectionstyle 样式举例</font></strong></td></tr></table>
+<p><img src="https://cdn.itbob.cn/img/article/015/04.png" alt="04"></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+x = np.arange(-<span class="hljs-number">2</span>*np.pi, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">0.01</span>)
+y = np.sin(<span class="hljs-number">1</span>*x)/x
+plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;This is x label&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;This is y label&#x27;</span>)
+
+plt.plot(x, y)
+
+plt.annotate(<span class="hljs-string">r&#x27;$\lim_&#123;x\to 0&#125;\frac&#123;\sin(x)&#125;&#123;x&#125;=1$&#x27;</span>,  <span class="hljs-comment"># 插入 LaTeX 表达式</span>
+             xy=[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>],                              <span class="hljs-comment"># 被标记的坐标</span>
+             xycoords=<span class="hljs-string">&#x27;data&#x27;</span>,                        <span class="hljs-comment"># 被标记的坐标的参考系</span>
+             xytext=[<span class="hljs-number">50</span>, -<span class="hljs-number">40</span>],                        <span class="hljs-comment"># 注释文本的坐标</span>
+             textcoords=<span class="hljs-string">&#x27;offset points&#x27;</span>,             <span class="hljs-comment"># 注释文本的坐标的参考系</span>
+             fontsize=<span class="hljs-number">16</span>,                            <span class="hljs-comment"># 字体大小</span>
+             arrowprops=<span class="hljs-built_in">dict</span>(arrowstyle=<span class="hljs-string">&quot;-&gt;&quot;</span>, connectionstyle=<span class="hljs-string">&quot;arc3, rad=.2&quot;</span>))  <span class="hljs-comment"># 箭头样式</span>
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/05.png" alt="05"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105828049</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【2x00】设置中文显示-font"><font color=#FF0000>【2x00】设置中文显示</font></h2>
+<h3 id="font-color-1BC3FB-【2x01】常见系统自带文字及其英文名称-font"><font color=#1BC3FB>【2x01】常见系统自带文字及其英文名称</font></h3>
+<p>Windows 系统中常见自带字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黑体</td>
+<td>SimHei</td>
+</tr>
+<tr>
+<td>宋体</td>
+<td>SimSun</td>
+</tr>
+<tr>
+<td>新宋体</td>
+<td>NSimSun</td>
+</tr>
+<tr>
+<td>仿宋</td>
+<td>FangSong</td>
+</tr>
+<tr>
+<td>仿宋_GB2312</td>
+<td>FangSong_GB2312</td>
+</tr>
+<tr>
+<td>楷体_GB2312</td>
+<td>KaiTi_GB2312</td>
+</tr>
+<tr>
+<td>楷体</td>
+<td>KaiTi</td>
+</tr>
+<tr>
+<td>微软正黑</td>
+<td>Microsoft JhengHei</td>
+</tr>
+<tr>
+<td>微软雅黑</td>
+<td>Microsoft YaHei</td>
+</tr>
+<tr>
+<td>细明体</td>
+<td>MingLiU</td>
+</tr>
+<tr>
+<td>标楷体</td>
+<td>DFKai-SB</td>
+</tr>
+<tr>
+<td>新细明体</td>
+<td>PMingLiU</td>
+</tr>
+</tbody>
+</table>
+<p>装有 office 后新添加的字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>隶书</td>
+<td>LiSu</td>
+</tr>
+<tr>
+<td>幼圆</td>
+<td>YouYuan</td>
+</tr>
+<tr>
+<td>华文细黑</td>
+<td>STXihei</td>
+</tr>
+<tr>
+<td>华文楷体</td>
+<td>STKaiti</td>
+</tr>
+<tr>
+<td>华文宋体</td>
+<td>STSong</td>
+</tr>
+<tr>
+<td>华文中宋</td>
+<td>STZhongsong</td>
+</tr>
+<tr>
+<td>华文仿宋</td>
+<td>STFangsong</td>
+</tr>
+<tr>
+<td>方正舒体</td>
+<td>FZShuTi</td>
+</tr>
+<tr>
+<td>方正姚体</td>
+<td>FZYaoti</td>
+</tr>
+<tr>
+<td>华文彩云</td>
+<td>STCaiyun</td>
+</tr>
+<tr>
+<td>华文琥珀</td>
+<td>STHupo</td>
+</tr>
+<tr>
+<td>华文隶书</td>
+<td>STLiti</td>
+</tr>
+<tr>
+<td>华文行楷</td>
+<td>STXingkai</td>
+</tr>
+<tr>
+<td>华文新魏</td>
+<td>STXinwei</td>
+</tr>
+</tbody>
+</table>
+<p>Mac OS 系统中常见自带字体：</p>
+<table>
+<thead>
+<tr>
+<th>字体</th>
+<th>英文名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>华文细黑</td>
+<td>STHeiti Light / STXihei</td>
+</tr>
+<tr>
+<td>华文黑体</td>
+<td>STHeiti</td>
+</tr>
+<tr>
+<td>华文楷体</td>
+<td>STKaiti</td>
+</tr>
+<tr>
+<td>华文宋体</td>
+<td>STSong</td>
+</tr>
+<tr>
+<td>华文仿宋</td>
+<td>STFangsong</td>
+</tr>
+<tr>
+<td>丽黑 Pro</td>
+<td>LiHei Pro Medium</td>
+</tr>
+<tr>
+<td>丽宋 Pro</td>
+<td>LiSong Pro Light</td>
+</tr>
+<tr>
+<td>标楷体</td>
+<td>BiauKai</td>
+</tr>
+<tr>
+<td>苹果丽中黑</td>
+<td>Apple LiGothic Medium</td>
+</tr>
+<tr>
+<td>苹果丽细宋</td>
+<td>Apple LiSung Light</td>
+</tr>
+</tbody>
+</table>
+<h3 id="font-color-1BC3FB-【2x02】指定全局字体：rcParams-font"><font color=#1BC3FB>【2x02】指定全局字体：rcParams</font></h3>
+<p>通过 <code>rcParams['font.sans-serif']</code> 可以配置全局字体。</p>
+<p>优点：只需设置一次即可显示所有中文；缺点：污染全局，无法对单个中文设置字体。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]   <span class="hljs-comment"># 配置全局字体为微软雅黑</span>
+plt.rcParams[<span class="hljs-string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="hljs-literal">False</span>              <span class="hljs-comment"># 部分字体负号会显示乱码，可添加此参数进行配置</span>
+a = [-<span class="hljs-number">15</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [-<span class="hljs-number">5</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;这是中文标题&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;这是 x 轴标签&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
+
+plt.plot(a, b)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/06.png" alt="06"></p>
+<h3 id="font-color-1BC3FB-【2x03】指定单个字体：fontproperties-font"><font color=#1BC3FB>【2x03】指定单个字体：fontproperties</font></h3>
+<p><code>fontproperties</code> 参数可以加在要设置中文的地方</p>
+<p>优点：不污染全局；缺点：中文太多了挨个设置比较繁琐。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+a = [-<span class="hljs-number">15</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [-<span class="hljs-number">5</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;这是中文标题&#x27;</span>, fontproperties=<span class="hljs-string">&#x27;Microsoft JhengHei&#x27;</span>)   <span class="hljs-comment"># 微软正黑</span>
+plt.xlabel(<span class="hljs-string">&#x27;这是 x 轴标签&#x27;</span>, fontproperties=<span class="hljs-string">&#x27;STLiti&#x27;</span>)             <span class="hljs-comment"># 华文隶书</span>
+plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, fontproperties=<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>)    <span class="hljs-comment"># 微软雅黑</span>
+
+plt.plot(a, b)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/07.png" alt="07"></p>
+<h3 id="font-color-1BC3FB-【2x04】指定文字路径：FontProperties-font"><font color=#1BC3FB>【2x04】指定文字路径：FontProperties</font></h3>
+<p><code>matplotlib</code> 中 <code>font_manager</code> 模块的 <code>FontProperties</code> 方法可以通过指定文字路径来使用本地文字，在 Windows 中，文字路径一般是 <code>C:\Windows\Fonts\</code>，文字名称可以通过其属性来获取，部分用户自己安装的字体可能包含多个类型，可打开字体合集后通过其属性来获取。</p>
+<p><img src="https://cdn.itbob.cn/img/article/015/08.png" alt="08"></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> matplotlib.font_manager <span class="hljs-keyword">import</span> FontProperties
+
+font = FontProperties(fname=<span class="hljs-string">r&quot;C:\Windows\Fonts\STXINGKA.TTF&quot;</span>, size=<span class="hljs-number">14</span>)
+a = [-<span class="hljs-number">15</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [-<span class="hljs-number">5</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;这是中文标题&#x27;</span>, fontproperties=font)
+plt.xlabel(<span class="hljs-string">&#x27;这是 x 轴标签&#x27;</span>, fontproperties=font)
+plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, fontproperties=font)
+
+plt.plot(a, b)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/09.png" alt="09"></p>
+<h3 id="font-color-1BC3FB-【2x05】文字更多属性：rc-font"><font color=#1BC3FB>【2x05】文字更多属性：rc</font></h3>
+<p>rc 参数支持文字的更多属性设置，如字体粗细、大小等，这种方法同样将影响全局。</p>
+<p>官方参考：<a target="_blank" rel="noopener" href="https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc">https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc</a></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+font = &#123;<span class="hljs-string">&#x27;family&#x27;</span>: <span class="hljs-string">&#x27;SimHei&#x27;</span>,
+        <span class="hljs-string">&#x27;weight&#x27;</span>: <span class="hljs-string">&#x27;bold&#x27;</span>,
+        <span class="hljs-string">&#x27;size&#x27;</span>: <span class="hljs-string">&#x27;10&#x27;</span>&#125;
+plt.rc(<span class="hljs-string">&#x27;font&#x27;</span>, **font)               <span class="hljs-comment"># 设置字体的更多属性</span>
+plt.rc(<span class="hljs-string">&#x27;axes&#x27;</span>, unicode_minus=<span class="hljs-literal">False</span>)  <span class="hljs-comment"># 显示负号</span>
+
+a = [-<span class="hljs-number">15</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [-<span class="hljs-number">5</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;这是中文标题&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;这是 x 轴标签&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
+
+plt.plot(a, b)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/10.png" alt="10"></p>
+<h2 id="font-color-FF0000-【3x00】设置画布大小-分辨率-颜色-font"><font color=#FF0000>【3x00】设置画布大小 / 分辨率 / 颜色</font></h2>
+<p><code>matplotlib.pyplot.figure()</code> 可以设置画布的大小、图片分辨率、颜色等。</p>
+<p>基本语法：<code>matplotlib.pyplot.figure(figsize=None, dpi=None, facecolor=None, edgecolor=None, frameon=True, \*\*kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>figsize</td>
+<td><code>(float, float)</code> 的格式，代表宽度和高度，单位为英寸<br>默认为 <code>rcParams[&quot;figure.figsize&quot;] = [6.4, 4.8]</code>，即：640 x 480</td>
+</tr>
+<tr>
+<td>dpi</td>
+<td>图像分辨率，默认为 <code>rcParams[&quot;figure.figsize&quot;] = 100</code></td>
+</tr>
+<tr>
+<td>facecolor</td>
+<td>图像背景颜色，默认为 <code>rcParams[&quot;figure.edgecolor&quot;] = ‘white’</code></td>
+</tr>
+<tr>
+<td>edgecolor</td>
+<td>图像边缘颜色，默认为 <code>rcParams[’figure.edgecolor’] = ‘white’</code></td>
+</tr>
+<tr>
+<td>frameon</td>
+<td>是否启用图框</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+x = <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">2</span>)
+y = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">12</span>)
+
+plt.figure(figsize=(<span class="hljs-number">6.5</span>, <span class="hljs-number">5</span>), dpi=<span class="hljs-number">120</span>, facecolor=<span class="hljs-string">&#x27;#BBFFFF&#x27;</span>)
+plt.plot(x, y)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/11.png" alt="11"></p>
+<h2 id="font-color-FF0000-【4x00】设置网格-font"><font color=#FF0000>【4x00】设置网格</font></h2>
+<p><code>matplotlib.pyplot.grid()</code> 方法可以为图表设置网格显示。</p>
+<p>基本语法：<code>matplotlib.pyplot.grid([b=None, which='major', axis='both', \*\*kwargs])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>bool 值，可选项，是否显示网格，值为 <code>None</code> 或 <code>True</code> 则显示，<code>False</code> 不显示</td>
+</tr>
+<tr>
+<td>which</td>
+<td>可选项，在主/次刻度显示网格线，<code>major</code>：主（大）刻度；<code>minor</code>：次（小）刻度；<code>both</code>：两者同时显示</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>可选项，在横/竖轴显示网格线，<code>x</code>：x 轴；<code>y</code>：y 轴；<code>both</code>：两者同时显示</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性，常见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性见下表</td>
+</tr>
+</tbody>
+</table>
+<p>Line2D 属性用法：<code>grid(color='r', linestyle='-', linewidth=2)</code>，部分常见 <a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D">Line2D</a> 属性如下：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alpha</td>
+<td>网格透明度，float 类型，取值范围：<code>[0, 1]</code>，默认为 1.0，即不透明</td>
+</tr>
+<tr>
+<td>antialiased / aa</td>
+<td>是否使用抗锯齿渲染，默认为 True</td>
+</tr>
+<tr>
+<td>color / c</td>
+<td>网格颜色，支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>linestyle / ls</td>
+<td>网格线条样式：<code>'-'</code> or <code>'solid'</code>, <code>'--'</code> or <code>'dashed'</code>, <code>'-.'</code> or <code>'dashdot'</code> <br> <code>':'</code> or <code>'dotted'</code>, <code>'none'</code> or <code>' '</code> or <code>''</code></td>
+</tr>
+<tr>
+<td>linewidth / lw</td>
+<td>网格线条宽度，float 类型，默认 0.8</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+a = [-<span class="hljs-number">15</span>, -<span class="hljs-number">10</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">20</span>, <span class="hljs-number">25</span>, <span class="hljs-number">30</span>]
+b = [-<span class="hljs-number">5</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]
+
+plt.title(<span class="hljs-string">&#x27;这是中文标题&#x27;</span>)
+plt.xlabel(<span class="hljs-string">&#x27;这是 x 轴标签&#x27;</span>)
+plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
+plt.grid(axis=<span class="hljs-string">&#x27;x&#x27;</span>, color=<span class="hljs-string">&#x27;red&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-.&#x27;</span>, linewidth=<span class="hljs-number">2</span>)
+plt.plot(a, b)
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/015/12.png" alt="12"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105828049</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/016/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（三）：图例/LaTeX/刻度/子图/补丁等基本图像属性</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/014/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

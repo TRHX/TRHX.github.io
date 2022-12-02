@@ -1,0 +1,1259 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-16丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 20分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106788501</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】统计计算-font"><font color=#FF0000>【01x00】统计计算</font></h2>
+<p>Pandas 对象拥有一组常用的数学和统计方法。它们大部分都属于约简和汇总统计，用于从 Series 中提取单个值（如 sum 或 mean）或从 DataFrame 的行或列中提取一个 Series。跟对应的 NumPy 数组方法相比，它们都是基于没有缺失数据的假设而构建的。</p>
+<h3 id="font-color-4876FF-【01x01】sum-求和-font"><font color=#4876FF>【01x01】sum() 求和</font></h3>
+<p><code>sum()</code> 方法用于返回指定轴的和，相当于 <code>numpy.sum()</code>。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.sum(self, axis=None, skipna=None, level=None, numeric_only=None, min_count=0, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.sum(self, axis=None, skipna=None, level=None, numeric_only=None, min_count=0, **kwargs)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.sum.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.sum.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴求和，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，求和时是否排除缺失值（NA/null），默认 True</td>
+</tr>
+<tr>
+<td>level</td>
+<td>如果轴是 MultiIndex（层次结构），则沿指定层次求和</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">sum</span>()
+<span class="hljs-number">14</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">sum</span>(level=<span class="hljs-string">&#x27;blooded&#x27;</span>)
+blooded
+warm    <span class="hljs-number">6</span>
+cold    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">sum</span>(level=<span class="hljs-number">0</span>)
+blooded
+warm    <span class="hljs-number">6</span>
+cold    <span class="hljs-number">8</span>
+Name: legs, dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],
+    columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">sum</span>()
+one    <span class="hljs-number">9.25</span>
+two   -<span class="hljs-number">5.80</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">sum</span>(axis=<span class="hljs-number">1</span>)
+a    <span class="hljs-number">1.40</span>
+b    <span class="hljs-number">2.60</span>
+c    <span class="hljs-number">0.00</span>
+d   -<span class="hljs-number">0.55</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【01x02】min-最小值-font"><font color=#4876FF>【01x02】min() 最小值</font></h3>
+<p><code>min()</code> 方法用于返回指定轴的最小值。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.min(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.min(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.min.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.min.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴求最小值，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，求最小值时是否排除缺失值（NA/null），默认 True</td>
+</tr>
+<tr>
+<td>level</td>
+<td>如果轴是 MultiIndex（层次结构），则沿指定层次求最小值</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>()
+<span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>(level=<span class="hljs-string">&#x27;blooded&#x27;</span>)
+blooded
+warm    <span class="hljs-number">2</span>
+cold    <span class="hljs-number">0</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>(level=<span class="hljs-number">0</span>)
+blooded
+warm    <span class="hljs-number">2</span>
+cold    <span class="hljs-number">0</span>
+Name: legs, dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>()
+one    <span class="hljs-number">0.75</span>
+two   -<span class="hljs-number">4.50</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>(axis=<span class="hljs-number">1</span>)
+a    <span class="hljs-number">1.4</span>
+b   -<span class="hljs-number">4.5</span>
+c    NaN
+d   -<span class="hljs-number">1.3</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">min</span>(axis=<span class="hljs-string">&#x27;columns&#x27;</span>, skipna=<span class="hljs-literal">False</span>)
+a    NaN
+b   -<span class="hljs-number">4.5</span>
+c    NaN
+d   -<span class="hljs-number">1.3</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【01x03】max-最大值-font"><font color=#4876FF>【01x03】max() 最大值</font></h3>
+<p><code>max()</code> 方法用于返回指定轴的最大值。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.max(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.max(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.max.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.max.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴求最大值，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，求最大值时是否排除缺失值（NA/null），默认 True</td>
+</tr>
+<tr>
+<td>level</td>
+<td>如果轴是 MultiIndex（层次结构），则沿指定层次求最大值</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>()
+<span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>(level=<span class="hljs-string">&#x27;blooded&#x27;</span>)
+blooded
+warm    <span class="hljs-number">4</span>
+cold    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>(level=<span class="hljs-number">0</span>)
+blooded
+warm    <span class="hljs-number">4</span>
+cold    <span class="hljs-number">8</span>
+Name: legs, dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>()
+one    <span class="hljs-number">7.1</span>
+two   -<span class="hljs-number">1.3</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>(axis=<span class="hljs-number">1</span>)
+a    <span class="hljs-number">1.40</span>
+b    <span class="hljs-number">7.10</span>
+c     NaN
+d    <span class="hljs-number">0.75</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.<span class="hljs-built_in">max</span>(axis=<span class="hljs-string">&#x27;columns&#x27;</span>, skipna=<span class="hljs-literal">False</span>)
+a     NaN
+b    <span class="hljs-number">7.10</span>
+c     NaN
+d    <span class="hljs-number">0.75</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【01x04】mean-平均值-font"><font color=#4876FF>【01x04】mean() 平均值</font></h3>
+<p><code>mean()</code> 方法用于返回指定轴的平均值。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.mean(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.mean(self, axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.mean.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.mean.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴求平均值，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，求平均值时是否排除缺失值（NA/null），默认 True</td>
+</tr>
+<tr>
+<td>level</td>
+<td>如果轴是 MultiIndex（层次结构），则沿指定层次求平均值</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean()
+<span class="hljs-number">3.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean(level=<span class="hljs-string">&#x27;blooded&#x27;</span>)
+blooded
+warm    <span class="hljs-number">3</span>
+cold    <span class="hljs-number">4</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean(level=<span class="hljs-number">0</span>)
+blooded
+warm    <span class="hljs-number">3</span>
+cold    <span class="hljs-number">4</span>
+Name: legs, dtype: int64</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean()
+one    <span class="hljs-number">3.083333</span>
+two   -<span class="hljs-number">2.900000</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean(axis=<span class="hljs-number">1</span>)
+a    <span class="hljs-number">1.400</span>
+b    <span class="hljs-number">1.300</span>
+c      NaN
+d   -<span class="hljs-number">0.275</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.mean(axis=<span class="hljs-string">&#x27;columns&#x27;</span>, skipna=<span class="hljs-literal">False</span>)
+a      NaN
+b    <span class="hljs-number">1.300</span>
+c      NaN
+d   -<span class="hljs-number">0.275</span>
+dtype: float64</code></pre>
+<h3 id="font-color-4876FF-【01x05】idxmin-最小值索引-font"><font color=#4876FF>【01x05】idxmin() 最小值索引</font></h3>
+<p><code>idxmin()</code> 方法用于返回最小值的索引。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.idxmin(self, axis=0, skipna=True, *args, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.idxmin(self, axis=0, skipna=True)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmin.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmin.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmin.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmin.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，是否排除缺失值（NA/null），默认 True</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.idxmin()
+(<span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>)</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.idxmin()
+one    d
+two    b
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<h3 id="font-color-4876FF-【01x06】idxmax-最大值索引-font"><font color=#4876FF>【01x06】idxmax() 最大值索引</font></h3>
+<p><code>idxmax()</code> 方法用于返回最大值的索引。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.idxmax(self, axis=0, skipna=True, *args, **kwargs)</code></p>
+</li>
+<li>
+<p><code>DataFrame.idxmax(self, axis=0, skipna=True)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmax.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmax.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmax.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmax.html</a></p>
+</li>
+</ul>
+<p>常用参数描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>axis</td>
+<td>指定轴，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>skipna</td>
+<td>bool 类型，是否排除缺失值（NA/null），默认 True</td>
+</tr>
+</tbody>
+</table>
+<p>在 Series 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.MultiIndex.from_arrays([
+    [<span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;warm&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;cold&#x27;</span>],
+    [<span class="hljs-string">&#x27;dog&#x27;</span>, <span class="hljs-string">&#x27;falcon&#x27;</span>, <span class="hljs-string">&#x27;fish&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>]],
+    names=[<span class="hljs-string">&#x27;blooded&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">8</span>], name=<span class="hljs-string">&#x27;legs&#x27;</span>, index=idx)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+blooded  animal
+warm     dog       <span class="hljs-number">4</span>
+         falcon    <span class="hljs-number">2</span>
+cold     fish      <span class="hljs-number">0</span>
+         spider    <span class="hljs-number">8</span>
+Name: legs, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.idxmax()
+(<span class="hljs-string">&#x27;cold&#x27;</span>, <span class="hljs-string">&#x27;spider&#x27;</span>)</code></pre>
+<p>在 DataFrame 中的应用：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1.4</span>, np.nan], [<span class="hljs-number">7.1</span>, -<span class="hljs-number">4.5</span>],
+    [np.nan, np.nan], [<span class="hljs-number">0.75</span>, -<span class="hljs-number">1.3</span>]],
+    index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>],columns=[<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    one  two
+a  <span class="hljs-number">1.40</span>  NaN
+b  <span class="hljs-number">7.10</span> -<span class="hljs-number">4.5</span>
+c   NaN  NaN
+d  <span class="hljs-number">0.75</span> -<span class="hljs-number">1.3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.idxmax()
+one    b
+two    d
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<h2 id="font-color-FF0000-【02x00】统计描述-font"><font color=#FF0000>【02x00】统计描述</font></h2>
+<p><code>describe()</code> 方法用于快速综合统计结果：计数、均值、标准差、最大最小值、四分位数等。还可以通过参数来设置需要忽略或者包含的统计选项。</p>
+<p>在 Series 和 DataFrame 中的基本语法如下：</p>
+<ul>
+<li>
+<p><code>Series.describe(self: ~ FrameOrSeries, percentiles=None, include=None, exclude=None)</code></p>
+</li>
+<li>
+<p><code>DataFrame.describe(self: ~ FrameOrSeries, percentiles=None, include=None, exclude=None) </code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.describe.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.describe.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html</a></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>percentiles</td>
+<td>数字列表，可选项，要包含在输出中的百分比。所有值都应介于 0 和 1 之间。默认值为 [.25、.5、.75]，即返回第 25、50 和 75 个百分点</td>
+</tr>
+<tr>
+<td>include</td>
+<td>要包含在结果中的数据类型，数据类型列表，默认 None，具体取值类型参见官方文档</td>
+</tr>
+<tr>
+<td>exclude</td>
+<td>要从结果中忽略的数据类型，数据类型列表，默认 None，具体取值类型参见官方文档</td>
+</tr>
+</tbody>
+</table>
+<p>描述数字形式的 Series 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe()
+count    <span class="hljs-number">3.0</span>
+mean     <span class="hljs-number">2.0</span>
+std      <span class="hljs-number">1.0</span>
+<span class="hljs-built_in">min</span>      <span class="hljs-number">1.0</span>
+<span class="hljs-number">25</span>%      <span class="hljs-number">1.5</span>
+<span class="hljs-number">50</span>%      <span class="hljs-number">2.0</span>
+<span class="hljs-number">75</span>%      <span class="hljs-number">2.5</span>
+<span class="hljs-built_in">max</span>      <span class="hljs-number">3.0</span>
+dtype: float64</code></pre>
+<p>分类描述：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>    a
+<span class="hljs-number">1</span>    a
+<span class="hljs-number">2</span>    b
+<span class="hljs-number">3</span>    c
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe()
+count     <span class="hljs-number">4</span>
+unique    <span class="hljs-number">3</span>
+top       a
+freq      <span class="hljs-number">2</span>
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>描述时间戳：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj  = pd.Series([
+    np.datetime64(<span class="hljs-string">&quot;2000-01-01&quot;</span>),
+    np.datetime64(<span class="hljs-string">&quot;2010-01-01&quot;</span>),
+    np.datetime64(<span class="hljs-string">&quot;2010-01-01&quot;</span>)
+    ])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>   <span class="hljs-number">2000</span>-01-01
+<span class="hljs-number">1</span>   <span class="hljs-number">2010</span>-01-01
+<span class="hljs-number">2</span>   <span class="hljs-number">2010</span>-01-01
+dtype: datetime64[ns]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe()
+count                       <span class="hljs-number">3</span>
+unique                      <span class="hljs-number">2</span>
+top       <span class="hljs-number">2010</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>
+freq                        <span class="hljs-number">2</span>
+first     <span class="hljs-number">2000</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>
+last      <span class="hljs-number">2010</span>-01-01 <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>描述 DataFrame 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;categorical&#x27;</span>: pd.Categorical([<span class="hljs-string">&#x27;d&#x27;</span>,<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>]), <span class="hljs-string">&#x27;numeric&#x27;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-string">&#x27;object&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  categorical  numeric <span class="hljs-built_in">object</span>
+<span class="hljs-number">0</span>           d        <span class="hljs-number">1</span>      a
+<span class="hljs-number">1</span>           e        <span class="hljs-number">2</span>      b
+<span class="hljs-number">2</span>           f        <span class="hljs-number">3</span>      c
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe()
+       numeric
+count      <span class="hljs-number">3.0</span>
+mean       <span class="hljs-number">2.0</span>
+std        <span class="hljs-number">1.0</span>
+<span class="hljs-built_in">min</span>        <span class="hljs-number">1.0</span>
+<span class="hljs-number">25</span>%        <span class="hljs-number">1.5</span>
+<span class="hljs-number">50</span>%        <span class="hljs-number">2.0</span>
+<span class="hljs-number">75</span>%        <span class="hljs-number">2.5</span>
+<span class="hljs-built_in">max</span>        <span class="hljs-number">3.0</span></code></pre>
+<p>不考虑数据类型，显示所有描述：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;categorical&#x27;</span>: pd.Categorical([<span class="hljs-string">&#x27;d&#x27;</span>,<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>]), <span class="hljs-string">&#x27;numeric&#x27;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-string">&#x27;object&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  categorical  numeric <span class="hljs-built_in">object</span>
+<span class="hljs-number">0</span>           d        <span class="hljs-number">1</span>      a
+<span class="hljs-number">1</span>           e        <span class="hljs-number">2</span>      b
+<span class="hljs-number">2</span>           f        <span class="hljs-number">3</span>      c
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe(include=<span class="hljs-string">&#x27;all&#x27;</span>)
+       categorical  numeric <span class="hljs-built_in">object</span>
+count            <span class="hljs-number">3</span>      <span class="hljs-number">3.0</span>      <span class="hljs-number">3</span>
+unique           <span class="hljs-number">3</span>      NaN      <span class="hljs-number">3</span>
+top              f      NaN      c
+freq             <span class="hljs-number">1</span>      NaN      <span class="hljs-number">1</span>
+mean           NaN      <span class="hljs-number">2.0</span>    NaN
+std            NaN      <span class="hljs-number">1.0</span>    NaN
+<span class="hljs-built_in">min</span>            NaN      <span class="hljs-number">1.0</span>    NaN
+<span class="hljs-number">25</span>%            NaN      <span class="hljs-number">1.5</span>    NaN
+<span class="hljs-number">50</span>%            NaN      <span class="hljs-number">2.0</span>    NaN
+<span class="hljs-number">75</span>%            NaN      <span class="hljs-number">2.5</span>    NaN
+<span class="hljs-built_in">max</span>            NaN      <span class="hljs-number">3.0</span>    NaN</code></pre>
+<p>仅包含 category 列：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;categorical&#x27;</span>: pd.Categorical([<span class="hljs-string">&#x27;d&#x27;</span>,<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-string">&#x27;f&#x27;</span>]), <span class="hljs-string">&#x27;numeric&#x27;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-string">&#x27;object&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  categorical  numeric <span class="hljs-built_in">object</span>
+<span class="hljs-number">0</span>           d        <span class="hljs-number">1</span>      a
+<span class="hljs-number">1</span>           e        <span class="hljs-number">2</span>      b
+<span class="hljs-number">2</span>           f        <span class="hljs-number">3</span>      c
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.describe(include=[<span class="hljs-string">&#x27;category&#x27;</span>])
+       categorical
+count            <span class="hljs-number">3</span>
+unique           <span class="hljs-number">3</span>
+top              f
+freq             <span class="hljs-number">1</span></code></pre>
+<h2 id="font-color-FF0000-【03x00】常用统计方法-font"><font color=#FF0000>【03x00】常用统计方法</font></h2>
+<p>其他常用统计方法参见下表：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+<th>官方文档</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>count</td>
+<td>非NA值的数量</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.count.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.count.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>describe</td>
+<td>针对Series或各DataFrame列计算汇总统计</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.describe.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>min</td>
+<td>计算最小值</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.min.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.min.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>max</td>
+<td>计算最大值</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.max.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.max.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>argmin</td>
+<td>计算能够获取到最小值的索引位置（整数）</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.argmin.html">Series</a></td>
+</tr>
+<tr>
+<td>argmax</td>
+<td>计算能够获取到最大值的索引位置（整数）</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.argmax.html">Series</a></td>
+</tr>
+<tr>
+<td>idxmin</td>
+<td>计算能够获取到最小值的索引值</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmin.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmin.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>idxmax</td>
+<td>计算能够获取到最大值的索引值</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.idxmax.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.idxmax.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>quantile</td>
+<td>计算样本的分位数（0到1）</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.quantile.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.quantile.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>sum</td>
+<td>值的总和</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.sum.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>mean</td>
+<td>值的平均数</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.mean.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mean.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>median</td>
+<td>值的算术中位数（50%分位数）</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.median.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.median.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>mad</td>
+<td>根据平均值计算平均绝对离差</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.mad.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.mad.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>var</td>
+<td>样本值的方差</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.var.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.var.html">DataFrame</a></td>
+</tr>
+<tr>
+<td>std</td>
+<td>样本值的标准差</td>
+<td><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.std.html">Series</a>丨<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.std.html">DataFrame</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106788501</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/030/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/028/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（四）：函数应用/映射/排序和层级索引</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

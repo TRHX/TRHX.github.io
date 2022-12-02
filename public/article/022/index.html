@@ -1,0 +1,1069 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Matplotlib（九）：极区图/极坐标图/雷达图的绘制 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Matplotlib（九）：极区图/极坐标图/雷达图的绘制</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-03丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.5k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 19分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Matplotlib/" class="post-tag">
+                            Matplotlib</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Matplotlib 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
+<li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/016/">Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性</a></li>
+<li><a href="https://www.itbob.cn/article/017/">Python 数据分析三剑客之 Matplotlib（四）：线性图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/018/">Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/019/">Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/020/">Python 数据分析三剑客之 Matplotlib（七）：饼状图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/021/">Python 数据分析三剑客之 Matplotlib（八）：等高线 / 等值线图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/022/">Python 数据分析三剑客之 Matplotlib（九）：极区图 / 极坐标图 / 雷达图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
+<li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106162412</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【1x00】了解极坐标-font"><font color=#FF0000>【1x00】了解极坐标</font></h2>
+<p>参考百度百科：极坐标，属于二维坐标系统，创始人是牛顿，主要应用于数学领域。极坐标是指在平面内取一个定点 <font color=#FF0000>O</font>，叫极点，引一条射线 <font color=#FF0000>Ox</font>，叫做极轴，再选定一个长度单位和角度的正方向（通常取逆时针方向）。对于平面内任何一点 <font color=#FF0000>M</font>，用 <font color=#FF0000>ρ</font> 表示线段 <font color=#FF0000>OM</font> 的长度（有时也用 <font color=#FF0000>r</font> 表示），<font color=#FF0000>θ</font> 表示从 <font color=#FF0000>Ox</font> 到 <font color=#FF0000>OM</font> 的角度，<font color=#FF0000>ρ</font> 叫做点 <font color=#FF0000>M</font> 的极径，<font color=#FF0000>θ</font> 叫做点 <font color=#FF0000>M</font> 的极角，有序数对 <font color=#FF0000>(ρ,θ)</font> 就叫点 <font color=#FF0000>M</font> 的极坐标，这样建立的坐标系叫做极坐标系。通常情况下，<font color=#FF0000>M</font> 的极径坐标单位为 <font color=#FF0000>1</font>（长度单位），极角坐标单位为 <font color=#FF0000>rad</font>（或<font color=#FF0000>°</font>）。</p>
+<p><img src="https://cdn.itbob.cn/img/article/022/01.png" alt="01"></p>
+<h2 id="font-color-FF0000-【2x00】基本方法-matplotlib-pyplot-polar-font"><font color=#FF0000>【2x00】基本方法 matplotlib.pyplot.polar()</font></h2>
+<p><code>matplotlib.pyplot.polar()</code> 方法可用于绘制极坐标图。</p>
+<p>基本语法：<code>polar(theta, r, **kwargs)</code></p>
+<ul>
+<li><font color=#FF0000><strong>theta</strong></font>：点的角坐标，以弧度单位传入参数；</li>
+<li><font color=#FF0000><strong>r</strong></font>：点的半径坐标；</li>
+<li><font color=#FF0000>**<strong>kwargs</strong></font>：可选项，其他 Line2D 属性，常用属性见<font color=#FF0000><strong>表一</strong></font>。</li>
+</ul>
+<p>拓展：数学上通常是用弧度而非角度，弧度单位缩写为 rad，2π rad = 360°，1° ≈ 0.0174533 rad，1 rad ≈ 57.29578°。</p>
+<ul>
+<li>角度转换为弧度公式：弧度 = 角度 ÷ 180 × π</li>
+<li>弧度转换为角度公式：角度 = 弧度 × 180 ÷ π</li>
+</ul>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color="FF0000" size=3px>表一：Line2D 部分属性，完整属性参见官方文档：<br>https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alpha</td>
+<td>线条透明度，float 类型，取值范围：<code>[0, 1]</code>，默认为 1.0，即不透明</td>
+</tr>
+<tr>
+<td>antialiased / aa</td>
+<td>是否使用抗锯齿渲染，默认为 True</td>
+</tr>
+<tr>
+<td>color / c</td>
+<td>线条颜色，支持英文颜色名称及其简写、十六进制颜色码等，更多颜色示例参见官网 <a target="_blank" rel="noopener" href="https://matplotlib.org/gallery/color/color_demo.html">Color Demo</a></td>
+</tr>
+<tr>
+<td>fillstyle</td>
+<td>点的填充样式，<code>'full'</code>、<code>'left'</code>、<code>'right'</code>、<code>'bottom'</code>、<code>'top'</code>、<code>'none'</code></td>
+</tr>
+<tr>
+<td>label</td>
+<td>图例，具体参数参见：<br><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></td>
+</tr>
+<tr>
+<td>linestyle / ls</td>
+<td>连接的线条样式：<code>'-'</code> or <code>'solid'</code>, <code>'--'</code> or <code>'dashed'</code>, <code>'-.'</code> or <code>'dashdot'</code> <br> <code>':'</code> or <code>'dotted'</code>, <code>'none'</code> or <code>' '</code> or <code>''</code></td>
+</tr>
+<tr>
+<td>linewidth / lw</td>
+<td>连接的线条宽度，float 类型，默认 0.8</td>
+</tr>
+<tr>
+<td>marker</td>
+<td>标记样式，具体样式参见<font color=#FF0000><strong>表二</strong></font></td>
+</tr>
+<tr>
+<td>markeredgecolor / mec</td>
+<td>marker 标记的边缘颜色</td>
+</tr>
+<tr>
+<td>markeredgewidth / mew</td>
+<td>marker 标记的边缘宽度</td>
+</tr>
+<tr>
+<td>markerfacecolor / mfc</td>
+<td>marker 标记的颜色</td>
+</tr>
+<tr>
+<td>markerfacecoloralt / mfcalt</td>
+<td>marker 标记的备用颜色</td>
+</tr>
+<tr>
+<td>markersize / ms</td>
+<td>marker 标记的大小</td>
+</tr>
+</tbody>
+</table>
+<table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color="FF0000" size=3px>表二：marker 标记的样式，官方文档：<br>https://matplotlib.org/api/markers_api.html</font></strong></td></tr></table>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;.&quot;</code></td>
+<td>点</td>
+</tr>
+<tr>
+<td><code>&quot;,&quot;</code></td>
+<td>像素点</td>
+</tr>
+<tr>
+<td><code>&quot;o&quot;</code></td>
+<td>圆圈</td>
+</tr>
+<tr>
+<td><code>&quot;v&quot;</code></td>
+<td>倒三角</td>
+</tr>
+<tr>
+<td><code>&quot;^&quot;</code></td>
+<td>正三角</td>
+</tr>
+<tr>
+<td><code>&quot;&lt;&quot;</code></td>
+<td>左三角</td>
+</tr>
+<tr>
+<td><code>&quot;&gt;&quot;</code></td>
+<td>右三角</td>
+</tr>
+<tr>
+<td><code>&quot;1&quot;</code></td>
+<td>倒三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;2&quot;</code></td>
+<td>正三叉星（类似奔驰车标形状）</td>
+</tr>
+<tr>
+<td><code>&quot;3&quot;</code></td>
+<td>左三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;4&quot;</code></td>
+<td>右三叉星</td>
+</tr>
+<tr>
+<td><code>&quot;8&quot;</code></td>
+<td>八边形</td>
+</tr>
+<tr>
+<td><code>&quot;s&quot;</code></td>
+<td>正方形</td>
+</tr>
+<tr>
+<td><code>&quot;p&quot;</code></td>
+<td>五边形</td>
+</tr>
+<tr>
+<td><code>&quot;P&quot;</code></td>
+<td>填充的加号（粗加号）</td>
+</tr>
+<tr>
+<td><code>&quot;+&quot;</code></td>
+<td>加号</td>
+</tr>
+<tr>
+<td><code>&quot;*&quot;</code></td>
+<td>星形</td>
+</tr>
+<tr>
+<td><code>&quot;h&quot;</code></td>
+<td>六边形（底部是角）</td>
+</tr>
+<tr>
+<td><code>&quot;H&quot;</code></td>
+<td>六边形（底部是边）</td>
+</tr>
+<tr>
+<td><code>&quot;x&quot;</code></td>
+<td>x 号</td>
+</tr>
+<tr>
+<td><code>&quot;X&quot;</code></td>
+<td>填充的 x 号（粗 x 号）</td>
+</tr>
+<tr>
+<td><code>&quot;D&quot;</code></td>
+<td>粗菱形（对角线相等）</td>
+</tr>
+<tr>
+<td><code>&quot;d&quot;</code></td>
+<td>细菱形（对角线不等）</td>
+</tr>
+<tr>
+<td>`&quot;</td>
+<td>&quot;`</td>
+</tr>
+<tr>
+<td><code>&quot;_&quot;</code></td>
+<td>水平线</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>水平线靠左</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>水平线靠右</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>垂直线靠上</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>垂直线靠下</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>左三角（比 <code>&quot;&lt;&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>右三角（比 <code>&quot;&gt;&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>6</code></td>
+<td>正三角（比 <code>&quot;^&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>7</code></td>
+<td>倒三角（比 <code>&quot;v&quot;</code> 更细）</td>
+</tr>
+<tr>
+<td><code>8</code></td>
+<td>左三角（比 <code>&quot;&lt;&quot;</code> 更细，靠左显示）</td>
+</tr>
+<tr>
+<td><code>9</code></td>
+<td>右三角（比 <code>&quot;&gt;&quot;</code> 更细，靠右显示）</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td>正三角（比 <code>&quot;^&quot;</code> 更细，靠上显示）</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td>倒三角（比 <code>&quot;v&quot;</code> 更细，靠下显示）</td>
+</tr>
+<tr>
+<td><code>&quot;None&quot;</code> / <code>&quot; &quot;</code> / <code>&quot;&quot;</code></td>
+<td>无样式</td>
+</tr>
+<tr>
+<td><code>'$...$'</code></td>
+<td>支持 LaTeX 数学公式，表达式用美元符号包围起来</td>
+</tr>
+</tbody>
+</table>
+<h2 id="font-color-FF0000-【3x00】绘制极坐标-font"><font color=#FF0000>【3x00】绘制极坐标</font></h2>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 设置中文显示</span>
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+<span class="hljs-comment"># 设置画布大小</span>
+plt.figure(figsize=(<span class="hljs-number">8.0</span>, <span class="hljs-number">6.0</span>))
+
+<span class="hljs-comment"># 设置三个数据，theta 为点位置的弧度参数，r 为点的半径坐标</span>
+theta1 = np.array([<span class="hljs-number">1.25</span>*np.pi, np.pi/<span class="hljs-number">2</span>, <span class="hljs-number">0</span>])
+theta2 = np.array([-np.pi/<span class="hljs-number">6</span>, -np.pi/<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, np.pi/<span class="hljs-number">2</span>, np.pi])
+theta3 = np.arange(<span class="hljs-number">0.</span>, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">0.5</span>)
+r1 = np.array([<span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+r2 = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">3</span>])
+r3 = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">13</span>)
+
+<span class="hljs-comment"># 绘制第一个极坐标图，点的标记样式为细菱形，大小为8，点之间的连接线条样式为:</span>
+plt.polar(theta1, r1, marker=<span class="hljs-string">&#x27;d&#x27;</span>, ms=<span class="hljs-number">8</span>, ls=<span class="hljs-string">&#x27;:&#x27;</span>, label=<span class="hljs-string">&#x27;数据一&#x27;</span>)
+<span class="hljs-comment"># 填充第一个极坐标图，填充颜色为蓝色，透明度0.3</span>
+plt.fill(theta1, r1, color=<span class="hljs-string">&#x27;b&#x27;</span>, alpha=<span class="hljs-number">0.3</span>)
+<span class="hljs-comment"># 绘制第二个极坐标图，marker、linestyle、color 三个参数可以组合以字符串形式传入</span>
+plt.polar(theta2, r2, <span class="hljs-string">&#x27;*-g&#x27;</span>, ms=<span class="hljs-number">10</span>, label=<span class="hljs-string">&#x27;数据二&#x27;</span>)
+<span class="hljs-comment"># 绘制第三个极坐标图，设置 linestyle 为 none，即点与点之间不相连</span>
+plt.polar(theta3, r3, marker=<span class="hljs-string">&#x27;o&#x27;</span>, ls=<span class="hljs-string">&#x27;none&#x27;</span>, ms=<span class="hljs-number">8</span>, color=<span class="hljs-string">&#x27;r&#x27;</span>, label=<span class="hljs-string">&#x27;数据三&#x27;</span>)
+
+plt.title(<span class="hljs-string">&#x27;matplotlib.pyplot.polar 用法示例&#x27;</span>, pad=<span class="hljs-number">25</span>, fontsize=<span class="hljs-number">15</span>)
+plt.legend(bbox_to_anchor=(<span class="hljs-number">1.3</span>, <span class="hljs-number">1</span>))
+
+plt.show()</code></pre>
+<p>示例中 figure、title、legend 等其他方法的解释可参见我的系列文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105638122">《Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件》</a></li>
+<li><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></li>
+<li><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></li>
+</ul>
+<p>绘制结果如下图：</p>
+<p><img src="https://cdn.itbob.cn/img/article/022/02.png" alt="02"></p>
+<h2 id="font-color-FF0000-【4x00】绘制雷达图-font"><font color=#FF0000>【4x00】绘制雷达图</font></h2>
+<p>雷达图是以从同一点开始的轴上表示的三个或更多个定量变量的二维图表的形式显示多变量数据的图形方法。轴的相对位置和角度通常是无信息的。 雷达图也称为网络图，蜘蛛图，星图，蜘蛛网图，不规则多边形，极坐标图或 Kiviat 图。它相当于平行坐标图，轴径向排列。</p>
+<p>在前面的示例中，使用了 <code>matplotlib.pyplot.fill()</code> 方法对三个极坐标点围成的图形进行了填充，这就有点儿接近于雷达图了，仔细观察前面的示例，在填充时第一个点和最后一个点之间没有连线，即没有闭合，而更精确的雷达图应该是闭合的，且外围应该是文字描述而不是度数。</p>
+<p>在绘制雷达图之前需要提前了解一些函数。这些函数可以帮助我们实现闭合、自定义文字标签等。</p>
+<hr>
+<h3 id="font-color-4876FF-【4x01】理解-numpy-concatenate-font"><font color=##4876FF>【4x01】理解 numpy.concatenate()</font></h3>
+<p><code>numpy.concatenate()</code> 方法用于沿现有轴连接一系列数组，我们可以利用此方法来实现闭合操作。</p>
+<p>基本语法：<code>numpy.concatenate((a1, a2, ...)[, axis=0, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a1, a2, …</td>
+<td>要连接的数组，必须拥有相同的维度</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>沿指定轴连接数组，可选项，如果 axis 为 None，则数组在使用前被展平，默认值为 0</td>
+</tr>
+<tr>
+<td>out</td>
+<td>用于接收连接后的数组，可选项</td>
+</tr>
+</tbody>
+</table>
+<p>用法示例：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+a = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+b = np.array([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-built_in">print</span>(np.concatenate((a, b)))</code></pre>
+<p>输出结果如下：</p>
+<pre><code class="hljs python">[<span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-string">&#x27;2&#x27;</span> <span class="hljs-string">&#x27;3&#x27;</span> <span class="hljs-string">&#x27;4&#x27;</span> <span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-string">&#x27;b&#x27;</span> <span class="hljs-string">&#x27;c&#x27;</span> <span class="hljs-string">&#x27;d&#x27;</span>]</code></pre>
+<p>如果要实现数组的闭合，则可以传入原数组和一个新数组，其中新数组中的元素为原数组中的第一个元素，示例如下：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+a = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-built_in">print</span>(np.concatenate((a, [a[<span class="hljs-number">0</span>]])))</code></pre>
+<p>输出结果如下：</p>
+<pre><code class="hljs python">[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span>]</code></pre>
+<hr>
+<h3 id="font-color-4876FF-【4x02】理解-pyplot-thetagrids-font"><font color=##4876FF>【4x02】理解 pyplot.thetagrids()</font></h3>
+<p><code>matplotlib.pyplot.thetagrids()</code> 方法用于获取并设置当前极区图上的极轴。</p>
+<p>基本语法：<code>matplotlib.pyplot.thetagrids(angles, labels=None, fmt=None, **kwargs)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>angles</td>
+<td>网格线的角度，浮点数、度数组成的元组</td>
+</tr>
+<tr>
+<td>labels</td>
+<td>每个极轴要使用的文本标签，字符串组成的元组</td>
+</tr>
+<tr>
+<td>fmt</td>
+<td>格式化 angles 参数，如 <code>'%1.2f'</code> 保留两位小数，注意，将使用以弧度为单位的角度</td>
+</tr>
+<tr>
+<td>**kwargs</td>
+<td>其他关键字参数，参见<a target="_blank" rel="noopener" href="https://matplotlib.org/api/text_api.html?highlight=text#matplotlib.text.Text">官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"> <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+plt.polar()
+angles = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">360</span>, <span class="hljs-number">45</span>)
+labels = (<span class="hljs-string">&#x27;东&#x27;</span>, <span class="hljs-string">&#x27;东北&#x27;</span>, <span class="hljs-string">&#x27;北&#x27;</span>, <span class="hljs-string">&#x27;西北&#x27;</span>, <span class="hljs-string">&#x27;西&#x27;</span>, <span class="hljs-string">&#x27;西南&#x27;</span>, <span class="hljs-string">&#x27;南&#x27;</span>, <span class="hljs-string">&#x27;东南&#x27;</span>)
+plt.thetagrids(angles, labels)
+plt.title(<span class="hljs-string">&#x27;matplotlib.pyplot.thetagrids() 用法示例&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/03.png" alt="03"></p>
+<hr>
+<h3 id="font-color-4876FF-【4x03】绘制雷达图-font"><font color=##4876FF>【4x03】绘制雷达图</font></h3>
+<p><code>numpy.concatenate()</code> 方法能够解决闭合问题，<code>matplotlib.pyplot.thetagrids()</code> 能够解决自定义极轴和极轴的文本标记问题，因此就可以绘制一个标准的雷达图了。示例如下：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-comment"># 设置中文显示、画布大小</span>
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+plt.figure(figsize=(<span class="hljs-number">8.0</span>, <span class="hljs-number">6.0</span>))
+
+<span class="hljs-comment"># 分割圆并执行闭合操作（0-2π之间返回间隔均匀的6个弧度：π/3、2π/3、π、4π/3、5π/3、2π）</span>
+theta = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>*np.pi, <span class="hljs-number">6</span>, endpoint=<span class="hljs-literal">False</span>)
+theta = np.concatenate((theta, [theta[<span class="hljs-number">0</span>]]))
+
+<span class="hljs-comment"># 设置两组数据并执行闭合操作</span>
+data1 = np.array([<span class="hljs-number">9</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>])
+data2 = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>])
+data1 = np.concatenate((data1, [data1[<span class="hljs-number">0</span>]]))
+data2 = np.concatenate((data2, [data2[<span class="hljs-number">0</span>]]))
+
+<span class="hljs-comment"># 绘制并填充两组数据</span>
+plt.polar(theta, data1, <span class="hljs-string">&#x27;bo-&#x27;</span>, label=<span class="hljs-string">&#x27;小王&#x27;</span>)
+plt.polar(theta, data2, <span class="hljs-string">&#x27;ro:&#x27;</span>, label=<span class="hljs-string">&#x27;小张&#x27;</span>)
+plt.fill(theta, data1, color=<span class="hljs-string">&#x27;b&#x27;</span>, alpha=<span class="hljs-number">0.3</span>)
+plt.fill(theta, data2, color=<span class="hljs-string">&#x27;r&#x27;</span>, alpha=<span class="hljs-number">0.3</span>)
+
+<span class="hljs-comment"># 将六个弧度（π/3、2π/3、π、4π/3、5π/3、2π）转换成角度，并分别设置标签</span>
+labels = np.array([<span class="hljs-string">&#x27;Python&#x27;</span>, <span class="hljs-string">&#x27;Golang&#x27;</span>, <span class="hljs-string">&#x27;Java&#x27;</span>, <span class="hljs-string">&#x27;C++&#x27;</span>, <span class="hljs-string">&#x27;PHP&#x27;</span>, <span class="hljs-string">&#x27;JavaScript&#x27;</span>])
+plt.thetagrids(theta * <span class="hljs-number">180</span>/np.pi, labels)
+
+<span class="hljs-comment"># 设置刻度范围、标题、图例</span>
+plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+plt.title(<span class="hljs-string">&#x27;编程语言掌握程度&#x27;</span>)
+plt.legend(bbox_to_anchor=(<span class="hljs-number">1.3</span>, <span class="hljs-number">1</span>))
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/04.png" alt="04"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106162412</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【5x00】高级用法：绘制极坐标散点图-font"><font color=#FF0000>【5x00】高级用法：绘制极坐标散点图</font></h2>
+<p><code>matplotlib.pyplot.polar()</code> 方法可以实现极坐标散点图，但仅用这一个函数的话实现的样式效果并不多，以下介绍另外三种绘制极坐标散点图的方法：</p>
+<ul>
+<li>
+<p><code>matplotlib.pyplot.polar()</code> 和 <code>matplotlib.pyplot.scatter()</code> 结合，前者绘制极坐标图，后者在极坐标图上绘制散点图；</p>
+</li>
+<li>
+<p><code>matplotlib.pyplot.subplot()</code> 和 <code>matplotlib.pyplot.scatter()</code> 结合，前者添加子图，其中指定 <code>projection='polar'</code> 即为极坐标图， 后者在极坐标图上绘制散点图；</p>
+</li>
+<li>
+<p><code>matplotlib.pyplot.axes()</code> 与 <code>matplotlib.pyplot.scatter()</code> 结合，前者设置绘图区参数，其中指定 <code>projection='polar'</code> 或 <code>polar=True</code> 即为极坐标图， 后者在极坐标图上绘制散点图。</p>
+</li>
+</ul>
+<hr>
+<h3 id="font-color-4876FF-【5x01】方法一：pyplot-scatter-与-pyplot-polar-font"><font color=##4876FF>【5x01】方法一：pyplot.scatter() 与 pyplot.polar()</font></h3>
+<p>以下用到的 <code>matplotlib.pyplot.scatter()</code> 函数，各参数含义以及支持的其他参数可以参见前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105914929">《Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">50</span>
+r = <span class="hljs-number">2</span> * np.random.rand(N)
+theta = <span class="hljs-number">2</span> * np.pi * np.random.rand(N)
+size = <span class="hljs-number">200</span> * r ** <span class="hljs-number">2</span>
+colors = N * np.random.rand(N)
+
+plt.polar()
+plt.scatter(theta, r, s=size, c=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标散点图示例一&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/05.png" alt="05"></p>
+<hr>
+<h3 id="font-color-4876FF-【5x02】方法二：pyplot-scatter-与-pyplot-subplot-font"><font color=##4876FF>【5x02】方法二：pyplot.scatter() 与 pyplot.subplot()</font></h3>
+<p><code>matplotlib.pyplot.subplot()</code> 方法用于添加子图，如果想要子图为极坐标图，则需要指定 <code>projection</code> 参数为 <code>polar</code>，有关此函数的具体介绍可参见<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html">官方文档</a>。其他函数的参数解释可参考前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105914929">《Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">50</span>
+r = <span class="hljs-number">2</span> * np.random.rand(N)
+theta = <span class="hljs-number">2</span> * np.pi * np.random.rand(N)
+size = <span class="hljs-number">200</span> * r ** <span class="hljs-number">2</span>
+colors = N * np.random.rand(N)
+
+<span class="hljs-comment"># 一行一列第一个子图</span>
+plt.subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;polar&#x27;</span>)
+plt.scatter(theta, r, s=size, c=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标散点图示例二&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/06.png" alt="06"></p>
+<hr>
+<h3 id="font-color-4876FF-【5x03】方法三：pyplot-scatter-与-pyplot-axes-font"><font color=##4876FF>【5x03】方法三：pyplot.scatter() 与 pyplot.axes()</font></h3>
+<p>axes 为 Matplotlib 图像中的绘图区，<code>matplotlib.pyplot.axes()</code> 方法可以对绘图区进行设置，同样的也可以设置 <code>projection</code> 参数为 <code>polar</code> 来实现极坐标图，设置 <code>polar=True</code> 也行。示例中其他函数的参数解释可参考前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105638122">《Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105914929">《Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+N = <span class="hljs-number">50</span>
+r = <span class="hljs-number">2</span> * np.random.rand(N)
+theta = <span class="hljs-number">2</span> * np.pi * np.random.rand(N)
+size = <span class="hljs-number">200</span> * r ** <span class="hljs-number">2</span>
+colors = N * np.random.rand(N)
+
+<span class="hljs-comment"># plt.axes(polar=True)</span>
+plt.axes(projection=<span class="hljs-string">&#x27;polar&#x27;</span>)
+plt.scatter(theta, r, s=size, c=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标散点图示例三&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/07.png" alt="07"></p>
+<h2 id="font-color-FF0000-【6x00】高级用法：绘制极坐标柱状图-font"><font color=#FF0000>【6x00】高级用法：绘制极坐标柱状图</font></h2>
+<p>和极坐标散点图的绘制类似，<code>matplotlib.pyplot.polar()</code> 方法可以实现极坐标图，但仅用这一个函数的话实现的样式效果并不多，以下介绍另外三种绘制极坐标柱状图的方法：</p>
+<ul>
+<li>
+<p><code>matplotlib.pyplot.polar()</code> 和 <code>matplotlib.pyplot.bar()</code> 结合，前者绘制极坐标图，后者在极坐标图上绘制柱状图；</p>
+</li>
+<li>
+<p><code>matplotlib.pyplot.subplot()</code> 和 <code>matplotlib.pyplot.bar()</code> 结合，前者添加子图，其中指定 <code>projection='polar'</code> 即为极坐标图， 后者在极坐标图上绘制柱状图；</p>
+</li>
+<li>
+<p><code>matplotlib.pyplot.axes()</code> 与 <code>matplotlib.pyplot.bar()</code> 结合，前者设置绘图区参数，其中指定 <code>projection='polar'</code> 或 <code>polar=True</code> 即为极坐标图， 后者在极坐标图上绘制柱状图。</p>
+</li>
+</ul>
+<hr>
+<h3 id="font-color-4876FF-【6x01】方法一：pyplot-bar-与-pyplot-polar-font"><font color=##4876FF>【6x01】方法一：pyplot.bar() 与 pyplot.polar()</font></h3>
+<p>以下用到的 <code>matplotlib.pyplot.bar()</code> 函数，各参数含义以及支持的其他参数可以参见前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105952856">《Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+r = np.random.rand(<span class="hljs-number">8</span>)
+theta = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * np.pi, <span class="hljs-number">2</span> * np.pi / <span class="hljs-number">8</span>)
+colors = np.array([<span class="hljs-string">&#x27;#4bb2c5&#x27;</span>, <span class="hljs-string">&#x27;#c5b47f&#x27;</span>, <span class="hljs-string">&#x27;#EAA228&#x27;</span>, <span class="hljs-string">&#x27;#579575&#x27;</span>, <span class="hljs-string">&#x27;#839557&#x27;</span>, <span class="hljs-string">&#x27;#958c12&#x27;</span>, <span class="hljs-string">&#x27;#953579&#x27;</span>, <span class="hljs-string">&#x27;#4b5de4&#x27;</span>])
+
+plt.polar()
+plt.bar(theta, r, color=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标柱状图示例一&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/08.png" alt="08"></p>
+<hr>
+<h3 id="font-color-4876FF-【6x02】方法二：pyplot-bar-与-pyplot-subplot-font"><font color=##4876FF>【6x02】方法二：pyplot.bar() 与 pyplot.subplot()</font></h3>
+<p><code>matplotlib.pyplot.subplot()</code> 方法用于添加子图，如果想要子图为极坐标图，则需要指定 <code>projection</code> 参数为 <code>polar</code>，有关此函数的具体介绍可参见<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html">官方文档</a>。其他函数的参数解释可参考前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105952856">《Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+r = np.random.rand(<span class="hljs-number">8</span>)
+theta = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * np.pi, <span class="hljs-number">2</span> * np.pi / <span class="hljs-number">8</span>)
+colors = np.array([<span class="hljs-string">&#x27;#4bb2c5&#x27;</span>, <span class="hljs-string">&#x27;#c5b47f&#x27;</span>, <span class="hljs-string">&#x27;#EAA228&#x27;</span>, <span class="hljs-string">&#x27;#579575&#x27;</span>, <span class="hljs-string">&#x27;#839557&#x27;</span>, <span class="hljs-string">&#x27;#958c12&#x27;</span>, <span class="hljs-string">&#x27;#953579&#x27;</span>, <span class="hljs-string">&#x27;#4b5de4&#x27;</span>])
+
+plt.subplot(<span class="hljs-number">111</span>, projection=<span class="hljs-string">&#x27;polar&#x27;</span>)
+plt.bar(theta, r, color=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标柱状图示例二&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/09.png" alt="09"></p>
+<hr>
+<h3 id="font-color-4876FF-【6x03】方法三：pyplot-bar-与-pyplot-axes-font"><font color=##4876FF>【6x03】方法三：pyplot.bar() 与 pyplot.axes()</font></h3>
+<p>axes 为 Matplotlib 图像中的绘图区，<code>matplotlib.pyplot.axes()</code> 方法可以对绘图区进行设置，同样的也可以设置 <code>projection</code> 参数为 <code>polar</code> 来实现极坐标图，设置 <code>polar=True</code> 也行。示例中其他函数的参数解释可参考前文：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105638122">《Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件》</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105952856">《Python 数据分析三剑客之 Matplotlib（六）：直方图 / 柱状图 / 条形图的绘制》</a></p>
+</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
+
+r = np.random.rand(<span class="hljs-number">8</span>)
+theta = np.arange(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * np.pi, <span class="hljs-number">2</span> * np.pi / <span class="hljs-number">8</span>)
+colors = np.array([<span class="hljs-string">&#x27;#4bb2c5&#x27;</span>, <span class="hljs-string">&#x27;#c5b47f&#x27;</span>, <span class="hljs-string">&#x27;#EAA228&#x27;</span>, <span class="hljs-string">&#x27;#579575&#x27;</span>, <span class="hljs-string">&#x27;#839557&#x27;</span>, <span class="hljs-string">&#x27;#958c12&#x27;</span>, <span class="hljs-string">&#x27;#953579&#x27;</span>, <span class="hljs-string">&#x27;#4b5de4&#x27;</span>])
+
+<span class="hljs-comment"># plt.axes(polar=True)</span>
+plt.axes(projection=<span class="hljs-string">&#x27;polar&#x27;</span>)
+plt.bar(theta, r, color=colors, alpha=<span class="hljs-number">0.8</span>)
+plt.title(<span class="hljs-string">&#x27;极坐标柱状图示例三&#x27;</span>, pad=<span class="hljs-number">15</span>)
+
+plt.show()</code></pre>
+<p><img src="https://cdn.itbob.cn/img/article/022/10.png" alt="10"></p>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106162412</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/023/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/021/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Matplotlib（八）：等高线/等值线图的绘制</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

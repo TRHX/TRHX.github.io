@@ -1,0 +1,766 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>WebSocket 协议爬虫，智慧树扫码登录案例分析 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">WebSocket 协议爬虫，智慧树扫码登录案例分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2021-12-07丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 2.9k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 12分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            爬虫</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/JS-%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            JS 逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
+<h2 id="声明">声明</h2>
+<p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
+<p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
+<h2 id="逆向目标">逆向目标</h2>
+<ul>
+<li>目标：智慧树扫码登录，接口使用了 WebSocket 通信协议</li>
+<li>主页：<code>aHR0cHM6Ly9wYXNzcG9ydC56aGlodWlzaHUuY29tL2xvZ2luI3FyQ29kZUxvZ2lu</code></li>
+</ul>
+<h2 id="WebSocket-简介">WebSocket 简介</h2>
+<p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议，WebSocket 使得客户端和服务器之间的数据交换变得更加简单。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
+<p>WebSocket 协议简称为 WS 或者 WSS（WebSocket Secure），其发送请求的 URL 以 <code>ws://</code> 或者 <code>wss://</code> 开头，WSS 是 WS 的加密版本，类似于 HTTP 与 HTTPS。</p>
+<p>WebSocket 协议的最大特点就是：服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。与 HTTP 的对比如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/043/01.png" alt="01.png"></p>
+<h2 id="抓包分析">抓包分析</h2>
+<p>来到智慧树的扫码登录页面，抓包选中 WS，用来筛选 WebSocket 请求，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/043/02.png" alt="02.png"></p>
+<p>其中有一些比较特别的参数，是 HTTP/ HTTPS 请求中没有的：</p>
+<ul>
+<li><code>Upgrade: websocket</code>：表明这是 WebSocket 类型请求；</li>
+<li><code>Sec-WebSocket-Version</code>：告诉服务器所使用的 Websocket Draft（协议版本），必须是 13；</li>
+<li><code>Sec-WebSocket-Extensions</code>：协议扩展，某类协议可能支持多个扩展，通过它可以实现协议增强；</li>
+<li><code>Sec-WebSocket-Key</code>：是 WebSocket 客户端发送的一个 base64 编码的密文，是浏览器随机生成的，要求服务端必须返回一个对应加密的 <code>Sec-WebSocket-Accept</code> 应答，否则客户端会抛出 <code>Error during WebSocket handshake</code> 错误，并关闭连接。</li>
+</ul>
+<p>我们先扫码登录一遍，再选择 Messages 选项卡，可以看到有一些数据交互，其中绿色的箭头是客户端发送给服务器的数据，红色箭头是服务器响应返回给客户端的数据，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/043/03.png" alt="03.png"></p>
+<p>我们观察一下整个交互过程，当我们打开二维码页面后，也就是二维码加载出来的同时，WebSocket 连接就建立了，每隔8秒左右，客户端就主动发送一串字符串，服务端也返回相同的字符串，只不过是字典格式，当我们扫码成功时，服务端就返回扫码成功的信息，当我们点击登陆时，客户端又会返回扫码结果，如果成功，就有一个一次性密码 <code>oncePassword</code> 和一个 <code>uuid</code>，这两个参数肯定在后续的请求中会用到的。如果长时间不扫码的话，过段时间就会返回二维码已失效的信息，每隔8秒发送一次消息，正是为了保持连接以及获取二维码状态消息。</p>
+<p>那么到这里就出现了两个问题：</p>
+<ol>
+<li>
+<p>在来回交互发送的那串字符串，是怎么得来的？</p>
+</li>
+<li>
+<p>在 Python 中应该如何实现 WebSocket 请求？</p>
+</li>
+<li>
+<p>如何实现客户端每隔 8 秒发送一次数据的同时，实时接收服务端的信息？（观察请求扫码结果实时返回的，所以不能每隔 8 秒才接收一次）</p>
+</li>
+</ol>
+<h2 id="参数获取">参数获取</h2>
+<p>首先解决第一个问题，客户端发送的那串字符串是怎么来的，这里寻找加密字符串的方式和 HTTP/HTTPS 请求是一样的，在本例中，我们可以直接搜索这个字符串，发现是通过一个接口传过来的，其中 img 就是二维码图片的 base64 值，qrToken 就是客户端发送的那串字符串，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/043/04.png" alt="04.png"></p>
+<p>这里需要注意的是，并不是所有的 WebSocket 请求都是如此的简单的，有的客户端发送的数据是 Binary Message（二进制数据）、或者更复杂的加密参数，直接搜索无法获取，针对这种情况，我们也有解决方法：</p>
+<ol>
+<li>
+<p>已知创建 WebSocket 对象的语句为：<code>var Socket = new WebSocket(url, [protocol] );</code>，所以我们可以搜索 <code>new WebSocket</code> 定位到建立请求的位置。</p>
+</li>
+<li>
+<p>已知一个 WebSocket 对象有以下相关事件，我们可以搜索对应事件处理程序代码来定位：</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">事件</th>
+<th style="text-align:left">事件处理程序</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">open</td>
+<td style="text-align:left">Socket.onopen</td>
+<td style="text-align:left">连接建立时触发</td>
+</tr>
+<tr>
+<td style="text-align:left">message</td>
+<td style="text-align:left">Socket.onmessage</td>
+<td style="text-align:left">客户端接收服务端数据时触发</td>
+</tr>
+<tr>
+<td style="text-align:left">error</td>
+<td style="text-align:left">Socket.onerror</td>
+<td style="text-align:left">通信发生错误时触发</td>
+</tr>
+<tr>
+<td style="text-align:left">close</td>
+<td style="text-align:left">Socket.onclose</td>
+<td style="text-align:left">连接关闭时触发</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>已知一个 WebSocket 对象有以下相关方法，我们可以搜索对应方法来定位：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方法</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Socket.send()</td>
+<td style="text-align:left">使用连接发送数据</td>
+</tr>
+<tr>
+<td style="text-align:left">Socket.close()</td>
+<td style="text-align:left">关闭连接</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Python-实现-WebSocket-请求">Python 实现 WebSocket 请求</h2>
+<p>接着前面说，第二个问题，在 Python 中应该如何实现 WebSocket 请求？Python 库中用于连接 WebSocket 的有很多，比较常用、稳定的有 <a target="_blank" rel="noopener" href="https://github.com/websocket-client/websocket-client">websocket-client</a>（非异步）、<a target="_blank" rel="noopener" href="https://github.com/aaugustin/websockets">websockets</a>（异步）、<a target="_blank" rel="noopener" href="https://github.com/asyncins/aiowebsocket">aiowebsocket</a>（异步）。在本案例中使用 websocket-client，这里还要注意第三个问题，对于客户端来说，要每隔 8 秒发送一次数据，对于服务端，我们需要实时接收服务端的信息，可以观察请求，扫码的结果是实时返回的，如果我们也每隔 8 秒才接收一次数据的话，有可能会丢失数据，而且也会使得整个程序的响应也不及时，效率变低。</p>
+<p>在 websocket-client 官方文档中给我们提供了一个长连接的 demo，它实现了连续发送三次数据，并实时监听服务端返回的数据，其中的 <code>websocket.enableTrace(True)</code> 表示是否显示连接详细信息：</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> websocket
+<span class="hljs-keyword">import</span> _thread
+<span class="hljs-keyword">import</span> time
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_message</span>(<span class="hljs-params">ws, message</span>):</span>
+    <span class="hljs-built_in">print</span>(message)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_error</span>(<span class="hljs-params">ws, error</span>):</span>
+    <span class="hljs-built_in">print</span>(error)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_close</span>(<span class="hljs-params">ws, close_status_code, close_msg</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;### closed ###&quot;</span>)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_open</span>(<span class="hljs-params">ws</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">*args</span>):</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):
+            time.sleep(<span class="hljs-number">1</span>)
+            ws.send(<span class="hljs-string">&quot;Hello %d&quot;</span> % i)
+        time.sleep(<span class="hljs-number">1</span>)
+        ws.close()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;thread terminating...&quot;</span>)
+    _thread.start_new_thread(run, ())
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    websocket.enableTrace(<span class="hljs-literal">True</span>)
+    ws = websocket.WebSocketApp(
+        <span class="hljs-string">&quot;ws://echo.websocket.org/&quot;</span>, on_open=on_open,
+        on_message=on_message, on_error=on_error, on_close=on_close
+    )
+
+    ws.run_forever()</code></pre>
+<p>我们将其适当改造一下，客户端在 run 方法里，依然是每隔 8 秒发送一次 qr_token，实时接收服务端的消息，当“扫码成功”字样出现在消息里时，将得到的 <code>oncePassword</code> 和 <code>uuid</code> 存起来，然后关闭连接，逻辑代码如下所示，后续只要将二维码的获取逻辑接入就行了。（已脱敏处理，不能直接运行）</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> _thread
+<span class="hljs-keyword">import</span> websocket
+
+
+web_socket_url = <span class="hljs-string">&quot;wss://appcomm-user.脱敏处理.com/app-commserv-user/websocket?qrToken=%s&quot;</span>
+qr_token = <span class="hljs-string">&quot;ca6e6cfb70de4f2f915b968aefcad404&quot;</span>
+once_password = <span class="hljs-string">&quot;&quot;</span>
+uuid = <span class="hljs-string">&quot;&quot;</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_message</span>(<span class="hljs-params">ws, message</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [message] ===============&quot;</span>)
+    message = json.loads(message)
+    <span class="hljs-built_in">print</span>(message)
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;扫码成功&quot;</span> <span class="hljs-keyword">in</span> message[<span class="hljs-string">&quot;msg&quot;</span>]:
+        <span class="hljs-keyword">global</span> once_password, uuid
+        once_password = message[<span class="hljs-string">&quot;oncePassword&quot;</span>]
+        uuid = message[<span class="hljs-string">&quot;uuid&quot;</span>]
+        ws.close()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_error</span>(<span class="hljs-params">ws, error</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [error] ===============&quot;</span>)
+    <span class="hljs-built_in">print</span>(error)
+    ws.close()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_close</span>(<span class="hljs-params">ws, close_status_code, close_msg</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [closed] ===============&quot;</span>)
+    <span class="hljs-built_in">print</span>(close_status_code)
+    <span class="hljs-built_in">print</span>(close_msg)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_open</span>(<span class="hljs-params">ws</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">*args</span>):</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            ws.send(qr_token)
+            time.sleep(<span class="hljs-number">8</span>)
+    _thread.start_new_thread(run, (qr_token,))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss</span>():</span>
+    <span class="hljs-comment"># websocket.enableTrace(True)  # 是否显示连接详细信息</span>
+    ws = websocket.WebSocketApp(
+        web_socket_url % qr_token, on_open=wss_on_open,
+        on_message=wss_on_message, on_error=wss_on_error,
+        on_close=wss_on_close
+    )
+    ws.run_forever()</code></pre>
+<h2 id="实现扫码登录">实现扫码登录</h2>
+<p>最重要的 WebSocket 请求部分已经解决了，扫码拿到 <code>oncePassword</code> 和 <code>uuid</code> 后，后续的处理步骤就比较简单了，现在来理一下完整的步骤：</p>
+<ol>
+<li>请求首页，第一次获取 cookie，包含：INGRESSCOOKIE、JSESSIONID、SERVERID、acw_tc；</li>
+<li>请求获取二维码接口，得到二维码的 base64 值和 qrToken；</li>
+<li>建立 WebSocket 连接，扫描二维码，获取一次性密码 oncePassword 和 uuid（好像没什么用）；</li>
+<li>请求一个登录接口，302 重定向，需要携带一次性密码，第二次获取 cookie，包含：CASLOGC、CASTGC，同时更新 SERVERID；</li>
+<li>请求第 4 步 302 重定向地址，第三次获取 cookie，包含：SESSION；</li>
+<li>携带完整 cookie，请求用户信息接口，获取真实用户名等信息。</li>
+</ol>
+<p>实际上 WebSocket 连接结束后，有很多请求，看起来都比较可以，但是经过测试，只有两个重定向比较有用，抓包如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/043/05.png" alt="05.png"></p>
+<h2 id="完整代码">完整代码</h2>
+<p><strong>以下只演示部分关键代码，不能直接运行！</strong> 完整代码仓库地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice/">https://github.com/TRHX/Python3-Spider-Practice/</a></p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">import</span> _thread
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> websocket
+<span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image
+
+
+web_socket_url = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+get_login_qr_img_url = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+login_url = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+user_info_url = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+
+headers = &#123;
+    <span class="hljs-string">&quot;Host&quot;</span>: <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>,
+    <span class="hljs-string">&quot;Pragma&quot;</span>: <span class="hljs-string">&quot;no-cache&quot;</span>,
+    <span class="hljs-string">&quot;Referer&quot;</span>: <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>,
+    <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36&quot;</span>
+&#125;
+
+qr_token = <span class="hljs-string">&quot;&quot;</span>
+once_password = <span class="hljs-string">&quot;&quot;</span>
+uuid = <span class="hljs-string">&quot;&quot;</span>
+cookie = &#123;&#125;
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_cookies_first</span>():</span>
+    response = requests.get(url=login_url, headers=headers)
+    <span class="hljs-keyword">global</span> cookie
+    cookie = response.cookies.get_dict()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_login_qr_img</span>():</span>
+    response = requests.get(url=get_login_qr_img_url, headers=headers, cookies=cookie).json()
+    qr_img = response[<span class="hljs-string">&quot;img&quot;</span>]
+    <span class="hljs-keyword">global</span> qr_token
+    qr_token = response[<span class="hljs-string">&quot;qrToken&quot;</span>]
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;code.png&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:
+        f.write(base64.b64decode(qr_img))
+    image = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;code.png&#x27;</span>)
+    image.show()
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;请扫描验证码! &quot;</span>)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_message</span>(<span class="hljs-params">ws, message</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [message] ===============&quot;</span>)
+    message = json.loads(message)
+    <span class="hljs-built_in">print</span>(message)
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;扫码成功&quot;</span> <span class="hljs-keyword">in</span> message[<span class="hljs-string">&quot;msg&quot;</span>]:
+        <span class="hljs-keyword">global</span> once_password, uuid
+        once_password = message[<span class="hljs-string">&quot;oncePassword&quot;</span>]
+        uuid = message[<span class="hljs-string">&quot;uuid&quot;</span>]
+        ws.close()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_error</span>(<span class="hljs-params">ws, error</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [error] ===============&quot;</span>)
+    <span class="hljs-built_in">print</span>(error)
+    ws.close()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_close</span>(<span class="hljs-params">ws, close_status_code, close_msg</span>):</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=============== [closed] ===============&quot;</span>)
+    <span class="hljs-built_in">print</span>(close_status_code)
+    <span class="hljs-built_in">print</span>(close_msg)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss_on_open</span>(<span class="hljs-params">ws</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">*args</span>):</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            ws.send(qr_token)
+            time.sleep(<span class="hljs-number">8</span>)
+    _thread.start_new_thread(run, (qr_token,))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wss</span>():</span>
+    <span class="hljs-comment"># websocket.enableTrace(True)  # 是否显示连接详细信息</span>
+    ws = websocket.WebSocketApp(
+        web_socket_url % qr_token, on_open=wss_on_open,
+        on_message=wss_on_message, on_error=wss_on_error,
+        on_close=wss_on_close
+    )
+    ws.run_forever()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_cookie_second</span>():</span>
+    <span class="hljs-keyword">global</span> cookie
+    params = &#123;
+        <span class="hljs-string">&quot;pwd&quot;</span>: once_password,
+        <span class="hljs-string">&quot;service&quot;</span>: <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    &#125;
+    headers[<span class="hljs-string">&quot;Host&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    headers[<span class="hljs-string">&quot;Referer&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    response = requests.get(url=login_url, params=params, headers=headers, cookies=cookie, allow_redirects=<span class="hljs-literal">False</span>)
+    cookie.update(response.cookies.get_dict())
+    location = response.headers.get(<span class="hljs-string">&quot;Location&quot;</span>)
+    <span class="hljs-keyword">return</span> location
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_cookie_third</span>(<span class="hljs-params">location</span>):</span>
+    <span class="hljs-keyword">global</span> cookie
+    headers[<span class="hljs-string">&quot;Host&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    headers[<span class="hljs-string">&quot;Referer&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    response = requests.get(url=location, headers=headers, cookies=cookie, allow_redirects=<span class="hljs-literal">False</span>)
+    cookie.update(response.cookies.get_dict())
+    location = response.headers.get(<span class="hljs-string">&quot;Location&quot;</span>)
+    <span class="hljs-keyword">return</span> location
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_login_user_info</span>():</span>
+    headers[<span class="hljs-string">&quot;Host&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    headers[<span class="hljs-string">&quot;Origin&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    headers[<span class="hljs-string">&quot;Referer&quot;</span>] = <span class="hljs-string">&quot;脱敏处理，完整代码关注 GitHub：https://github.com/TRHX/Python3-Spider-Practice&quot;</span>
+    params = &#123;<span class="hljs-string">&quot;time&quot;</span>: <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(time.time() * <span class="hljs-number">1000</span>))&#125;
+    response = requests.get(url=user_info_url, headers=headers, cookies=cookie, params=params)
+    <span class="hljs-built_in">print</span>(response.text)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+    <span class="hljs-comment"># 第一次获取 cookie，包含 INGRESSCOOKIE、JSESSIONID、SERVERID、acw_tc</span>
+    get_cookies_first()
+    <span class="hljs-comment"># 获取二维码</span>
+    get_login_qr_img()
+    <span class="hljs-comment"># websocket 扫码登录，返回一次性密码</span>
+    wss()
+    <span class="hljs-comment"># 第二次获取 cookie，更新 SERVERID、获取 CASLOGC、CASTGC</span>
+    location1 = get_cookie_second()
+    <span class="hljs-comment"># 第三次获取 cookie，获取 SESSION</span>
+    get_cookie_third(location1)
+    <span class="hljs-comment"># 获取登录用户信息</span>
+    get_login_user_info()
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    main()</code></pre>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/044/" 
+                            class="post-title gt-a-link">某空气质量监测平台无限 debugger 以及数据动态加密分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/042/" 
+                            class="post-title gt-a-link">Loguru：Python 日志终极解决方案</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

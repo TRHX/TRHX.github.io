@@ -1,0 +1,1314 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（七）：合并数据集 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（七）：合并数据集</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-21丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 6.2k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 31分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【01x00】concat-font"><font color=#FF0000>【01x00】concat</font></h2>
+<p><code>pandas.concat</code> 可以沿着指定轴将多个对象堆叠到一起。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.concat.html">https://pandas.pydata.org/docs/reference/api/pandas.concat.html</a></p>
+<p>基本语法：</p>
+<pre><code class="hljs python">pandas.concat(objs: <span class="hljs-type">Union</span>[Iterable[‘DataFrame’], Mapping[<span class="hljs-type">Optional</span>[Hashable], ‘DataFrame’]],
+              axis=<span class="hljs-string">&#x27;0&#x27;</span>,
+              join: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;&#x27;outer&#x27;&quot;</span>,
+              ignore_index: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              keys=<span class="hljs-string">&#x27;None&#x27;</span>,
+              levels=<span class="hljs-string">&#x27;None&#x27;</span>,
+              names=<span class="hljs-string">&#x27;None&#x27;</span>,
+              verify_integrity: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              sort: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              copy: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;True&#x27;</span>) → ’DataFrame’</code></pre>
+<pre><code class="hljs python">pandas.concat(objs: <span class="hljs-type">Union</span>[Iterable[FrameOrSeriesUnion], Mapping[<span class="hljs-type">Optional</span>[Hashable], FrameOrSeriesUnion]],
+              axis=<span class="hljs-string">&#x27;0&#x27;</span>,
+              join: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;&#x27;outer&#x27;&quot;</span>,
+              ignore_index: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              keys=<span class="hljs-string">&#x27;None&#x27;</span>,
+              levels=<span class="hljs-string">&#x27;None&#x27;</span>,
+              names=<span class="hljs-string">&#x27;None&#x27;</span>,
+              verify_integrity: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              sort: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;False&#x27;</span>,
+              copy: <span class="hljs-built_in">bool</span> = <span class="hljs-string">&#x27;True&#x27;</span>) → FrameOrSeriesUnion</code></pre>
+<p>常用参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>objs</td>
+<td>Series 或 DataFrame 对象的序列或映射，要合并的对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>沿指定轴合并，<code>0</code> or <code>‘index’</code>，<code>1</code> or <code>‘columns’</code>，只有在 DataFrame 中才有 <code>1</code> or <code>'columns’</code></td>
+</tr>
+<tr>
+<td>join</td>
+<td>如何处理其他轴（或多个轴）上的索引，可取值：<code>‘inner’</code>，<code>‘outer’</code>（默认值）<br><code>‘outer’</code>：当 axis = 0 时，列名相同的列会合并，其余列都保留（并集），空值填充；<br><code>‘inner’</code>：当 axis = 0 时，列名相同的列会合并，其余列都舍弃（交集）</td>
+</tr>
+<tr>
+<td>ignore_index</td>
+<td>bool 类型，连接后的值是否使用原索引值，如果为 True，则索引将会是 0, 1, …, n-1</td>
+</tr>
+<tr>
+<td>keys</td>
+<td>序列形式，默认 None，传递 keys 后，会构造一个层次索引，即 MultiIndex 对象，keys 为最外层索引</td>
+</tr>
+<tr>
+<td>levels</td>
+<td>用于构造 MultiIndex 的特定级别（唯一值）。未指定则将从键中推断出来</td>
+</tr>
+<tr>
+<td>names</td>
+<td>列表类型，为索引添加标签</td>
+</tr>
+<tr>
+<td>verify_integrity</td>
+<td>bool 类型，是否检查合并后的索引有无重复项，设置为 <code>True</code> 若有重复项则会报错</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>当 <code>join='outer'</code> 时对列索引进行排序。当 <code>join='inner'</code> 时此操作无效</td>
+</tr>
+</tbody>
+</table>
+<p>合并两个 Series 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2])
+<span class="hljs-number">0</span>    a
+<span class="hljs-number">1</span>    b
+<span class="hljs-number">0</span>    c
+<span class="hljs-number">1</span>    d
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>设置 <code>ignore_index=True</code>，放弃原有的索引值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], ignore_index=<span class="hljs-literal">True</span>)
+<span class="hljs-number">0</span>    a
+<span class="hljs-number">1</span>    b
+<span class="hljs-number">2</span>    c
+<span class="hljs-number">3</span>    d
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>设置 <code>keys</code> 参数，添加最外层的索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], keys=[<span class="hljs-string">&#x27;s1&#x27;</span>, <span class="hljs-string">&#x27;s2&#x27;</span>])
+s1  <span class="hljs-number">0</span>    a
+    <span class="hljs-number">1</span>    b
+s2  <span class="hljs-number">0</span>    c
+    <span class="hljs-number">1</span>    d
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>设置 <code>names</code> 参数，为索引添加标签：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], keys=[<span class="hljs-string">&#x27;s1&#x27;</span>, <span class="hljs-string">&#x27;s2&#x27;</span>], names=[<span class="hljs-string">&#x27;Series name&#x27;</span>, <span class="hljs-string">&#x27;Row ID&#x27;</span>])
+Series name  Row ID
+s1           <span class="hljs-number">0</span>         a
+             <span class="hljs-number">1</span>         b
+s2           <span class="hljs-number">0</span>         c
+             <span class="hljs-number">1</span>         d
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>合并 <code>DataFrame</code> 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>], [<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">4</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  letter  number
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2])
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span></code></pre>
+<p>合并 <code>DataFrame</code> 对象，不存在的值将会被 NaN 填充：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&#x27;cat&#x27;</span>], [<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">4</span>, <span class="hljs-string">&#x27;dog&#x27;</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  letter  number animal
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>    cat
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span>    dog
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2])
+  letter  number animal
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>    NaN
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>    NaN
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>    cat
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span>    dog</code></pre>
+<p>合并 <code>DataFrame</code> 对象，设置 <code>join=&quot;inner&quot;</code> 不存在的列将会舍弃：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&#x27;cat&#x27;</span>], [<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">4</span>, <span class="hljs-string">&#x27;dog&#x27;</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  letter  number animal
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>    cat
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span>    dog
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], join=<span class="hljs-string">&quot;inner&quot;</span>)
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>      c       <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>      d       <span class="hljs-number">4</span></code></pre>
+<p>合并 <code>DataFrame</code> 对象，设置 <code>axis=1</code> 沿 y 轴合并（增加列）：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">2</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-string">&#x27;bird&#x27;</span>, <span class="hljs-string">&#x27;polly&#x27;</span>], [<span class="hljs-string">&#x27;monkey&#x27;</span>, <span class="hljs-string">&#x27;george&#x27;</span>]], columns=[<span class="hljs-string">&#x27;animal&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+   animal    name
+<span class="hljs-number">0</span>    bird   polly
+<span class="hljs-number">1</span>  monkey  george
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], axis=<span class="hljs-number">1</span>)
+  letter  number  animal    name
+<span class="hljs-number">0</span>      a       <span class="hljs-number">1</span>    bird   polly
+<span class="hljs-number">1</span>      b       <span class="hljs-number">2</span>  monkey  george</code></pre>
+<p>设置 <code>verify_integrity=True</code> ，检查新的索引是否有重复项，有重复项会报错：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([<span class="hljs-number">1</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([<span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+   <span class="hljs-number">0</span>
+a  <span class="hljs-number">1</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+   <span class="hljs-number">0</span>
+a  <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], verify_integrity=<span class="hljs-literal">True</span>)
+Traceback (most recent call last):
+    ...
+ValueError: Indexes have overlapping values: [<span class="hljs-string">&#x27;a&#x27;</span>]</code></pre>
+<p>设置 <code>sort=True</code>，会对列索引进行排序输出：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">3</span>], [<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">2</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;cat&#x27;</span>], [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">4</span>, <span class="hljs-string">&#x27;dog&#x27;</span>]], columns=[<span class="hljs-string">&#x27;letter&#x27;</span>, <span class="hljs-string">&#x27;number&#x27;</span>, <span class="hljs-string">&#x27;animal&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  letter  number
+<span class="hljs-number">0</span>      a       <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>      d       <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  letter  number animal
+<span class="hljs-number">0</span>      c       <span class="hljs-number">1</span>    cat
+<span class="hljs-number">1</span>      b       <span class="hljs-number">4</span>    dog
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([obj1, obj2], sort=<span class="hljs-literal">True</span>)
+  animal letter  number
+<span class="hljs-number">0</span>    NaN      a       <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>    NaN      d       <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>    cat      c       <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    dog      b       <span class="hljs-number">4</span></code></pre>
+<h2 id="font-color-FF0000-【02x00】append-font"><font color=#FF0000>【02x00】append</font></h2>
+<p>Append 方法事实上是在一个 Series / DataFrame 对象后最追加另一个 Series / DataFrame 对象并返回一个新对象，不改变原对象的值。</p>
+<p>基本语法：</p>
+<ul>
+<li>
+<p><code>Series.append(self, to_append, ignore_index=False, verify_integrity=False)</code></p>
+</li>
+<li>
+<p><code>DataFrame.append(self, other, ignore_index=False, verify_integrity=False, sort=False)</code></p>
+</li>
+</ul>
+<p>官方文档：</p>
+<ul>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.append.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.append.html</a></p>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.append.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.append.html</a></p>
+</li>
+</ul>
+<p>参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>to_append / other</td>
+<td>要追加的数据</td>
+</tr>
+<tr>
+<td>ignore_index</td>
+<td>bool 类型，连接后的值是否使用原索引值，如果为 True，则索引将会是 0, 1, …, n-1</td>
+</tr>
+<tr>
+<td>verify_integrity</td>
+<td>bool 类型，是否检查合并后的索引有无重复项，设置为 <code>True</code> 若有重复项则会报错</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否对列索引（columns）进行排序，默认 False</td>
+</tr>
+</tbody>
+</table>
+<p>合并 Series 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3 = pd.Series([<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], index=[<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj3
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj2)
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">0</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj3)
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj2, ignore_index=<span class="hljs-literal">True</span>)
+<span class="hljs-number">0</span>    <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">3</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">4</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">5</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">6</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj2, verify_integrity=<span class="hljs-literal">True</span>)
+Traceback (most recent call last):
+...
+ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<p>合并 DataFrame 对象：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]], columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;AB&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame([[<span class="hljs-number">5</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>]], columns=<span class="hljs-built_in">list</span>(<span class="hljs-string">&#x27;AB&#x27;</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj2)
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1.append(obj2, ignore_index=<span class="hljs-literal">True</span>)
+   A  B
+<span class="hljs-number">0</span>  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">3</span>  <span class="hljs-number">4</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">7</span>  <span class="hljs-number">8</span></code></pre>
+<p>以下虽然不是生成 DataFrames 的推荐方法，但演示了从多个数据源生成 DataFrames 的两种方法：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(columns=[<span class="hljs-string">&#x27;A&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    obj = obj.append(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: i&#125;, ignore_index=<span class="hljs-literal">True</span>)
+
+    
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">4</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.concat([pd.DataFrame([i], columns=[<span class="hljs-string">&#x27;A&#x27;</span>]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)], ignore_index=<span class="hljs-literal">True</span>)
+   A
+<span class="hljs-number">0</span>  <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>  <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">4</span></code></pre>
+<h2 id="font-color-FF0000-【03x00】merge-font"><font color=#FF0000>【03x00】merge</font></h2>
+<p>将不同的数据源进行合并是数据科学中常见的操作，这既包括将两个不同的数据集非常简单地拼接在一起，也包括用数据库那样的连接（join）与合并（merge）操作处理有重叠字段的数据集。Series 与DataFrame 都具备这类操作，Pandas 的函数与方法让数据合并变得快速简单。</p>
+<p>数据集的合并（merge）或连接（join）运算是通过一个或多个键将行连接起来的。这些运算是关系型数据库（基于SQL）的核心。Pandas 的 merge 函数是对数据应用这些算法的主要切入点。</p>
+<p><font color=#FF0000> <strong><code>pandas.merge</code> 可根据一个或多个连接键将不同 DataFrame 中的行连接起来。</strong></font></p>
+<p>基本语法：</p>
+<pre><code class="hljs python">pandas.merge(left,
+             right,
+             how: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;inner&#x27;</span>,
+             on=<span class="hljs-literal">None</span>,
+             left_on=<span class="hljs-literal">None</span>,
+             right_on=<span class="hljs-literal">None</span>,
+             left_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+             right_index: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+             sort: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+             suffixes=<span class="hljs-string">&#x27;_x&#x27;</span>, <span class="hljs-string">&#x27;_y&#x27;</span>,
+             copy: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,
+             indicator: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,
+             validate=<span class="hljs-literal">None</span>) → ’DataFrame’</code></pre>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.merge.html">https://pandas.pydata.org/docs/reference/api/pandas.merge.html</a></p>
+<p>常见参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>left</td>
+<td>参与合并的左侧 DataFrame 对象</td>
+</tr>
+<tr>
+<td>right</td>
+<td>参与合并的右侧 DataFrame 对象</td>
+</tr>
+<tr>
+<td>how</td>
+<td>合并方式，默认 <code>'inner'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+</tr>
+<tr>
+<td>on</td>
+<td>用于连接的列名。必须存在于左右两个 Dataframe对象中<br>如果未指定，且其他连接键也未指定，则以 left 和 right 列名的交集作为连接键</td>
+</tr>
+<tr>
+<td>left_on</td>
+<td>左侧 DataFrame 对象中用作连接键的列</td>
+</tr>
+<tr>
+<td>right_on</td>
+<td>右侧 DataFrame 对象中用作连接键的列</td>
+</tr>
+<tr>
+<td>left_index</td>
+<td>bool 类型，是否使用左侧 DataFrame 对象中的索引（index）作为连接键，默认 False</td>
+</tr>
+<tr>
+<td>right_index</td>
+<td>bool 类型，是否使用右侧 DataFrame 对象中的索引（index）作为连接键，默认 False</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否在结果中按顺序对连接键排序，默认 False。<br>如果为 False，则连接键的顺序取决于联接类型（how 关键字）</td>
+</tr>
+<tr>
+<td>suffixes</td>
+<td>字符串值元组，用于追加到重叠列名的末尾，默认为 <code>('_x', '_y')</code>。<br>例如，如果左右两个 DataFrame 对象都有 <code>data</code> 列时，则结果中就会出现 <code>data_x</code> 和 <code>data_y</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="font-color-4876FF-【03x01】一对一连接-font"><font color=#4876FF>【03x01】一对一连接</font></h3>
+<p><font color=#FF0000><strong>一对一连接是指两个 DataFrame 对象的列的值没有重复值。</strong></font></p>
+<p>如果不指定任何参数，调用 <code>merge</code> 方法，<code>merge</code> 就会将重叠的列的列名当做键来合并。</p>
+<p>在下面的示例中，两个 DataFrame 对象都有一个列名为 <code>key</code> 的列，未指定按照哪一列来合并，<code>merge</code> 就会默认按照 <code>key</code> 来合并：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  key  data1
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   c      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  key  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   c      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2)
+  key  data1  data2
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">2</span>   c      <span class="hljs-number">2</span>      <span class="hljs-number">1</span></code></pre>
+<h3 id="font-color-4876FF-【03x02】多对一连接-font"><font color=#4876FF>【03x02】多对一连接</font></h3>
+<p><font color=#FF0000><strong>多对一连接是指两个 DataFrame 对象中，有一个的列的值有重复值。</strong></font>通过多对一连接获得的结果，DataFrame  将会保留重复值。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  key  data1
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   a      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   c      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>
+<span class="hljs-number">6</span>   b      <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  key  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   d      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2)
+  key  data1  data2
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">6</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>   a      <span class="hljs-number">2</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>      <span class="hljs-number">0</span></code></pre>
+<h3 id="font-color-4876FF-【03x03】多对多连接-font"><font color=#4876FF>【03x03】多对多连接</font></h3>
+<p><font color=#FF0000><strong>多对多连接是指两个 DataFrame 对象中的列的值都有重复值。</strong></font></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  key  data1
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   c      <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  key  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   b      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>   c      <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>   c      <span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2)
+  key  data1  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">1</span>      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   b      <span class="hljs-number">1</span>      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>   b      <span class="hljs-number">2</span>      <span class="hljs-number">2</span>
+<span class="hljs-number">5</span>   b      <span class="hljs-number">2</span>      <span class="hljs-number">3</span>
+<span class="hljs-number">6</span>   c      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
+<span class="hljs-number">7</span>   c      <span class="hljs-number">3</span>      <span class="hljs-number">5</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h3 id="font-color-4876FF-【03x04】参数-on-left-on-right-on-font"><font color=#4876FF>【03x04】参数 on / left_on / right_on</font></h3>
+<p>参数 <code>on</code> 用于指定按照某一列来进行合并，若不指定该参数，则会默认按照重叠的列的列名当做键来合并：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  key  data1
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   c      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  key  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   c      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, on=<span class="hljs-string">&#x27;key&#x27;</span>)
+  key  data1  data2
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>      <span class="hljs-number">2</span>
+<span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">2</span>   c      <span class="hljs-number">2</span>      <span class="hljs-number">1</span></code></pre>
+<p>如果要根据多个键进行合并，传入一个由列名组成的列表即可：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>left = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key1&#x27;</span>: [<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>],
+             <span class="hljs-string">&#x27;key2&#x27;</span>: [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>],
+             <span class="hljs-string">&#x27;lval&#x27;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>right = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key1&#x27;</span>: [<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>],
+              <span class="hljs-string">&#x27;key2&#x27;</span>: [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>],
+              <span class="hljs-string">&#x27;rval&#x27;</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>left
+  key1 key2  lval
+<span class="hljs-number">0</span>  foo  one     <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  foo  two     <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>  bar  one     <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>right
+  key1 key2  rval
+<span class="hljs-number">0</span>  foo  one     <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  foo  one     <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  bar  one     <span class="hljs-number">6</span>
+<span class="hljs-number">3</span>  bar  two     <span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(left, right, on=[<span class="hljs-string">&#x27;key1&#x27;</span>, <span class="hljs-string">&#x27;key2&#x27;</span>])
+  key1 key2  lval  rval
+<span class="hljs-number">0</span>  foo  one     <span class="hljs-number">1</span>     <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  foo  one     <span class="hljs-number">1</span>     <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  bar  one     <span class="hljs-number">3</span>     <span class="hljs-number">6</span></code></pre>
+<p>如果两个对象的列名不同，就可以使用 <code>left_on</code>、<code>right_on</code> 参数分别进行指定：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;lkey&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;rkey&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  lkey  data1
+<span class="hljs-number">0</span>    b      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    a      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>    c      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>    a      <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>    a      <span class="hljs-number">5</span>
+<span class="hljs-number">6</span>    b      <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  rkey  data2
+<span class="hljs-number">0</span>    a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>    b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    d      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, left_on=<span class="hljs-string">&#x27;lkey&#x27;</span>, right_on=<span class="hljs-string">&#x27;rkey&#x27;</span>)
+  lkey  data1 rkey  data2
+<span class="hljs-number">0</span>    b      <span class="hljs-number">0</span>    b      <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>    b      <span class="hljs-number">1</span>    b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>    b      <span class="hljs-number">6</span>    b      <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>    a      <span class="hljs-number">2</span>    a      <span class="hljs-number">0</span>
+<span class="hljs-number">4</span>    a      <span class="hljs-number">4</span>    a      <span class="hljs-number">0</span>
+<span class="hljs-number">5</span>    a      <span class="hljs-number">5</span>    a      <span class="hljs-number">0</span></code></pre>
+<h3 id="font-color-4876FF-【03x05】参数-how-font"><font color=#4876FF>【03x05】参数 how</font></h3>
+<p>在前面的示例中，结果里面 c 和 d 以及与之相关的数据消失了。默认情况下，<code>merge</code> 做的是内连接（<code>'inner'</code>），结果中的键是交集。其他方式还有：<code>'left'</code>、<code>'right'</code>、<code>'outer'</code>，含义如下：</p>
+<ul>
+<li><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；</li>
+<li><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；</li>
+<li><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；</li>
+<li><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj1
+  key  data1
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   a      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   c      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>
+<span class="hljs-number">6</span>   b      <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+  key  data2
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   d      <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, on=<span class="hljs-string">&#x27;key&#x27;</span>, how=<span class="hljs-string">&#x27;inner&#x27;</span>)
+  key  data1  data2
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b      <span class="hljs-number">6</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>   a      <span class="hljs-number">2</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>      <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, on=<span class="hljs-string">&#x27;key&#x27;</span>, how=<span class="hljs-string">&#x27;outer&#x27;</span>)
+  key  data1  data2
+<span class="hljs-number">0</span>   b    <span class="hljs-number">0.0</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">1</span>   b    <span class="hljs-number">1.0</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>   b    <span class="hljs-number">6.0</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">3</span>   a    <span class="hljs-number">2.0</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">4</span>   a    <span class="hljs-number">4.0</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">5</span>   a    <span class="hljs-number">5.0</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">6</span>   c    <span class="hljs-number">3.0</span>    NaN
+<span class="hljs-number">7</span>   d    NaN    <span class="hljs-number">2.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, on=<span class="hljs-string">&#x27;key&#x27;</span>, how=<span class="hljs-string">&#x27;left&#x27;</span>)
+  key  data1  data2
+<span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-number">2</span>   a      <span class="hljs-number">2</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">3</span>   c      <span class="hljs-number">3</span>    NaN
+<span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>    <span class="hljs-number">0.0</span>
+<span class="hljs-number">6</span>   b      <span class="hljs-number">6</span>    <span class="hljs-number">1.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(obj1, obj2, on=<span class="hljs-string">&#x27;key&#x27;</span>, how=<span class="hljs-string">&#x27;right&#x27;</span>)
+  key  data1  data2
+<span class="hljs-number">0</span>   b    <span class="hljs-number">0.0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>   b    <span class="hljs-number">1.0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   b    <span class="hljs-number">6.0</span>      <span class="hljs-number">1</span>
+<span class="hljs-number">3</span>   a    <span class="hljs-number">2.0</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">4</span>   a    <span class="hljs-number">4.0</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">5</span>   a    <span class="hljs-number">5.0</span>      <span class="hljs-number">0</span>
+<span class="hljs-number">6</span>   d    NaN      <span class="hljs-number">2</span></code></pre>
+<h3 id="font-color-4876FF-【03x06】参数-suffixes-font"><font color=#4876FF>【03x06】参数 suffixes</font></h3>
+<p><code>suffixes</code> 参数用于指定附加到左右两个 DataFrame 对象的重叠列名上的字符串：</p>
+<p>在以下示例中，选择按照 <code>key1</code> 进行合并，而两个 DataFrame 对象都包含 <code>key2</code> 列，如果未指定 <code>suffixes</code> 参数，则默认会为两个对象的 <code>key2</code> 加上 <code>_x</code> 和 <code>_y</code>，以便区分它们，如果指定了 <code>suffixes</code> 参数，就会按照添加指定的后缀：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>left = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key1&#x27;</span>: [<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>],
+             <span class="hljs-string">&#x27;key2&#x27;</span>: [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>],
+             <span class="hljs-string">&#x27;lval&#x27;</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>right = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key1&#x27;</span>: [<span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;foo&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>],
+              <span class="hljs-string">&#x27;key2&#x27;</span>: [<span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;one&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>],
+              <span class="hljs-string">&#x27;rval&#x27;</span>: [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>left
+  key1 key2  lval
+<span class="hljs-number">0</span>  foo  one     <span class="hljs-number">1</span>
+<span class="hljs-number">1</span>  foo  two     <span class="hljs-number">2</span>
+<span class="hljs-number">2</span>  bar  one     <span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>right
+  key1 key2  rval
+<span class="hljs-number">0</span>  foo  one     <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  foo  one     <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  bar  one     <span class="hljs-number">6</span>
+<span class="hljs-number">3</span>  bar  two     <span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(left, right, on=<span class="hljs-string">&#x27;key1&#x27;</span>)
+  key1 key2_x  lval key2_y  rval
+<span class="hljs-number">0</span>  foo    one     <span class="hljs-number">1</span>    one     <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  foo    one     <span class="hljs-number">1</span>    one     <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  foo    two     <span class="hljs-number">2</span>    one     <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>  foo    two     <span class="hljs-number">2</span>    one     <span class="hljs-number">5</span>
+<span class="hljs-number">4</span>  bar    one     <span class="hljs-number">3</span>    one     <span class="hljs-number">6</span>
+<span class="hljs-number">5</span>  bar    one     <span class="hljs-number">3</span>    two     <span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(left, right, on=<span class="hljs-string">&#x27;key1&#x27;</span>, suffixes=(<span class="hljs-string">&#x27;_left&#x27;</span>, <span class="hljs-string">&#x27;_right&#x27;</span>))
+  key1 key2_left  lval key2_right  rval
+<span class="hljs-number">0</span>  foo       one     <span class="hljs-number">1</span>        one     <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>  foo       one     <span class="hljs-number">1</span>        one     <span class="hljs-number">5</span>
+<span class="hljs-number">2</span>  foo       two     <span class="hljs-number">2</span>        one     <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>  foo       two     <span class="hljs-number">2</span>        one     <span class="hljs-number">5</span>
+<span class="hljs-number">4</span>  bar       one     <span class="hljs-number">3</span>        one     <span class="hljs-number">6</span>
+<span class="hljs-number">5</span>  bar       one     <span class="hljs-number">3</span>        two     <span class="hljs-number">7</span></code></pre>
+<h3 id="font-color-4876FF-【03x07】参数-left-index-right-index-font"><font color=#4876FF>【03x07】参数 left_index / right_index</font></h3>
+<p>有时候，DataFrame 中的连接键位于其索引中。在这种情况下，可以使用 <code>left_index=True</code> 或<code>right_index=True</code>（或两个都传）以说明索引应该被用作连接键。这种方法称为按索引连接，在 Pandas 中还有个 <code>join</code> 方法可以实现这个功能。</p>
+<p>在以下示例中，按照 left 的 key 列进行连接，而 right 对象的连接键位于其索引中，因此要指定 <code>right_index=True</code>：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>left = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;value&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>)&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>right = pd.DataFrame(&#123;<span class="hljs-string">&#x27;group_val&#x27;</span>: [<span class="hljs-number">3.5</span>, <span class="hljs-number">7</span>]&#125;, index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>left
+  key  value
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>   a      <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>   a      <span class="hljs-number">3</span>
+<span class="hljs-number">4</span>   b      <span class="hljs-number">4</span>
+<span class="hljs-number">5</span>   c      <span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>right
+   group_val
+a        <span class="hljs-number">3.5</span>
+b        <span class="hljs-number">7.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.merge(left, right, left_on=<span class="hljs-string">&#x27;key&#x27;</span>, right_index=<span class="hljs-literal">True</span>)
+  key  value  group_val
+<span class="hljs-number">0</span>   a      <span class="hljs-number">0</span>        <span class="hljs-number">3.5</span>
+<span class="hljs-number">2</span>   a      <span class="hljs-number">2</span>        <span class="hljs-number">3.5</span>
+<span class="hljs-number">3</span>   a      <span class="hljs-number">3</span>        <span class="hljs-number">3.5</span>
+<span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>        <span class="hljs-number">7.0</span>
+<span class="hljs-number">4</span>   b      <span class="hljs-number">4</span>        <span class="hljs-number">7.0</span></code></pre>
+<h2 id="font-color-FF0000-【04x00】join-font"><font color=#FF0000>【04x00】join</font></h2>
+<p>join 方法只适用于 DataFrame 对象，Series 对象没有该方法，该方法用于连接另一个 DataFrame 对象的列（columns）。</p>
+<p>基本语法：<code>DataFrame.join(self, other, on=None, how='left', lsuffix='', rsuffix='', sort=False) → ’DataFrame’</code></p>
+<p>参数描述：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>other</td>
+<td>另一个 DataFrame、Series 或 DataFrame 列表对象</td>
+</tr>
+<tr>
+<td>on</td>
+<td>列名称，或者列名称组成的列表、元组，连接的列</td>
+</tr>
+<tr>
+<td>how</td>
+<td>合并方式，默认 <code>'left'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+</tr>
+<tr>
+<td>lsuffix</td>
+<td>当两个对象有相同的列名时，合并后左边数据列名的后缀</td>
+</tr>
+<tr>
+<td>rsuffix</td>
+<td>当两个对象有相同的列名时，合并后右边数据列名的后缀</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>bool 类型，是否在结果中按顺序对连接键排序，默认 False。<br>如果为 False，则连接键的顺序取决于联接类型（how 关键字）</td>
+</tr>
+</tbody>
+</table>
+<p>使用 <code>lsuffix</code> 和 <code>rsuffix</code> 参数：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;K0&#x27;</span>, <span class="hljs-string">&#x27;K1&#x27;</span>, <span class="hljs-string">&#x27;K2&#x27;</span>, <span class="hljs-string">&#x27;K3&#x27;</span>, <span class="hljs-string">&#x27;K4&#x27;</span>, <span class="hljs-string">&#x27;K5&#x27;</span>],
+            <span class="hljs-string">&#x27;A&#x27;</span>: [<span class="hljs-string">&#x27;A0&#x27;</span>, <span class="hljs-string">&#x27;A1&#x27;</span>, <span class="hljs-string">&#x27;A2&#x27;</span>, <span class="hljs-string">&#x27;A3&#x27;</span>, <span class="hljs-string">&#x27;A4&#x27;</span>, <span class="hljs-string">&#x27;A5&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>other = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;K0&#x27;</span>, <span class="hljs-string">&#x27;K1&#x27;</span>, <span class="hljs-string">&#x27;K2&#x27;</span>],
+              <span class="hljs-string">&#x27;B&#x27;</span>: [<span class="hljs-string">&#x27;B0&#x27;</span>, <span class="hljs-string">&#x27;B1&#x27;</span>, <span class="hljs-string">&#x27;B2&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+  key   A
+<span class="hljs-number">0</span>  K0  A0
+<span class="hljs-number">1</span>  K1  A1
+<span class="hljs-number">2</span>  K2  A2
+<span class="hljs-number">3</span>  K3  A3
+<span class="hljs-number">4</span>  K4  A4
+<span class="hljs-number">5</span>  K5  A5
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>other
+  key   B
+<span class="hljs-number">0</span>  K0  B0
+<span class="hljs-number">1</span>  K1  B1
+<span class="hljs-number">2</span>  K2  B2
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.join(other, lsuffix=<span class="hljs-string">&#x27;_1&#x27;</span>, rsuffix=<span class="hljs-string">&#x27;_2&#x27;</span>)
+  key_1   A key_2    B
+<span class="hljs-number">0</span>    K0  A0    K0   B0
+<span class="hljs-number">1</span>    K1  A1    K1   B1
+<span class="hljs-number">2</span>    K2  A2    K2   B2
+<span class="hljs-number">3</span>    K3  A3   NaN  NaN
+<span class="hljs-number">4</span>    K4  A4   NaN  NaN
+<span class="hljs-number">5</span>    K5  A5   NaN  NaN</code></pre>
+<p>如果右表的索引是左表的某一列的值，这时可以将右表的索引和左表的列对齐合并这样的灵活方式进行合并：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;A&#x27;</span>: [<span class="hljs-string">&#x27;A0&#x27;</span>, <span class="hljs-string">&#x27;A1&#x27;</span>, <span class="hljs-string">&#x27;A2&#x27;</span>, <span class="hljs-string">&#x27;A3&#x27;</span>], <span class="hljs-string">&#x27;B&#x27;</span>: [<span class="hljs-string">&#x27;B0&#x27;</span>, <span class="hljs-string">&#x27;B1&#x27;</span>, <span class="hljs-string">&#x27;B2&#x27;</span>, <span class="hljs-string">&#x27;B3&#x27;</span>],<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;K0&#x27;</span>, <span class="hljs-string">&#x27;K1&#x27;</span>, <span class="hljs-string">&#x27;K0&#x27;</span>, <span class="hljs-string">&#x27;K1&#x27;</span>]&#125;)
+<span class="hljs-meta">&gt;&gt;&gt; </span>other = pd.DataFrame(&#123;<span class="hljs-string">&#x27;C&#x27;</span>: [<span class="hljs-string">&#x27;C0&#x27;</span>, <span class="hljs-string">&#x27;C1&#x27;</span>],<span class="hljs-string">&#x27;D&#x27;</span>: [<span class="hljs-string">&#x27;D0&#x27;</span>, <span class="hljs-string">&#x27;D1&#x27;</span>]&#125;,index=[<span class="hljs-string">&#x27;K0&#x27;</span>, <span class="hljs-string">&#x27;K1&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+    A   B key
+<span class="hljs-number">0</span>  A0  B0  K0
+<span class="hljs-number">1</span>  A1  B1  K1
+<span class="hljs-number">2</span>  A2  B2  K0
+<span class="hljs-number">3</span>  A3  B3  K1
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>other
+     C   D
+K0  C0  D0
+K1  C1  D1
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.join(other, on=<span class="hljs-string">&#x27;key&#x27;</span>)
+    A   B key   C   D
+<span class="hljs-number">0</span>  A0  B0  K0  C0  D0
+<span class="hljs-number">1</span>  A1  B1  K1  C1  D1
+<span class="hljs-number">2</span>  A2  B2  K0  C0  D0
+<span class="hljs-number">3</span>  A3  B3  K1  C1  D1</code></pre>
+<h2 id="font-color-FF0000-【05x00】四种方法的区别-font"><font color=#FF0000>【05x00】四种方法的区别</font></h2>
+<ul>
+<li>
+<p><code>concat</code>：可用于两个或多个 Series 或 DataFrame 对象间，通过 <code>axis</code> 参数指定按照行方向（增加行）或列方向（增加列）进合并操作，默认行合并（增加行），取并集；</p>
+</li>
+<li>
+<p><code>append</code>：在一个 Series 或 DataFrame 对象后最追加另一个 Series 或 DataFrame 对象并返回一个新对象，不改变原对象的值。只能按行合并（增加行）。</p>
+</li>
+<li>
+<p><code>merge</code>：只能对两个 DataFrame 对象进行合并，一般按照列方向（增加列）进行合并操作，按照行方向合并一般用 join 方法代替，默认列合并（增加列），取交集；</p>
+</li>
+<li>
+<p><code>join</code>：只能对两个 DataFrame 对象进行合并，按照列方向（增加列）进行合并操作，默认左连接。</p>
+</li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/032/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（八）：数据重塑/重复数据处理/数据替换</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/030/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂/应用/合并</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

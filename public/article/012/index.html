@@ -1,0 +1,1805 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-04-13丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 8.8k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 39分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/NumPy/" class="post-tag">
+                            NumPy</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>NumPy 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/008/">Python 数据分析三剑客之 NumPy（一）：理解 NumPy / 数组基础</a></li>
+<li><a href="https://www.itbob.cn/article/009/">Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割</a></li>
+<li><a href="https://www.itbob.cn/article/010/">Python 数据分析三剑客之 NumPy（三）：数组的迭代与位运算</a></li>
+<li><a href="https://www.itbob.cn/article/011/">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a></li>
+<li><a href="https://www.itbob.cn/article/012/">Python 数据分析三剑客之 NumPy（五）：数学 / 算术 / 统计 / 排序 / 条件 / 判断函数合集</a></li>
+<li><a href="https://www.itbob.cn/article/013/">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a></li>
+</ul>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105398131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【1x00】NumPy-函数速查表-font"><font color=#FF0000>【1x00】NumPy 函数速查表</font></h2>
+<table>
+    <tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 三角函数</font></strong></td>
+    </tr>
+    <tr>
+        <th><font color="#FF0000">函数</font></th>
+        <th><font color="#FF0000">描述</font></th>
+    </tr>
+    <tr>
+        <td>sin()</font></td>
+        <td>正弦函数</td>
+    </tr>
+    <tr>
+        <td>cos()</font></td>
+        <td>余弦函数</td>
+    </tr>
+    <tr>
+        <td>tan()</font></td>
+        <td>正切函数</td>
+    </tr>
+    <tr>
+        <td>arcsin()</font></td>
+        <td>反正弦函数</td>
+    </tr>
+    <tr>
+        <td>arccos()</font></td>
+        <td>反余弦函数</td>
+    </tr>
+    <tr>
+        <td>arctan()</font></td>
+        <td>反正切函数</td>
+    </tr>
+    <tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 舍入函数</font></strong></td>
+    </tr>
+    <tr>
+        <th><font color="#FF0000">函数</font></th>
+        <th><font color="#FF0000">描述</font></th>
+    </tr>
+    <tr>
+        <td>around()</font></td>
+        <td>将指定数字四舍五入到指定的小数位</td>
+    </tr>
+    <tr>
+        <td>rint()</font></td>
+        <td>将指定数字四舍五入到最近的整数</td>
+    </tr>
+    <tr>
+        <td>floor()</font></td>
+        <td>返回小于或者等于指定表达式的最大整数，即向下取整</td>
+    </tr>
+    <tr>
+        <td>ceil()</font></td>
+        <td>返回大于或者等于指定表达式的最小整数，即向上取整</td>
+    </tr>
+    <tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 算术函数</font></strong></td>
+    </tr>
+    <tr>
+        <th><font color="#FF0000">函数</font></th>
+        <th><font color="#FF0000">描述</font></th>
+    </tr>
+    <tr>
+        <td>add()</font></td>
+        <td>数组元素加法运算</td>
+    </tr>
+    <tr>
+        <td>subtract()</font></td>
+        <td>数组元素减法运算</td>
+    </tr>
+    <tr>
+        <td>multiply()</font></td>
+        <td>数组元素乘法运算</td>
+    </tr>
+    <tr>
+        <td>divide()</font></td>
+        <td>数组元素除法运算</td>
+    </tr>
+    <tr>
+        <td>reciprocal()</font></td>
+        <td>返回数组元素的倒数</td>
+    </tr>
+    <tr>
+        <td>power()</font></td>
+        <td>返回数组元素的乘幂</td>
+    </tr>
+    <tr>
+        <td>mod()</font></td>
+        <td>返回数组元素的相除后的余数</td>
+    </tr>
+    <tr>
+        <td>remainder()</font></td>
+        <td>返回数组元素的相除后的余数</td>
+    </tr>
+    <tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 统计函数</font></strong></td>
+    </tr>
+    <tr>
+        <th><font color="#FF0000">函数</font></th>
+        <th><font color="#FF0000">描述</font></th>
+    </tr>
+    <tr>
+        <td>amax()</font></td>
+        <td>计算数组元素沿指定轴的最大值</td>
+    </tr>
+    <tr>
+        <td>amin()</font></td>
+        <td>计算数组元素沿指定轴的最小值</td>
+    </tr>
+    <tr>
+        <td>argmax()</font></td>
+        <td>计算数组元素沿指定轴的最大值的索引值</td>
+    </tr>
+    <tr>
+        <td>argmin()</font></td>
+        <td>计算数组元素沿指定轴的最小值的索引值</td>
+    </tr>
+    <tr>
+        <td>sum()</font></td>
+        <td>计算数组中所有元素的和</td>
+    </tr>
+    <tr>
+        <td>cumsum()</font></td>
+        <td>返回一个一维数组，每个元素都是之前所有元素的累加和</td>
+    </tr>
+    <tr>
+        <td>cumprod()</font></td>
+        <td>返回一个一维数组，每个元素都是之前所有元素的累乘积</td>
+    </tr>
+    <tr>
+        <td>ptp()</font></td>
+        <td>计算数组元素最大值与最小值的差</td>
+    </tr>
+    <tr>
+        <td>percentile()</font></td>
+        <td>计算多维数组的任意百分位数</td>
+    </tr>
+    <tr>
+        <td>median()</font></td>
+        <td>计算数组元素的中位数</td>
+    </tr>
+    <tr>
+        <td>mean()</font></td>
+        <td>计算数组元素的算术平均值</td>
+    </tr>
+    <tr>
+        <td>average()</font></td>
+        <td>计算数组元素的加权平均值</td>
+    </tr>
+    <tr>
+        <td>std()</font></td>
+        <td>计算数组元素的标准差</td>
+    </tr>
+    <tr>
+        <td>var()</font></td>
+        <td>计算数组元素的方差</td>
+    </tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 排序函数</font></strong></td>
+    <tr>
+        <td>sort()</font></td>
+        <td>将原数组元素按照从小到大排序</td>
+    </tr>
+    <tr>
+        <td>msort()</font></td>
+        <td>将原数组元素按照第一个轴的从小到大排序</td>
+    </tr>
+    <tr>
+        <td>argsort()</font></td>
+        <td>将元素从小到大排列，提取对应的索引值并返回</td>
+    </tr>
+    <tr>
+        <td>lexsort()</font></td>
+        <td>将多个序列按照从小到大排序，返回其索引值</td>
+    </tr>
+    <tr>
+        <td>sort_complex()</font></td>
+        <td>对复数数组进行从小到大排序</td>
+    </tr>
+    <tr>
+        <td>partition()</font></td>
+        <td>对数组进行分区排序</td>
+    </tr>
+    <tr>
+        <td>argpartition()</font></td>
+        <td>对数组进行分区排序，返回元素的索引值</td>
+    </tr>
+    <tr>
+        <td>unique()</font></td>
+        <td>将数组元素去重后返回从小到大的排序结果</td>
+    </tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 条件函数</font></strong></td>
+    <tr>
+        <td>nonzero()</font></td>
+        <td>返回原数组中非零元素的索引值</td>
+    </tr>
+    <tr>
+        <td>where()</font></td>
+        <td>返回数组中满足指定条件的元素的索引值</td>
+    </tr>
+    <tr>
+        <td>extract()</font></td>
+        <td>返回数组中满足指定条件的元素</td>
+    </tr>
+        <td bgcolor="#7FFFD4" colspan="2"><strong><font size=3px>NumPy 判断函数</font></strong></td>
+    <tr>
+        <td>any()</font></td>
+        <td>至少有一个元素满足指定条件，则返回 True，否则返回 False</td>
+    </tr>
+    <tr>
+        <td>all()</font></td>
+        <td>所有的元素满足指定条件，则返回 True，否则返回 False</td>
+    </tr>
+</table>
+<h2 id="font-color-FF0000-【2x00】NumPy-数学函数-font"><font color=#FF0000>【2x00】NumPy 数学函数</font></h2>
+<p>NumPy 数学函数包含三角函数、舍入函数等。</p>
+<h3 id="font-color-1BC3FB-【2x01】sin-cos-tan-font"><font color=#1BC3FB>【2x01】sin() / cos() / tan()</font></h3>
+<p><code>numpy.sin()</code>、<code>numpy.cos()</code>、<code>numpy.tan()</code> 分别对应<font color=#FF0000><strong>正弦函数</strong></font>、<font color=#FF0000><strong>余弦函数</strong></font>、<font color=#FF0000><strong>正切函数</strong></font>。</p>
+<p>在求三角函数时，会先将角度转化成弧度，在 NumPy 中的转化公式：<code>角度 * numpy.pi/180</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">0</span>, <span class="hljs-number">30</span>, <span class="hljs-number">45</span>, <span class="hljs-number">60</span> ,<span class="hljs-number">90</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sin(a*np.pi/<span class="hljs-number">180</span>))
+[<span class="hljs-number">0.</span>         <span class="hljs-number">0.5</span>        <span class="hljs-number">0.70710678</span> <span class="hljs-number">0.8660254</span>  <span class="hljs-number">1.</span>        ]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cos(a*np.pi/<span class="hljs-number">180</span>))
+[<span class="hljs-number">1.00000000e+00</span> <span class="hljs-number">8.66025404e-01</span> <span class="hljs-number">7.07106781e-01</span> <span class="hljs-number">5.00000000e-01</span> <span class="hljs-number">6.12323400e-17</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.tan(a*np.pi/<span class="hljs-number">180</span>))
+[<span class="hljs-number">0.00000000e+00</span> <span class="hljs-number">5.77350269e-01</span> <span class="hljs-number">1.00000000e+00</span> <span class="hljs-number">1.73205081e+00</span> <span class="hljs-number">1.63312394e+16</span>]</code></pre>
+<hr>
+<h3 id="font-color-1BC3FB-【2x02】arcsin-arccos-arctan-font"><font color=#1BC3FB>【2x02】arcsin() / arccos() / arctan()</font></h3>
+<p><code>numpy.arcsin()</code>、<code>numpy.arccos()</code>、<code>numpy.arctan()</code> 分别对应<font color=#FF0000><strong>反正弦函数</strong></font>、<font color=#FF0000><strong>反余弦函数</strong></font>、<font color=#FF0000><strong>反正切函数</strong></font>。</p>
+<p>在求三角函数时，会先将角度转化成弧度，在 NumPy 中的转化公式：<code>角度 * numpy.pi/180</code></p>
+<p>arcsin、arccos、arctan 接收的参数是三角函数值，函数返回给定角度的 sin，cos 和 tan 的反三角函数，如果 sinθ=x，那么 arcsinx=θ，其他类似，这些函数的结果可以通过 <code>numpy.degrees()</code> 函数将弧度转换为角度。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">0</span>, <span class="hljs-number">30</span>, <span class="hljs-number">45</span>, <span class="hljs-number">60</span> ,<span class="hljs-number">90</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>a_sin = np.sin(a*np.pi/<span class="hljs-number">180</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>a_arcsin = np.arcsin(a_sin)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a_sin)                                           <span class="hljs-comment"># 角度的正弦值</span>
+[<span class="hljs-number">0.</span>         <span class="hljs-number">0.5</span>        <span class="hljs-number">0.70710678</span> <span class="hljs-number">0.8660254</span>  <span class="hljs-number">1.</span>        ]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a_arcsin)                                        <span class="hljs-comment"># 角度的反正弦值，返回值的单位为弧度</span>
+[<span class="hljs-number">0.</span>         <span class="hljs-number">0.52359878</span> <span class="hljs-number">0.78539816</span> <span class="hljs-number">1.04719755</span> <span class="hljs-number">1.57079633</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.degrees(a_arcsin))                            <span class="hljs-comment"># 弧度转化为角度</span>
+[ <span class="hljs-number">0.</span> <span class="hljs-number">30.</span> <span class="hljs-number">45.</span> <span class="hljs-number">60.</span> <span class="hljs-number">90.</span>]</code></pre>
+<hr>
+<h3 id="font-color-1BC3FB-【2x03】around-rint-floor-ceil-font"><font color=#1BC3FB>【2x03】around() / rint() / floor() / ceil()</font></h3>
+<p>1、<code>numpy.around()</code> 函数将指定数字四舍五入到<font color=#FF0000><strong>指定的小数位</strong></font>，可指定保留的小数位数。</p>
+<p>基本语法：<code>numpy.around(a[, decimals=0, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>输入数组</td>
+</tr>
+<tr>
+<td>decimals</td>
+<td>int 类型，可选项，舍入的小数位数，默认值为 0，如果为负，整数将四舍五入到小数点左侧的位置</td>
+</tr>
+<tr>
+<td>out</td>
+<td>ndarray 对象，可选项，放置结果的备用输出数组。它必须具有与预期输出相同的形状，但是如有必要，将强制转换输出值的类型</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">13</span>, <span class="hljs-number">1.4</span>, <span class="hljs-number">6.23</span>, <span class="hljs-number">12.834</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.around(a))
+[<span class="hljs-number">13.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">6.</span> <span class="hljs-number">13.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.around(a, decimals=<span class="hljs-number">1</span>))
+[<span class="hljs-number">13.</span>   <span class="hljs-number">1.4</span>  <span class="hljs-number">6.2</span> <span class="hljs-number">12.8</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.around(a, decimals=-<span class="hljs-number">1</span>))
+[<span class="hljs-number">10.</span>  <span class="hljs-number">0.</span> <span class="hljs-number">10.</span> <span class="hljs-number">10.</span>]</code></pre>
+<p>2、<code>numpy.rint()</code> 函数将指定数字四舍五入到<font color=#FF0000><strong>最近的整数</strong></font>，不保留小数位。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.rint([-<span class="hljs-number">1.7</span>, -<span class="hljs-number">1.5</span>, -<span class="hljs-number">0.2</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">2.0</span>]))
+[-<span class="hljs-number">2.</span> -<span class="hljs-number">2.</span> -<span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>]</code></pre>
+<p>3、<code>numpy.floor()</code> 函数会返回小于或者等于指定表达式的最大整数，即<font color=#FF0000><strong>向下取整</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.floor([-<span class="hljs-number">1.7</span>, -<span class="hljs-number">1.5</span>, -<span class="hljs-number">0.2</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">2.0</span>]))
+[-<span class="hljs-number">2.</span> -<span class="hljs-number">2.</span> -<span class="hljs-number">1.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>]</code></pre>
+<p>4、<code>numpy.ceil()</code> 函数会返回大于或者等于指定表达式的最小整数，即<font color=#FF0000><strong>向上取整</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.ceil([-<span class="hljs-number">1.7</span>, -<span class="hljs-number">1.5</span>, -<span class="hljs-number">0.2</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">2.0</span>]))
+[-<span class="hljs-number">1.</span> -<span class="hljs-number">1.</span> -<span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>]</code></pre>
+<h2 id="font-color-FF0000-【3x00】NumPy-算术函数-font"><font color=#FF0000>【3x00】NumPy 算术函数</font></h2>
+<p>NumPy 算术函数包含了基本的加减乘除运算、求倒数、幂、余数等。</p>
+<h3 id="font-color-1BC3FB-【3x01】add-subtract-multiply-divide-font"><font color=#1BC3FB>【3x01】add() / subtract() / multiply() / divide()</font></h3>
+<p><code>add()</code>、<code>subtract()</code>、<code>multiply()</code>、<code>divide()</code> 分别对应 <code>NumPy</code> 中的<font color=#FF0000><strong>加减乘除</strong></font>运算。</p>
+<p>注意：两个数组必须具有相同的形状或符合数组的广播规则才能进行运算。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.add(a, b))
+[[ <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <span class="hljs-number">7</span>]
+ [ <span class="hljs-number">8</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span>]
+ [<span class="hljs-number">11</span> <span class="hljs-number">12</span> <span class="hljs-number">13</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.subtract(a, b))
+[[-<span class="hljs-number">5</span> -<span class="hljs-number">4</span> -<span class="hljs-number">3</span>]
+ [-<span class="hljs-number">2</span> -<span class="hljs-number">1</span>  <span class="hljs-number">0</span>]
+ [ <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.multiply(a, b))
+[[ <span class="hljs-number">0</span>  <span class="hljs-number">5</span> <span class="hljs-number">10</span>]
+ [<span class="hljs-number">15</span> <span class="hljs-number">20</span> <span class="hljs-number">25</span>]
+ [<span class="hljs-number">30</span> <span class="hljs-number">35</span> <span class="hljs-number">40</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.divide(a, b))
+[[<span class="hljs-number">0.</span>  <span class="hljs-number">0.2</span> <span class="hljs-number">0.4</span>]
+ [<span class="hljs-number">0.6</span> <span class="hljs-number">0.8</span> <span class="hljs-number">1.</span> ]
+ [<span class="hljs-number">1.2</span> <span class="hljs-number">1.4</span> <span class="hljs-number">1.6</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【3x02】reciprocal-power-mod-remainder-font"><font color=#1BC3FB>【3x02】reciprocal() / power() / mod() / remainder()</font></h3>
+<p>1、<code>numpy.reciprocal()</code> 函数用于返回各数组元素的<font color=#FF0000><strong>倒数</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.reciprocal([<span class="hljs-number">0.25</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2.10</span>]))
+[<span class="hljs-number">4.</span>         <span class="hljs-number">0.25</span>       <span class="hljs-number">1.</span>         <span class="hljs-number">0.47619048</span>]</code></pre>
+<p>2、<code>numpy.power()</code> 函数将第一个数组中的元素作为底数，计算它与第二个数组中相应元素的<font color=#FF0000><strong>幂</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">100</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.power(a, b))
+[<span class="hljs-number">125</span> <span class="hljs-number">100</span> <span class="hljs-number">100</span>]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.power(a, <span class="hljs-number">2</span>))
+[   <span class="hljs-number">25</span>   <span class="hljs-number">100</span> <span class="hljs-number">10000</span>]</code></pre>
+<p>3、<code>numpy.mod()</code> 与 <code> numpy.remainder()</code> 都可以计算数组中相应元素相除后的<font color=#FF0000><strong>余数</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">20</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.mod(a, b))
+[<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.remainder(a, b))
+[<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.mod(a, <span class="hljs-number">6</span>))
+[<span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.remainder(a, <span class="hljs-number">9</span>))
+[<span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">2</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【3x03】absolute-isnan-font"><font color=#1BC3FB>【3x03】absolute() / isnan()</font></h3>
+<p>1、<code>numpy.absolute()</code> 函数用于计算<font color=#FF0000><strong>元素的绝对值</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.absolute([-<span class="hljs-number">1.2</span>, <span class="hljs-number">1.2</span>, <span class="hljs-number">13</span>, -<span class="hljs-number">10</span>]))
+[ <span class="hljs-number">1.2</span>  <span class="hljs-number">1.2</span> <span class="hljs-number">13.</span>  <span class="hljs-number">10.</span> ]</code></pre>
+<p>2、<code>numpy.isnan()</code> 函数用于<font color=#FF0000><strong>判断元素是否为 NaN（Not a Number）</strong></font>。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.isnan(np.nan)
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>np.isnan(np.inf)
+<span class="hljs-literal">False</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.isnan([np.nan, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, np.nan]))
+[ <span class="hljs-literal">True</span> <span class="hljs-literal">False</span> <span class="hljs-literal">False</span>  <span class="hljs-literal">True</span>]</code></pre>
+<h2 id="font-color-FF0000-【4x00】NumPy-统计函数-font"><font color=#FF0000>【4x00】NumPy 统计函数</font></h2>
+<p>NumPy 统计函数包含了计算最大值、最小值、最大值与最小值的差、百分位数、中位数、算术平均值、加权平均值、标准差与方差等。</p>
+<h3 id="font-color-1BC3FB-【4x01】amax-amin-font"><font color=#1BC3FB>【4x01】amax() / amin()</font></h3>
+<p><code>numpy.amax()</code> 和 <code>numpy.amin()</code> 函数分别用于计算数组中的元素沿指定轴的<font color=#FF0000><strong>最大值</strong></font>和<font color=#FF0000><strong>最小值</strong></font>。</p>
+<p>基本语法：</p>
+<p><code>numpy.amax(a[, axis=None, out=None, keepdims=&lt;no value&gt;, initial=&lt;no value&gt;, where=&lt;no value&gt;])</code></p>
+<p><code>numpy.amin(a[, axis=None, out=None, keepdims=&lt;no value&gt;, initial=&lt;no value&gt;, where=&lt;no value&gt;])</code></p>
+<p>参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>ndarray 对象，可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+<tr>
+<td>initial</td>
+<td>初始值标量，可选项，如果设置了标量，则除了元素之间的比较外，还会和标量进行对比</td>
+</tr>
+<tr>
+<td>where</td>
+<td>比较条件，通常和 initial 参数一起使用<br>如果当前是 amax 函数，where 为 True 时则会比较最大值， Flase 则会比较最小值<br>该参数含义比较模糊，参考资料较少，准确描述请参考<a target="_blank" rel="noopener" href="https://numpy.org/doc/1.18/reference/generated/numpy.amax.html">官方文档</a></td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">2</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">8</span>, <span class="hljs-number">9</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">2</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">8</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.amax(a))
+<span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.amax(a, axis=<span class="hljs-number">0</span>))                                  <span class="hljs-comment"># 元素按行比较</span>
+[<span class="hljs-number">8</span> <span class="hljs-number">9</span>]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.amax(a, axis=<span class="hljs-number">0</span>, keepdims=<span class="hljs-literal">True</span>))                   <span class="hljs-comment"># 元素按行比较并保持数组的二维特性</span>
+[[<span class="hljs-number">8</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.amax(a, axis=<span class="hljs-number">1</span>))                                  <span class="hljs-comment"># 元素按列比较</span>
+[<span class="hljs-number">4</span> <span class="hljs-number">9</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.amax(a, axis=<span class="hljs-number">1</span>, initial=<span class="hljs-number">5</span>))                       <span class="hljs-comment"># 元素按列比较（包括标量一起比较）</span>
+[<span class="hljs-number">5</span> <span class="hljs-number">9</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【4x02】argmax-argmin-font"><font color=#1BC3FB>【4x02】argmax() / argmin()</font></h3>
+<p><code>numpy.argmax()</code> 和 <code>numpy.argmin()</code> 函数分别沿指定轴返回<font color=#FF0000><strong>最大元素和最小元素的索引值</strong></font>。</p>
+<p>基本语法：<code>numpy.argmax(a[, axis=None, out=None])</code>；<code>numpy.argmin(a[, axis=None, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型，若未指定，则在操作前会将数组展开</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">30</span>,<span class="hljs-number">40</span>,<span class="hljs-number">70</span>],[<span class="hljs-number">80</span>,<span class="hljs-number">20</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">50</span>,<span class="hljs-number">90</span>,<span class="hljs-number">60</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">30</span> <span class="hljs-number">40</span> <span class="hljs-number">70</span>]
+ [<span class="hljs-number">80</span> <span class="hljs-number">20</span> <span class="hljs-number">10</span>]
+ [<span class="hljs-number">50</span> <span class="hljs-number">90</span> <span class="hljs-number">60</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span> (np.argmax(a))
+<span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argmin(a))
+<span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argmax(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argmin(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【4x03】sum-font"><font color=#1BC3FB>【4x03】sum()</font></h3>
+<p><code>numpy.sum()</code> 函数用于计算所有元素的<font color=#FF0000><strong>和</strong></font>。</p>
+<p>基本语法：<code>numpy.sum(a, axis=None, dtype=None, out=None, keepdims=&lt;no value&gt;, initial=&lt;no value&gt;, where=&lt;no value&gt;)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型，若未指定则运算前会将数组展平</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>指定数据类型，可选项</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+<tr>
+<td>initial</td>
+<td>初始值标量，可选项，如果设置了标量，则除了元素之间的求和外，还会和标量进行求和</td>
+</tr>
+<tr>
+<td>where</td>
+<td>求和条件，总和中要包括的元素</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">sum</span>([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">5</span>]]))
+<span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">sum</span>([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">5</span>]], axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">0</span> <span class="hljs-number">6</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">sum</span>([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">5</span>]], axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">1</span> <span class="hljs-number">5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">sum</span>([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [np.nan, <span class="hljs-number">5</span>]], where=[<span class="hljs-literal">False</span>, <span class="hljs-literal">True</span>], axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">1.</span> <span class="hljs-number">5.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">sum</span>([<span class="hljs-number">10</span>], initial=<span class="hljs-number">5</span>))
+<span class="hljs-number">15</span></code></pre>
+<h3 id="font-color-1BC3FB-【4x04】cumsum-cumprod-font"><font color=#1BC3FB>【4x04】cumsum() / cumprod()</font></h3>
+<p><code>numpy.cumsum()</code>：返回一个一维数组，每个元素都是之前所有元素的<font color=#FF0000><strong>累加和</strong></font>。<br>
+<code>numpy.cumprod()</code>：返回一个一维数组，每个元素都是之前所有元素的<font color=#FF0000><strong>累乘积</strong></font>。</p>
+<p>基本语法：<code>numpy.cumsum(a, axis=None, dtype=None, out=None)</code>；<code>numpy.cumprod(a, axis=None, dtype=None, out=None)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型，若未指定则运算前会将数组展平</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>指定数据类型，可选项</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumsum(a))
+[ <span class="hljs-number">1</span>  <span class="hljs-number">3</span>  <span class="hljs-number">6</span> <span class="hljs-number">10</span> <span class="hljs-number">15</span> <span class="hljs-number">21</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumsum(a, axis=<span class="hljs-number">0</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumsum(a, axis=<span class="hljs-number">1</span>))
+[[ <span class="hljs-number">1</span>  <span class="hljs-number">3</span>  <span class="hljs-number">6</span>]
+ [ <span class="hljs-number">4</span>  <span class="hljs-number">9</span> <span class="hljs-number">15</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumprod(a))
+[  <span class="hljs-number">1</span>   <span class="hljs-number">2</span>   <span class="hljs-number">6</span>  <span class="hljs-number">24</span> <span class="hljs-number">120</span> <span class="hljs-number">720</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumprod(a, axis=<span class="hljs-number">0</span>))
+[[ <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>]
+ [ <span class="hljs-number">4</span> <span class="hljs-number">10</span> <span class="hljs-number">18</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.cumprod(a, axis=<span class="hljs-number">1</span>))
+[[  <span class="hljs-number">1</span>   <span class="hljs-number">2</span>   <span class="hljs-number">6</span>]
+ [  <span class="hljs-number">4</span>  <span class="hljs-number">20</span> <span class="hljs-number">120</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【4x05】ptp-font"><font color=#1BC3FB>【4x05】ptp()</font></h3>
+<p><code>numpy.ptp()</code> 函数用于计算数组中元素<font color=#FF0000><strong>最大值与最小值的差</strong></font>。</p>
+<p>基本语法：<code>numpy.ptp(a[, axis=None, out=None, keepdims=&lt;no value&gt;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">9</span>,<span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>]
+ [<span class="hljs-number">7</span> <span class="hljs-number">6</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">9</span> <span class="hljs-number">4</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.ptp(a))
+<span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.ptp(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">5</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.ptp(a, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">6</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.ptp(a, axis=<span class="hljs-number">1</span>, keepdims=<span class="hljs-literal">True</span>))
+[[<span class="hljs-number">6</span>]
+ [<span class="hljs-number">4</span>]
+ [<span class="hljs-number">7</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【4x06】percentile-font"><font color=#1BC3FB>【4x06】percentile()</font></h3>
+<p><code>numpy.percentile()</code> 函数用于计算一个多维数组的任意<font color=#FF0000><strong>百分位数</strong></font>。</p>
+<p>百分位数：统计学术语，如果将一组数据从小到大排序，并计算相应的累计百分位，则某一百分位所对应数据的值就称为这一百分位的百分位数。可表示为：一组 n 个观测值按数值大小排列。如：处于 p% 位置的值称第 p 百分位数。</p>
+<p>基本语法：<code>numpy.percentile(a, q[, axis=None, out=None, overwrite_input=False, interpolation='linear', keepdims=False])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>q</td>
+<td>要计算的百分位数，在 [0, 100] 之间</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>overwrite_input</td>
+<td>bool 值，可选项，如果为True，则允许通过中间计算来修改输入数组 a 以节省内存<br>在这种情况下，此操作完成后 a 的内容是不确定的</td>
+</tr>
+<tr>
+<td>interpolation</td>
+<td>可选项，指定当所需百分比位于两个数据点 <code>i&lt;j</code> 之间时要使用的插值方法：<br><font color=#ff0000><strong>linear</strong></font>：<code>i + (j - i) * fraction</code>，其中 fraction 是由 i 和 j 包围的索引的分数部分<br><font color=#ff0000><strong>lower</strong></font>：<code>i</code>；<font color=#ff0000><strong>higher</strong></font>：<code>j</code>；<font color=#ff0000><strong>nearest</strong></font>：<code>i</code> 或 <code>j</code>，以最近者为准；<font color=#ff0000><strong>midpoint</strong></font>：<code>(i + j) / 2</code></td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">10</span>  <span class="hljs-number">7</span>  <span class="hljs-number">4</span>]
+ [ <span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.percentile(a, <span class="hljs-number">50</span>))
+<span class="hljs-number">3.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.percentile(a, <span class="hljs-number">50</span>, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">6.5</span> <span class="hljs-number">4.5</span> <span class="hljs-number">2.5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.percentile(a, <span class="hljs-number">50</span>, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">7.</span> <span class="hljs-number">2.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.percentile(a, <span class="hljs-number">50</span>, axis=<span class="hljs-number">1</span>, keepdims=<span class="hljs-literal">True</span>))
+[[<span class="hljs-number">7.</span>]
+ [<span class="hljs-number">2.</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【4x07】median-font"><font color=#1BC3FB>【4x07】median()</font></h3>
+<p><code>numpy.median()</code> 函数用于计算数组元素的<font color=#FF0000><strong>中位数</strong></font>。</p>
+<p>基本语法：<code>numpy.median(a[, axis=None, out=None, overwrite_input=False, keepdims=False])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>overwrite_input</td>
+<td>bool 值，可选项，如果为True，则允许通过中间计算来修改输入数组 a 以节省内存<br>在这种情况下，此操作完成后 a 的内容是不确定的</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">10</span>  <span class="hljs-number">7</span>  <span class="hljs-number">4</span>]
+ [ <span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>]]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.median(a))
+<span class="hljs-number">3.5</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.median(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">6.5</span> <span class="hljs-number">4.5</span> <span class="hljs-number">2.5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.median(a, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">7.</span> <span class="hljs-number">2.</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【4x08】mean-font"><font color=#1BC3FB>【4x08】mean()</font></h3>
+<p><code>numpy.mean()</code> 函数计算数组中元素的<font color=#FF0000><strong>算术平均值</strong></font>。</p>
+<p>算术平均值：沿轴的元素的总和除以元素的数量。</p>
+<p>基本语法：<code>numpy.mean(a[, axis=None, dtype=None, out=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，用于计算平均值的类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">10</span>  <span class="hljs-number">7</span>  <span class="hljs-number">4</span>]
+ [ <span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.mean(a))
+<span class="hljs-number">4.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.mean(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">6.5</span> <span class="hljs-number">4.5</span> <span class="hljs-number">2.5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.mean(a, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">7.</span> <span class="hljs-number">2.</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【4x09】average-font"><font color=#1BC3FB>【4x09】average()</font></h3>
+<p><code>numpy.average()</code> 函数根据在另一个数组中给出的各自的权重来计算数组中元素的<font color=#FF0000><strong>加权平均值</strong></font>。</p>
+<p>加权平均值：将各数值乘以相应的权数，然后加总求和得到总体值，再除以总的单位数。</p>
+<p>例如：现有数组 <code>[1, 2, 3, 4]</code>，相应的权重为 <code>[5, 6, 7, 8]</code>，则计算方法为：<code>（1*5+2*6+3*7+4*8）/（5+6+7+8）≈ 2.6923</code></p>
+<p>基本语法：<code>numpy.average(a[, axis=None, weights=None, returned=False])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>weights</td>
+<td>可选项，与 a 中的值相关联的权重数组，如果 weights=None，则 a 中的所有数据都具有 1 的权重，相当于 <code>mean</code> 函数</td>
+</tr>
+<tr>
+<td>returned</td>
+<td>可选项，bool 类型，默认为 False，如果为 True，则返回元组 <code>(加权平均值, 权重)</code>，否则只返回加权平均值</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.average(a))          <span class="hljs-comment"># 不指定权重时相当于 mean 函数</span>
+<span class="hljs-number">2.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.average(a, weights=[<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>]))
+<span class="hljs-number">2.6923076923076925</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.average(a, weights=[<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>], returned=<span class="hljs-literal">True</span>))
+(<span class="hljs-number">2.6923076923076925</span>, <span class="hljs-number">26.0</span>)</code></pre>
+<h3 id="font-color-1BC3FB-【4x10】std-var-font"><font color=#1BC3FB>【4x10】std() / var()</font></h3>
+<p><code>numpy.std()</code> 和 <code>numpy.var()</code> 分别用于计算数组元素的<font color=#FF0000><strong>标准差</strong></font>与<font color=#FF0000><strong>方差</strong></font>。</p>
+<p>标准差是一组数据平均值分散程度的一种度量，标准差是方差的算术平方根。</p>
+<p>方差为 S<sup>2</sup>，标准差为 S，计算公式如下：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>S</mi><mn>2</mn></msup><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>x</mi><mo stretchy="true">‾</mo></mover><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">S^2 = \frac {1} {n} \sum_{i=1} ^ {n} (x_i - \overline {x})^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8641em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.9291em;vertical-align:-1.2777em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6514em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6306em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span></span></span><span style="top:-3.5506em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo>=</mo><msqrt><msup><mi>S</mi><mn>2</mn></msup></msqrt></mrow><annotation encoding="application/x-tex">S = \sqrt {S^2}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.0361em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0039em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-2.9639em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.0361em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>基本语法：</p>
+<p><code>numpy.std(a, axis=None, dtype=None, out=None, ddof=0, keepdims=&lt;no value&gt;)</code></p>
+<p><code>numpy.var(a[, axis=None, dtype=None, out=None, ddof=0, keepdims=&lt;no value&gt;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>可选项，值的数据类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>ddof</td>
+<td>自由度（Delta Degrees of Freedom），计算中使用的除数是 N-ddof，其中 N 表示元素的数量，ddof 默认为零</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">4</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.std(a))
+<span class="hljs-number">1.118033988749895</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.std(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">1.</span> <span class="hljs-number">1.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.std(a, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">0.5</span> <span class="hljs-number">0.5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.var(a))
+<span class="hljs-number">1.25</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.var(a, axis=<span class="hljs-number">0</span>))
+[<span class="hljs-number">1.</span> <span class="hljs-number">1.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.var(a, axis=<span class="hljs-number">1</span>))
+[<span class="hljs-number">0.25</span> <span class="hljs-number">0.25</span>]</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105398131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-【5x00】NumPy-排序函数-font"><font color=#FF0000>【5x00】NumPy 排序函数</font></h2>
+<p>NumPy 排序函数中可以指定使用的排序方法，各种分类算法的特征在于它们的平均速度，最坏情况下的性能，工作空间大小以及它们是否稳定，三种算法对比如下：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>速度</th>
+<th>最坏情况</th>
+<th>工作空间</th>
+<th>稳定性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>快速排序（quicksort）</td>
+<td>1</td>
+<td>O(n^2)</td>
+<td>0</td>
+<td>no</td>
+</tr>
+<tr>
+<td>归并排序（mergesort）</td>
+<td>2</td>
+<td>O(n*log(n))</td>
+<td>~n/2</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>堆排序（heapsort）</td>
+<td>3</td>
+<td>O(n*log(n))</td>
+<td>0</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h3 id="font-color-1BC3FB-【5x01】sort-font"><font color=#1BC3FB>【5x01】sort()</font></h3>
+<p><code>numpy.sort()</code> 函数会将原数组元素<font color=#FF0000><strong>从小到大排序</strong></font>，返回输入数组的排序副本。</p>
+<p>基本语法：<code>numpy.sort(a[, axis=-1, kind='quicksort', order=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要排序的数组</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>要排序的轴，可选项，如果为 None，则在排序之前会将数组展平，默认值为 -1，它沿着最后一个轴排序</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>排序算法，可选项，默认值为快速排序（quicksort）</td>
+</tr>
+<tr>
+<td>order</td>
+<td>字符串或者字符串列表，可选项，若指定 order 值，将按照该字段进行排序</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a))
+[[<span class="hljs-number">1</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">3</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a, axis=<span class="hljs-literal">None</span>))   <span class="hljs-comment"># 数组将展平</span>
+[<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a, axis=<span class="hljs-number">0</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">4</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a, axis=<span class="hljs-number">1</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">4</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">3</span>]]</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>dtype = [(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;S10&#x27;</span>), (<span class="hljs-string">&#x27;height&#x27;</span>, <span class="hljs-built_in">float</span>), (<span class="hljs-string">&#x27;age&#x27;</span>, <span class="hljs-built_in">int</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>values = [(<span class="hljs-string">&#x27;Arthur&#x27;</span>, <span class="hljs-number">1.8</span>, <span class="hljs-number">41</span>), (<span class="hljs-string">&#x27;Lancelot&#x27;</span>, <span class="hljs-number">1.9</span>, <span class="hljs-number">38</span>), (<span class="hljs-string">&#x27;Galahad&#x27;</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">38</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array(values, dtype=dtype)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[(<span class="hljs-string">b&#x27;Arthur&#x27;</span>, <span class="hljs-number">1.8</span>, <span class="hljs-number">41</span>) (<span class="hljs-string">b&#x27;Lancelot&#x27;</span>, <span class="hljs-number">1.9</span>, <span class="hljs-number">38</span>) (<span class="hljs-string">b&#x27;Galahad&#x27;</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">38</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a, order=<span class="hljs-string">&#x27;height&#x27;</span>))                <span class="hljs-comment"># 按 height 排序</span>
+[(<span class="hljs-string">b&#x27;Galahad&#x27;</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">38</span>) (<span class="hljs-string">b&#x27;Arthur&#x27;</span>, <span class="hljs-number">1.8</span>, <span class="hljs-number">41</span>) (<span class="hljs-string">b&#x27;Lancelot&#x27;</span>, <span class="hljs-number">1.9</span>, <span class="hljs-number">38</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort(a, order=[<span class="hljs-string">&#x27;age&#x27;</span>, <span class="hljs-string">&#x27;height&#x27;</span>]))      <span class="hljs-comment"># 按 age 排序，如果 age 相等，则按 height 排序</span>
+[(<span class="hljs-string">b&#x27;Galahad&#x27;</span>, <span class="hljs-number">1.7</span>, <span class="hljs-number">38</span>) (<span class="hljs-string">b&#x27;Lancelot&#x27;</span>, <span class="hljs-number">1.9</span>, <span class="hljs-number">38</span>) (<span class="hljs-string">b&#x27;Arthur&#x27;</span>, <span class="hljs-number">1.8</span>, <span class="hljs-number">41</span>)]</code></pre>
+<h3 id="font-color-1BC3FB-【5x02】msort-font"><font color=#1BC3FB>【5x02】msort()</font></h3>
+<p><code>numpy.msort()</code> 函数将数组<font color=#FF0000><strong>按第一个轴从小到大排序</strong></font>，返回排序后的数组副本，相当于 <code>numpy.sort(a, axis=0)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.msort([[<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]]))
+[[<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort([[<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]], axis=<span class="hljs-number">0</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【5x03】argsort-font"><font color=#1BC3FB>【5x03】argsort()</font></h3>
+<p><code>numpy.argsort()</code> 函数将原数组元素<font color=#FF0000><strong>从小到大排列</strong></font>，提取其对应在原数组中的<font color=#FF0000><strong>索引值</strong></font>并返回。</p>
+<p>举例：原数组为：<code>[3, 1, 2]</code>，从小到大排列：<code>[1, 2, 3]</code>，排列后的各元素在原数组中对应的索引值：<code>[1, 2, 0]</code></p>
+<p>基本语法：<code>numpy.argsort(a[, axis=-1, kind=None, order=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>要排序的数组</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>要排序的轴，可选项，如果为 None，则在排序之前会将数组展平，默认值为 -1，它沿着最后一个轴排序</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>排序算法，可选项，默认值为快速排序（quicksort）</td>
+</tr>
+<tr>
+<td>order</td>
+<td>字符串或者字符串列表，可选项，若指定 order 值，将按照该字段进行排序</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argsort(a))
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = np.array([[<span class="hljs-number">0</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argsort(b))
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">1</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argsort(b, axis=<span class="hljs-number">0</span>))
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">1</span> <span class="hljs-number">0</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.argsort(b, axis=<span class="hljs-number">1</span>))
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span>]
+ [<span class="hljs-number">0</span> <span class="hljs-number">1</span>]]</code></pre>
+<h3 id="font-color-1BC3FB-【5x04】lexsort-font"><font color=#1BC3FB>【5x04】lexsort()</font></h3>
+<p><code>numpy.lexsort()</code> 函数使用键序列执行间接稳定排序，用于<font color=#FF0000><strong>对多个序列进行排序，返回其索引值</strong></font>。</p>
+<p>基本语法：<code>numpy.lexsort(keys, axis=-1)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keys</td>
+<td>类似于 <code>(k, N)</code> 的要排序的数组</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定要排序的轴，默认对最后一个轴进行排序</td>
+</tr>
+</tbody>
+</table>
+<p>举例：现有数组 <code>a = [1,5,1,4,3,4,4]</code>，<code>b = [9,4,0,4,0,2,1]</code>，利用 lexsort() 函数排序后的结果为：<code>[2,0,4,6,5,3,1]</code>，排序过程如下：</p>
+<p>假设数组 a1 为语文成绩：<code>a1 = [1,5,1,4,3,4,4]</code><br>
+假设数组 b1 为数学成绩：<code>b1 = [9,4,0,4,0,2,1]</code><br>
+数组索引值 c1 为同学姓名： <code>c1 = [0,1,2,3,4,5,6]</code></p>
+<p><font color=#FF0000><strong>1、首先按照语文成绩进行排名：</strong></font><br>
+语文成绩（数组 a）从小到大排名：<code>a2 =  [1,1,3,4,4,4,5]</code>，对应的学生姓名（索引值）为：<code>c2 = [0,2,4,3,5,6,1]</code>，现在可以看到：<br>
+<font color=#1BC3FB><strong>0</strong></font>、<font color=#1BC3FB><strong>2</strong></font> 同学的语文成绩都一样，均为 <font color=#32CD32><strong>1</strong></font><br>
+<font color=#1BC3FB><strong>3</strong></font>、<font color=#1BC3FB><strong>5</strong></font>、<font color=#1BC3FB><strong>6</strong></font> 同学的语文成绩都一样，均为 <font color=#32CD32><strong>4</strong></font></p>
+<p><font color=#FF0000><strong>2、接下来，对于语文成绩相同的，按照他们的数学成绩再次进行排名：</strong></font><br>
+<font color=#1BC3FB><strong>0</strong></font>、<font color=#1BC3FB><strong>2</strong></font> 同学对应的数学成绩分别为：<font color=#32CD32><strong>9</strong></font> 和 <font color=#32CD32><strong>0</strong></font>，从小到大再次排序，即 <font color=#1BC3FB><strong>0</strong></font> 排在 <font color=#1BC3FB><strong>2</strong></font> 的后面，对应的学生姓名为 <code>c3 = [2,0,4,3,5,6,1]</code><br>
+<font color=#1BC3FB><strong>3</strong></font>、<font color=#1BC3FB><strong>5</strong></font>、<font color=#1BC3FB><strong>6</strong></font> 同学对应的数学成绩分别为：<font color=#32CD32><strong>4</strong></font>、<font color=#32CD32><strong>2</strong></font>、<font color=#32CD32><strong>1</strong></font>，从小到大再次排序后，对应的学生姓名为 <code>c4 = [2,0,4,6,5,3,1]</code>，即最终结果。</p>
+<p>简单来说，先对数组 a 从小到大排序，提取排序后元素对应的索引值，排序后元素有相同的，再根据数组 b 从小到大排序，得到最终的索引值。</p>
+<p>以上步骤用 <code>numpy.lexsort()</code> 函数实现如下：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>b = [<span class="hljs-number">9</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c1 = np.lexsort((a,b))    <span class="hljs-comment"># 先按 b 排序，再按照 a 排序</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>c2 = np.lexsort((b,a))    <span class="hljs-comment"># 先按 a 排序，再按照 b 排序</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(c1)
+[<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(c2)
+[<span class="hljs-number">2</span> <span class="hljs-number">0</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>([(a[i],b[i]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> c1])
+[(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">4</span>), (<span class="hljs-number">5</span>, <span class="hljs-number">4</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">9</span>)]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>([(a[i],b[i]) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> c2])
+[(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">9</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">2</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">4</span>), (<span class="hljs-number">5</span>, <span class="hljs-number">4</span>)]</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>first_names = (<span class="hljs-string">&#x27;Hertz&#x27;</span>, <span class="hljs-string">&#x27;Galilei&#x27;</span>, <span class="hljs-string">&#x27;Hertz&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>second_names = (<span class="hljs-string">&#x27;Heinrich&#x27;</span>, <span class="hljs-string">&#x27;Galileo&#x27;</span>, <span class="hljs-string">&#x27;Gustav&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.lexsort((second_names, first_names)))   <span class="hljs-comment"># 按照字母对应的 ascii 码从小到大进行排序</span>
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">0</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【5x05】sort-complex-font"><font color=#1BC3FB>【5x05】sort_complex()</font></h3>
+<p><code>numpy.sort_complex()</code> 函数先使用实部，再使用虚部<font color=#FF0000><strong>对复数数组进行排序</strong></font>。</p>
+<p>复数：把形如 z=a+bi（a,b 均为实数）的数称为复数，其中 a 称为实部，b 称为虚部，i 称为虚数单位。</p>
+<p>基本语法：<code>numpy.sort_complex(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort_complex([<span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]))
+[<span class="hljs-number">1.</span>+<span class="hljs-number">0.j</span> <span class="hljs-number">2.</span>+<span class="hljs-number">0.j</span> <span class="hljs-number">3.</span>+<span class="hljs-number">0.j</span> <span class="hljs-number">5.</span>+<span class="hljs-number">0.j</span> <span class="hljs-number">6.</span>+<span class="hljs-number">0.j</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.sort_complex([<span class="hljs-number">1</span> + <span class="hljs-number">2j</span>, <span class="hljs-number">2</span> - <span class="hljs-number">1j</span>, <span class="hljs-number">3</span> - <span class="hljs-number">2j</span>, <span class="hljs-number">3</span> - <span class="hljs-number">3j</span>, <span class="hljs-number">3</span> + <span class="hljs-number">5j</span>]))
+[<span class="hljs-number">1.</span>+<span class="hljs-number">2.j</span> <span class="hljs-number">2.</span>-<span class="hljs-number">1.j</span> <span class="hljs-number">3.</span>-<span class="hljs-number">3.j</span> <span class="hljs-number">3.</span>-<span class="hljs-number">2.j</span> <span class="hljs-number">3.</span>+<span class="hljs-number">5.j</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【5x06】partition-font"><font color=#1BC3FB>【5x06】partition()</font></h3>
+<p><code>numpy.partition()</code> 函数用于对数组进行<font color=#FF0000><strong>分区排序</strong></font>，返回数组的分区副本。</p>
+<p>基本语法：<code>numpy.partition(a, kth[, axis=-1, kind='introselect', order=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待排序数组</td>
+</tr>
+<tr>
+<td>kth</td>
+<td>整数或者整数序列，原数组元素中从小到大的第 k 个元素，在排序后的数组中，仍然处于第 k 位置<br>小于该元素的位于该元素的左边，大于该元素的位于该元素的右边，左右两边没有特别的排序要求</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定要排序的轴，可选项，默认对最后一个轴进行排序</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>排序算法，可选项，默认值为快速排序（quicksort）</td>
+</tr>
+<tr>
+<td>order</td>
+<td>字符串或者字符串列表，可选项，若指定 order 值，将按照该字段进行排序</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.partition(a, <span class="hljs-number">3</span>))       <span class="hljs-comment"># 原数组元素中从小到大的第 3 个元素，排序后仍然处于第 3 位置，小于 3 的在前面，大于 3 的在后面，前后无特别排序要求</span>
+[<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.partition(a, (<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)))  <span class="hljs-comment"># 小于 1 的在前面，大于 3 的在后面，1 和 3 之间的在中间</span>
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【5x07】argpartition-font"><font color=#1BC3FB>【5x07】argpartition()</font></h3>
+<p><code>numpy.argpartition()</code> 函数用于对数组进行<font color=#FF0000><strong>分区排序</strong></font>，返回重组后的<font color=#FF0000><strong>索引值数组</strong></font>。</p>
+<p>利用该函数可以很快地找出第 k 大的数的位置，以及大于 k（排在 k 后面）和小于 k（排在 k 前面）的数的位置。</p>
+<p>基本语法：<code>numpy.argpartition(a[, kth, axis=-1, kind='introselect', order=None])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待排序数组</td>
+</tr>
+<tr>
+<td>kth</td>
+<td>整数或者整数序列，原数组元素中从小到大的第 k 个元素，在排序后的数组中，仍然处于第 k 位置<br>小于该元素的位于该元素的左边，大于该元素的位于该元素的右边，左右两边没有特别的排序要求</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定要排序的轴，可选项，默认对最后一个轴进行排序</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>排序算法，可选项，默认值为快速排序（quicksort）</td>
+</tr>
+<tr>
+<td>order</td>
+<td>字符串或者字符串列表，可选项，若指定 order 值，将按照该字段进行排序</td>
+</tr>
+</tbody>
+</table>
+<p>以下实例将找到数组的第 3 小（索引值 2）的值和第 2 大（索引值 -2）的值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">46</span>, <span class="hljs-number">57</span>, <span class="hljs-number">23</span>, <span class="hljs-number">39</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">120</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a[np.argpartition(a, <span class="hljs-number">2</span>)[<span class="hljs-number">2</span>]])
+<span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a[np.argpartition(a, -<span class="hljs-number">2</span>)[-<span class="hljs-number">2</span>]])
+<span class="hljs-number">57</span></code></pre>
+<h3 id="font-color-1BC3FB-【5x08】unique-font"><font color=#1BC3FB>【5x08】unique()</font></h3>
+<p><code>numpy.unique()</code> 函数<font color=#FF0000><strong>找到唯一值并返回从小到大的排序结果</strong></font>，类似于 Python 的 set 集合。</p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.unique([<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>]))
+[<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.unique(a, axis=<span class="hljs-number">0</span>))
+[[<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>]
+ [<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>]]</code></pre>
+<h2 id="font-color-FF0000-【6x00】NumPy-条件函数-font"><font color=#FF0000>【6x00】NumPy 条件函数</font></h2>
+<h3 id="font-color-1BC3FB-【6x01】nonzero-font"><font color=#1BC3FB>【6x01】nonzero()</font></h3>
+<p><code>numpy.nonzero()</code> 函数将返回原数组中<font color=#FF0000><strong>非零元素的索引值</strong></font>。</p>
+<p>基本语法：<code>numpy.nonzero(a)</code></p>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([[<span class="hljs-number">3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">0</span>]])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.nonzero(a))
+(array([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>], dtype=int32), 
+ array([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], dtype=int32))</code></pre>
+<p>返回两个数组，其中的元素一一对应，比如数字 <code>3</code> 的索引值为 <code>(0,0)</code>，数字 <code>4</code> 的索引值为 <code>(1,1)</code></p>
+<h3 id="font-color-1BC3FB-【6x02】where-font"><font color=#1BC3FB>【6x02】where()</font></h3>
+<p><code>numpy.where()</code> 函数<font color=#FF0000><strong>返回数组中满足指定条件的元素的索引值</strong></font>。</p>
+<p>基本语法：<code>numpy.where(condition[, x, y])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>condition</td>
+<td>判断条件，如果满足该条件，则产生 x，否则产生 y，若未指定 x 与 y，则返回满足该条件元素的索引值</td>
+</tr>
+<tr>
+<td>x, y</td>
+<td>返回的值为数组对象，如果满足 condition，则产生 x，否则产生 y</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">12</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">21</span>, <span class="hljs-number">5</span>, <span class="hljs-number">11</span>, <span class="hljs-number">1</span>])
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.where(a&gt;<span class="hljs-number">8</span>))
+(array([<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>], dtype=int32),)         <span class="hljs-comment"># 返回满足 a&gt;8 的元素的索引值</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.where(a&gt;<span class="hljs-number">8</span>, a, <span class="hljs-number">10</span>*a))              <span class="hljs-comment"># 如果原数组中的元素 a&gt;8，则返回 a，否则返回 10*a</span>
+[<span class="hljs-number">12</span> <span class="hljs-number">70</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">21</span> <span class="hljs-number">50</span> <span class="hljs-number">11</span> <span class="hljs-number">10</span>]</code></pre>
+<h3 id="font-color-1BC3FB-【6x03】extract-font"><font color=#1BC3FB>【6x03】extract()</font></h3>
+<p><code>numpy.extract()</code> 函数<font color=#FF0000><strong>返回数组中满足指定条件的元素</strong></font>。</p>
+<p>基本语法：<code>numpy.extract(condition, arr)</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>condition</td>
+<td>判断条件</td>
+</tr>
+<tr>
+<td>arr</td>
+<td>原数组</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([<span class="hljs-number">12</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">21</span>, <span class="hljs-number">5</span>, <span class="hljs-number">11</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.extract(a&gt;<span class="hljs-number">8</span>, a))
+[<span class="hljs-number">12</span>  <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">21</span> <span class="hljs-number">11</span>]</code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.arange(<span class="hljs-number">9</span>).reshape(<span class="hljs-number">3</span>,<span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(a)
+[[<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>]
+ [<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>]
+ [<span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>condition = np.mod(a,<span class="hljs-number">2</span>) == <span class="hljs-number">0</span>     <span class="hljs-comment"># 定义筛选条件（余数为 0，即偶数）</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(condition)
+[[ <span class="hljs-literal">True</span> <span class="hljs-literal">False</span>  <span class="hljs-literal">True</span>]
+ [<span class="hljs-literal">False</span>  <span class="hljs-literal">True</span> <span class="hljs-literal">False</span>]
+ [ <span class="hljs-literal">True</span> <span class="hljs-literal">False</span>  <span class="hljs-literal">True</span>]]
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.extract(condition, a))
+[<span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">8</span>]</code></pre>
+<h2 id="font-color-FF0000-【7x00】NumPy-判断函数-font"><font color=#FF0000>【7x00】NumPy 判断函数</font></h2>
+<h3 id="font-color-1BC3FB-【7x01】any-all-font"><font color=#1BC3FB>【7x01】any() / all()</font></h3>
+<p><code>numpy.any()</code>：如果<font color=#FF0000><strong>至少有一个</strong></font>元素满足指定条件，则返回 True，否则返回 False。</p>
+<p><code>numpy.all()</code>：如果<font color=#FF0000><strong>所有</strong></font>的元素满足指定条件，则返回 True，否则返回 False。</p>
+<p>基本语法：<code>numpy.any(a[, axis=None, out=None, keepdims=&lt;no value&gt;])</code>；<code>numpy.all(a[, axis=None, out=None, keepdims=&lt;no value&gt;])</code></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>待处理的数组对象</td>
+</tr>
+<tr>
+<td>axis</td>
+<td>指定轴，可选项，整数或者整数元组类型</td>
+</tr>
+<tr>
+<td>out</td>
+<td>可选项，放置结果的备用输出数组，必须具有与预期输出数组相同的形状和缓冲区长度</td>
+</tr>
+<tr>
+<td>keepdims</td>
+<td>bool 类型，可选项，是否保持数组的二维特性</td>
+</tr>
+</tbody>
+</table>
+<p>应用举例：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">any</span>([[<span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>], [<span class="hljs-literal">True</span>, <span class="hljs-literal">True</span>]]))
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([-<span class="hljs-number">3</span>, -<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">any</span>(a&lt;<span class="hljs-number">0</span>))
+<span class="hljs-literal">True</span></code></pre>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">all</span>([[<span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>], [<span class="hljs-literal">True</span>, <span class="hljs-literal">True</span>]]))
+<span class="hljs-literal">False</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>a = np.array([-<span class="hljs-number">3</span>, -<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(np.<span class="hljs-built_in">all</span>(a&lt;<span class="hljs-number">0</span>))
+<span class="hljs-literal">False</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105398131</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/013/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（六）：矩阵 / 线性代数库与 IO 操作</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/011/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 NumPy（四）：字符串函数总结与对比</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

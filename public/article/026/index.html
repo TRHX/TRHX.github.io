@@ -1,0 +1,1419 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-06-13丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 6.5k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 34分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-tag">
+                            数据分析</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Pandas/" class="post-tag">
+                            Pandas</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p>Pandas 系列文章：</p>
+<ul>
+<li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
+<li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
+<li><a href="https://www.itbob.cn/article/027/">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a></li>
+<li><a href="https://www.itbob.cn/article/028/">Python 数据分析三剑客之 Pandas（四）：函数应用、映射、排序和层级索引</a></li>
+<li><a href="https://www.itbob.cn/article/029/">Python 数据分析三剑客之 Pandas（五）：统计计算与统计描述</a></li>
+<li><a href="https://www.itbob.cn/article/030/">Python 数据分析三剑客之 Pandas（六）：GroupBy 数据分裂、应用与合并</a></li>
+<li><a href="https://www.itbob.cn/article/031/">Python 数据分析三剑客之 Pandas（七）：合并数据集</a></li>
+<li><a href="https://www.itbob.cn/article/032/">Python 数据分析三剑客之 Pandas（八）：数据重塑、重复数据处理与数据替换</a></li>
+<li><a href="https://www.itbob.cn/article/033/">Python 数据分析三剑客之 Pandas（九）：时间序列</a></li>
+<li><a href="https://www.itbob.cn/article/034/">Python 数据分析三剑客之 Pandas（十）：数据读写</a></li>
+</ul>
+<hr>
+<p>专栏：</p>
+<ul>
+<li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
+<li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
+<li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
+</ul>
+<p>推荐学习资料与网站：</p>
+<ul>
+<li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
+<li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
+<li>Matplotlib 官方中文网：<a target="_blank" rel="noopener" href="https://www.matplotlib.org.cn/">https://www.matplotlib.org.cn/</a></li>
+<li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
+</ul>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106698307</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h1><font color=#FF0000>【1】Index 索引对象</font></h1>
+<p>Series 和 DataFrame 中的索引都是 Index 对象，为了保证数据的安全，索引对象是不可变的，如果尝试更改索引就会报错；常见的 Index 种类有：索引（Index），整数索引（Int64Index），层级索引（MultiIndex），时间戳类型（DatetimeIndex）。</p>
+<p>一下代码演示了 Index 索引对象和其不可变的性质：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index
+Index([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(obj.index)
+&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">pandas</span>.<span class="hljs-title">core</span>.<span class="hljs-title">indexes</span>.<span class="hljs-title">base</span>.<span class="hljs-title">Index</span>&#x27;&gt;</span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">obj</span>.<span class="hljs-title">index</span>[0] = &#x27;<span class="hljs-title">e</span>&#x27;</span>
+<span class="hljs-class"><span class="hljs-title">Traceback</span> (<span class="hljs-params">most recent call last</span>):</span>
+  File <span class="hljs-string">&quot;&lt;pyshell#28&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+    obj.index[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;e&#x27;</span>
+  File <span class="hljs-string">&quot;C:\Users\...\base.py&quot;</span>, line <span class="hljs-number">3909</span>, <span class="hljs-keyword">in</span> __setitem__
+    <span class="hljs-keyword">raise</span> TypeError(<span class="hljs-string">&quot;Index does not support mutable operations&quot;</span>)
+TypeError: Index does <span class="hljs-keyword">not</span> support mutable operations</code></pre>
+<table><tr><td bgcolor="#FFA500"><font size="5" color="#fff">index 索引对象常用属性</font></td></tr></table>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.html">https://pandas.pydata.org/docs/reference/api/pandas.Index.html</a></p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>转置</td>
+</tr>
+<tr>
+<td>array</td>
+<td>index 的数组形式，常见<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.array.html">官方文档</a></td>
+</tr>
+<tr>
+<td>dtype</td>
+<td>返回基础数据的 dtype 对象</td>
+</tr>
+<tr>
+<td>hasnans</td>
+<td>是否有 NaN（缺失值）</td>
+</tr>
+<tr>
+<td>inferred_type</td>
+<td>返回一个字符串，表示 index 的类型</td>
+</tr>
+<tr>
+<td>is_monotonic</td>
+<td>判断 index 是否是递增的</td>
+</tr>
+<tr>
+<td>is_monotonic_decreasing</td>
+<td>判断 index 是否单调递减</td>
+</tr>
+<tr>
+<td>is_monotonic_increasing</td>
+<td>判断 index 是否单调递增</td>
+</tr>
+<tr>
+<td>is_unique</td>
+<td>index 是否没有重复值</td>
+</tr>
+<tr>
+<td>nbytes</td>
+<td>返回 index 中的字节数</td>
+</tr>
+<tr>
+<td>ndim</td>
+<td>index 的维度</td>
+</tr>
+<tr>
+<td>nlevels</td>
+<td>Number of levels.</td>
+</tr>
+<tr>
+<td>shape</td>
+<td>返回一个元组，表示 index 的形状</td>
+</tr>
+<tr>
+<td>size</td>
+<td>index 的大小</td>
+</tr>
+<tr>
+<td>values</td>
+<td>返回 index 中的值 / 数组</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index
+Index([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.array
+&lt;PandasArray&gt;
+[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]
+Length: <span class="hljs-number">4</span>, dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.dtype
+dtype(<span class="hljs-string">&#x27;O&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.hasnans
+<span class="hljs-literal">False</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.inferred_type
+<span class="hljs-string">&#x27;string&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.is_monotonic
+<span class="hljs-literal">True</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.is_monotonic_decreasing
+<span class="hljs-literal">False</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.is_monotonic_increasing
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.is_unique
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.nbytes
+<span class="hljs-number">16</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.ndim
+<span class="hljs-number">1</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.nlevels
+<span class="hljs-number">1</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.shape
+(<span class="hljs-number">4</span>,)
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.size
+<span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.index.values
+array([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], dtype=<span class="hljs-built_in">object</span>)</code></pre>
+<table><tr><td bgcolor="#FFA500"><font size="5" color="#fff">index 索引对象常用方法</font></td></tr></table>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.html">https://pandas.pydata.org/docs/reference/api/pandas.Index.html</a></p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all(self, *args, **kwargs)</td>
+<td>判断所有元素是否为真，有 0 会被视为 False</td>
+</tr>
+<tr>
+<td>any(self, *args, **kwargs)</td>
+<td>判断是否至少有一个元素为真，均为 0 会被视为 False</td>
+</tr>
+<tr>
+<td>append(self, other)</td>
+<td>连接另一个 index，产生一个新的 index</td>
+</tr>
+<tr>
+<td>argmax(self[, axis, skipna])</td>
+<td>返回 index 中最大值的索引值</td>
+</tr>
+<tr>
+<td>argmin(self[, axis, skipna])</td>
+<td>返回 index 中最小值的索引值</td>
+</tr>
+<tr>
+<td>argsort(self, *args, **kwargs)</td>
+<td>对 index 从小到大排序，返回排序后的元素在原 index 中的索引值</td>
+</tr>
+<tr>
+<td>delete(self, loc)</td>
+<td>删除指定索引位置的元素，返回删除后的新 index</td>
+</tr>
+<tr>
+<td>difference(self, other[, sort])</td>
+<td>在第一个 index 中删除第二个 index 中的元素，即差集</td>
+</tr>
+<tr>
+<td>drop(self, labels[, errors])</td>
+<td>在原 index 中删除传入的值</td>
+</tr>
+<tr>
+<td>drop_duplicates(self[, keep])</td>
+<td>删除重复值，keep 参数可选值如下：<br><code>‘first’</code>：保留第一次出现的重复项；<br><code>‘last’</code>：保留最后一次出现的重复项；<br><code>False</code>：不保留重复项</td>
+</tr>
+<tr>
+<td>duplicated(self[, keep])</td>
+<td>判断是否为重复值，keep 参数可选值如下：<br><code>‘first’</code>：第一次重复的为 False，其他为 True；<br><code>‘last’</code>：最后一次重复的为 False，其他为 True；<br><code>False</code>：所有重复的均为 True</td>
+</tr>
+<tr>
+<td>dropna(self[, how])</td>
+<td>删除缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>fillna(self[, value, downcast])</td>
+<td>用指定值填充缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>equals(self, other)</td>
+<td>判断两个  index 是否相同</td>
+</tr>
+<tr>
+<td>insert(self, loc, item)</td>
+<td>将元素插入到指定索引处，返回新的 index</td>
+</tr>
+<tr>
+<td>intersection(self, other[, sort])</td>
+<td>返回两个 index 的交集</td>
+</tr>
+<tr>
+<td>isna(self)</td>
+<td>检测 index 元素是否为缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>isnull(self)</td>
+<td>检测 index 元素是否为缺失值，即 NaN</td>
+</tr>
+<tr>
+<td>max(self[, axis, skipna])</td>
+<td>返回 index 的最大值</td>
+</tr>
+<tr>
+<td>min(self[, axis, skipna])</td>
+<td>返回 index 的最小值</td>
+</tr>
+<tr>
+<td>union(self, other[, sort])</td>
+<td>返回两个 index 的并集</td>
+</tr>
+<tr>
+<td>unique(self[, level])</td>
+<td>返回 index 中的唯一值，相当于去除重复值</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>all(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.all.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]).<span class="hljs-built_in">all</span>()
+<span class="hljs-literal">True</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]).<span class="hljs-built_in">all</span>()
+<span class="hljs-literal">False</span></code></pre>
+<ul>
+<li><code>any(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.any.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]).<span class="hljs-built_in">any</span>()
+<span class="hljs-literal">True</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]).<span class="hljs-built_in">any</span>()
+<span class="hljs-literal">False</span></code></pre>
+<ul>
+<li><code>append(self, other)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.append.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>]).append(pd.Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]))
+Index([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)</code></pre>
+<ul>
+<li><code>argmax(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argmax.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).argmax()
+<span class="hljs-number">3</span></code></pre>
+<ul>
+<li><code>argmin(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argmin.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).argmin()
+<span class="hljs-number">4</span></code></pre>
+<ul>
+<li><code>argsort(self, *args, **kwargs)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.argsort.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).argsort()
+array([<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>], dtype=int32)</code></pre>
+<ul>
+<li><code>delete(self, loc)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.delete.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).delete(<span class="hljs-number">0</span>)
+Int64Index([<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<ul>
+<li><code>difference(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.difference.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1 = pd.Index([<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx2 = pd.Index([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.difference(idx2)
+Int64Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.difference(idx2, sort=<span class="hljs-literal">False</span>)
+Int64Index([<span class="hljs-number">2</span>, <span class="hljs-number">1</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<ul>
+<li><code>drop(self, labels[, errors])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.drop.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).drop([<span class="hljs-number">2</span>, <span class="hljs-number">1</span>])
+Int64Index([<span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<ul>
+<li><code>drop_duplicates(self[, keep])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.drop_duplicates.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.Index([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.drop_duplicates(keep=<span class="hljs-string">&#x27;first&#x27;</span>)
+Index([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.drop_duplicates(keep=<span class="hljs-string">&#x27;last&#x27;</span>)
+Index([<span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.drop_duplicates(keep=<span class="hljs-literal">False</span>)
+Index([<span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;hippo&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)</code></pre>
+<ul>
+<li>duplicated(self[, keep]) 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.duplicated.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx = pd.Index([<span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;cow&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>, <span class="hljs-string">&#x27;beetle&#x27;</span>, <span class="hljs-string">&#x27;lama&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.duplicated()
+array([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.duplicated(keep=<span class="hljs-string">&#x27;first&#x27;</span>)
+array([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.duplicated(keep=<span class="hljs-string">&#x27;last&#x27;</span>)
+array([ <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx.duplicated(keep=<span class="hljs-literal">False</span>)
+array([ <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>])</code></pre>
+<ul>
+<li><code>dropna(self[, how])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.dropna.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, np.NaN, <span class="hljs-number">6</span>, np.NaN, np.NaN]).dropna()
+Float64Index([<span class="hljs-number">2.0</span>, <span class="hljs-number">5.0</span>, <span class="hljs-number">6.0</span>], dtype=<span class="hljs-string">&#x27;float64&#x27;</span>)</code></pre>
+<ul>
+<li><code>fillna(self[, value, downcast])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.fillna.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, np.NaN, <span class="hljs-number">6</span>, np.NaN, np.NaN]).fillna(<span class="hljs-number">5</span>)
+Float64Index([<span class="hljs-number">2.0</span>, <span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>, <span class="hljs-number">6.0</span>, <span class="hljs-number">5.0</span>, <span class="hljs-number">5.0</span>], dtype=<span class="hljs-string">&#x27;float64&#x27;</span>)</code></pre>
+<ul>
+<li><code>equals(self, other)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.equals.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1 = pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx2 = pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.equals(idx2)
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1 = pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx2 = pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.equals(idx2)
+<span class="hljs-literal">False</span></code></pre>
+<ul>
+<li><code>intersection(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.intersection.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1 = pd.Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx2 = pd.Index([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.intersection(idx2)
+Int64Index([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<ul>
+<li><code>insert(self, loc, item)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).insert(<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;A&#x27;</span>)
+Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)</code></pre>
+<ul>
+<li><code>isna(self)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.isna.html">官方文档</a>】、<code>isnull(self)</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.isnull.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, np.NaN, <span class="hljs-number">6</span>, np.NaN, np.NaN]).isna()
+array([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>,  <span class="hljs-literal">True</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, np.NaN, <span class="hljs-number">6</span>, np.NaN, np.NaN]).isnull()
+array([<span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>,  <span class="hljs-literal">True</span>,  <span class="hljs-literal">True</span>])</code></pre>
+<ul>
+<li><code>max(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.max.html">官方文档</a>】、<code>min(self[, axis, skipna])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.min.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).<span class="hljs-built_in">max</span>()
+<span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>]).<span class="hljs-built_in">min</span>()
+<span class="hljs-number">1</span></code></pre>
+<ul>
+<li><code>union(self, other[, sort])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.union.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1 = pd.Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx2 = pd.Index([<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>idx1.union(idx2)
+Int64Index([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<ul>
+<li><code>unique(self[, level])</code> 【<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Index.unique.html">官方文档</a>】</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>pd.Index([<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>]).unique()
+Int64Index([<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>], dtype=<span class="hljs-string">&#x27;int64&#x27;</span>)</code></pre>
+<h1><font color=#FF0000>【2】Pandas 一般索引</font></h1>
+<p>由于在 Pandas 中，由于有一些更高级的索引操作，比如重新索引，层级索引等，因此将一般的切片索引、花式索引、布尔索引等归纳为一般索引。</p>
+<h2 id="font-color-4876FF-【2-1】Series-索引-font"><font color=#4876FF>【2.1】Series 索引</font></h2>
+<h3 id="font-color-FFA500-【2-1-1】head-tail-font"><font color=#FFA500>【2.1.1】head() / tail()</font></h3>
+<p><code>Series.head()</code> 和 <code>Series.tail()</code> 方法可以获取的前五行和后五行数据，如果向 head() / tail() 里面传入参数，则会获取指定行：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">8</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>   -<span class="hljs-number">0.643437</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">0.365652</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">0.966554</span>
+<span class="hljs-number">3</span>   -<span class="hljs-number">0.036127</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">1.046095</span>
+<span class="hljs-number">5</span>   -<span class="hljs-number">2.048362</span>
+<span class="hljs-number">6</span>   -<span class="hljs-number">1.865551</span>
+<span class="hljs-number">7</span>    <span class="hljs-number">1.344728</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.head()
+<span class="hljs-number">0</span>   -<span class="hljs-number">0.643437</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">0.365652</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">0.966554</span>
+<span class="hljs-number">3</span>   -<span class="hljs-number">0.036127</span>
+<span class="hljs-number">4</span>    <span class="hljs-number">1.046095</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.head(<span class="hljs-number">3</span>)
+<span class="hljs-number">0</span>   -<span class="hljs-number">0.643437</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">0.365652</span>
+<span class="hljs-number">2</span>   -<span class="hljs-number">0.966554</span>
+dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.tail()
+<span class="hljs-number">3</span>    <span class="hljs-number">1.221221</span>
+<span class="hljs-number">4</span>   -<span class="hljs-number">1.373496</span>
+<span class="hljs-number">5</span>    <span class="hljs-number">1.032843</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">0.029734</span>
+<span class="hljs-number">7</span>   -<span class="hljs-number">1.861485</span>
+dtype: float64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.tail(<span class="hljs-number">3</span>)
+<span class="hljs-number">5</span>    <span class="hljs-number">1.032843</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">0.029734</span>
+<span class="hljs-number">7</span>   -<span class="hljs-number">1.861485</span>
+dtype: float64</code></pre>
+<h3 id="font-color-FFA500-【2-1-2】行索引-font"><font color=#FFA500>【2.1.2】行索引</font></h3>
+<p>Pandas 中可以按照位置进行索引，也可以按照索引名（index）进行索引，也可以用 Python 字典的表达式和方法来获取值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;c&#x27;</span>]
+-<span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-number">2</span>]
+-<span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;b&#x27;</span> <span class="hljs-keyword">in</span> obj
+<span class="hljs-literal">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.keys()
+Index([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], dtype=<span class="hljs-string">&#x27;object&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">list</span>(obj.items())
+[(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">5</span>), (<span class="hljs-string">&#x27;c&#x27;</span>, -<span class="hljs-number">8</span>), (<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">2</span>)]</code></pre>
+<h3 id="font-color-FFA500-【2-1-3】切片索引-font"><font color=#FFA500>【2.1.3】切片索引</font></h3>
+<p>切片的方法有两种：按位置切片和按索引名（index）切片，注意：按位置切片时，<font color=#FF0000><strong>不包含</strong></font>终止索引；按索引名（index）切片时，<font color=#FF0000><strong>包含</strong></font>终止索引。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+dtype: int64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>:<span class="hljs-number">2</span>]
+a    <span class="hljs-number">1</span>
+c   -<span class="hljs-number">8</span>
+dtype: int64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-string">&#x27;d&#x27;</span>]
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64</code></pre>
+<h3 id="font-color-FFA500-【2-1-4】花式索引-font"><font color=#FFA500>【2.1.4】花式索引</font></h3>
+<p>所谓的花式索引，就是间隔索引、不连续的索引，传递一个由索引名（index）或者位置参数组成的<font color=#FF0000><strong>列表</strong></font>来一次性获得多个元素：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>]]
+a    <span class="hljs-number">1</span>
+c   -<span class="hljs-number">8</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]]
+a    <span class="hljs-number">1</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64</code></pre>
+<h3 id="font-color-FFA500-【2-1-5】布尔索引-font"><font color=#FFA500>【2.1.5】布尔索引</font></h3>
+<p>可以通过一个布尔数组来索引目标数组，即通过布尔运算（如：比较运算符）来获取符合指定条件的元素的数组。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">3</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+e   -<span class="hljs-number">3</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[obj &gt; <span class="hljs-number">0</span>]
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj &gt; <span class="hljs-number">0</span>
+a     <span class="hljs-literal">True</span>
+b     <span class="hljs-literal">True</span>
+c    <span class="hljs-literal">False</span>
+d     <span class="hljs-literal">True</span>
+e    <span class="hljs-literal">False</span>
+dtype: <span class="hljs-built_in">bool</span></code></pre>
+<h2 id="font-color-4876FF-【2-2】DataFrame-索引-font"><font color=#4876FF>【2.2】DataFrame 索引</font></h2>
+<h3 id="font-color-FFA500-【2-2-1】head-tail-font"><font color=#FFA500>【2.2.1】head() / tail()</font></h3>
+<p>和 Series 一样，<code>DataFrame.head()</code> 和 <code>DataFrame.tail()</code> 方法同样可以获取 DataFrame 的前五行和后五行数据，如果向 head() / tail() 里面传入参数，则会获取指定行：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randn(<span class="hljs-number">8</span>,<span class="hljs-number">4</span>), columns = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+          a         b         c         d
+<span class="hljs-number">0</span> -<span class="hljs-number">1.399390</span>  <span class="hljs-number">0.521596</span> -<span class="hljs-number">0.869613</span>  <span class="hljs-number">0.506621</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">0.748562</span> -<span class="hljs-number">0.364952</span>  <span class="hljs-number">0.188399</span> -<span class="hljs-number">1.402566</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">1.378776</span> -<span class="hljs-number">1.476480</span>  <span class="hljs-number">0.361635</span>  <span class="hljs-number">0.451134</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">0.206405</span> -<span class="hljs-number">1.188609</span>  <span class="hljs-number">3.002599</span>  <span class="hljs-number">0.563650</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">0.993289</span>  <span class="hljs-number">1.133748</span>  <span class="hljs-number">1.177549</span> -<span class="hljs-number">2.562286</span>
+<span class="hljs-number">5</span> -<span class="hljs-number">0.482157</span>  <span class="hljs-number">1.069293</span>  <span class="hljs-number">1.143983</span> -<span class="hljs-number">1.303079</span>
+<span class="hljs-number">6</span> -<span class="hljs-number">1.199154</span>  <span class="hljs-number">0.220360</span>  <span class="hljs-number">0.801838</span> -<span class="hljs-number">0.104533</span>
+<span class="hljs-number">7</span> -<span class="hljs-number">1.359816</span> -<span class="hljs-number">2.092035</span>  <span class="hljs-number">2.003530</span> -<span class="hljs-number">0.151812</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.head()
+          a         b         c         d
+<span class="hljs-number">0</span> -<span class="hljs-number">1.399390</span>  <span class="hljs-number">0.521596</span> -<span class="hljs-number">0.869613</span>  <span class="hljs-number">0.506621</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">0.748562</span> -<span class="hljs-number">0.364952</span>  <span class="hljs-number">0.188399</span> -<span class="hljs-number">1.402566</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">1.378776</span> -<span class="hljs-number">1.476480</span>  <span class="hljs-number">0.361635</span>  <span class="hljs-number">0.451134</span>
+<span class="hljs-number">3</span> -<span class="hljs-number">0.206405</span> -<span class="hljs-number">1.188609</span>  <span class="hljs-number">3.002599</span>  <span class="hljs-number">0.563650</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">0.993289</span>  <span class="hljs-number">1.133748</span>  <span class="hljs-number">1.177549</span> -<span class="hljs-number">2.562286</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.head(<span class="hljs-number">3</span>)
+          a         b         c         d
+<span class="hljs-number">0</span> -<span class="hljs-number">1.399390</span>  <span class="hljs-number">0.521596</span> -<span class="hljs-number">0.869613</span>  <span class="hljs-number">0.506621</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">0.748562</span> -<span class="hljs-number">0.364952</span>  <span class="hljs-number">0.188399</span> -<span class="hljs-number">1.402566</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">1.378776</span> -<span class="hljs-number">1.476480</span>  <span class="hljs-number">0.361635</span>  <span class="hljs-number">0.451134</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.tail()
+          a         b         c         d
+<span class="hljs-number">3</span> -<span class="hljs-number">0.206405</span> -<span class="hljs-number">1.188609</span>  <span class="hljs-number">3.002599</span>  <span class="hljs-number">0.563650</span>
+<span class="hljs-number">4</span>  <span class="hljs-number">0.993289</span>  <span class="hljs-number">1.133748</span>  <span class="hljs-number">1.177549</span> -<span class="hljs-number">2.562286</span>
+<span class="hljs-number">5</span> -<span class="hljs-number">0.482157</span>  <span class="hljs-number">1.069293</span>  <span class="hljs-number">1.143983</span> -<span class="hljs-number">1.303079</span>
+<span class="hljs-number">6</span> -<span class="hljs-number">1.199154</span>  <span class="hljs-number">0.220360</span>  <span class="hljs-number">0.801838</span> -<span class="hljs-number">0.104533</span>
+<span class="hljs-number">7</span> -<span class="hljs-number">1.359816</span> -<span class="hljs-number">2.092035</span>  <span class="hljs-number">2.003530</span> -<span class="hljs-number">0.151812</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.tail(<span class="hljs-number">3</span>)
+          a         b         c         d
+<span class="hljs-number">5</span> -<span class="hljs-number">0.482157</span>  <span class="hljs-number">1.069293</span>  <span class="hljs-number">1.143983</span> -<span class="hljs-number">1.303079</span>
+<span class="hljs-number">6</span> -<span class="hljs-number">1.199154</span>  <span class="hljs-number">0.220360</span>  <span class="hljs-number">0.801838</span> -<span class="hljs-number">0.104533</span>
+<span class="hljs-number">7</span> -<span class="hljs-number">1.359816</span> -<span class="hljs-number">2.092035</span>  <span class="hljs-number">2.003530</span> -<span class="hljs-number">0.151812</span></code></pre>
+<h3 id="font-color-FFA500-【2-2-2】列索引-font"><font color=#FFA500>【2.2.2】列索引</font></h3>
+<p>DataFrame 可以按照列标签（columns）来进行列索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.random.randn(<span class="hljs-number">7</span>,<span class="hljs-number">2</span>), columns = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+          a         b
+<span class="hljs-number">0</span> -<span class="hljs-number">1.198795</span>  <span class="hljs-number">0.928378</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">2.878230</span>  <span class="hljs-number">0.014650</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">2.267475</span>  <span class="hljs-number">0.370952</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">0.639340</span> -<span class="hljs-number">1.301041</span>
+<span class="hljs-number">4</span> -<span class="hljs-number">1.953444</span>  <span class="hljs-number">0.148934</span>
+<span class="hljs-number">5</span> -<span class="hljs-number">0.445225</span>  <span class="hljs-number">0.459632</span>
+<span class="hljs-number">6</span>  <span class="hljs-number">0.097109</span> -<span class="hljs-number">2.592833</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;a&#x27;</span>]
+<span class="hljs-number">0</span>   -<span class="hljs-number">1.198795</span>
+<span class="hljs-number">1</span>   -<span class="hljs-number">2.878230</span>
+<span class="hljs-number">2</span>    <span class="hljs-number">2.267475</span>
+<span class="hljs-number">3</span>    <span class="hljs-number">0.639340</span>
+<span class="hljs-number">4</span>   -<span class="hljs-number">1.953444</span>
+<span class="hljs-number">5</span>   -<span class="hljs-number">0.445225</span>
+<span class="hljs-number">6</span>    <span class="hljs-number">0.097109</span>
+Name: a, dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[[<span class="hljs-string">&#x27;a&#x27;</span>]]
+          a
+<span class="hljs-number">0</span> -<span class="hljs-number">1.198795</span>
+<span class="hljs-number">1</span> -<span class="hljs-number">2.878230</span>
+<span class="hljs-number">2</span>  <span class="hljs-number">2.267475</span>
+<span class="hljs-number">3</span>  <span class="hljs-number">0.639340</span>
+<span class="hljs-number">4</span> -<span class="hljs-number">1.953444</span>
+<span class="hljs-number">5</span> -<span class="hljs-number">0.445225</span>
+<span class="hljs-number">6</span>  <span class="hljs-number">0.097109</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(obj[<span class="hljs-string">&#x27;a&#x27;</span>])
+&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">pandas</span>.<span class="hljs-title">core</span>.<span class="hljs-title">series</span>.<span class="hljs-title">Series</span>&#x27;&gt;</span>
+<span class="hljs-class">&gt;&gt;&gt; <span class="hljs-title">type</span>(<span class="hljs-params">obj[[<span class="hljs-string">&#x27;a&#x27;</span>]]</span>)</span>
+<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">pandas</span>.<span class="hljs-title">core</span>.<span class="hljs-title">frame</span>.<span class="hljs-title">DataFrame</span>&#x27;&gt;</span></code></pre>
+<h3 id="font-color-FFA500-【2-2-3】切片索引-font"><font color=#FFA500>【2.2.3】切片索引</font></h3>
+<p>DataFrame 中的切片索引是针对行来操作的，切片的方法有两种：按位置切片和按索引名（index）切片，注意：按位置切片时，不包含终止索引；按索引名（index）切片时，包含终止索引。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = [<span class="hljs-string">&#x27;I1&#x27;</span>, <span class="hljs-string">&#x27;I2&#x27;</span>, <span class="hljs-string">&#x27;I3&#x27;</span>, <span class="hljs-string">&#x27;I4&#x27;</span>, <span class="hljs-string">&#x27;I5&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>columns = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data, index, columns)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+           a         b         c         d
+I1  <span class="hljs-number">0.828676</span> -<span class="hljs-number">1.663337</span>  <span class="hljs-number">1.753632</span>  <span class="hljs-number">1.432487</span>
+I2  <span class="hljs-number">0.368138</span>  <span class="hljs-number">0.222166</span>  <span class="hljs-number">0.902764</span> -<span class="hljs-number">1.436186</span>
+I3  <span class="hljs-number">2.285615</span> -<span class="hljs-number">2.415175</span> -<span class="hljs-number">1.344456</span> -<span class="hljs-number">0.502214</span>
+I4  <span class="hljs-number">3.224288</span> -<span class="hljs-number">0.500268</span>  <span class="hljs-number">1.293596</span> -<span class="hljs-number">1.235549</span>
+I5 -<span class="hljs-number">0.938833</span> -<span class="hljs-number">0.804433</span> -<span class="hljs-number">0.170047</span> -<span class="hljs-number">0.566766</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]
+           a         b         c         d
+I1  <span class="hljs-number">0.828676</span> -<span class="hljs-number">1.663337</span>  <span class="hljs-number">1.753632</span>  <span class="hljs-number">1.432487</span>
+I2  <span class="hljs-number">0.368138</span>  <span class="hljs-number">0.222166</span>  <span class="hljs-number">0.902764</span> -<span class="hljs-number">1.436186</span>
+I3  <span class="hljs-number">2.285615</span> -<span class="hljs-number">2.415175</span> -<span class="hljs-number">1.344456</span> -<span class="hljs-number">0.502214</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>:<span class="hljs-number">2</span>]
+           a         b         c         d
+I1 -<span class="hljs-number">0.042168</span>  <span class="hljs-number">1.437354</span> -<span class="hljs-number">1.114545</span>  <span class="hljs-number">0.830790</span>
+I3  <span class="hljs-number">0.241506</span>  <span class="hljs-number">0.018984</span> -<span class="hljs-number">0.499151</span> -<span class="hljs-number">1.190143</span>
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;I2&#x27;</span>:<span class="hljs-string">&#x27;I4&#x27;</span>]
+           a         b         c         d
+I2  <span class="hljs-number">0.368138</span>  <span class="hljs-number">0.222166</span>  <span class="hljs-number">0.902764</span> -<span class="hljs-number">1.436186</span>
+I3  <span class="hljs-number">2.285615</span> -<span class="hljs-number">2.415175</span> -<span class="hljs-number">1.344456</span> -<span class="hljs-number">0.502214</span>
+I4  <span class="hljs-number">3.224288</span> -<span class="hljs-number">0.500268</span>  <span class="hljs-number">1.293596</span> -<span class="hljs-number">1.235549</span></code></pre>
+<h3 id="font-color-FFA500-【2-2-4】花式索引-font"><font color=#FFA500>【2.2.4】花式索引</font></h3>
+<p>和 Series 一样，所谓的花式索引，就是间隔索引、不连续的索引，传递一个由列名（columns）组成的<font color=#FF0000><strong>列表</strong></font>来一次性获得多列元素：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = [<span class="hljs-string">&#x27;I1&#x27;</span>, <span class="hljs-string">&#x27;I2&#x27;</span>, <span class="hljs-string">&#x27;I3&#x27;</span>, <span class="hljs-string">&#x27;I4&#x27;</span>, <span class="hljs-string">&#x27;I5&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>columns = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data, index, columns)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+           a         b         c         d
+I1 -<span class="hljs-number">1.083223</span> -<span class="hljs-number">0.182874</span> -<span class="hljs-number">0.348460</span> -<span class="hljs-number">1.572120</span>
+I2 -<span class="hljs-number">0.205206</span> -<span class="hljs-number">0.251931</span>  <span class="hljs-number">1.180131</span>  <span class="hljs-number">0.847720</span>
+I3 -<span class="hljs-number">0.980379</span>  <span class="hljs-number">0.325553</span> -<span class="hljs-number">0.847566</span> -<span class="hljs-number">0.882343</span>
+I4 -<span class="hljs-number">0.638228</span> -<span class="hljs-number">0.282882</span> -<span class="hljs-number">0.624997</span> -<span class="hljs-number">0.245980</span>
+I5 -<span class="hljs-number">0.229769</span>  <span class="hljs-number">1.002930</span> -<span class="hljs-number">0.226715</span> -<span class="hljs-number">0.916591</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]]
+           a         d
+I1 -<span class="hljs-number">1.083223</span> -<span class="hljs-number">1.572120</span>
+I2 -<span class="hljs-number">0.205206</span>  <span class="hljs-number">0.847720</span>
+I3 -<span class="hljs-number">0.980379</span> -<span class="hljs-number">0.882343</span>
+I4 -<span class="hljs-number">0.638228</span> -<span class="hljs-number">0.245980</span>
+I5 -<span class="hljs-number">0.229769</span> -<span class="hljs-number">0.916591</span></code></pre>
+<h3 id="font-color-FFA500-【2-2-5】布尔索引-font"><font color=#FFA500>【2.2.5】布尔索引</font></h3>
+<p>可以通过一个布尔数组来索引目标数组，即通过布尔运算（如：比较运算符）来获取符合指定条件的元素的数组。</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>data = np.random.randn(<span class="hljs-number">5</span>,<span class="hljs-number">4</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>index = [<span class="hljs-string">&#x27;I1&#x27;</span>, <span class="hljs-string">&#x27;I2&#x27;</span>, <span class="hljs-string">&#x27;I3&#x27;</span>, <span class="hljs-string">&#x27;I4&#x27;</span>, <span class="hljs-string">&#x27;I5&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>columns = [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(data, index, columns)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+           a         b         c         d
+I1 -<span class="hljs-number">0.602984</span> -<span class="hljs-number">0.135716</span>  <span class="hljs-number">0.999689</span> -<span class="hljs-number">0.339786</span>
+I2  <span class="hljs-number">0.911130</span> -<span class="hljs-number">0.092485</span> -<span class="hljs-number">0.914074</span> -<span class="hljs-number">0.279588</span>
+I3  <span class="hljs-number">0.849606</span> -<span class="hljs-number">0.420055</span> -<span class="hljs-number">1.240389</span> -<span class="hljs-number">0.179297</span>
+I4  <span class="hljs-number">0.249986</span> -<span class="hljs-number">1.250668</span>  <span class="hljs-number">0.329416</span> -<span class="hljs-number">1.105774</span>
+I5 -<span class="hljs-number">0.743816</span>  <span class="hljs-number">0.430647</span> -<span class="hljs-number">0.058126</span> -<span class="hljs-number">0.337319</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj[obj &gt; <span class="hljs-number">0</span>]
+           a         b         c   d
+I1       NaN       NaN  <span class="hljs-number">0.999689</span> NaN
+I2  <span class="hljs-number">0.911130</span>       NaN       NaN NaN
+I3  <span class="hljs-number">0.849606</span>       NaN       NaN NaN
+I4  <span class="hljs-number">0.249986</span>       NaN  <span class="hljs-number">0.329416</span> NaN
+I5       NaN  <span class="hljs-number">0.430647</span>       NaN NaN
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj &gt; <span class="hljs-number">0</span>
+        a      b      c      d
+I1  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span>   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>
+I2   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span>
+I3   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span>
+I4   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>
+I5  <span class="hljs-literal">False</span>   <span class="hljs-literal">True</span>  <span class="hljs-literal">False</span>  <span class="hljs-literal">False</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106698307</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h1><font color=#FF0000>【3】索引器：loc 和 iloc</font></h1>
+<p>loc 是标签索引、iloc 是位置索引，注意：在 Pandas1.0.0 之前还有 ix 方法（即可按标签也可按位置索引），在 Pandas1.0.0 之后已被移除。</p>
+<h2 id="font-color-4876FF-【3-1】loc-标签索引-font"><font color=#4876FF>【3.1】loc 标签索引</font></h2>
+<p>loc 标签索引，即根据 index 和 columns 来选择数据。</p>
+<h3 id="font-color-FFA500-【3-1-1】Series-loc-font"><font color=#FFA500>【3.1.1】Series.loc</font></h3>
+<p>在 Series 中，允许输入：</p>
+<ul>
+<li>单个标签，例如 <code>5</code> 或 <code>'a'</code>，（注意，<code>5</code> 是 index 的名称，而不是位置索引）；</li>
+<li>标签列表或数组，例如 <code>['a', 'b', 'c']</code>；</li>
+<li>带有标签的切片对象，例如 <code>'a':'f'</code>。</li>
+</ul>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.loc.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.loc.html</a></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;a&#x27;</span>]
+<span class="hljs-number">1</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-string">&#x27;c&#x27;</span>]
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+dtype: int64
+&gt;&gt;&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>]]
+a    <span class="hljs-number">1</span>
+d    <span class="hljs-number">2</span>
+dtype: int64</code></pre>
+<h3 id="font-color-FFA500-【3-1-2】DataFrame-loc-font"><font color=#FFA500>【3.1.2】DataFrame.loc</font></h3>
+<p>在 DataFrame 中，第一个参数索引<font color=#FF0000><strong>行</strong></font>，第二个参数是索引<font color=#FF0000><strong>列</strong></font>，允许输入的格式和 Series 大同小异。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html</a></p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+b  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+c  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;a&#x27;</span>]
+A    <span class="hljs-number">1</span>
+B    <span class="hljs-number">2</span>
+C    <span class="hljs-number">3</span>
+Name: a, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-string">&#x27;c&#x27;</span>]
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+b  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+c  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>]]
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+c  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>]
+<span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.loc[<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;A&#x27;</span>:<span class="hljs-string">&#x27;C&#x27;</span>]
+A    <span class="hljs-number">4</span>
+B    <span class="hljs-number">5</span>
+C    <span class="hljs-number">6</span>
+Name: b, dtype: int64</code></pre>
+<h2 id="font-color-4876FF-【3-2】iloc-位置索引-font"><font color=#4876FF>【3.2】iloc 位置索引</font></h2>
+<p>作用和 loc 一样，不过是基于索引的编号来索引，即根据 index 和 columns 的位置编号来选择数据。</p>
+<h3 id="font-color-FFA500-【3-2-1】Series-iloc-font"><font color=#FFA500>【3.2.1】Series.iloc</font></h3>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.iloc.html">https://pandas.pydata.org/docs/reference/api/pandas.Series.iloc.html</a></p>
+<p>在 Series 中，允许输入：</p>
+<ul>
+<li>整数，例如 <code>5</code>；</li>
+<li>整数列表或数组，例如 <code>[4, 3, 0]</code>；</li>
+<li>具有整数的切片对象，例如 <code>1:7</code>。</li>
+</ul>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, -<span class="hljs-number">8</span>, <span class="hljs-number">2</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+c   -<span class="hljs-number">8</span>
+d    <span class="hljs-number">2</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">1</span>]
+<span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>]
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]]
+a    <span class="hljs-number">1</span>
+b    <span class="hljs-number">5</span>
+d    <span class="hljs-number">2</span>
+dtype: int64</code></pre>
+<h3 id="font-color-FFA500-【3-2-2】DataFrame-iloc-font"><font color=#FFA500>【3.2.2】DataFrame.iloc</font></h3>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.iloc.html</a></p>
+<p>在 DataFrame 中，第一个参数索引<font color=#FF0000><strong>行</strong></font>，第二个参数是索引<font color=#FF0000><strong>列</strong></font>，允许输入的格式和 Series 大同小异：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], columns=[<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+b  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+c  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">1</span>]
+A    <span class="hljs-number">4</span>
+B    <span class="hljs-number">5</span>
+C    <span class="hljs-number">6</span>
+Name: b, dtype: int64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>]
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+b  <span class="hljs-number">4</span>  <span class="hljs-number">5</span>  <span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>]]
+   A  B  C
+a  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span>
+c  <span class="hljs-number">7</span>  <span class="hljs-number">8</span>  <span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+<span class="hljs-number">6</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.iloc[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>:<span class="hljs-number">2</span>]
+A    <span class="hljs-number">4</span>
+B    <span class="hljs-number">5</span>
+Name: b, dtype: int64</code></pre>
+<h1><font color=#FF0000>【4】Pandas 重新索引</font></h1>
+<p>Pandas 对象的一个重要方法是 reindex，其作用是创建一个新对象，它的数据符合新的索引。以 <code>DataFrame.reindex</code> 为例（Series 类似），基本语法如下：</p>
+<p><code>DataFrame.reindex(self, labels=None, index=None, columns=None, axis=None, method=None, copy=True, level=None, fill_value=nan, limit=None, tolerance=None)</code></p>
+<p>部分参数描述如下：（完整参数解释参见<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.reindex.html">官方文档</a>）</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>用作索引的新序列，既可以是 index 实例，也可以是其他序列型的 Python 数据结构</td>
+</tr>
+<tr>
+<td>method</td>
+<td>插值（填充）方式，取值如下：<br><code>None</code>：不填补空白；<br><code>pad / ffill</code>：将上一个有效的观测值向前传播到下一个有效的观测值；<br><code>backfill / bfill</code>：使用下一个有效观察值来填补空白；<br><code>nearest</code>：使用最近的有效观测值来填补空白。</td>
+</tr>
+<tr>
+<td>fill_value</td>
+<td>在重新索引的过程中，需要引入缺失值时使用的替代值</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>前向或后向填充时的最大填充量</td>
+</tr>
+<tr>
+<td>tolerance</td>
+<td>向前或向后填充时，填充不准确匹配项的最大间距（绝对值距离）</td>
+</tr>
+<tr>
+<td>level</td>
+<td>在 Multilndex 的指定级别上匹配简单索引，否则选其子集</td>
+</tr>
+<tr>
+<td>copy</td>
+<td>默认为 True，无论如何都复制；如果为 False，则新旧相等就不复制</td>
+</tr>
+</tbody>
+</table>
+<p>reindex 将会根据新索引进行重排。如果某个索引值当前不存在，就引入缺失值：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-number">4.5</span>, <span class="hljs-number">7.2</span>, -<span class="hljs-number">5.3</span>, <span class="hljs-number">3.6</span>], index=[<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+d    <span class="hljs-number">4.5</span>
+b    <span class="hljs-number">7.2</span>
+a   -<span class="hljs-number">5.3</span>
+c    <span class="hljs-number">3.6</span>
+dtype: float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = obj.reindex([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+a   -<span class="hljs-number">5.3</span>
+b    <span class="hljs-number">7.2</span>
+c    <span class="hljs-number">3.6</span>
+d    <span class="hljs-number">4.5</span>
+e    NaN
+dtype: float64</code></pre>
+<p>对于时间序列这样的有序数据，重新索引时可能需要做一些插值处理。method 选项即可达到此目的，例如，使用 ffill 可以实现前向值填充：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series([<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-string">&#x27;purple&#x27;</span>, <span class="hljs-string">&#x27;yellow&#x27;</span>], index=[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+<span class="hljs-number">0</span>      blue
+<span class="hljs-number">2</span>    purple
+<span class="hljs-number">4</span>    yellow
+dtype: <span class="hljs-built_in">object</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = obj.reindex(<span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>), method=<span class="hljs-string">&#x27;ffill&#x27;</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+<span class="hljs-number">0</span>      blue
+<span class="hljs-number">1</span>      blue
+<span class="hljs-number">2</span>    purple
+<span class="hljs-number">3</span>    purple
+<span class="hljs-number">4</span>    yellow
+<span class="hljs-number">5</span>    yellow
+dtype: <span class="hljs-built_in">object</span></code></pre>
+<p>借助 DataFrame，reindex可以修改（行）索引和列。只传递一个序列时，会重新索引结果的行：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">9</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)), index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], columns=[<span class="hljs-string">&#x27;Ohio&#x27;</span>, <span class="hljs-string">&#x27;Texas&#x27;</span>, <span class="hljs-string">&#x27;California&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   Ohio  Texas  California
+a     <span class="hljs-number">0</span>      <span class="hljs-number">1</span>           <span class="hljs-number">2</span>
+c     <span class="hljs-number">3</span>      <span class="hljs-number">4</span>           <span class="hljs-number">5</span>
+d     <span class="hljs-number">6</span>      <span class="hljs-number">7</span>           <span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = obj.reindex([<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj2
+   Ohio  Texas  California
+a   <span class="hljs-number">0.0</span>    <span class="hljs-number">1.0</span>         <span class="hljs-number">2.0</span>
+b   NaN    NaN         NaN
+c   <span class="hljs-number">3.0</span>    <span class="hljs-number">4.0</span>         <span class="hljs-number">5.0</span>
+d   <span class="hljs-number">6.0</span>    <span class="hljs-number">7.0</span>         <span class="hljs-number">8.0</span></code></pre>
+<p>列可以用 columns 关键字重新索引：</p>
+<pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(np.arange(<span class="hljs-number">9</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)), index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], columns=[<span class="hljs-string">&#x27;Ohio&#x27;</span>, <span class="hljs-string">&#x27;Texas&#x27;</span>, <span class="hljs-string">&#x27;California&#x27;</span>])
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj
+   Ohio  Texas  California
+a     <span class="hljs-number">0</span>      <span class="hljs-number">1</span>           <span class="hljs-number">2</span>
+c     <span class="hljs-number">3</span>      <span class="hljs-number">4</span>           <span class="hljs-number">5</span>
+d     <span class="hljs-number">6</span>      <span class="hljs-number">7</span>           <span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>states = [<span class="hljs-string">&#x27;Texas&#x27;</span>, <span class="hljs-string">&#x27;Utah&#x27;</span>, <span class="hljs-string">&#x27;California&#x27;</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>obj.reindex(columns=states)
+   Texas  Utah  California
+a      <span class="hljs-number">1</span>   NaN           <span class="hljs-number">2</span>
+c      <span class="hljs-number">4</span>   NaN           <span class="hljs-number">5</span>
+d      <span class="hljs-number">7</span>   NaN           <span class="hljs-number">8</span></code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106698307</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/027/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（三）：算术运算与缺失值的处理</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/025/" 
+                            class="post-title gt-a-link">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

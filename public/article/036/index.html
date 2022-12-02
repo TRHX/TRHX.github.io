@@ -1,0 +1,1269 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Python 实现十大经典排序算法 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Python 实现十大经典排序算法</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2020-10-24丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 10.1k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 43分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Python/" class="post-tag">
+                            Python</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%AE%97%E6%B3%95/" class="post-tag">
+                            算法</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <ul>
+<li>参考资料：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1mp4y1D7UP">https://www.bilibili.com/video/BV1mp4y1D7UP</a></li>
+<li>本文动图演示来源：<a target="_blank" rel="noopener" href="https://visualgo.net/">https://visualgo.net/</a></li>
+</ul>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/108987300</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-排序算法分类-font"><font color=#FF0000>排序算法分类</font></h2>
+<ul>
+<li><font color=#FF0000><strong>内部排序</strong></font>：指在排序期间，元素全部存放在内存中的排序，常见的内部排序算法有：<strong>冒泡排序、选择排序、插入排序、希尔排序、归并排序、快速排序、堆排序、基数排序</strong>等。</li>
+<li><font color=#FF0000><strong>外部排序</strong></font>：指在排序期间，元素无法完全全部同时存放在内存中，必须在排序的过程中根据要求不断地在内、外存之间移动的排序；</li>
+<li><font color=#FF0000><strong>比较类排序</strong></font>：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此也称为非线性时间比较类排序。</li>
+<li><font color=#FF0000><strong>非比较类排序</strong></font>：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此也称为线性时间非比较类排序。 常见的非比较类排序算法有：<strong>基数排序、计数排序、桶排序</strong>等</li>
+</ul>
+<hr>
+<p>一般情况下，内部排序算法在执行过程中都要进行两种操作：比较和移动。通过比较两个关键字的大小，确定对应元素的前后关系，然后通过移动元素以达到有序。但是，并非所有的内部排序算法都要基于比较操作。</p>
+<p>每种排序算法都有各自的优缺点，适合在不同的环境下使用，就其全面性能而言，很难提出一种被认为是最好的算法。<font color=#FF0000><strong>通常可以将排序算法分为插入排序、交换排序、选择排序、归并排序和基数排序五大类</strong></font>，内部排序算法的性能取决于算法的时间复杂度和空间复杂度，而时间复杂度一般是由比较和移动的次数决定的。</p>
+<hr>
+<p><img src="https://cdn.itbob.cn/img/article/036/01.png" alt="01"></p>
+<table>
+<thead>
+<tr>
+<th>排序算法</th>
+<th>时间复杂度（平均）</th>
+<th>时间复杂度（最好）</th>
+<th>时间复杂度（最坏）</th>
+<th>空间复杂度</th>
+<th>稳定性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冒泡排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><msup><mi>g</mi><mn>2</mn></msup><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlog^2n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><msup><mi>g</mi><mn>2</mn></msup><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlog^2n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(logn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlogn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td>计数排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>桶排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>∗</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n*k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>∗</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n*k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>∗</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n*k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></td>
+<td>稳定</td>
+</tr>
+</tbody>
+</table>
+<p><strong>稳定性</strong>：排序后 2 个相等键值的顺序和排序之前它们的顺序是否相同。例：如果 a 原本在 b 前面，且 a=b，排序之后 a 仍然在 b 的前面，则表示具有稳定性。</p>
+<p>常见时间复杂度大小比较：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo><mo>&lt;</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mi>n</mi></msup><mo stretchy="false">)</mo><mo>&lt;</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">!</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1) &lt; O(logn) &lt; O(n) &lt; O(nlogn) &lt; O(n^2) &lt;...&lt; O(2^n)&lt;O (n!)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord">...</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">!)</span></span></span></span></p>
+<hr>
+<h2 id="font-color-FF0000-一、冒泡排序（Bubble-Sort）-font"><font color=#FF0000>一、冒泡排序（Bubble Sort）</font></h2>
+<h3 id="1、原理">1、原理</h3>
+<p>重复地走访要排序的元素，依次比较两个相邻的元素，如果顺序（如从大到小）错误就把他们交换过来。走访元素的工作是重复地进行，直到没有相邻元素需要交换，也就是说该元素列已经排序完成。冒泡的意思其实就是每一轮冒泡一个最大的元素就会通过不断比较和交换相邻元素使它转移到最右边。</p>
+<p>假如有 10 个小盆友从左到右站成一排，个头不等。老师想让他们按照个头从低到高站好，于是他开始喊口号。 每喊一次，从第一个小盆友开始，相邻的小朋友如果身高不是正序就会两两调换，就这样第一轮个头最高的排到了最右边（冒泡到最右边），第二轮依次这么来，从第一个小朋友开始两两交换，这样次高的小盆友又排到了倒数第二个位置。依次类推。</p>
+<h3 id="2、步骤">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 比较相邻的元素。如果第一个比第二个大，就交换它们两个；</li>
+<li><strong>②</strong> 对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</li>
+<li><strong>③</strong> 针对所有的元素重复步骤 <strong>①</strong> ~ <strong>②</strong>，除了最后一个元素，直到排序完成。</li>
+</ul>
+<h3 id="3、动画演示">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/02%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F.gif" alt="02冒泡排序"></p>
+<h3 id="4、代码实现">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bubbleSort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):         <span class="hljs-comment"># 循环第 i 趟</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-i-<span class="hljs-number">1</span>):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &gt; arr[j+<span class="hljs-number">1</span>]:       <span class="hljs-comment"># 如果这个数大于后面的数就交换两者的位置</span>
+                arr[j], arr[j+<span class="hljs-number">1</span>] = arr[j+<span class="hljs-number">1</span>], arr[j]
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p>冒泡排序还有一种优化算法，就是立一个 flag，当某一趟序列遍历中元素没有发生交换，则证明该序列已经有序，就不再进行后续的排序。动画演示里就是改进后的算法，改进后的代码如下：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bubbleSort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):         <span class="hljs-comment"># 循环第 i 趟</span>
+    flag = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-i-<span class="hljs-number">1</span>):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &gt; arr[j+<span class="hljs-number">1</span>]:       <span class="hljs-comment"># 如果这个数大于后面的数就交换两者的位置</span>
+                arr[j], arr[j+<span class="hljs-number">1</span>] = arr[j+<span class="hljs-number">1</span>], arr[j]
+                flag = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> flag:
+            <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p>冒泡排序最快的情况：当输入的数据是正序时；最慢的情况：当输入的数据是反序时。</p>
+<h3 id="5、具体示例">5、具体示例</h3>
+<p>未改进版本：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bubble_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):         <span class="hljs-comment"># 循环第 i 趟</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-i-<span class="hljs-number">1</span>):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &gt; arr[j+<span class="hljs-number">1</span>]:       <span class="hljs-comment"># 如果这个数大于后面的数就交换两者的位置</span>
+                arr[j], arr[j+<span class="hljs-number">1</span>] = arr[j+<span class="hljs-number">1</span>], arr[j]
+        <span class="hljs-built_in">print</span>(arr)                      <span class="hljs-comment"># 每一趟比较完了就打印一次</span>
+
+
+arr = [<span class="hljs-number">3</span>, <span class="hljs-number">44</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+bubble_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">3</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">44</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">38</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">44</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">38</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">36</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">26</span>, <span class="hljs-number">2</span>, <span class="hljs-number">27</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">15</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]</code></pre>
+<p>改进版本：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bubble_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):         <span class="hljs-comment"># 循环第 i 趟</span>
+        flag = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-i-<span class="hljs-number">1</span>):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &gt; arr[j+<span class="hljs-number">1</span>]:       <span class="hljs-comment"># 如果这个数大于后面的数就交换两者的位置</span>
+                arr[j], arr[j+<span class="hljs-number">1</span>] = arr[j+<span class="hljs-number">1</span>], arr[j]
+                flag = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> flag:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-built_in">print</span>(arr)                      <span class="hljs-comment"># 每一趟比较完了就打印一次</span>
+
+
+arr = [<span class="hljs-number">3</span>, <span class="hljs-number">44</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+bubble_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">3</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">44</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">38</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">44</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">38</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">36</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">26</span>, <span class="hljs-number">2</span>, <span class="hljs-number">27</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">15</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-二、选择排序（Selection-Sort）-font"><font color=#FF0000>二、选择排序（Selection Sort）</font></h2>
+<h3 id="1、原理-t2">1、原理</h3>
+<p>第一次从待排序的数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。以此类推，直到全部待排序的数据元素的个数为零。可以理解为 一个 0 到 n-1 的迭代，每次向后查找选择一个最小的元素。选择排序是不稳定的排序方法。</p>
+<p>假如有 10 个小盆友从左到右站成一排，个头不等。老师想让他们按照个头从低到高站好，我们从第一个开始，从头到尾找一个个头最小的小盆友，然后把它和第一个小盆友交换。 然后从第二个小盆友开始采取同样的策略，这样一圈下来小盆友就是有序的了。</p>
+<h3 id="2、步骤-t2">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置；</li>
+<li><strong>②</strong> 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾；</li>
+<li><strong>③</strong> 重复步骤 <strong>②</strong>，直到所有元素均排序完毕。</li>
+</ul>
+<h3 id="3、动画演示-t2">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/03%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F.gif" alt="03选择排序"></p>
+<h3 id="4、代码实现-t2">4、代码实现</h3>
+<p>Python 代码：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">selection_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):          <span class="hljs-comment"># 循环第 i 趟</span>
+        min_index = i                    <span class="hljs-comment"># 记录最小数的下标</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &lt; arr[min_index]:  <span class="hljs-comment"># 如果这个数小于记录的最小数，则更新最小数的下标</span>
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]  <span class="hljs-comment"># 将 i 位置的数（已排序序列的末尾的数）和最小数进行交换</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t2">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">selection_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>):          <span class="hljs-comment"># 循环第 i 趟</span>
+        min_index = i                    <span class="hljs-comment"># 记录最小数的下标</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):   <span class="hljs-comment"># j 为下标</span>
+            <span class="hljs-keyword">if</span> arr[j] &lt; arr[min_index]:  <span class="hljs-comment"># 如果这个数小于记录的最小数，则更新最小数的下标</span>
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]  <span class="hljs-comment"># 将 i 位置的数（已排序序列的末尾的数）和最小数进行交换</span>
+        <span class="hljs-built_in">print</span>(arr)                       <span class="hljs-comment"># 每一趟比较完了就打印一次</span>
+
+
+arr = [<span class="hljs-number">3</span>, <span class="hljs-number">44</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">2</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+selection_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">2</span>, <span class="hljs-number">44</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">3</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">38</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">4</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">47</span>, <span class="hljs-number">15</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">47</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">19</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">27</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">38</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">46</span>, <span class="hljs-number">44</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">50</span>, <span class="hljs-number">48</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">15</span>, <span class="hljs-number">19</span>, <span class="hljs-number">26</span>, <span class="hljs-number">27</span>, <span class="hljs-number">36</span>, <span class="hljs-number">38</span>, <span class="hljs-number">44</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">48</span>, <span class="hljs-number">50</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-三、插入排序（Insertion-Sort）-font"><font color=#FF0000>三、插入排序（Insertion Sort）</font></h2>
+<h3 id="1、原理-t3">1、原理</h3>
+<p>插入排序一般也被称为直接插入排序。对于少量元素的排序，它是一个有效的算法。它的基本思想是将一个记录插入到已经排好序的有序表中，从而形成一个新的有序表。在其实现过程使用双层循环，外层循环对除了第一个元素之外的所有元素进行遍历，内层循环对当前元素前面有序表进行待插入位置查找，并进行移动。</p>
+<p>插入排序的工作方式像许多人排序一手扑克牌。开始时，我们的左手为空并且桌子上的牌面向下。然后，我们每次从桌子上拿走一张牌并将它插入左手中正确的位置。为了找到一张牌的正确位置，我们从右到左将它与已在手中的每张牌进行比较。拿在左手上的牌总是排序好的，原来这些牌是桌子上牌堆中顶部的牌。</p>
+<h3 id="2、步骤-t3">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 从第一个元素开始，该元素可以认为已经被排序；</li>
+<li><strong>②</strong> 取出下一个元素，在已经排序的元素序列中从后向前扫描；</li>
+<li><strong>③</strong> 如果该元素（已排序的）大于新元素，将该元素往右移到下一位置，重复该步骤，直到找到已排序的元素小于或者等于新元素的位置；</li>
+<li><strong>④</strong> 将新元素插入到步骤 <strong>③</strong> 找到的位置的后面；</li>
+<li><strong>⑤</strong> 重复步骤 <strong>②</strong> ~ <strong>④</strong>。</li>
+</ul>
+<h3 id="3、动画演示-t3">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/04%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.gif" alt="04插入排序"></p>
+<h3 id="4、代码实现-t3">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insertion_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+        tmp = arr[i]                <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+        j = i-<span class="hljs-number">1</span>                     <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:  <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+            arr[j+<span class="hljs-number">1</span>] = arr[j]       <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+            j -= <span class="hljs-number">1</span>                  <span class="hljs-comment"># 将手里的牌的下标减 1，再次准备与摸到的牌进行比较</span>
+        arr[j+<span class="hljs-number">1</span>] = tmp              <span class="hljs-comment"># 将摸到的牌插入到 j+1 位置</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t3">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insertion_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+        tmp = arr[i]                <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+        j = i-<span class="hljs-number">1</span>                     <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:  <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+            arr[j+<span class="hljs-number">1</span>] = arr[j]       <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+            j -= <span class="hljs-number">1</span>                  <span class="hljs-comment"># 将手里的牌的下标减 1，再次准备与摸到的牌进行比较</span>
+        arr[j+<span class="hljs-number">1</span>] = tmp              <span class="hljs-comment"># 将摸到的牌插入到 j+1 位置</span>
+        <span class="hljs-built_in">print</span>(arr)                  <span class="hljs-comment"># 每一趟比较完了就打印一次</span>
+
+
+arr = [<span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+insertion_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]  <span class="hljs-comment"># 手里第一张牌为 0，摸到 9，此时 i=1，j=0，0 比 9 小，将 9 插到索引 j+1=1 处。</span>
+[<span class="hljs-number">0</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]  <span class="hljs-comment"># 手里的牌为 0，9，摸到 8，此时 i=2，j=1，9 比 8 大，将 9 右移一个位置，j-1=0，将 8 插到 j+1=1 处</span>
+[<span class="hljs-number">0</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">6</span>]
+[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-四、希尔排序（Shell-Sort）-font"><font color=#FF0000>四、希尔排序（Shell Sort）</font></h2>
+<h3 id="1、原理-t4">1、原理</h3>
+<p>希尔排序是插入排序的一种更高效的改进版本，是一种分组插入排序算法，又称缩小增量排序（Diminishing Increment Sort），希尔排序是非稳定排序算法。该方法因 D.L.Shell 于 1959 年提出而得名。</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；</li>
+</ul>
+<p>希尔排序的基本思想是：先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列中的记录“基本有序”时，再对全体记录进行依次直接插入排序。</p>
+<h3 id="2、步骤-t4">2、步骤</h3>
+<ul>
+<li><strong>①</strong> n 为数组长度，首先取一个整数 <strong>d1=n/2</strong>，将元素分为 <strong>d1</strong> 个组，每组相邻量元素之间距离为 <strong>d1-1</strong>，在各组内进行直接插入排序；</li>
+<li><strong>②</strong> 取第二个整数 <strong>d2=d1/2</strong>，重复步骤 <strong>①</strong> 分组排序过程，直到 <strong>di=1</strong>，即所有元素在同一组内进行直接插入排序。</li>
+</ul>
+<p>PS：希尔排序每趟并不使某些元素有序，而是使整体数据越来越接近有序；最后一趟排序使得所有数据有序。</p>
+<h3 id="3、动画演示-t4">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/05%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F.gif" alt="05希尔排序"></p>
+<p><img src="https://cdn.itbob.cn/img/article/036/06%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F.gif" alt="06希尔排序"></p>
+<h3 id="4、代码实现-t4">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insertion_sort_gap</span>(<span class="hljs-params">arr, gap</span>):</span>     <span class="hljs-comment"># 将 gap 看做隔 gap 个距离摸一张牌，而不是依次按照顺序摸牌</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(gap, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+        tmp = arr[i]                  <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+        j = i-gap                     <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:  <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+            arr[j+gap] = arr[j]         <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+            j -= gap                    <span class="hljs-comment"># 将手里的牌的下标减 gap，再次准备与摸到的牌进行比较</span>
+        arr[j+gap] = tmp                <span class="hljs-comment"># 将摸到的牌插入到 j+gap 位置</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shell_sort</span>(<span class="hljs-params">arr</span>):</span>
+    d = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>                   <span class="hljs-comment"># 第一次分组</span>
+    <span class="hljs-keyword">while</span> d &gt;= <span class="hljs-number">1</span>:
+        insertion_sort_gap(arr, d)      <span class="hljs-comment"># 调用插入排序</span>
+        d //= <span class="hljs-number">2</span>                         <span class="hljs-comment"># 整除 2 后再次分组</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<p>也可以不使用两个函数，写在一起即可：</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shell_sort</span>(<span class="hljs-params">arr</span>):</span>
+    d = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>                   <span class="hljs-comment"># 第一次分组</span>
+    <span class="hljs-keyword">while</span> d &gt;= <span class="hljs-number">1</span>:                       <span class="hljs-comment"># 将 d 看做隔 d 个距离摸一张牌，而不是依次按照顺序摸牌</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(d, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+            tmp = arr[i]                <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+            j = i - d                   <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+            <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:   <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+                arr[j + d] = arr[j]          <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+                j -= d                       <span class="hljs-comment"># 将手里的牌的下标减 d，再次准备与摸到的牌进行比较</span>
+            arr[j + d] = tmp                 <span class="hljs-comment"># 将摸到的牌插入到 j+d 位置</span>
+        d //= <span class="hljs-number">2</span>                              <span class="hljs-comment"># 整除 2 后再次分组</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t4">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insertion_sort_gap</span>(<span class="hljs-params">arr, gap</span>):</span>     <span class="hljs-comment"># 将 gap 看做隔 gap 个距离摸一张牌，而不是依次按照顺序摸牌</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(gap, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+        tmp = arr[i]                  <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+        j = i-gap                     <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+        <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:  <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+            arr[j+gap] = arr[j]         <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+            j -= gap                    <span class="hljs-comment"># 将手里的牌的下标减 gap，再次准备与摸到的牌进行比较</span>
+        arr[j+gap] = tmp                <span class="hljs-comment"># 将摸到的牌插入到 j+gap 位置</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shell_sort</span>(<span class="hljs-params">arr</span>):</span>
+    d = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>                   <span class="hljs-comment"># 第一次分组</span>
+    <span class="hljs-keyword">while</span> d &gt;= <span class="hljs-number">1</span>:
+        insertion_sort_gap(arr, d)      <span class="hljs-comment"># 调用插入排序</span>
+        <span class="hljs-built_in">print</span>(arr)                      <span class="hljs-comment"># 每一轮排序后打印一次</span>
+        d //= <span class="hljs-number">2</span>                         <span class="hljs-comment"># 整除 2 后再次分组</span>
+
+
+arr = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+shell_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]</code></pre>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shell_sort</span>(<span class="hljs-params">arr</span>):</span>
+    d = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>                   <span class="hljs-comment"># 第一次分组</span>
+    <span class="hljs-keyword">while</span> d &gt;= <span class="hljs-number">1</span>:                       <span class="hljs-comment"># 将 d 看做隔 d 个距离摸一张牌，而不是依次按照顺序摸牌</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(d, <span class="hljs-built_in">len</span>(arr)):    <span class="hljs-comment"># 将 i 看做摸到的牌的下标</span>
+            tmp = arr[i]                <span class="hljs-comment"># 将摸到的牌储存到 tmp</span>
+            j = i - d                   <span class="hljs-comment"># 将 j 看做手里的牌的下标</span>
+            <span class="hljs-keyword">while</span> j &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> arr[j] &gt; tmp:   <span class="hljs-comment"># 如果手里的牌大于摸到的牌</span>
+                arr[j + d] = arr[j]          <span class="hljs-comment"># 将手里的牌往右移一个位置（将手里的牌赋值给下一个位置）</span>
+                j -= d                       <span class="hljs-comment"># 将手里的牌的下标减 d，再次准备与摸到的牌进行比较</span>
+            arr[j + d] = tmp                 <span class="hljs-comment"># 将摸到的牌插入到 j+d 位置</span>
+        <span class="hljs-built_in">print</span>(arr)                           <span class="hljs-comment"># 每一轮排序后打印一次</span>
+        d //= <span class="hljs-number">2</span>                              <span class="hljs-comment"># 整除 2 后再次分组</span>
+
+
+arr = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+shell_sort(arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-五、归并排序（Merge-Sort）-font"><font color=#FF0000>五、归并排序（Merge Sort）</font></h2>
+<h3 id="1、原理-t5">1、原理</h3>
+<p>归并的概念：假设一个列表分为两段，其中每一段都是有序列表，现在将该两段合并为一个有序列表，这种操作称为一次归并。</p>
+<p>归并排序是建立在归并操作上的一种有效，稳定的排序算法，该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。</p>
+<p><img src="https://cdn.itbob.cn/img/article/036/08.png" alt="08"></p>
+<h3 id="2、步骤-t5">2、步骤</h3>
+<p><font color=#ff0000><strong>归并的基本步骤：</strong></font></p>
+<ul>
+<li><strong>①</strong> 申请空间，使其大小为<strong>两个已经排序序列之和</strong>，该空间用来存放合并后的序列；</li>
+<li><strong>②</strong> 设定两个指针，最初位置分别为两个已经排序序列的起始位置；</li>
+<li><strong>③</strong> 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；</li>
+<li><strong>④</strong> 重复步骤 <strong>③</strong> 直到某一指针达到序列尾；</li>
+<li><strong>⑤</strong> 将另一序列剩下的所有元素直接复制到合并序列尾。</li>
+</ul>
+<p><font color=#ff0000><strong>归并排序的步骤：</strong></font></p>
+<ul>
+<li><strong>①</strong> 分解：将列表越分越小，直至分成一个元素，终止条件：一个元素是有序的。</li>
+<li><strong>②</strong> 合并：不断将两个有序列表进行归并，列表越来越大，直到所有序列归并完毕。</li>
+</ul>
+<h3 id="3、动画演示-t5">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/07%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F.gif" alt="07归并排序"></p>
+<h3 id="4、代码实现-t5">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span>(<span class="hljs-params">arr, low, mid, high</span>):</span>
+    <span class="hljs-comment"># low 和 high 为整个数组的第一个和最后一个位置索引，mid 为中间位置索引</span>
+    <span class="hljs-comment"># i 和 j 为指针，最初位置分别为两个有序序列的起始位置</span>
+    <span class="hljs-comment"># ltmp 用来存放合并后的序列</span>
+    i = low
+    j = mid+<span class="hljs-number">1</span>
+    ltmp = []
+    <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= high:  <span class="hljs-comment"># 只要左右两边都有数</span>
+        <span class="hljs-keyword">if</span> arr[i] &lt; arr[j]:        <span class="hljs-comment"># 当左边的数小于右边的数</span>
+            ltmp.append(arr[i])    <span class="hljs-comment"># 将左边的数存入 ltmp</span>
+            i += <span class="hljs-number">1</span>                 <span class="hljs-comment"># 左边的指针往右移一位</span>
+        <span class="hljs-keyword">else</span>:                      <span class="hljs-comment"># 当右边的数小于左边的数</span>
+            ltmp.append(arr[j])    <span class="hljs-comment"># 将右边的数存入 ltmp</span>
+            j += <span class="hljs-number">1</span>                 <span class="hljs-comment"># 右边的指针往右移一位</span>
+    <span class="hljs-comment"># 上面的 while 语句执行完后，左边或者右边没有数了</span>
+    <span class="hljs-keyword">while</span> i &lt;= mid:                <span class="hljs-comment"># 当左边还有数的时候</span>
+        ltmp.append(arr[i])        <span class="hljs-comment"># 将左边剩下的数全部存入 ltmp</span>
+        i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> j &lt;= high:               <span class="hljs-comment"># 当右边还有数的时候</span>
+        ltmp.append(arr[j])        <span class="hljs-comment"># 将右边剩下的数全部存入 ltmp</span>
+        j += <span class="hljs-number">1</span>
+    arr[low:high+<span class="hljs-number">1</span>] = ltmp         <span class="hljs-comment"># 将排序后的数组写回原数组</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge_sort</span>(<span class="hljs-params">arr, low, high</span>):</span>       <span class="hljs-comment"># low 和 high 为整个数组的第一个和最后一个位置索引</span>
+    <span class="hljs-keyword">if</span> low &lt; high:                    <span class="hljs-comment"># 至少有两个元素</span>
+        mid = (low + high) // <span class="hljs-number">2</span>
+        merge_sort(arr, low, mid)     <span class="hljs-comment"># 把左边递归分解</span>
+        merge_sort(arr, mid+<span class="hljs-number">1</span>, high)  <span class="hljs-comment"># 把右边递归分解</span>
+        merge(arr, low, mid, high)    <span class="hljs-comment"># 做归并</span></code></pre>
+<h3 id="5、具体示例-t5">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge</span>(<span class="hljs-params">arr, low, mid, high</span>):</span>
+    <span class="hljs-comment"># low 和 high 为整个数组的第一个和最后一个位置索引，mid 为中间位置索引</span>
+    <span class="hljs-comment"># i 和 j 为指针，最初位置分别为两个有序序列的起始位置</span>
+    <span class="hljs-comment"># ltmp 用来存放合并后的序列</span>
+    i = low
+    j = mid+<span class="hljs-number">1</span>
+    ltmp = []
+    <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= high:  <span class="hljs-comment"># 只要左右两边都有数</span>
+        <span class="hljs-keyword">if</span> arr[i] &lt; arr[j]:        <span class="hljs-comment"># 当左边的数小于右边的数</span>
+            ltmp.append(arr[i])    <span class="hljs-comment"># 将左边的数存入 ltmp</span>
+            i += <span class="hljs-number">1</span>                 <span class="hljs-comment"># 左边的指针往右移一位</span>
+        <span class="hljs-keyword">else</span>:                      <span class="hljs-comment"># 当右边的数小于左边的数</span>
+            ltmp.append(arr[j])    <span class="hljs-comment"># 将右边的数存入 ltmp</span>
+            j += <span class="hljs-number">1</span>                 <span class="hljs-comment"># 右边的指针往右移一位</span>
+    <span class="hljs-comment"># 上面的 while 语句执行完后，左边或者右边没有数了</span>
+    <span class="hljs-keyword">while</span> i &lt;= mid:                <span class="hljs-comment"># 当左边还有数的时候</span>
+        ltmp.append(arr[i])        <span class="hljs-comment"># 将左边剩下的数全部存入 ltmp</span>
+        i += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> j &lt;= high:               <span class="hljs-comment"># 当右边还有数的时候</span>
+        ltmp.append(arr[j])        <span class="hljs-comment"># 将右边剩下的数全部存入 ltmp</span>
+        j += <span class="hljs-number">1</span>
+    arr[low:high+<span class="hljs-number">1</span>] = ltmp         <span class="hljs-comment"># 将排序后的数组写回原数组</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge_sort</span>(<span class="hljs-params">arr, low, high</span>):</span>       <span class="hljs-comment"># low 和 high 为整个数组的第一个和最后一个位置索引</span>
+    <span class="hljs-keyword">if</span> low &lt; high:                    <span class="hljs-comment"># 至少有两个元素</span>
+        mid = (low + high) // <span class="hljs-number">2</span>
+        merge_sort(arr, low, mid)     <span class="hljs-comment"># 把左边递归分解</span>
+        merge_sort(arr, mid+<span class="hljs-number">1</span>, high)  <span class="hljs-comment"># 把右边递归分解</span>
+        merge(arr, low, mid, high)    <span class="hljs-comment"># 做归并</span>
+        <span class="hljs-built_in">print</span>(arr)                    <span class="hljs-comment"># 每一次归并打印一次</span>
+
+
+arr = [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+merge_sort(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">4</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/108987300</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+<h2 id="font-color-FF0000-六、快速排序（Quick-Sort）-font"><font color=#FF0000>六、快速排序（Quick Sort）</font></h2>
+<h3 id="1、原理-t6">1、原理</h3>
+<p>快速排序是对冒泡排序的一种改进。顾名思义快速排序就是快，而且效率高！它是处理大数据最快的排序算法之一了。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<h3 id="2、步骤-t6">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 从数列中挑出一个元素，称为 “基准值”;</li>
+<li><strong>②</strong> 重新排序数列，所有元素比基准值小的放在基准值的左边，比基准值大的放在基准值的右边（相同的数可以到任一边）。在这个分区退出之后，该基准值就处于数列的中间位置。这个称为分区（partition）操作，也可以称为一次归位操作，归位操作的过程见下动图；</li>
+<li><strong>③</strong> 递归地把小于基准值元素的子数列和大于基准值元素的子数列按照步骤 <strong>① ②</strong> 排序。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/036/09%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F.gif" alt="09快速排序"></p>
+<h3 id="3、动画演示-t6">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/10%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F.gif" alt="10快速排序"></p>
+<h3 id="4、代码实现-t6">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">arr, left, right</span>):</span>
+    <span class="hljs-comment"># 归位操作，left，right 分别为数组左边和右边的位置索引</span>
+    tmp = arr[left]
+    <span class="hljs-keyword">while</span> left &lt; right:
+        <span class="hljs-keyword">while</span> left &lt; right <span class="hljs-keyword">and</span> arr[right] &gt;= tmp:  <span class="hljs-comment"># 从右边找比 tmp 小的数，如果比 tmp 大，则移动指针</span>
+            right -= <span class="hljs-number">1</span>                             <span class="hljs-comment"># 将指针左移一个位置</span>
+        arr[left] = arr[right]                     <span class="hljs-comment"># 将右边的值写到左边的空位上</span>
+        <span class="hljs-keyword">while</span> left &lt; right <span class="hljs-keyword">and</span> arr[left] &lt;= tmp:   <span class="hljs-comment"># 从左边找比 tmp 大的数，如果比 tmp 小，则移动指针</span>
+            left += <span class="hljs-number">1</span>                              <span class="hljs-comment"># 将指针右移一个位置</span>
+        arr[right] = arr[left]                     <span class="hljs-comment"># 将左边的值写到右边的空位上</span>
+    arr[left] = tmp                                <span class="hljs-comment"># 把 tmp 归位</span>
+    <span class="hljs-keyword">return</span> left                   <span class="hljs-comment"># 返回 left，right 都可以，目的是便于后面的递归操作对左右两部分进行排序</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quick_sort</span>(<span class="hljs-params">arr, left, right</span>):</span>          <span class="hljs-comment"># 快速排序</span>
+    <span class="hljs-keyword">if</span> left &lt; right:
+        mid = partition(arr, left, right)
+        quick_sort(arr, left, mid-<span class="hljs-number">1</span>)       <span class="hljs-comment"># 对左半部分进行归位操作</span>
+        quick_sort(arr, mid+<span class="hljs-number">1</span>, right)      <span class="hljs-comment"># 对右半部分进行归位操作</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t6">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">arr, left, right</span>):</span>
+    <span class="hljs-comment"># 归位操作，left，right 分别为数组左边和右边的位置索引</span>
+    tmp = arr[left]
+    <span class="hljs-keyword">while</span> left &lt; right:
+        <span class="hljs-keyword">while</span> left &lt; right <span class="hljs-keyword">and</span> arr[right] &gt;= tmp:  <span class="hljs-comment"># 从右边找比 tmp 小的数，如果比 tmp 大，则移动指针</span>
+            right -= <span class="hljs-number">1</span>                             <span class="hljs-comment"># 将指针左移一个位置</span>
+        arr[left] = arr[right]                     <span class="hljs-comment"># 将右边的值写到左边的空位上</span>
+        <span class="hljs-keyword">while</span> left &lt; right <span class="hljs-keyword">and</span> arr[left] &lt;= tmp:   <span class="hljs-comment"># 从左边找比 tmp 大的数，如果比 tmp 小，则移动指针</span>
+            left += <span class="hljs-number">1</span>                              <span class="hljs-comment"># 将指针右移一个位置</span>
+        arr[right] = arr[left]                     <span class="hljs-comment"># 将左边的值写到右边的空位上</span>
+    arr[left] = tmp                                <span class="hljs-comment"># 把 tmp 归位</span>
+    <span class="hljs-keyword">return</span> left                   <span class="hljs-comment"># 返回 left，right 都可以，目的是便于后面的递归操作对左右两部分进行排序</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quick_sort</span>(<span class="hljs-params">arr, left, right</span>):</span>
+    <span class="hljs-keyword">if</span> left &lt; right:
+        mid = partition(arr, left, right)
+        <span class="hljs-built_in">print</span>(arr)                         <span class="hljs-comment"># 每次归位后打印一次</span>
+        quick_sort(arr, left, mid-<span class="hljs-number">1</span>)       <span class="hljs-comment"># 对左半部分进行归位操作</span>
+        quick_sort(arr, mid+<span class="hljs-number">1</span>, right)      <span class="hljs-comment"># 对右半部分进行归位操作</span>
+
+
+arr = [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+quick_sort(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr)-<span class="hljs-number">1</span>)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-七、堆排序（Heap-Sort）-font"><font color=#FF0000>七、堆排序（Heap Sort）</font></h2>
+<h3 id="1、原理-t7">1、原理</h3>
+<p>堆排序是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<ul>
+<li>堆：一种特殊的完全二叉树结构</li>
+<li>大根堆：一棵完全二叉树，满足任一节点都比其孩子节点大</li>
+<li>小根堆：一棵完全二叉树，满足任一节点都比其孩子节点小</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/036/11%E5%A0%86%E6%8E%92%E5%BA%8F.png" alt="11堆排序"></p>
+<h3 id="2、步骤-t7">2、步骤</h3>
+<ul>
+<li>① 构建堆：将待排序序列构建成一个堆 H[0……n-1]，从最后一个非叶子结点开始，从左至右，从下至上进行调整。根据升序或降序需求选择大顶堆或小顶堆；</li>
+<li>② 此时的堆顶元素，为最大或者最小元素；</li>
+<li>③ 把堆顶元素和堆尾元素互换，调整堆，重新使堆有序；</li>
+<li>④ 此时堆顶元素为第二大元素；</li>
+<li>⑤ 重复以上步骤，直到堆变空。</li>
+</ul>
+<h3 id="3、动画演示-t7">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/12%E6%9E%84%E5%BB%BA%E5%A0%86.gif" alt="12构建堆"></p>
+<p>堆构建完成后再进行推排序：</p>
+<p><img src="https://cdn.itbob.cn/img/article/036/13%E5%A0%86%E6%8E%92%E5%BA%8F.gif" alt="13堆排序"></p>
+<h3 id="4、代码实现-t7">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sift</span>(<span class="hljs-params">arr, low, high</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    :param li: 列表</span>
+<span class="hljs-string">    :param low: 堆的根节点位置</span>
+<span class="hljs-string">    :param high: 堆的最后一个元素的位置</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    i = low                 <span class="hljs-comment"># i最开始指向根节点</span>
+    j = <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>           <span class="hljs-comment"># j开始是左孩子</span>
+    tmp = arr[low]          <span class="hljs-comment"># 把堆顶存起来</span>
+    <span class="hljs-keyword">while</span> j &lt;= high:        <span class="hljs-comment"># 只要j位置有数</span>
+        <span class="hljs-keyword">if</span> j + <span class="hljs-number">1</span> &lt;= high <span class="hljs-keyword">and</span> arr[j+<span class="hljs-number">1</span>] &gt; arr[j]:   <span class="hljs-comment"># 如果右孩子有并且比较大</span>
+            j = j + <span class="hljs-number">1</span>       <span class="hljs-comment"># j指向右孩子</span>
+        <span class="hljs-keyword">if</span> arr[j] &gt; tmp:
+            arr[i] = arr[j]
+            i = j           <span class="hljs-comment"># 往下看一层</span>
+            j = <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:               <span class="hljs-comment"># tmp更大，把tmp放到i的位置上</span>
+            arr[i] = tmp    <span class="hljs-comment"># 把tmp放到某一级领导位置上</span>
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">else</span>:
+        arr[i] = tmp        <span class="hljs-comment"># 把tmp放到叶子节点上</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">heap_sort</span>(<span class="hljs-params">arr</span>):</span>
+    n = <span class="hljs-built_in">len</span>(arr)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>((n-<span class="hljs-number">2</span>)//<span class="hljs-number">2</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):   <span class="hljs-comment"># i表示建堆的时候调整的部分的根的下标</span>
+        sift(arr, i, n-<span class="hljs-number">1</span>)
+    <span class="hljs-comment"># 建堆完成</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):        <span class="hljs-comment"># i 指向当前堆的最后一个元素</span>
+        arr[<span class="hljs-number">0</span>], arr[i] = arr[i], arr[<span class="hljs-number">0</span>]
+        sift(arr, <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>)             <span class="hljs-comment"># i-1是新的high</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t7">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sift</span>(<span class="hljs-params">arr, low, high</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    :param li: 列表</span>
+<span class="hljs-string">    :param low: 堆的根节点位置</span>
+<span class="hljs-string">    :param high: 堆的最后一个元素的位置</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    i = low                 <span class="hljs-comment"># i最开始指向根节点</span>
+    j = <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>           <span class="hljs-comment"># j开始是左孩子</span>
+    tmp = arr[low]          <span class="hljs-comment"># 把堆顶存起来</span>
+    <span class="hljs-keyword">while</span> j &lt;= high:        <span class="hljs-comment"># 只要j位置有数</span>
+        <span class="hljs-keyword">if</span> j + <span class="hljs-number">1</span> &lt;= high <span class="hljs-keyword">and</span> arr[j+<span class="hljs-number">1</span>] &gt; arr[j]:   <span class="hljs-comment"># 如果右孩子有并且比较大</span>
+            j = j + <span class="hljs-number">1</span>       <span class="hljs-comment"># j指向右孩子</span>
+        <span class="hljs-keyword">if</span> arr[j] &gt; tmp:
+            arr[i] = arr[j]
+            i = j           <span class="hljs-comment"># 往下看一层</span>
+            j = <span class="hljs-number">2</span> * i + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:               <span class="hljs-comment"># tmp更大，把tmp放到i的位置上</span>
+            arr[i] = tmp    <span class="hljs-comment"># 把tmp放到某一级领导位置上</span>
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">else</span>:
+        arr[i] = tmp        <span class="hljs-comment"># 把tmp放到叶子节点上</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">heap_sort</span>(<span class="hljs-params">arr</span>):</span>
+    n = <span class="hljs-built_in">len</span>(arr)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;建堆过程：&#x27;</span>)
+    <span class="hljs-built_in">print</span>(arr)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>((n-<span class="hljs-number">2</span>)//<span class="hljs-number">2</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):   <span class="hljs-comment"># i表示建堆的时候调整的部分的根的下标</span>
+        sift(arr, i, n-<span class="hljs-number">1</span>)
+        <span class="hljs-built_in">print</span>(arr)
+    <span class="hljs-comment"># 建堆完成</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;堆排序过程：&#x27;</span>)
+    <span class="hljs-built_in">print</span>(arr)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):        <span class="hljs-comment"># i 指向当前堆的最后一个元素</span>
+        arr[<span class="hljs-number">0</span>], arr[i] = arr[i], arr[<span class="hljs-number">0</span>]
+        sift(arr, <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>)             <span class="hljs-comment"># i-1是新的high</span>
+        <span class="hljs-built_in">print</span>(arr)
+
+
+arr = [<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">90</span>, <span class="hljs-number">3</span>, <span class="hljs-number">36</span>]
+heap_sort(arr)</code></pre>
+<pre><code class="hljs python">建堆过程：
+[<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">90</span>, <span class="hljs-number">3</span>, <span class="hljs-number">36</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">36</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">90</span>, <span class="hljs-number">3</span>, <span class="hljs-number">19</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">26</span>, <span class="hljs-number">90</span>, <span class="hljs-number">36</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">25</span>, <span class="hljs-number">3</span>, <span class="hljs-number">19</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">26</span>, <span class="hljs-number">90</span>, <span class="hljs-number">36</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">25</span>, <span class="hljs-number">3</span>, <span class="hljs-number">19</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">90</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">36</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">19</span>]
+[<span class="hljs-number">90</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+堆排序过程：
+[<span class="hljs-number">90</span>, <span class="hljs-number">36</span>, <span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+[<span class="hljs-number">36</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">7</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">26</span>, <span class="hljs-number">25</span>, <span class="hljs-number">17</span>, <span class="hljs-number">7</span>, <span class="hljs-number">19</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">25</span>, <span class="hljs-number">19</span>, <span class="hljs-number">17</span>, <span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">19</span>, <span class="hljs-number">7</span>, <span class="hljs-number">17</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">17</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">7</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">25</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">90</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-八、计数排序（Counting-Sort）-font"><font color=#FF0000>八、计数排序（Counting Sort）</font></h2>
+<h3 id="1、原理-t8">1、原理</h3>
+<p>计数排序是一个非基于比较的排序算法，它的优势在于在对一定范围内的整数排序时，它的复杂度为 Ο(n+k)，其中 k 是整数的范围，快于任何比较排序算法。计数排序是一种牺牲空间换取时间的做法。计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，<strong>计数排序要求输入的数据必须是有确定范围的整数。</strong></p>
+<h3 id="2、步骤-t8">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 找到待排序列表中的最大值 k，开辟一个长度为 k+1 的计数列表，计数列表中的值都为 0。</li>
+<li><strong>②</strong> 遍历待排序列表，如果遍历到的元素值为 i，则计数列表中索引 i 的值加1。</li>
+<li><strong>③</strong> 遍历完整个待排序列表，计数列表中索引 i 的值 j 表示 i 的个数为 j，统计出待排序列表中每个值的数量。</li>
+<li><strong>④</strong> 创建一个新列表（也可以清空原列表，在原列表中添加），遍历计数列表，依次在新列表中添加 j 个 i，新列表就是排好序后的列表，整个过程没有比较待排序列表中的数据大小。</li>
+</ul>
+<h3 id="3、动画演示-t8">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/14%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F.gif" alt="14计数排序"></p>
+<h3 id="4、代码实现-t8">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt; <span class="hljs-number">2</span>:                       <span class="hljs-comment"># 如果数组长度小于 2 则直接返回</span>
+        <span class="hljs-keyword">return</span> arr
+    max_num = <span class="hljs-built_in">max</span>(arr)
+    count = [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_num+<span class="hljs-number">1</span>)]  <span class="hljs-comment"># 开辟一个计数列表</span>
+    <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> arr:
+        count[val] += <span class="hljs-number">1</span>
+    arr.clear()                        <span class="hljs-comment"># 原数组清空</span>
+    <span class="hljs-keyword">for</span> ind, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(count):  <span class="hljs-comment"># 遍历值和下标（值的数量）</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(val):
+            arr.append(ind)
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t8">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count_sort</span>(<span class="hljs-params">arr</span>):</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt; <span class="hljs-number">2</span>:                       <span class="hljs-comment"># 如果数组长度小于 2 则直接返回</span>
+        <span class="hljs-keyword">return</span> arr
+    max_num = <span class="hljs-built_in">max</span>(arr)
+    count = [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_num+<span class="hljs-number">1</span>)]  <span class="hljs-comment"># 开辟一个计数列表</span>
+    <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> arr:
+        count[val] += <span class="hljs-number">1</span>
+    arr.clear()                        <span class="hljs-comment"># 原数组清空</span>
+    <span class="hljs-keyword">for</span> ind, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(count):  <span class="hljs-comment"># 遍历值和下标（值的数量）</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(val):
+            arr.append(ind)
+    <span class="hljs-keyword">return</span> arr
+
+
+arr = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>]
+sorted_arr = count_sort(arr)
+<span class="hljs-built_in">print</span>(sorted_arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-九、桶排序（Bucket-Sort）-font"><font color=#FF0000>九、桶排序（Bucket Sort）</font></h2>
+<h3 id="1、原理-t9">1、原理</h3>
+<p>桶排序又叫箱排序，工作的原理是将数组分到有限数量的桶子里。每个桶子再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。桶排序是鸽巢排序的一种归纳结果。</p>
+<p>桶排序也是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，我们需要做到这两点：</p>
+<ul>
+<li>在额外空间充足的情况下，尽量增大桶的数量；</li>
+<li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中。</li>
+</ul>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。</p>
+<ul>
+<li>最快情况：当输入的数据可以均匀的分配到每一个桶中；</li>
+<li>最慢情况：当输入的数据被分配到了同一个桶中。</li>
+</ul>
+<h3 id="2、步骤-t9">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 创建一个定量的数组当作空桶子；</li>
+<li><strong>②</strong> 遍历序列，把元素一个一个放到对应的桶子去；</li>
+<li><strong>③</strong> 对每个不是空的桶子进行排序；</li>
+<li><strong>④</strong> 从不是空的桶子里把元素再放回原来的序列中。</li>
+</ul>
+<h3 id="3、动画演示-t9">3、动画演示</h3>
+<p>（动图来源于@五分钟学算法，侵删）</p>
+<p><img src="https://cdn.itbob.cn/img/article/036/15%E6%A1%B6%E6%8E%92%E5%BA%8F.gif" alt="15桶排序"></p>
+<h3 id="4、代码实现-t9">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bucket_sort</span>(<span class="hljs-params">arr</span>):</span>
+    max_num = <span class="hljs-built_in">max</span>(arr)
+    n = <span class="hljs-built_in">len</span>(arr)
+    buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]         <span class="hljs-comment"># 创建桶</span>
+    <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> arr:
+        i = <span class="hljs-built_in">min</span>(var // (max_num // n), n-<span class="hljs-number">1</span>)  <span class="hljs-comment"># i 表示 var 放到几号桶里</span>
+        buckets[i].append(var)               <span class="hljs-comment"># 把 var 加到桶里边</span>
+        <span class="hljs-comment"># 保持桶内的顺序</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(buckets[i])-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> buckets[i][j] &lt; buckets[i][j-<span class="hljs-number">1</span>]:
+                buckets[i][j], buckets[i][j-<span class="hljs-number">1</span>] = buckets[i][j-<span class="hljs-number">1</span>], buckets[i][j]
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">break</span>
+    sorted_arr = []
+    <span class="hljs-keyword">for</span> buc <span class="hljs-keyword">in</span> buckets:
+        sorted_arr.extend(buc)
+    <span class="hljs-keyword">return</span> sorted_arr</code></pre>
+<h3 id="5、具体示例-t9">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bucket_sort</span>(<span class="hljs-params">arr</span>):</span>
+    max_num = <span class="hljs-built_in">max</span>(arr)
+    n = <span class="hljs-built_in">len</span>(arr)
+    buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]         <span class="hljs-comment"># 创建桶</span>
+    <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> arr:
+        i = <span class="hljs-built_in">min</span>(var // (max_num // n), n-<span class="hljs-number">1</span>)  <span class="hljs-comment"># i 表示 var 放到几号桶里</span>
+        buckets[i].append(var)               <span class="hljs-comment"># 把 var 加到桶里边</span>
+        <span class="hljs-comment"># 保持桶内的顺序</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(buckets[i])-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> buckets[i][j] &lt; buckets[i][j-<span class="hljs-number">1</span>]:
+                buckets[i][j], buckets[i][j-<span class="hljs-number">1</span>] = buckets[i][j-<span class="hljs-number">1</span>], buckets[i][j]
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">break</span>
+    sorted_arr = []
+    <span class="hljs-keyword">for</span> buc <span class="hljs-keyword">in</span> buckets:
+        sorted_arr.extend(buc)
+    <span class="hljs-keyword">return</span> sorted_arr
+
+
+arr = [<span class="hljs-number">7</span>, <span class="hljs-number">12</span>, <span class="hljs-number">56</span>, <span class="hljs-number">23</span>, <span class="hljs-number">19</span>, <span class="hljs-number">33</span>, <span class="hljs-number">35</span>, <span class="hljs-number">42</span>, <span class="hljs-number">42</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">22</span>, <span class="hljs-number">39</span>, <span class="hljs-number">26</span>, <span class="hljs-number">17</span>]
+sorted_arr = bucket_sort(arr)
+<span class="hljs-built_in">print</span>(sorted_arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">17</span>, <span class="hljs-number">19</span>, <span class="hljs-number">22</span>, <span class="hljs-number">23</span>, <span class="hljs-number">26</span>, <span class="hljs-number">33</span>, <span class="hljs-number">35</span>, <span class="hljs-number">39</span>, <span class="hljs-number">42</span>, <span class="hljs-number">42</span>, <span class="hljs-number">56</span>]</code></pre>
+<hr>
+<h2 id="font-color-FF0000-十、基数排序（Radix-Sort）-font"><font color=#FF0000>十、基数排序（Radix Sort）</font></h2>
+<h3 id="1、原理-t10">1、原理</h3>
+<p>基数排序属于分配式排序，是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。由于整数也可以表达字符串（比如名字或日期）和特定格式的浮点数，所以基数排序也不是只能使用于整数。</p>
+<p>基数排序、计数排序、桶排序三种排序算法都利用了桶的概念，但对桶的使用方法上是有明显差异的：</p>
+<ul>
+<li>基数排序：根据键值的每位数字来分配桶；</li>
+<li>计数排序：每个桶只存储单一键值；</li>
+<li>桶排序：每个桶存储一定范围的数值。</li>
+</ul>
+<h3 id="2、步骤-t10">2、步骤</h3>
+<ul>
+<li><strong>①</strong> 取数组中的最大数，并取得位数；</li>
+<li><strong>②</strong> 从最低位开始，依次进行一次排序；</li>
+<li><strong>③</strong> 从最低位排序一直到最高位排序完成以后, 数列就变成一个有序序列。</li>
+</ul>
+<h3 id="3、动画演示-t10">3、动画演示</h3>
+<p><img src="https://cdn.itbob.cn/img/article/036/16%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F.gif" alt="16基数排序"></p>
+<h3 id="4、代码实现-t10">4、代码实现</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">radix_sort</span>(<span class="hljs-params">li</span>):</span>
+    max_num = <span class="hljs-built_in">max</span>(li)      <span class="hljs-comment"># 最大值 9-&gt;1次循环, 99-&gt;2次循环, 888-&gt;3次循环, 10000-&gt;5次循环</span>
+    it = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-number">10</span> ** it &lt;= max_num:
+        buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>)]
+        <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> li:
+            <span class="hljs-comment"># var=987, it=1, 987//10-&gt;98, 98%10-&gt;8; it=2, 987//100-&gt;9, 9%10=9</span>
+            digit = (var // <span class="hljs-number">10</span> ** it) % <span class="hljs-number">10</span>   <span class="hljs-comment"># 依次取一位数</span>
+            buckets[digit].append(var)
+        <span class="hljs-comment"># 分桶完成</span>
+        li.clear()
+        <span class="hljs-keyword">for</span> buc <span class="hljs-keyword">in</span> buckets:
+            li.extend(buc)
+        it += <span class="hljs-number">1</span>            <span class="hljs-comment"># 把数重新写回 li</span>
+    <span class="hljs-keyword">return</span> arr</code></pre>
+<h3 id="5、具体示例-t10">5、具体示例</h3>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">radix_sort</span>(<span class="hljs-params">li</span>):</span>
+    max_num = <span class="hljs-built_in">max</span>(li)      <span class="hljs-comment"># 最大值 9-&gt;1次循环, 99-&gt;2次循环, 888-&gt;3次循环, 10000-&gt;5次循环</span>
+    it = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-number">10</span> ** it &lt;= max_num:
+        buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>)]
+        <span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> li:
+            <span class="hljs-comment"># var=987, it=1, 987//10-&gt;98, 98%10-&gt;8; it=2, 987//100-&gt;9, 9%10=9</span>
+            digit = (var // <span class="hljs-number">10</span> ** it) % <span class="hljs-number">10</span>   <span class="hljs-comment"># 依次取一位数</span>
+            buckets[digit].append(var)
+        <span class="hljs-comment"># 分桶完成</span>
+        li.clear()
+        <span class="hljs-keyword">for</span> buc <span class="hljs-keyword">in</span> buckets:
+            li.extend(buc)
+        it += <span class="hljs-number">1</span>            <span class="hljs-comment"># 把数重新写回 li</span>
+    <span class="hljs-keyword">return</span> arr
+
+
+arr = [<span class="hljs-number">3221</span>, <span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">9680</span>, <span class="hljs-number">577</span>, <span class="hljs-number">9420</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5622</span>, <span class="hljs-number">4793</span>, <span class="hljs-number">2030</span>, <span class="hljs-number">3138</span>, <span class="hljs-number">82</span>, <span class="hljs-number">2599</span>, <span class="hljs-number">743</span>, <span class="hljs-number">4127</span>]
+sorted_arr = radix_sort(arr)
+<span class="hljs-built_in">print</span>(sorted_arr)</code></pre>
+<pre><code class="hljs python">[<span class="hljs-number">1</span>, <span class="hljs-number">7</span>, <span class="hljs-number">10</span>, <span class="hljs-number">82</span>, <span class="hljs-number">577</span>, <span class="hljs-number">743</span>, <span class="hljs-number">2030</span>, <span class="hljs-number">2599</span>, <span class="hljs-number">3138</span>, <span class="hljs-number">3221</span>, <span class="hljs-number">4127</span>, <span class="hljs-number">4793</span>, <span class="hljs-number">5622</span>, <span class="hljs-number">9420</span>, <span class="hljs-number">9680</span>]</code></pre>
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
+<span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/108987300</span>
+<span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
+<hr>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/037/" 
+                            class="post-title gt-a-link">Python 算法之递归与尾递归，斐波那契数列以及汉诺塔的实现</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/035/" 
+                            class="post-title gt-a-link">COVID-19 肺炎疫情数据实时监控（python 爬虫 + pyecharts 数据可视化 + wordcloud 词云图）</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>

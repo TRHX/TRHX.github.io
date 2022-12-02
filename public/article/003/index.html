@@ -1,0 +1,1434 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>Hexo 博客主题个性化 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">Hexo 博客主题个性化</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2018-08-27丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 8.6k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 42分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/Hexo/" class="post-tag">
+                            Hexo</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <blockquote>
+<p>建立了两个 Hexo 博客交流群，有问题可在群里互相交流学习！点击群号可一键加群！<br>
+Hexo 博客交流一群（<a target="_blank" rel="noopener" href="https://qm.qq.com/cgi-bin/qm/qr?k=m5RvZThuF0U70_3nJwz-GoE7Ujbi0J35&amp;jump_from=webapi">924812033</a>）、Hexo 博客交流二群（<a target="_blank" rel="noopener" href="https://qm.qq.com/cgi-bin/qm/qr?k=AVUjFgrXV3YA9s4JflWIYyDvt8GFG9rz&amp;jump_from=webapi">735861501</a>）</p>
+</blockquote>
+<h2 id="写在前面">写在前面</h2>
+<p>本文将讲述一些博客主题的美化、实用功能的添加，本文以作者 <a target="_blank" rel="noopener" href="https://luuman.github.io/Home/H1/index.html">luuman</a> 的 <a target="_blank" rel="noopener" href="https://github.com/luuman/hexo-theme-spfk">spfk</a> 主题和作者 <a target="_blank" rel="noopener" href="https://xaoxuu.com/">xaoxuu</a> 的 <a target="_blank" rel="noopener" href="https://xaoxuu.com/wiki/material-x/">Material X</a> 主题（远古版本，现已改名 <a target="_blank" rel="noopener" href="https://github.com/volantis-x/hexo-theme-volantis/">Volantis</a>）为例，文章会不定时进行更新。文章涉及有关参考资料、教程、链接如有侵权请联系我删除！</p>
+<p>本文在CSDN的链接：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/85420403">《Hexo 博客优化之博客美化》</a>、<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/85010191">《Hexo 博客优化之实用功能添加》</a>，Hexo 博客专栏，从前期搭建到后期美化，帮您解决常见问题：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9285510.html">《Hexo 博客搭建》</a>，对你有帮助就点个赞吧❤️</p>
+<p><font color=#FF0000><strong>请注意：</strong></font>不同主题可能方法有些不同，相同主题不同版本，配置方法也有所差异！</p>
+<p><font color=#FF0000><strong>博客美化前提条件：</strong></font>有一定的前端基础，了解 HTML、CSS、JS，了解 CSS 预处理语言 Sass、Less、Stylus，搞懂 hexo 的目录结构。</p>
+<p><font color=#FF0000><strong>博客美化通用步骤：</strong></font>选定主题，认真阅读主题文档，分析主题目录结构，了解每个文件是对应网页哪个部分的，认真阅读美化教程，美化教程本质上只为你提供核心代码和思路，具体代码要添加到哪个地方，需要你自己搞懂主题结构，添加到需要的、合适的位置！</p>
+<p><font color=#FF0000><strong>博客美化终极奥秘：</strong></font>创作第一，体验第二，避免繁杂，简洁为上！</p>
+<hr>
+<h2 id="添加评论系统">添加评论系统</h2>
+<p>主流的评论系统有很多，比如：网易云跟帖、多说、友言、畅言、来必力（LiveRe）、Disqus、Valine、Gitment等等，目前网易云跟帖、多说、友言都已经关闭了，还有些可能需要翻墙，比较麻烦，百度了一下，最后还是选择了来必力评论系统</p>
+<p>进入<a target="_blank" rel="noopener" href="https://livere.com">来必力官网</a>，注册一个账号（注册时可能需要翻墙）</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/001.jpg" alt="001"></p>
+<p>注册完毕之后，登录，进入安装页面，选择 City 免费版安装，安装之后你会得到一段代码</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/002.jpg" alt="002"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/003.jpg" alt="003"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/004.jpg" alt="004"></p>
+<p>我们打开主题文件下的 <font color=#FF0000>_config.yml</font> 文件，添加如下代码：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/005.png" alt="005"></p>
+<p>在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\comments</font> 文件夹下新建一个 <font color=#FF0000>livere.ejs</font> 的文件，在里面填写来必力提供的代码：</p>
+<pre><code class="hljs JavaScript">&lt;!-- 来必力City版安装代码 --&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;lv-container&quot;</span> <span class="hljs-attr">data-id</span>=<span class="hljs-string">&quot;city&quot;</span> <span class="hljs-attr">data-uid</span>=<span class="hljs-string">&quot;这里是你的uid&quot;</span>&gt;</span></span>
+<span class="xml">	<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span>
+<span class="javascript"><span class="xml">		(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d, s</span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">var</span> j, e = d.getElementsByTagName(s)[<span class="hljs-number">0</span>];</span></span>
+<span class="javascript"><span class="xml">    </span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> LivereTower === <span class="hljs-string">&#x27;function&#x27;</span>) &#123; <span class="hljs-keyword">return</span>; &#125;</span></span>
+<span class="javascript"><span class="xml">    </span></span>
+<span class="javascript"><span class="xml">        j = d.createElement(s);</span></span>
+<span class="javascript"><span class="xml">        j.src = <span class="hljs-string">&#x27;https://cdn-city.livere.com/js/embed.dist.js&#x27;</span>;</span></span>
+<span class="javascript"><span class="xml">        j.async = <span class="hljs-literal">true</span>;</span></span>
+<span class="javascript"><span class="xml">    </span></span>
+<span class="javascript"><span class="xml">        e.parentNode.insertBefore(j, e);</span></span>
+<span class="javascript"><span class="xml">        &#125;)(<span class="hljs-built_in">document</span>, <span class="hljs-string">&#x27;script&#x27;</span>);</span></span>
+<span class="javascript"><span class="xml">	</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
+<span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">noscript</span>&gt;</span>为正常使用来必力评论功能请激活JavaScript<span class="hljs-tag">&lt;/<span class="hljs-name">noscript</span>&gt;</span></span>
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+&lt;!-- City版安装代码已完成 --&gt;</code></pre>
+<p>打开 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\article.ejs </font>文件，在适当位置添加如下红框中的代码：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/006.jpg" alt="006"></p>
+<p>完成以上操作之后，我们就可以使用来必力评论系统了</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/007.jpg" alt="007"></p>
+<hr>
+<h2 id="添加卡通人物">添加卡通人物</h2>
+<p>我在逛别人博客的时候偶然发现右下角居然有一个萌萌的卡通人物，还能根据你鼠标位置摇头，瞬间被吸引到了，赶紧也给自己博客添加一个吧！<a target="_blank" rel="noopener" href="https://github.com/EYHN/hexo-helper-live2d">点击此处</a>进入该项目地址</p>
+<p>输入如下命令获取 live2d ：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm install --save hexo-helper-live2d</span></code></pre>
+<p>输入以下命令，下载相应的模型，将 <font color=#FF0000>packagename</font> 更换成模型名称即可，更多模型选择请<a target="_blank" rel="noopener" href="https://github.com/xiazeyu/live2d-widget-models">点击此处</a>，各个模型的预览请<a target="_blank" rel="noopener" href="https://huaji8.top/post/live2d-plugin-2.0/">访问原作者的博客</a></p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm install packagename</span></code></pre>
+<p>打开站点目录下的 <font color=#FF0000>_config.yml</font> 文件，添加如下代码：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">live2d:</span>
+  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">scriptFrom:</span> <span class="hljs-string">local</span>
+  <span class="hljs-attr">model:</span>
+    <span class="hljs-attr">use:</span> <span class="hljs-string">live2d-widget-model-haruto</span> <span class="hljs-comment">#模型选择</span>
+  <span class="hljs-attr">display:</span>
+    <span class="hljs-attr">position:</span> <span class="hljs-string">right</span>  <span class="hljs-comment">#模型位置</span>
+    <span class="hljs-attr">width:</span> <span class="hljs-number">150</span>       <span class="hljs-comment">#模型宽度</span>
+    <span class="hljs-attr">height:</span> <span class="hljs-number">300</span>      <span class="hljs-comment">#模型高度</span>
+  <span class="hljs-attr">mobile:</span>
+    <span class="hljs-attr">show:</span> <span class="hljs-literal">false</span>      <span class="hljs-comment">#是否在手机端显示</span></code></pre>
+<p>设置好过后我们就拥有了一个卡通人物</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/008.jpg" alt="008"></p>
+<hr>
+<h2 id="自定义鼠标指针样式">自定义鼠标指针样式</h2>
+<p>在 <font color=#FF0000> \themes\material-x\source\less\_base.less</font> 文件 body 样式里写入如下代码：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">body</span> &#123;
+    <span class="hljs-attribute">cursor</span>: <span class="hljs-built_in">url</span>(<span class="hljs-string">https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@2.1.6/images/mouse.cur</span>),auto;
+    <span class="hljs-attribute">background-color</span>: @theme_background;
+    ......
+    ......
+&#125;</code></pre>
+<p>鼠标指针可以用 Axialis CursorWorkshop 这个软件自己制作，不同主题具体放的文件有所不同，确保在博客主体 body 的 CSS 文件中即可，其中的鼠标指针链接可替换成自己的，首先尝试加载 <a target="_blank" rel="noopener" href="https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@2.1.6/images/mouse.cur">https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itrhx.com@2.1.6/images/mouse.cur</a> ，如果该文件不存在或由于其他原因无效，那么 auto 会被使用，也就是自动默认效果，图片格式为.ico、.ani、.cur，建议使用.cur，如果使用.ani或者其他格式无效，原因是浏览器兼容问题，请阅读<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Basic_User_Interface/Using_URL_values_for_the_cursor_property">参考文档</a>或者参考以下兼容表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">浏览器</th>
+<th style="text-align:center">最低版本</th>
+<th style="text-align:center">格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Internet Explorer</td>
+<td style="text-align:center">6.0</td>
+<td style="text-align:center">.cur / .ani</td>
+</tr>
+<tr>
+<td style="text-align:center">Firefox (Gecko), Windows and Linux</td>
+<td style="text-align:center">1.5 (1.8)</td>
+<td style="text-align:center">.cur / .png / .gif / .jpg</td>
+</tr>
+<tr>
+<td style="text-align:center">Firefox (Gecko)</td>
+<td style="text-align:center">4.0 (2.0)</td>
+<td style="text-align:center">.cur / .png / .gif / .jpg / .svg</td>
+</tr>
+<tr>
+<td style="text-align:center">Opera</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">—</td>
+</tr>
+<tr>
+<td style="text-align:center">Safari (Webkit)</td>
+<td style="text-align:center">3.0 (522-523)</td>
+<td style="text-align:center">.cur / .png / .gif / .jpg</td>
+</tr>
+</tbody>
+</table>
+<p>拓展阅读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ixygj197875/article/details/79338360">《CSS 鼠标样式 cursor属性》</a> （By：歪脖先生的博客）</p>
+<hr>
+<h2 id="添加鼠标点击爱心效果">添加鼠标点击爱心效果</h2>
+<p>在<font color=#FF0000> \themes\hexo-theme-spfk\source\js</font> 下新建文件 <font color=#FF0000>love.js</font>，在 <font color=#FF0000>love.js</font> 文件中添加以下代码：</p>
+<pre><code class="hljs JavaScript">!<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, t, a</span>) </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">n</span>(<span class="hljs-params"></span>) </span>&#123;
+        c(<span class="hljs-string">&quot;.heart&#123;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);&#125;.heart:after,.heart:before&#123;content: &#x27;&#x27;;width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 500%;-moz-border-radius: 50%;position: fixed;&#125;.heart:after&#123;top: -5px;&#125;.heart:before&#123;left: -5px;&#125;&quot;</span>),
+        o(),
+        r()
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">r</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> e = <span class="hljs-number">0</span>; e &lt; d.length; e++) d[e].alpha &lt;= <span class="hljs-number">0</span> ? (t.body.removeChild(d[e].el), d.splice(e, <span class="hljs-number">1</span>)) : (d[e].y--, d[e].scale += <span class="hljs-number">.004</span>, d[e].alpha -= <span class="hljs-number">.013</span>, d[e].el.style.cssText = <span class="hljs-string">&quot;left:&quot;</span> + d[e].x + <span class="hljs-string">&quot;px;top:&quot;</span> + d[e].y + <span class="hljs-string">&quot;px;opacity:&quot;</span> + d[e].alpha + <span class="hljs-string">&quot;;transform:scale(&quot;</span> + d[e].scale + <span class="hljs-string">&quot;,&quot;</span> + d[e].scale + <span class="hljs-string">&quot;) rotate(45deg);background:&quot;</span> + d[e].color + <span class="hljs-string">&quot;;z-index:99999&quot;</span>);
+        requestAnimationFrame(r)
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">o</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">var</span> t = <span class="hljs-string">&quot;function&quot;</span> == <span class="hljs-keyword">typeof</span> e.onclick &amp;&amp; e.onclick;
+        e.onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            t &amp;&amp; t(),
+            i(e)
+        &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">i</span>(<span class="hljs-params">e</span>) </span>&#123;
+        <span class="hljs-keyword">var</span> a = t.createElement(<span class="hljs-string">&quot;div&quot;</span>);
+        a.className = <span class="hljs-string">&quot;heart&quot;</span>,
+        d.push(&#123;
+            <span class="hljs-attr">el</span>: a,
+            <span class="hljs-attr">x</span>: e.clientX - <span class="hljs-number">5</span>,
+            <span class="hljs-attr">y</span>: e.clientY - <span class="hljs-number">5</span>,
+            <span class="hljs-attr">scale</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">alpha</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">color</span>: s()
+        &#125;),
+        t.body.appendChild(a)
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">c</span>(<span class="hljs-params">e</span>) </span>&#123;
+        <span class="hljs-keyword">var</span> a = t.createElement(<span class="hljs-string">&quot;style&quot;</span>);
+        a.type = <span class="hljs-string">&quot;text/css&quot;</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            a.appendChild(t.createTextNode(e))
+        &#125; <span class="hljs-keyword">catch</span>(t) &#123;
+            a.styleSheet.cssText = e
+        &#125;
+        t.getElementsByTagName(<span class="hljs-string">&quot;head&quot;</span>)[<span class="hljs-number">0</span>].appendChild(a)
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;rgb(&quot;</span> + ~~ (<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;,&quot;</span> + ~~ (<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;,&quot;</span> + ~~ (<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;)&quot;</span>
+    &#125;
+    <span class="hljs-keyword">var</span> d = [];
+    e.requestAnimationFrame = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame ||
+        <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            <span class="hljs-built_in">setTimeout</span>(e, <span class="hljs-number">1e3</span> / <span class="hljs-number">60</span>)
+        &#125;
+    &#125; (),
+    n()
+&#125; (<span class="hljs-built_in">window</span>, <span class="hljs-built_in">document</span>);</code></pre>
+<p>在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\layout.ejs</font> 文件末尾添加以下代码：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 页面点击小红心 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/love.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>完成以上操作后，当我们点击鼠标的时候就可以看见爱心的特效了</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/009.jpg" alt="009"></p>
+<hr>
+<h2 id="添加鼠标点击显示字体效果">添加鼠标点击显示字体效果</h2>
+<p>在<font color=#FF0000> \themes\hexo-theme-spfk\source\js</font> 下新建文件 <font color=#FF0000>click_show_text.js</font>，在 <font color=#FF0000>click_show_text.js</font> 文件中添加以下代码：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> a_idx = <span class="hljs-number">0</span>;
+jQuery(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$</span>) </span>&#123;
+    $(<span class="hljs-string">&quot;body&quot;</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+        <span class="hljs-keyword">var</span> a = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>
+        (<span class="hljs-string">&quot;富强&quot;</span>, <span class="hljs-string">&quot;民主&quot;</span>, <span class="hljs-string">&quot;文明&quot;</span>, <span class="hljs-string">&quot;和谐&quot;</span>, <span class="hljs-string">&quot;自由&quot;</span>, <span class="hljs-string">&quot;平等&quot;</span>, <span class="hljs-string">&quot;公正&quot;</span>, <span class="hljs-string">&quot;法治&quot;</span>, <span class="hljs-string">&quot;爱国&quot;</span>, <span class="hljs-string">&quot;敬业&quot;</span>, <span class="hljs-string">&quot;诚信&quot;</span>, <span class="hljs-string">&quot;友善&quot;</span>);
+        <span class="hljs-keyword">var</span> $i = $(<span class="hljs-string">&quot;&lt;span/&gt;&quot;</span>).text(a[a_idx]);
+        a_idx = (a_idx + <span class="hljs-number">1</span>) % a.length;
+        <span class="hljs-keyword">var</span> x = e.pageX,
+        y = e.pageY;
+        $i.css(&#123;
+            <span class="hljs-string">&quot;z-index&quot;</span>: <span class="hljs-number">5</span>,
+            <span class="hljs-string">&quot;top&quot;</span>: y - <span class="hljs-number">20</span>,
+            <span class="hljs-string">&quot;left&quot;</span>: x,
+            <span class="hljs-string">&quot;position&quot;</span>: <span class="hljs-string">&quot;absolute&quot;</span>,
+            <span class="hljs-string">&quot;font-weight&quot;</span>: <span class="hljs-string">&quot;bold&quot;</span>,
+            <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;#FF0000&quot;</span>
+        &#125;);
+        $(<span class="hljs-string">&quot;body&quot;</span>).append($i);
+        $i.animate(&#123;
+            <span class="hljs-string">&quot;top&quot;</span>: y - <span class="hljs-number">180</span>,
+            <span class="hljs-string">&quot;opacity&quot;</span>: <span class="hljs-number">0</span>
+        &#125;,
+      <span class="hljs-number">3000</span>,
+      <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+          $i.remove();
+      &#125;);
+    &#125;);
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-string">&#x27;delay()&#x27;</span>, <span class="hljs-number">2000</span>);
+&#125;);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">delay</span>(<span class="hljs-params"></span>) </span>&#123;
+    $(<span class="hljs-string">&quot;.buryit&quot;</span>).removeAttr(<span class="hljs-string">&quot;onclick&quot;</span>);
+&#125;</code></pre>
+<p>其中的社会主义核心价值观可以根据你自己的创意替换为其他文字</p>
+<p>如果想要每次点击显示的文字为不同颜色，可以将其中 <code>color</code> 值进行如下更改：</p>
+<pre><code class="hljs js"><span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;rgb(&quot;</span> + ~~(<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;,&quot;</span> + ~~(<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;,&quot;</span> + ~~(<span class="hljs-number">255</span> * <span class="hljs-built_in">Math</span>.random()) + <span class="hljs-string">&quot;)&quot;</span></code></pre>
+<p>然后在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\layout.ejs</font> 文件末尾添加以下代码：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!--单击显示文字--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/click_show_text.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>最终实现效果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/010.png" alt="010"></p>
+<hr>
+<h2 id="添加鼠标点击烟花爆炸效果">添加鼠标点击烟花爆炸效果</h2>
+<p>在 <font color=#FF0000>\themes\material-x\source\js</font> 目录下新建一个 <font color=#FF0000>fireworks.js</font> 的文件，里面写入以下代码：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateCoords</span>(<span class="hljs-params">e</span>) </span>&#123;
+    pointerX = (e.clientX || e.touches[<span class="hljs-number">0</span>].clientX) - canvasEl.getBoundingClientRect().left,
+    pointerY = e.clientY || e.touches[<span class="hljs-number">0</span>].clientY - canvasEl.getBoundingClientRect().top
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setParticuleDirection</span>(<span class="hljs-params">e</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> t = anime.random(<span class="hljs-number">0</span>, <span class="hljs-number">360</span>) * <span class="hljs-built_in">Math</span>.PI / <span class="hljs-number">180</span>,
+    a = anime.random(<span class="hljs-number">50</span>, <span class="hljs-number">180</span>),
+    n = [ - <span class="hljs-number">1</span>, <span class="hljs-number">1</span>][anime.random(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)] * a;
+    <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-attr">x</span>: e.x + n * <span class="hljs-built_in">Math</span>.cos(t),
+        <span class="hljs-attr">y</span>: e.y + n * <span class="hljs-built_in">Math</span>.sin(t)
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createParticule</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a = &#123;&#125;;
+    <span class="hljs-keyword">return</span> a.x = e,
+    a.y = t,
+    a.color = colors[anime.random(<span class="hljs-number">0</span>, colors.length - <span class="hljs-number">1</span>)],
+    a.radius = anime.random(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>),
+    a.endPos = setParticuleDirection(a),
+    a.draw = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        ctx.beginPath(),
+        ctx.arc(a.x, a.y, a.radius, <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI, !<span class="hljs-number">0</span>),
+        ctx.fillStyle = a.color,
+        ctx.fill()
+    &#125;,
+    a
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createCircle</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a = &#123;&#125;;
+    <span class="hljs-keyword">return</span> a.x = e,
+    a.y = t,
+    a.color = <span class="hljs-string">&quot;#F00&quot;</span>,
+    a.radius = <span class="hljs-number">0.1</span>,
+    a.alpha = <span class="hljs-number">0.5</span>,
+    a.lineWidth = <span class="hljs-number">6</span>,
+    a.draw = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        ctx.globalAlpha = a.alpha,
+        ctx.beginPath(),
+        ctx.arc(a.x, a.y, a.radius, <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI, !<span class="hljs-number">0</span>),
+        ctx.lineWidth = a.lineWidth,
+        ctx.strokeStyle = a.color,
+        ctx.stroke(),
+        ctx.globalAlpha = <span class="hljs-number">1</span>
+    &#125;,
+    a
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderParticule</span>(<span class="hljs-params">e</span>) </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> t = <span class="hljs-number">0</span>; t &lt; e.animatables.length; t++) &#123;
+        e.animatables[t].target.draw()
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animateParticules</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = createCircle(e, t), n = [], i = <span class="hljs-number">0</span>; i &lt; numberOfParticules; i++) &#123;
+        n.push(createParticule(e, t))
+    &#125;
+    anime.timeline().add(&#123;
+        <span class="hljs-attr">targets</span>: n,
+        <span class="hljs-attr">x</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            <span class="hljs-keyword">return</span> e.endPos.x
+        &#125;,
+        <span class="hljs-attr">y</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            <span class="hljs-keyword">return</span> e.endPos.y
+        &#125;,
+        <span class="hljs-attr">radius</span>: <span class="hljs-number">0.1</span>,
+        <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">1200</span>, <span class="hljs-number">1800</span>),
+        <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;easeOutExpo&quot;</span>,
+        <span class="hljs-attr">update</span>: renderParticule
+    &#125;).add(&#123;
+        <span class="hljs-attr">targets</span>: a,
+        <span class="hljs-attr">radius</span>: anime.random(<span class="hljs-number">80</span>, <span class="hljs-number">160</span>),
+        <span class="hljs-attr">lineWidth</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">alpha</span>: &#123;
+            <span class="hljs-attr">value</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;linear&quot;</span>,
+            <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">600</span>, <span class="hljs-number">800</span>)
+        &#125;,
+        <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">1200</span>, <span class="hljs-number">1800</span>),
+        <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;easeOutExpo&quot;</span>,
+        <span class="hljs-attr">update</span>: renderParticule,
+        <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>
+    &#125;)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">var</span> n = <span class="hljs-built_in">this</span>,
+        i = <span class="hljs-built_in">arguments</span>;
+        <span class="hljs-built_in">clearTimeout</span>(a),
+        a = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+            e.apply(n, i)
+        &#125;,
+        t)
+    &#125;
+&#125;
+<span class="hljs-keyword">var</span> canvasEl = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;.fireworks&quot;</span>);
+<span class="hljs-keyword">if</span> (canvasEl) &#123;
+    <span class="hljs-keyword">var</span> ctx = canvasEl.getContext(<span class="hljs-string">&quot;2d&quot;</span>),
+    numberOfParticules = <span class="hljs-number">30</span>,
+    pointerX = <span class="hljs-number">0</span>,
+    pointerY = <span class="hljs-number">0</span>,
+    tap = <span class="hljs-string">&quot;mousedown&quot;</span>,
+    colors = [<span class="hljs-string">&quot;#FF1461&quot;</span>, <span class="hljs-string">&quot;#18FF92&quot;</span>, <span class="hljs-string">&quot;#5A87FF&quot;</span>, <span class="hljs-string">&quot;#FBF38C&quot;</span>],
+    setCanvasSize = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        canvasEl.width = <span class="hljs-number">2</span> * <span class="hljs-built_in">window</span>.innerWidth,
+        canvasEl.height = <span class="hljs-number">2</span> * <span class="hljs-built_in">window</span>.innerHeight,
+        canvasEl.style.width = <span class="hljs-built_in">window</span>.innerWidth + <span class="hljs-string">&quot;px&quot;</span>,
+        canvasEl.style.height = <span class="hljs-built_in">window</span>.innerHeight + <span class="hljs-string">&quot;px&quot;</span>,
+        canvasEl.getContext(<span class="hljs-string">&quot;2d&quot;</span>).scale(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+    &#125;,
+    <span class="hljs-number">500</span>),
+    render = anime(&#123;
+        <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> / <span class="hljs-number">0</span>,
+        <span class="hljs-attr">update</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+            ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, canvasEl.width, canvasEl.height)
+        &#125;
+    &#125;);
+    <span class="hljs-built_in">document</span>.addEventListener(tap,
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+        <span class="hljs-string">&quot;sidebar&quot;</span> !== e.target.id &amp;&amp; <span class="hljs-string">&quot;toggle-sidebar&quot;</span> !== e.target.id &amp;&amp; <span class="hljs-string">&quot;A&quot;</span> !== e.target.nodeName &amp;&amp; <span class="hljs-string">&quot;IMG&quot;</span> !== e.target.nodeName &amp;&amp; (render.play(), updateCoords(e), animateParticules(pointerX, pointerY))
+    &#125;,
+    !<span class="hljs-number">1</span>),
+    setCanvasSize(),
+    <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;resize&quot;</span>, setCanvasSize, !<span class="hljs-number">1</span>)
+&#125;
+<span class="hljs-meta">&quot;use strict&quot;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateCoords</span>(<span class="hljs-params">e</span>) </span>&#123;
+    pointerX = (e.clientX || e.touches[<span class="hljs-number">0</span>].clientX) - canvasEl.getBoundingClientRect().left,
+    pointerY = e.clientY || e.touches[<span class="hljs-number">0</span>].clientY - canvasEl.getBoundingClientRect().top
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setParticuleDirection</span>(<span class="hljs-params">e</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> t = anime.random(<span class="hljs-number">0</span>, <span class="hljs-number">360</span>) * <span class="hljs-built_in">Math</span>.PI / <span class="hljs-number">180</span>,
+    a = anime.random(<span class="hljs-number">50</span>, <span class="hljs-number">180</span>),
+    n = [ - <span class="hljs-number">1</span>, <span class="hljs-number">1</span>][anime.random(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)] * a;
+    <span class="hljs-keyword">return</span> &#123;
+        <span class="hljs-attr">x</span>: e.x + n * <span class="hljs-built_in">Math</span>.cos(t),
+        <span class="hljs-attr">y</span>: e.y + n * <span class="hljs-built_in">Math</span>.sin(t)
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createParticule</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a = &#123;&#125;;
+    <span class="hljs-keyword">return</span> a.x = e,
+    a.y = t,
+    a.color = colors[anime.random(<span class="hljs-number">0</span>, colors.length - <span class="hljs-number">1</span>)],
+    a.radius = anime.random(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>),
+    a.endPos = setParticuleDirection(a),
+    a.draw = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        ctx.beginPath(),
+        ctx.arc(a.x, a.y, a.radius, <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI, !<span class="hljs-number">0</span>),
+        ctx.fillStyle = a.color,
+        ctx.fill()
+    &#125;,
+    a
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createCircle</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a = &#123;&#125;;
+    <span class="hljs-keyword">return</span> a.x = e,
+    a.y = t,
+    a.color = <span class="hljs-string">&quot;#F00&quot;</span>,
+    a.radius = <span class="hljs-number">0.1</span>,
+    a.alpha = <span class="hljs-number">0.5</span>,
+    a.lineWidth = <span class="hljs-number">6</span>,
+    a.draw = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        ctx.globalAlpha = a.alpha,
+        ctx.beginPath(),
+        ctx.arc(a.x, a.y, a.radius, <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-built_in">Math</span>.PI, !<span class="hljs-number">0</span>),
+        ctx.lineWidth = a.lineWidth,
+        ctx.strokeStyle = a.color,
+        ctx.stroke(),
+        ctx.globalAlpha = <span class="hljs-number">1</span>
+    &#125;,
+    a
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderParticule</span>(<span class="hljs-params">e</span>) </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> t = <span class="hljs-number">0</span>; t &lt; e.animatables.length; t++) &#123;
+        e.animatables[t].target.draw()
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">animateParticules</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = createCircle(e, t), n = [], i = <span class="hljs-number">0</span>; i &lt; numberOfParticules; i++) &#123;
+        n.push(createParticule(e, t))
+    &#125;
+    anime.timeline().add(&#123;
+        <span class="hljs-attr">targets</span>: n,
+        <span class="hljs-attr">x</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            <span class="hljs-keyword">return</span> e.endPos.x
+        &#125;,
+        <span class="hljs-attr">y</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+            <span class="hljs-keyword">return</span> e.endPos.y
+        &#125;,
+        <span class="hljs-attr">radius</span>: <span class="hljs-number">0.1</span>,
+        <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">1200</span>, <span class="hljs-number">1800</span>),
+        <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;easeOutExpo&quot;</span>,
+        <span class="hljs-attr">update</span>: renderParticule
+    &#125;).add(&#123;
+        <span class="hljs-attr">targets</span>: a,
+        <span class="hljs-attr">radius</span>: anime.random(<span class="hljs-number">80</span>, <span class="hljs-number">160</span>),
+        <span class="hljs-attr">lineWidth</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">alpha</span>: &#123;
+            <span class="hljs-attr">value</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;linear&quot;</span>,
+            <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">600</span>, <span class="hljs-number">800</span>)
+        &#125;,
+        <span class="hljs-attr">duration</span>: anime.random(<span class="hljs-number">1200</span>, <span class="hljs-number">1800</span>),
+        <span class="hljs-attr">easing</span>: <span class="hljs-string">&quot;easeOutExpo&quot;</span>,
+        <span class="hljs-attr">update</span>: renderParticule,
+        <span class="hljs-attr">offset</span>: <span class="hljs-number">0</span>
+    &#125;)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">e, t</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> a;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">var</span> n = <span class="hljs-built_in">this</span>,
+        i = <span class="hljs-built_in">arguments</span>;
+        <span class="hljs-built_in">clearTimeout</span>(a),
+        a = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+            e.apply(n, i)
+        &#125;,
+        t)
+    &#125;
+&#125;
+<span class="hljs-keyword">var</span> canvasEl = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;.fireworks&quot;</span>);
+<span class="hljs-keyword">if</span> (canvasEl) &#123;
+    <span class="hljs-keyword">var</span> ctx = canvasEl.getContext(<span class="hljs-string">&quot;2d&quot;</span>),
+    numberOfParticules = <span class="hljs-number">30</span>,
+    pointerX = <span class="hljs-number">0</span>,
+    pointerY = <span class="hljs-number">0</span>,
+    tap = <span class="hljs-string">&quot;mousedown&quot;</span>,
+    colors = [<span class="hljs-string">&quot;#FF1461&quot;</span>, <span class="hljs-string">&quot;#18FF92&quot;</span>, <span class="hljs-string">&quot;#5A87FF&quot;</span>, <span class="hljs-string">&quot;#FBF38C&quot;</span>],
+    setCanvasSize = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        canvasEl.width = <span class="hljs-number">2</span> * <span class="hljs-built_in">window</span>.innerWidth,
+        canvasEl.height = <span class="hljs-number">2</span> * <span class="hljs-built_in">window</span>.innerHeight,
+        canvasEl.style.width = <span class="hljs-built_in">window</span>.innerWidth + <span class="hljs-string">&quot;px&quot;</span>,
+        canvasEl.style.height = <span class="hljs-built_in">window</span>.innerHeight + <span class="hljs-string">&quot;px&quot;</span>,
+        canvasEl.getContext(<span class="hljs-string">&quot;2d&quot;</span>).scale(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+    &#125;,
+    <span class="hljs-number">500</span>),
+    render = anime(&#123;
+        <span class="hljs-attr">duration</span>: <span class="hljs-number">1</span> / <span class="hljs-number">0</span>,
+        <span class="hljs-attr">update</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+            ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, canvasEl.width, canvasEl.height)
+        &#125;
+    &#125;);
+    <span class="hljs-built_in">document</span>.addEventListener(tap,
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+        <span class="hljs-string">&quot;sidebar&quot;</span> !== e.target.id &amp;&amp; <span class="hljs-string">&quot;toggle-sidebar&quot;</span> !== e.target.id &amp;&amp; <span class="hljs-string">&quot;A&quot;</span> !== e.target.nodeName &amp;&amp; <span class="hljs-string">&quot;IMG&quot;</span> !== e.target.nodeName &amp;&amp; (render.play(), updateCoords(e), animateParticules(pointerX, pointerY))
+    &#125;,
+    !<span class="hljs-number">1</span>),
+    setCanvasSize(),
+    <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;resize&quot;</span>, setCanvasSize, !<span class="hljs-number">1</span>)
+&#125;;</code></pre>
+<p>然后在 <font color=#FF0000>\themes\material-x\layout\layout.ejs</font> 文件中写入以下代码：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">canvas</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fireworks&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;&quot;</span> &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">canvas</span>&gt;</span> 
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//cdn.bootcss.com/animejs/2.2.0/anime.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> 
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/fireworks.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>最终效果：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/011.gif" alt="011"></p>
+<hr>
+<h2 id="添加彩色滚动变换字体">添加彩色滚动变换字体</h2>
+<p>在你想要添加彩色滚动变换字体的地方写入以下代码即可，其中文字可自行更改：</p>
+<pre><code class="hljs JavaScript">&lt;div id=<span class="hljs-string">&quot;binft&quot;</span>&gt;&lt;/div&gt;
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span>
+<span class="javascript"><span class="xml">    <span class="hljs-keyword">var</span> binft = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">r</span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">t</span>(<span class="hljs-params"></span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> b[<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * b.length)]</span></span>
+<span class="javascript"><span class="xml">      &#125;  </span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">e</span>(<span class="hljs-params"></span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>.fromCharCode(<span class="hljs-number">94</span> * <span class="hljs-built_in">Math</span>.random() + <span class="hljs-number">33</span>)</span></span>
+<span class="javascript"><span class="xml">      &#125;</span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">n</span>(<span class="hljs-params">r</span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-built_in">document</span>.createDocumentFragment(), i = <span class="hljs-number">0</span>; r &gt; i; i++) &#123;</span></span>
+<span class="javascript"><span class="xml">          <span class="hljs-keyword">var</span> l = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&quot;span&quot;</span>);</span></span>
+<span class="javascript"><span class="xml">          l.textContent = e(), l.style.color = t(), n.appendChild(l)</span></span>
+<span class="javascript"><span class="xml">        &#125;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> n</span></span>
+<span class="javascript"><span class="xml">      &#125;</span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">i</span>(<span class="hljs-params"></span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">var</span> t = o[c.skillI];</span></span>
+<span class="javascript"><span class="xml">        c.step ? c.step-- : (c.step = g, c.prefixP &lt; l.length ? (c.prefixP &gt;= <span class="hljs-number">0</span> &amp;&amp; (c.text += l[c.prefixP]), c.prefixP++) : <span class="hljs-string">&quot;forward&quot;</span> === c.direction ? c.skillP &lt; t.length ? (c.text += t[c.skillP], c.skillP++) : c.delay ? c.delay-- : (c.direction = <span class="hljs-string">&quot;backward&quot;</span>, c.delay = a) : c.skillP &gt; <span class="hljs-number">0</span> ? (c.text = c.text.slice(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), c.skillP--) : (c.skillI = (c.skillI + <span class="hljs-number">1</span>) % o.length, c.direction = <span class="hljs-string">&quot;forward&quot;</span>)), r.textContent = c.text, r.appendChild(n(c.prefixP &lt; l.length ? <span class="hljs-built_in">Math</span>.min(s, s + c.prefixP) : <span class="hljs-built_in">Math</span>.min(s, t.length - c.skillP))), <span class="hljs-built_in">setTimeout</span>(i, d)</span></span>
+<span class="javascript"><span class="xml">      &#125;</span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-keyword">var</span> l = <span class="hljs-string">&quot;&quot;</span>,</span></span>
+<span class="javascript"><span class="xml">      o = [<span class="hljs-string">&quot;青青陵上柏，磊磊涧中石。&quot;</span>, <span class="hljs-string">&quot;人生天地间，忽如远行客。&quot;</span>,<span class="hljs-string">&quot;斗酒相娱乐，聊厚不为薄。&quot;</span>, <span class="hljs-string">&quot;驱车策驽马，游戏宛与洛。&quot;</span>,<span class="hljs-string">&quot;洛中何郁郁，冠带自相索。&quot;</span>,<span class="hljs-string">&quot;长衢罗夹巷，王侯多第宅。&quot;</span>,<span class="hljs-string">&quot;两宫遥相望，双阙百余尺。&quot;</span>,<span class="hljs-string">&quot;极宴娱心意，戚戚何所迫？&quot;</span>].map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">r</span>) </span>&#123;</span></span>
+<span class="javascript"><span class="xml">      <span class="hljs-keyword">return</span> r + <span class="hljs-string">&quot;&quot;</span></span></span>
+<span class="javascript"><span class="xml">      &#125;),</span></span>
+<span class="javascript"><span class="xml">      a = <span class="hljs-number">2</span>,</span></span>
+<span class="javascript"><span class="xml">      g = <span class="hljs-number">1</span>,</span></span>
+<span class="javascript"><span class="xml">      s = <span class="hljs-number">5</span>,</span></span>
+<span class="javascript"><span class="xml">      d = <span class="hljs-number">75</span>,</span></span>
+<span class="javascript"><span class="xml">      b = [<span class="hljs-string">&quot;rgb(110,64,170)&quot;</span>, <span class="hljs-string">&quot;rgb(150,61,179)&quot;</span>, <span class="hljs-string">&quot;rgb(191,60,175)&quot;</span>, <span class="hljs-string">&quot;rgb(228,65,157)&quot;</span>, <span class="hljs-string">&quot;rgb(254,75,131)&quot;</span>, <span class="hljs-string">&quot;rgb(255,94,99)&quot;</span>, <span class="hljs-string">&quot;rgb(255,120,71)&quot;</span>, <span class="hljs-string">&quot;rgb(251,150,51)&quot;</span>, <span class="hljs-string">&quot;rgb(226,183,47)&quot;</span>, <span class="hljs-string">&quot;rgb(198,214,60)&quot;</span>, <span class="hljs-string">&quot;rgb(175,240,91)&quot;</span>, <span class="hljs-string">&quot;rgb(127,246,88)&quot;</span>, <span class="hljs-string">&quot;rgb(82,246,103)&quot;</span>, <span class="hljs-string">&quot;rgb(48,239,130)&quot;</span>, <span class="hljs-string">&quot;rgb(29,223,163)&quot;</span>, <span class="hljs-string">&quot;rgb(26,199,194)&quot;</span>, <span class="hljs-string">&quot;rgb(35,171,216)&quot;</span>, <span class="hljs-string">&quot;rgb(54,140,225)&quot;</span>, <span class="hljs-string">&quot;rgb(76,110,219)&quot;</span>, <span class="hljs-string">&quot;rgb(96,84,200)&quot;</span>],</span></span>
+<span class="javascript"><span class="xml">      c = &#123;</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">text</span>: <span class="hljs-string">&quot;&quot;</span>,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">prefixP</span>: -s,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">skillI</span>: <span class="hljs-number">0</span>,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">skillP</span>: <span class="hljs-number">0</span>,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">direction</span>: <span class="hljs-string">&quot;forward&quot;</span>,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">delay</span>: a,</span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-attr">step</span>: g</span></span>
+<span class="javascript"><span class="xml">      &#125;;</span></span>
+<span class="javascript"><span class="xml">      i()</span></span>
+<span class="javascript"><span class="xml">      &#125;;</span></span>
+<span class="javascript"><span class="xml">      binft(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;binft&#x27;</span>));</span></span>
+<span class="javascript"><span class="xml">  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
+<p>最终效果：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/012.gif" alt="012"></p>
+<hr>
+<h2 id="添加字数统计和阅读时长">添加字数统计和阅读时长</h2>
+<p>先在博客目录下执行以下命令安装 <font color=#FF0000>hexo-wordcount</font> 插件：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm i --save hexo-wordcount</span></code></pre>
+<p>注意：在 <a target="_blank" rel="noopener" href="https://xaoxuu.com/wiki/material-x/">Material X</a> 主题中，字数统计和阅读时长的功能我已提交 PR，在最新版本中，只需要安装插件后，在主题 <code>config.yml</code> 配置文件里，将 <code>word_count</code> 关键字设置为 <code>true</code> 即可，对于旧版本，可以通过以下方法实现：</p>
+<p>以 <a target="_blank" rel="noopener" href="https://xaoxuu.com/wiki/material-x/">Material X</a> 主题（版本 1.2.1）为例，在 <font color=#FF0000>\themes\material-x\layout\_meta</font> 目录下创建 <font color=#FF0000>word.ejs</font> 文件，在 <font color=#FF0000>word.ejs</font> 文件中写入以下代码：</p>
+<pre><code class="hljs JS">&lt;% <span class="hljs-keyword">if</span>(isPostList || !isPostList)&#123; %&gt;
+  &lt;% <span class="hljs-keyword">if</span> (theme.word_count &amp;&amp; !post.no_word_count) &#123; %&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-right: 10px;&quot;</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-time&quot;</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fa fa-keyboard&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-text&quot;</span>&gt;</span>  字数统计: <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-count&quot;</span>&gt;</span>&lt;%= wordcount(post.content) %&gt;字<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-symbol">&amp;nbsp;</span> | <span class="hljs-symbol">&amp;nbsp;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-time&quot;</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fa fa-hourglass-half&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-text&quot;</span>&gt;</span>  阅读时长≈<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-count&quot;</span>&gt;</span>&lt;%= min2read(post.content) %&gt;分<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  &lt;% &#125; %&gt;
+&lt;% &#125; %&gt;</code></pre>
+<p>然后在主题的配置文件 <font color=#FF0000>_config.yml</font> 找到 <font color=#FF0000>meta</font> 关键字，将 <font color=#FF0000>word</font> 填入 <font color=#FF0000>header</font> 中：</p>
+<pre><code class="hljs bash">meta:
+  header: [title, author, date, categories, tags, counter, word, top]
+  footer: [updated, share]</code></pre>
+<p>最后在主题目录下的 <font color=#FF0000>_config.yml</font> 添加以下配置即可</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">word_count:</span> <span class="hljs-literal">true</span></code></pre>
+<p>效果图：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/036.png" alt="036"></p>
+<hr>
+<p>同样的，以 <a target="_blank" rel="noopener" href="https://github.com/luuman/hexo-theme-spfk">spfk</a> 主题为例，在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\post</font> 目录下创建 <font color=#FF0000>word.ejs</font> 文件，在 <font color=#FF0000>word.ejs</font> 文件中写入以下代码：</p>
+<pre><code class="hljs JavaScript">&lt;div style=<span class="hljs-string">&quot;margin-top:10px;&quot;</span>&gt;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-time&quot;</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fa fa-keyboard-o&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-text&quot;</span>&gt;</span>  字数统计: <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-count&quot;</span>&gt;</span>&lt;%= wordcount(post.content) %&gt;字<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+    &amp;nbsp; | &amp;nbsp;
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-time&quot;</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-icon&quot;</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;fa fa-hourglass-half&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-meta-item-text&quot;</span>&gt;</span>  阅读时长: <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-count&quot;</span>&gt;</span>&lt;%= min2read(post.content) %&gt;分<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+<span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
+&lt;/div&gt;</code></pre>
+<p>然后在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\article.ejs</font> 中适当位置添加以下代码：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/013.jpg" alt="013"></p>
+<p>最后在主题目录下的 <font color=#FF0000>_config.yml</font> 添加以下配置</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">word_count:</span> <span class="hljs-literal">true</span></code></pre>
+<p>如果显示的位置不好，可以自行更改其位置，成功配置后的效果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/014.jpg" alt="014"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/015.png" alt="015"></p>
+<p>另外：要在博客底部显示所有文章的总字数，可以<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/hexo-wordcount">点击此处</a>，根据你博客底部文件的类型选择相应的代码放在适当的位置即可，前提是要安装好 <font color=#FF0000>hexo-wordcount</font> 插件，例如我使用 <a target="_blank" rel="noopener" href="https://xaoxuu.com/wiki/material-x/">Material X</a> 主题，在 <font color=#FF0000>\themes\material-x\layout\_partial</font> 目录下的 <font color=#FF0000>footer.ejs</font> 文件中添加如下代码：</p>
+<pre><code class="hljs JavaScript">&lt;i <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">&quot;fas fa-chart-area&quot;</span>&gt;&lt;/i&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-count&quot;</span>&gt;</span>字数统计：&lt;%= totalcount(site) %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span></code></pre>
+<p>实现效果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/016.png" alt="016"></p>
+<hr>
+<h2 id="添加背景音乐">添加背景音乐</h2>
+<p>打开网页版<a target="_blank" rel="noopener" href="https://music.163.com/">网易云音乐</a>，选择你准备添加的背景音乐，点击生成外链播放器，前提是要有版权，不然是无法生成外链播放器的，复制底下的HTML代码</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/017.jpg" alt="017"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/018.jpg" alt="018"></p>
+<p>然后将此代码放到你想要放的地方，比如放在博客的左侧，则打开 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\left-col.ejs</font> 文件，将复制的HTML代码粘贴进去，再进行适当的位置设置让播放器更美观，其中 <font color=#FF0000>auto=1</font> 表示打开网页自动播放音乐，<font color=#FF0000>auto=0</font> 表示关闭自动播放音乐</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/019.jpg" alt="019"></p>
+<p>最后效果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/020.jpg" alt="020"></p>
+<p>这种网易云音乐外链的方式有很多局限性，因此推荐使用<font color=#FF0000>aplayer</font>，GitHub地址为：<a target="_blank" rel="noopener" href="https://github.com/MoePlayer/APlayer">https://github.com/MoePlayer/APlayer</a> ，参考教程：<a target="_blank" rel="noopener" href="https://blog.yleao.com/2018/0902/hexo%E4%B8%8A%E7%9A%84aplayer%E5%BA%94%E7%94%A8.html">《hexo上的aplayer应用》</a></p>
+<hr>
+<h2 id="添加网站运行时间">添加网站运行时间</h2>
+<p>一个比较好的小功能，可以看见自己的博客运行多久了，时间一天天的增加，成就感也会一天天增加的<br>
+在 <font color=#FF0000>\themes\hexo-theme-spfk\layout\_partial\footer.ejs</font> 文件下添加以下代码：</p>
+<pre><code class="hljs JavaScript">&lt;span id=<span class="hljs-string">&quot;timeDate&quot;</span>&gt;载入天数...&lt;<span class="hljs-regexp">/span&gt;&lt;span id=&quot;times&quot;&gt;载入时分秒...&lt;/</span>span&gt;
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span>
+<span class="javascript"><span class="xml">    <span class="hljs-keyword">var</span> now = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(); </span></span>
+<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createtime</span>(<span class="hljs-params"></span>) </span>&#123; </span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">var</span> grt= <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">&quot;08/10/2018 17:38:00&quot;</span>);<span class="hljs-comment">//在此处修改你的建站时间，格式：月/日/年 时:分:秒</span></span></span>
+<span class="javascript"><span class="xml">        now.setTime(now.getTime()+<span class="hljs-number">250</span>); </span></span>
+<span class="javascript"><span class="xml">        days = (now - grt ) / <span class="hljs-number">1000</span> / <span class="hljs-number">60</span> / <span class="hljs-number">60</span> / <span class="hljs-number">24</span>; dnum = <span class="hljs-built_in">Math</span>.floor(days); </span></span>
+<span class="javascript"><span class="xml">        hours = (now - grt ) / <span class="hljs-number">1000</span> / <span class="hljs-number">60</span> / <span class="hljs-number">60</span> - (<span class="hljs-number">24</span> * dnum); hnum = <span class="hljs-built_in">Math</span>.floor(hours); </span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">String</span>(hnum).length ==<span class="hljs-number">1</span> )&#123;hnum = <span class="hljs-string">&quot;0&quot;</span> + hnum;&#125; minutes = (now - grt ) / <span class="hljs-number">1000</span> /<span class="hljs-number">60</span> - (<span class="hljs-number">24</span> * <span class="hljs-number">60</span> * dnum) - (<span class="hljs-number">60</span> * hnum); </span></span>
+<span class="javascript"><span class="xml">        mnum = <span class="hljs-built_in">Math</span>.floor(minutes); <span class="hljs-keyword">if</span>(<span class="hljs-built_in">String</span>(mnum).length ==<span class="hljs-number">1</span> )&#123;mnum = <span class="hljs-string">&quot;0&quot;</span> + mnum;&#125; </span></span>
+<span class="javascript"><span class="xml">        seconds = (now - grt ) / <span class="hljs-number">1000</span> - (<span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * dnum) - (<span class="hljs-number">60</span> * <span class="hljs-number">60</span> * hnum) - (<span class="hljs-number">60</span> * mnum); </span></span>
+<span class="javascript"><span class="xml">        snum = <span class="hljs-built_in">Math</span>.round(seconds); <span class="hljs-keyword">if</span>(<span class="hljs-built_in">String</span>(snum).length ==<span class="hljs-number">1</span> )&#123;snum = <span class="hljs-string">&quot;0&quot;</span> + snum;&#125; </span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;timeDate&quot;</span>).innerHTML = <span class="hljs-string">&quot;本站已安全运行 &quot;</span>+dnum+<span class="hljs-string">&quot; 天 &quot;</span>; </span></span>
+<span class="javascript"><span class="xml">        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;times&quot;</span>).innerHTML = hnum + <span class="hljs-string">&quot; 小时 &quot;</span> + mnum + <span class="hljs-string">&quot; 分 &quot;</span> + snum + <span class="hljs-string">&quot; 秒&quot;</span>; </span></span>
+<span class="javascript"><span class="xml">    &#125; </span></span>
+<span class="javascript"><span class="xml"><span class="hljs-built_in">setInterval</span>(<span class="hljs-string">&quot;createtime()&quot;</span>,<span class="hljs-number">250</span>);</span></span>
+<span class="javascript"><span class="xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
+<p>最后效果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/021.png" alt="021"></p>
+<hr>
+<h2 id="添加百度统计">添加百度统计</h2>
+<p>百度统计是百度推出的一款免费的专业网站流量分析工具，能够告诉用户访客是如何找到并浏览用户的网站，在网站上做了些什么，非常有趣，接下来我们把百度统计添加到自己博客当中</p>
+<p>访问<a target="_blank" rel="noopener" href="https://tongji.baidu.com">百度统计首页</a>，注册一个账号后登陆，添加你的博客网站</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/022.jpg" alt="022"></p>
+<p>接着点击代码获取，复制该代码</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/023.jpg" alt="023"></p>
+<p>然后到目录 <font color=#FF0000>\Hexo\themes\hexo-theme-spfk\layout\_partial</font> 下新建一个 <font color=#FF0000>baidu-analytics.ejs</font> 文件，里面粘贴你刚刚复制的代码</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/024.jpg" alt="024"></p>
+<p>修改主题文件夹下的 <font color=#FF0000>_config.yml</font> 文件，将你的key（图中涂掉部分）填写进去：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/025.jpg" alt="025"></p>
+<p>所有操作完成后可以在百度统计管理页面检查代码是否安装成功，如果代码安装正确，一般20分钟后，可以查看网站分析数据</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/026.jpg" alt="026"></p>
+<p>另外推荐：<a target="_blank" rel="noopener" href="https://web.umeng.com/main.php?c=user&amp;a=index">友盟</a>，2010年4月在北京成立，安全、可靠、公正、第三方的网站流量统计分析系统</p>
+<hr>
+<h2 id="浏览器网页标题恶搞">浏览器网页标题恶搞</h2>
+<p>当用户访问你的博客时点击到了其他网页，我们可以恶搞一下网页标题，呼唤用户回来，首先在目录 <font color=#FF0000>\themes\material-x\source\js</font> 下新建一个 <font color=#FF0000>FunnyTitle.js</font> 文件，在里面填写如下代码：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// 浏览器搞笑标题</span>
+<span class="hljs-keyword">var</span> OriginTitle = <span class="hljs-built_in">document</span>.title;
+<span class="hljs-keyword">var</span> titleTime;
+<span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">&#x27;visibilitychange&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">document</span>.hidden) &#123;
+        $(<span class="hljs-string">&#x27;[rel=&quot;icon&quot;]&#x27;</span>).attr(<span class="hljs-string">&#x27;href&#x27;</span>, <span class="hljs-string">&quot;/funny.ico&quot;</span>);
+        <span class="hljs-built_in">document</span>.title = <span class="hljs-string">&#x27;╭(°A°`)╮ 页面崩溃啦 ~&#x27;</span>;
+        <span class="hljs-built_in">clearTimeout</span>(titleTime);
+    &#125;
+    <span class="hljs-keyword">else</span> &#123;
+        $(<span class="hljs-string">&#x27;[rel=&quot;icon&quot;]&#x27;</span>).attr(<span class="hljs-string">&#x27;href&#x27;</span>, <span class="hljs-string">&quot;/favicon.ico&quot;</span>);
+        <span class="hljs-built_in">document</span>.title = <span class="hljs-string">&#x27;(ฅ&gt;ω&lt;*ฅ) 噫又好啦 ~&#x27;</span> + OriginTitle;
+        titleTime = <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+            <span class="hljs-built_in">document</span>.title = OriginTitle;
+        &#125;, <span class="hljs-number">2000</span>);
+    &#125;
+&#125;);</code></pre>
+<p>其中 <code>funny.ico</code> 是用户切换到其他标签后你网站的图标，<code>favicon.ico</code> 是正常图标，然后在 <font color=#FF0000>\themes\material-x\layout\layout.ejs</font> 文件中添加如下代码：</p>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!--浏览器搞笑标题--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/FunnyTitle.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>再次部署博客后就可以看见标题搞笑的效果了：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/027.jpg" alt="027"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/028.jpg" alt="028"></p>
+<hr>
+<h2 id="背景添加动态线条效果">背景添加动态线条效果</h2>
+<p>在 <font color=#FF0000>\Hexo\themes\hexo-theme-spfk\layout\layout.ejs</font> 文件中添加如下代码：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!--动态线条背景--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span></span>
+<span class="hljs-tag"><span class="hljs-attr">color</span>=<span class="hljs-string">&quot;220,220,220&quot;</span> <span class="hljs-attr">opacity</span>=<span class="hljs-string">&#x27;0.7&#x27;</span> <span class="hljs-attr">zIndex</span>=<span class="hljs-string">&quot;-2&quot;</span> <span class="hljs-attr">count</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>其中：</p>
+<ul>
+<li>color：表示线条颜色，三个数字分别为(R,G,B)，默认：（0,0,0）</li>
+<li>opacity：表示线条透明度（0~1），默认：0.5</li>
+<li>count：表示线条的总数量，默认：150</li>
+<li>zIndex：表示背景的z-index属性，css属性用于控制所在层的位置，默认：-1</li>
+</ul>
+<p>最终实现效果：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/029.jpg" alt="029"></p>
+<hr>
+<h2 id="添加人体时钟">添加人体时钟</h2>
+<p>无意中发现了个有趣的人体时钟 HONE HONE CLOCK，作者是个日本人，<a target="_blank" rel="noopener" href="http://chabudai.org/blog/">点击此处</a>访问作者博客，<a target="_blank" rel="noopener" href="http://chabudai.org/blog/?p=59">点击此处</a>在作者原博客上查看动态样式，<a target="_blank" rel="noopener" href="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.swf">点击此处</a>查看动态大图，如果你的博客上有合适的地方，加上一个人体时钟会很有趣的</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/030.png" alt="030"></p>
+<p>实现代码：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!--人体时钟背景透明--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;Shift_JIS&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!--人体时钟背景白--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;Shift_JIS&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>其他网页小挂件推荐：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://abowman.com/">http://abowman.com/</a> 里面有很多有趣的小挂件，可以养养鱼、龟、狗、仓鼠等各式各样的虚拟宠物，能根据你的鼠标指针位置移动，直接复制代码就可以用</li>
+<li><a target="_blank" rel="noopener" href="http://www.revolvermaps.com/">http://www.revolvermaps.com/</a> 它提供网站访客地理信息，可以以2D、3D等形式显示</li>
+<li><a target="_blank" rel="noopener" href="http://www.amazingcounters.com/">http://www.amazingcounters.com/</a> 免费网站计数器，有非常多的样式供你选择，可以设置计数器初始数值，可以设置按访问量计数，也可以按独立访问者计数</li>
+<li><a target="_blank" rel="noopener" href="https://www.seniverse.com/widget/get">https://www.seniverse.com/widget/get</a> 心知天气提供基于Web的免费天气插件，可以为你的网站添加一项简洁美观的天气预报功能，并自动适配PC和手机上的浏览</li>
+</ul>
+<hr>
+<h2 id="添加RSS订阅">添加RSS订阅</h2>
+<p>RSS订阅是站点用来和其他站点之间共享内容的一种简易方式，即Really Simple Syndication（简易信息聚合），如果不会使用，可以参见百度百科：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/RSS%E8%AE%A2%E9%98%85/663114">https://baike.baidu.com/item/RSS订阅/663114</a> ；首先我们安装feed插件，在本地hexo目录下右键<code>git bash here</code>，输入以下命令：</p>
+<pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm install hexo-generator-feed</span></code></pre>
+<p>等待安装完成后，打开hexo目录下配置文件的<code>_config.yml</code>，在末尾添加以下配置：</p>
+<pre><code class="hljs yaml"><span class="hljs-comment"># Extensions</span>
+<span class="hljs-comment">## Plugins: http://hexo.io/plugins/</span>
+<span class="hljs-comment">#RSS订阅</span>
+<span class="hljs-attr">plugin:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-string">hexo-generator-feed</span>
+<span class="hljs-comment">#Feed Atom</span>
+<span class="hljs-attr">feed:</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">atom</span>
+<span class="hljs-attr">path:</span> <span class="hljs-string">atom.xml</span>
+<span class="hljs-attr">limit:</span> <span class="hljs-number">20</span></code></pre>
+<p>随后打开主题配置文件<code>_config.yml</code>，添加以下配置：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">rss:</span> <span class="hljs-string">/atom.xml</span></code></pre>
+<p>至此，RSS订阅功能添加完成</p>
+<hr>
+<h2 id="添加网站雪花飘落效果">添加网站雪花飘落效果</h2>
+<p>样式一和样式二分别如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/031.jpg" alt="031"></p>
+<p><img src="https://cdn.itbob.cn/img/article/003/032.jpg" alt="032"></p>
+<p>实现方法：在 <font color=#FF0000>\Hexo\themes\hexo-theme-spfk\source\js</font> 目录下新建一个 <font color=#FF0000>snow.js</font> 文件，粘贴以下代码：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-comment">/*样式一*/</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$</span>)</span>&#123;
+    $.fn.snow = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">options</span>)</span>&#123;
+    <span class="hljs-keyword">var</span> $flake = $(<span class="hljs-string">&#x27;&lt;div id=&quot;snowbox&quot; /&gt;&#x27;</span>).css(&#123;<span class="hljs-string">&#x27;position&#x27;</span>: <span class="hljs-string">&#x27;absolute&#x27;</span>,<span class="hljs-string">&#x27;z-index&#x27;</span>:<span class="hljs-string">&#x27;9999&#x27;</span>, <span class="hljs-string">&#x27;top&#x27;</span>: <span class="hljs-string">&#x27;-50px&#x27;</span>&#125;).html(<span class="hljs-string">&#x27;&amp;#10052;&#x27;</span>),
+    documentHeight 	= $(<span class="hljs-built_in">document</span>).height(),
+    documentWidth	= $(<span class="hljs-built_in">document</span>).width(),
+    defaults = &#123;
+        <span class="hljs-attr">minSize</span>		: <span class="hljs-number">10</span>,
+        <span class="hljs-attr">maxSize</span>		: <span class="hljs-number">20</span>,
+        <span class="hljs-attr">newOn</span>		: <span class="hljs-number">1000</span>,
+        <span class="hljs-attr">flakeColor</span>	: <span class="hljs-string">&quot;#AFDAEF&quot;</span> <span class="hljs-comment">/* 此处可以定义雪花颜色，若要白色可以改为#FFFFFF */</span>
+    &#125;,
+    options	= $.extend(&#123;&#125;, defaults, options);
+    <span class="hljs-keyword">var</span> interval= <span class="hljs-built_in">setInterval</span>( <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">var</span> startPositionLeft = <span class="hljs-built_in">Math</span>.random() * documentWidth - <span class="hljs-number">100</span>,
+    startOpacity = <span class="hljs-number">0.5</span> + <span class="hljs-built_in">Math</span>.random(),
+    sizeFlake = options.minSize + <span class="hljs-built_in">Math</span>.random() * options.maxSize,
+    endPositionTop = documentHeight - <span class="hljs-number">200</span>,
+    endPositionLeft = startPositionLeft - <span class="hljs-number">500</span> + <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">500</span>,
+    durationFall = documentHeight * <span class="hljs-number">10</span> + <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">5000</span>;
+    $flake.clone().appendTo(<span class="hljs-string">&#x27;body&#x27;</span>).css(&#123;
+        <span class="hljs-attr">left</span>: startPositionLeft,
+        <span class="hljs-attr">opacity</span>: startOpacity,
+        <span class="hljs-string">&#x27;font-size&#x27;</span>: sizeFlake,
+        <span class="hljs-attr">color</span>: options.flakeColor
+    &#125;).animate(&#123;
+        <span class="hljs-attr">top</span>: endPositionTop,
+        <span class="hljs-attr">left</span>: endPositionLeft,
+        <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.2</span>
+    &#125;,durationFall,<span class="hljs-string">&#x27;linear&#x27;</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+        $(<span class="hljs-built_in">this</span>).remove()
+    &#125;);
+    &#125;, options.newOn);
+    &#125;;
+&#125;)(jQuery);
+$(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+    $.fn.snow(&#123; 
+        <span class="hljs-attr">minSize</span>: <span class="hljs-number">5</span>, <span class="hljs-comment">/* 定义雪花最小尺寸 */</span>
+        <span class="hljs-attr">maxSize</span>: <span class="hljs-number">50</span>,<span class="hljs-comment">/* 定义雪花最大尺寸 */</span>
+        <span class="hljs-attr">newOn</span>: <span class="hljs-number">300</span>  <span class="hljs-comment">/* 定义密集程度，数字越小越密集 */</span>
+    &#125;);
+&#125;);</code></pre>
+<pre><code class="hljs JS"><span class="hljs-comment">/*样式二*/</span>
+<span class="hljs-comment">/* 控制下雪 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">snowFall</span>(<span class="hljs-params">snow</span>) </span>&#123;
+    <span class="hljs-comment">/* 可配置属性 */</span>
+    snow = snow || &#123;&#125;;
+    <span class="hljs-built_in">this</span>.maxFlake = snow.maxFlake || <span class="hljs-number">200</span>;   <span class="hljs-comment">/* 最多片数 */</span>
+    <span class="hljs-built_in">this</span>.flakeSize = snow.flakeSize || <span class="hljs-number">10</span>;  <span class="hljs-comment">/* 雪花形状 */</span>
+    <span class="hljs-built_in">this</span>.fallSpeed = snow.fallSpeed || <span class="hljs-number">1</span>;   <span class="hljs-comment">/* 坠落速度 */</span>
+&#125;
+<span class="hljs-comment">/* 兼容写法 */</span>
+requestAnimationFrame = <span class="hljs-built_in">window</span>.requestAnimationFrame ||
+    <span class="hljs-built_in">window</span>.mozRequestAnimationFrame ||
+    <span class="hljs-built_in">window</span>.webkitRequestAnimationFrame ||
+    <span class="hljs-built_in">window</span>.msRequestAnimationFrame ||
+    <span class="hljs-built_in">window</span>.oRequestAnimationFrame ||
+    <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>&#123; <span class="hljs-built_in">setTimeout</span>(callback, <span class="hljs-number">1000</span> / <span class="hljs-number">60</span>); &#125;;
+
+cancelAnimationFrame = <span class="hljs-built_in">window</span>.cancelAnimationFrame ||
+    <span class="hljs-built_in">window</span>.mozCancelAnimationFrame ||
+    <span class="hljs-built_in">window</span>.webkitCancelAnimationFrame ||
+    <span class="hljs-built_in">window</span>.msCancelAnimationFrame ||
+    <span class="hljs-built_in">window</span>.oCancelAnimationFrame;
+<span class="hljs-comment">/* 开始下雪 */</span>
+snowFall.prototype.start = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-comment">/* 创建画布 */</span>
+    snowCanvas.apply(<span class="hljs-built_in">this</span>);
+    <span class="hljs-comment">/* 创建雪花形状 */</span>
+    createFlakes.apply(<span class="hljs-built_in">this</span>);
+    <span class="hljs-comment">/* 画雪 */</span>
+    drawSnow.apply(<span class="hljs-built_in">this</span>)
+&#125;
+<span class="hljs-comment">/* 创建画布 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">snowCanvas</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-comment">/* 添加Dom结点 */</span>
+    <span class="hljs-keyword">var</span> snowcanvas = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&quot;canvas&quot;</span>);
+    snowcanvas.id = <span class="hljs-string">&quot;snowfall&quot;</span>;
+    snowcanvas.width = <span class="hljs-built_in">window</span>.innerWidth;
+    snowcanvas.height = <span class="hljs-built_in">document</span>.body.clientHeight;
+    snowcanvas.setAttribute(<span class="hljs-string">&quot;style&quot;</span>, <span class="hljs-string">&quot;position:absolute; top: 0; left: 0; z-index: 1; pointer-events: none;&quot;</span>);
+    <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">&quot;body&quot;</span>)[<span class="hljs-number">0</span>].appendChild(snowcanvas);
+    <span class="hljs-built_in">this</span>.canvas = snowcanvas;
+    <span class="hljs-built_in">this</span>.ctx = snowcanvas.getContext(<span class="hljs-string">&quot;2d&quot;</span>);
+    <span class="hljs-comment">/* 窗口大小改变的处理 */</span>
+    <span class="hljs-built_in">window</span>.onresize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        snowcanvas.width = <span class="hljs-built_in">window</span>.innerWidth;
+        <span class="hljs-comment">/* snowcanvas.height = window.innerHeight */</span>
+    &#125;
+&#125;
+<span class="hljs-comment">/* 雪运动对象 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flakeMove</span>(<span class="hljs-params">canvasWidth, canvasHeight, flakeSize, fallSpeed</span>) </span>&#123;
+    <span class="hljs-built_in">this</span>.x = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * canvasWidth);   <span class="hljs-comment">/* x坐标 */</span>
+    <span class="hljs-built_in">this</span>.y = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * canvasHeight);  <span class="hljs-comment">/* y坐标 */</span>
+    <span class="hljs-built_in">this</span>.size = <span class="hljs-built_in">Math</span>.random() * flakeSize + <span class="hljs-number">2</span>;          <span class="hljs-comment">/* 形状 */</span>
+    <span class="hljs-built_in">this</span>.maxSize = flakeSize;                           <span class="hljs-comment">/* 最大形状 */</span>
+    <span class="hljs-built_in">this</span>.speed = <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">1</span> + fallSpeed;         <span class="hljs-comment">/* 坠落速度 */</span>
+    <span class="hljs-built_in">this</span>.fallSpeed = fallSpeed;                         <span class="hljs-comment">/* 坠落速度 */</span>
+    <span class="hljs-built_in">this</span>.velY = <span class="hljs-built_in">this</span>.speed;                             <span class="hljs-comment">/* Y方向速度 */</span>
+    <span class="hljs-built_in">this</span>.velX = <span class="hljs-number">0</span>;                                      <span class="hljs-comment">/* X方向速度 */</span>
+    <span class="hljs-built_in">this</span>.stepSize = <span class="hljs-built_in">Math</span>.random() / <span class="hljs-number">30</span>;                 <span class="hljs-comment">/* 步长 */</span>
+    <span class="hljs-built_in">this</span>.step = <span class="hljs-number">0</span>                                       <span class="hljs-comment">/* 步数 */</span>
+&#125;
+flakeMove.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> x = <span class="hljs-built_in">this</span>.x,
+        y = <span class="hljs-built_in">this</span>.y;
+    <span class="hljs-comment">/* 左右摆动(余弦) */</span>
+    <span class="hljs-built_in">this</span>.velX *= <span class="hljs-number">0.98</span>;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.velY &lt;= <span class="hljs-built_in">this</span>.speed) &#123;
+        <span class="hljs-built_in">this</span>.velY = <span class="hljs-built_in">this</span>.speed
+    &#125;
+    <span class="hljs-built_in">this</span>.velX += <span class="hljs-built_in">Math</span>.cos(<span class="hljs-built_in">this</span>.step += <span class="hljs-number">.05</span>) * <span class="hljs-built_in">this</span>.stepSize;
+
+    <span class="hljs-built_in">this</span>.y += <span class="hljs-built_in">this</span>.velY;
+    <span class="hljs-built_in">this</span>.x += <span class="hljs-built_in">this</span>.velX;
+    <span class="hljs-comment">/* 飞出边界的处理 */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.x &gt;= canvas.width || <span class="hljs-built_in">this</span>.x &lt;= <span class="hljs-number">0</span> || <span class="hljs-built_in">this</span>.y &gt;= canvas.height || <span class="hljs-built_in">this</span>.y &lt;= <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-built_in">this</span>.reset(canvas.width, canvas.height)
+    &#125;
+&#125;;
+<span class="hljs-comment">/* 飞出边界-放置最顶端继续坠落 */</span>
+flakeMove.prototype.reset = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">width, height</span>) </span>&#123;
+    <span class="hljs-built_in">this</span>.x = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * width);
+    <span class="hljs-built_in">this</span>.y = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">this</span>.size = <span class="hljs-built_in">Math</span>.random() * <span class="hljs-built_in">this</span>.maxSize + <span class="hljs-number">2</span>;
+    <span class="hljs-built_in">this</span>.speed = <span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">1</span> + <span class="hljs-built_in">this</span>.fallSpeed;
+    <span class="hljs-built_in">this</span>.velY = <span class="hljs-built_in">this</span>.speed;
+    <span class="hljs-built_in">this</span>.velX = <span class="hljs-number">0</span>;
+&#125;;
+<span class="hljs-comment">// 渲染雪花-随机形状（此处可修改雪花颜色！！！）</span>
+flakeMove.prototype.render = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ctx</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> snowFlake = ctx.createRadialGradient(<span class="hljs-built_in">this</span>.x, <span class="hljs-built_in">this</span>.y, <span class="hljs-number">0</span>, <span class="hljs-built_in">this</span>.x, <span class="hljs-built_in">this</span>.y, <span class="hljs-built_in">this</span>.size);
+    snowFlake.addColorStop(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;rgba(255, 255, 255, 0.9)&quot;</span>);  <span class="hljs-comment">/* 此处是雪花颜色，默认是白色 */</span>
+    snowFlake.addColorStop(<span class="hljs-number">.5</span>, <span class="hljs-string">&quot;rgba(255, 255, 255, 0.5)&quot;</span>); <span class="hljs-comment">/* 若要改为其他颜色，请自行查 */</span>
+    snowFlake.addColorStop(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;rgba(255, 255, 255, 0)&quot;</span>);    <span class="hljs-comment">/* 找16进制的RGB 颜色代码。 */</span>
+    ctx.save();
+    ctx.fillStyle = snowFlake;
+    ctx.beginPath();
+    ctx.arc(<span class="hljs-built_in">this</span>.x, <span class="hljs-built_in">this</span>.y, <span class="hljs-built_in">this</span>.size, <span class="hljs-number">0</span>, <span class="hljs-built_in">Math</span>.PI * <span class="hljs-number">2</span>);
+    ctx.fill();
+    ctx.restore();
+&#125;;
+<span class="hljs-comment">/* 创建雪花-定义形状 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createFlakes</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> maxFlake = <span class="hljs-built_in">this</span>.maxFlake,
+        flakes = <span class="hljs-built_in">this</span>.flakes = [],
+        canvas = <span class="hljs-built_in">this</span>.canvas;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; maxFlake; i++) &#123;
+        flakes.push(<span class="hljs-keyword">new</span> flakeMove(canvas.width, canvas.height, <span class="hljs-built_in">this</span>.flakeSize, <span class="hljs-built_in">this</span>.fallSpeed))
+    &#125;
+&#125;
+<span class="hljs-comment">/* 画雪 */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawSnow</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> maxFlake = <span class="hljs-built_in">this</span>.maxFlake,
+        flakes = <span class="hljs-built_in">this</span>.flakes;
+    ctx = <span class="hljs-built_in">this</span>.ctx, canvas = <span class="hljs-built_in">this</span>.canvas, that = <span class="hljs-built_in">this</span>;
+    <span class="hljs-comment">/* 清空雪花 */</span>
+    ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, canvas.width, canvas.height);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> e = <span class="hljs-number">0</span>; e &lt; maxFlake; e++) &#123;
+        flakes[e].update();
+        flakes[e].render(ctx);
+    &#125;
+    <span class="hljs-comment">/*  一帧一帧的画 */</span>
+    <span class="hljs-built_in">this</span>.loop = requestAnimationFrame(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        drawSnow.apply(that);
+    &#125;);
+&#125;
+<span class="hljs-comment">/* 调用及控制方法 */</span>
+<span class="hljs-keyword">var</span> snow = <span class="hljs-keyword">new</span> snowFall(&#123;<span class="hljs-attr">maxFlake</span>:<span class="hljs-number">60</span>&#125;);
+snow.start();</code></pre>
+<p>然后在 <font color=#FF0000>\Hexo\themes\hexo-theme-spfk\layout\layout.ejs</font> 文件里引用即可：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 雪花特效 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;\js\snow.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>如果没效果，请确认网页是否已载入JQurey，如果没有请在下雪代码之前引入JQ即可：</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://libs.baidu.com/jquery/1.8.3/jquery.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;http://libs.baidu.com/jquery/1.8.3/jquery.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://ihuan.me/2172.html">《分享两种圣诞节雪花特效JS代码(网站下雪效果)》</a></p>
+<hr>
+<h2 id="添加-Fork-me-on-GitHub-效果">添加 Fork me on GitHub 效果</h2>
+<p>效果图：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/033.jpg" alt="033"></p>
+<p><a target="_blank" rel="noopener" href="https://blog.github.com/2008-12-19-github-ribbons/">点击此处</a>可以查看更多样式，将相应样式的代码复制到你想要放的地方就OK了，代码里的链接也要替换成你的，更多创意，比如 Follow me on CSDN ，只需要用PS改掉图片里的文字，替换掉相应链接即可</p>
+<hr>
+<h2 id="添加背景动态彩带效果">添加背景动态彩带效果</h2>
+<p>样式一是鼠标点击后彩带自动更换样式，样式二是飘动的彩带：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/034.jpg" alt="034"></p>
+<p>实现方法：在 <font color=#FF0000>\themes\material-x\layout\layout.ejs</font> 文件的<font color=#FF0000>body</font>前面添加如下代码：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 样式一（鼠标点击更换样式） --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://g.joyinshare.com/hc/ribbon.min.js&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 样式二（飘动的彩带） --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://g.joyinshare.com/hc/piao.js&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<hr>
+<h2 id="添加背景代码雨特效">添加背景代码雨特效</h2>
+<p>新建 <code>DigitalRain.js</code>，写入以下代码：</p>
+<pre><code class="hljs JS"><span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-comment">//获取画布对象</span>
+    <span class="hljs-keyword">var</span> canvas = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;canvas&quot;</span>);
+    <span class="hljs-comment">//获取画布的上下文</span>
+    <span class="hljs-keyword">var</span> context =canvas.getContext(<span class="hljs-string">&quot;2d&quot;</span>);
+    <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">window</span>.screen;
+    <span class="hljs-keyword">var</span> W = canvas.width = s.width;
+    <span class="hljs-keyword">var</span> H = canvas.height;
+    <span class="hljs-comment">//获取浏览器屏幕的宽度和高度</span>
+    <span class="hljs-comment">//var W = window.innerWidth;</span>
+    <span class="hljs-comment">//var H = window.innerHeight;</span>
+    <span class="hljs-comment">//设置canvas的宽度和高度</span>
+    canvas.width = W;
+    canvas.height = H;
+    <span class="hljs-comment">//每个文字的字体大小</span>
+    <span class="hljs-keyword">var</span> fontSize = <span class="hljs-number">12</span>;
+    <span class="hljs-comment">//计算列</span>
+    <span class="hljs-keyword">var</span> colunms = <span class="hljs-built_in">Math</span>.floor(W /fontSize);	
+    <span class="hljs-comment">//记录每列文字的y轴坐标</span>
+    <span class="hljs-keyword">var</span> drops = [];
+    <span class="hljs-comment">//给每一个文字初始化一个起始点的位置</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;colunms;i++)&#123;
+        drops.push(<span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-comment">//运动的文字</span>
+    <span class="hljs-keyword">var</span> str =<span class="hljs-string">&quot;WELCOME TO WWW.ITRHX.COM&quot;</span>;
+    <span class="hljs-comment">//4:fillText(str,x,y);原理就是去更改y的坐标位置</span>
+    <span class="hljs-comment">//绘画的函数</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>&#123;
+        context.fillStyle = <span class="hljs-string">&quot;rgba(238,238,238,.08)&quot;</span>;<span class="hljs-comment">//遮盖层</span>
+        context.fillRect(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,W,H);
+        <span class="hljs-comment">//给字体设置样式</span>
+        context.font = <span class="hljs-string">&quot;600 &quot;</span>+fontSize+<span class="hljs-string">&quot;px  Georgia&quot;</span>;
+        <span class="hljs-comment">//给字体添加颜色</span>
+        context.fillStyle = [<span class="hljs-string">&quot;#33B5E5&quot;</span>, <span class="hljs-string">&quot;#0099CC&quot;</span>, <span class="hljs-string">&quot;#AA66CC&quot;</span>, <span class="hljs-string">&quot;#9933CC&quot;</span>, <span class="hljs-string">&quot;#99CC00&quot;</span>, <span class="hljs-string">&quot;#669900&quot;</span>, <span class="hljs-string">&quot;#FFBB33&quot;</span>, <span class="hljs-string">&quot;#FF8800&quot;</span>, <span class="hljs-string">&quot;#FF4444&quot;</span>, <span class="hljs-string">&quot;#CC0000&quot;</span>][<span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span>)];<span class="hljs-comment">//randColor();可以rgb,hsl, 标准色，十六进制颜色</span>
+        <span class="hljs-comment">//写入画布中</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;colunms;i++)&#123;
+            <span class="hljs-keyword">var</span> index = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * str.length);
+            <span class="hljs-keyword">var</span> x = i*fontSize;
+            <span class="hljs-keyword">var</span> y = drops[i] *fontSize;
+            context.fillText(str[index],x,y);
+            <span class="hljs-comment">//如果要改变时间，肯定就是改变每次他的起点</span>
+            <span class="hljs-keyword">if</span>(y &gt;= canvas.height &amp;&amp; <span class="hljs-built_in">Math</span>.random() &gt; <span class="hljs-number">0.99</span>)&#123;
+                drops[i] = <span class="hljs-number">0</span>;
+            &#125;
+            drops[i]++;
+        &#125;
+    &#125;;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randColor</span>(<span class="hljs-params"></span>)</span>&#123;<span class="hljs-comment">//随机颜色</span>
+        <span class="hljs-keyword">var</span> r = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">256</span>);
+        <span class="hljs-keyword">var</span> g = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">256</span>);
+        <span class="hljs-keyword">var</span> b = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">256</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;rgb(&quot;</span>+r+<span class="hljs-string">&quot;,&quot;</span>+g+<span class="hljs-string">&quot;,&quot;</span>+b+<span class="hljs-string">&quot;)&quot;</span>;
+    &#125;
+    draw();
+    <span class="hljs-built_in">setInterval</span>(draw,<span class="hljs-number">35</span>);
+&#125;;</code></pre>
+<p>在主题文件的相关css文件中（以 <font color=#FF0000>Material X 1.2.1</font> 主题为例，在<font color=#FF0000>\themes\material-x-1.2.1\source\less\_main.less</font> 文件末尾）添加以下代码：</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">canvas</span> &#123;
+  <span class="hljs-attribute">position</span>: fixed;
+  <span class="hljs-attribute">right</span>: <span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0px</span>;
+  <span class="hljs-attribute">min-width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">min-height</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">height</span>: auto;
+  <span class="hljs-attribute">width</span>: auto;
+  <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
+&#125;</code></pre>
+<p>然后在主题的 <font color=#FF0000>layout.ejs</font> 文件中引入即可：</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!-- 数字雨 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">canvas</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;canvas&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;1440&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;900&quot;</span> &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">canvas</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/js/DigitalRain.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+<p>最终效果：</p>
+<p><img src="https://cdn.itbob.cn/img/article/003/035.jpg" alt="035"></p>
+<p>代码来源：<a target="_blank" rel="noopener" href="http://www.lxl8800.cn/Main/Resource">http://www.lxl8800.cn/Main/Resource</a></p>
+<hr>
+<h2 id="自定义一个不使用主题模板渲染的独立页面">自定义一个不使用主题模板渲染的独立页面</h2>
+<p>    有时候我们需要新建一个独立的页面，这个页面<font color=#FF0000>不使用主题的渲染，具有自己独立的样式</font>，可以放一些自己的作品，相册什么的，以下就介绍这种独立页面的实现方法。</p>
+<p><font color=#FF0000>方法一：</font></p>
+<p>    使用 Hexo 提供的跳过渲染配置，在博客根目录的配置文件 <code>_config.yml</code> 里找到 <code>skip_render</code> 关键字，在后面添加想要跳过渲染的页面，比如我们创建 <code>\source\about\index.html</code>， 配置文件填写：<code>skip_render: about\**</code>，那么就表示 <code>\source\about</code> 里所有的文件将跳过渲染，里面的文件将会被直接复制到 public 文件夹，此时就会得到一个独立的 about 页面；官方文档：<a target="_blank" rel="noopener" href="https://hexo.io/docs/configuration">https://hexo.io/docs/configuration</a></p>
+<p><font color=#FF0000>方法二：</font></p>
+<p>    在文章头部的 Front-matter 里添加配置 <code>layout: false</code> 来跳过渲染配置，比如我们要使 about 页面跳过渲染，创建 <code>\source\about\index.md</code>，将这个页面的相关 HTML 代码写进<code>.md</code>文件并保存，然后在 <code>index.md</code> 的头部写入：</p>
+<pre><code class="hljs text">---
+layout: false
+---
+&#123; % raw % &#125;
+
+这里是 HTML 代码
+
+&#123; % endraw % &#125;</code></pre>
+<p>PS：Front-matter 是 <code>.md</code> 文件最上方以 — 分隔的区域，用于指定个别文件的变量，官方文档：<a target="_blank" rel="noopener" href="https://hexo.io/docs/front-matter">https://hexo.io/docs/front-matter</a></p>
+<p>效果可以对比我的<a target="_blank" rel="noopener" href="https://www.itrhx.com/">博客主页</a>和<a target="_blank" rel="noopener" href="https://www.itrhx.com/about/">关于页面</a></p>
+<hr>
+<h2 id="更改本地预览端口号">更改本地预览端口号</h2>
+<p>hexo博客在执行 <code>hexo s</code> 进行本地预览的时候，默认端口号是4000，当该端口号被占用时会报错 <code>Error: listen EADDRINUSE 0.0.0.0:4000</code> ，此时可以关闭占用该端口的进程，也可以更换端口号，更换端口号可以通过以下两种方法实现：</p>
+<p>方法一：在根目录的 <code>_config.yml</code> 配置文件内加上如下代码更改 <code>hexo s</code> 运行时的端口号：</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">5000</span>
+  <span class="hljs-attr">compress:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">header:</span> <span class="hljs-literal">true</span></code></pre>
+<p>方法二：通过 <code>hexo server -p 5000</code> 命令来指定端口，这种方法只是本次执行有效</p>
+<hr>
+<h2 id="未完待续…">未完待续…</h2>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/004/" 
+                            class="post-title gt-a-link">免费 CDN：jsDelivr + Github</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/002/" 
+                            class="post-title gt-a-link">使用 Github Pages 和 Hexo 搭建自己的独立博客</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">PV</span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">UV</span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">WordCount</span>
+                <span class="badge-value bg-firebrick post-count">279k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Powered</span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">Theme</span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </body>
+</html>
