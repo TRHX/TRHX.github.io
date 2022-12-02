@@ -1,0 +1,109 @@
+<% if(theme.vendors.materialcdn) { %>
+    <link rel="stylesheet" href="<%= theme.vendors.materialcdn + '/css/gallery.min.css' %>">
+<% } else { %>
+    <link rel="stylesheet" href="<%= url_for('css/gallery.min.css') %>">
+<% } %>
+
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <h1>
+                <a href="<%= config.root %>"><strong><%- config.title %></strong></a> - <%= page.title %>
+            </h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#footer" class="icon fa-info-circle">
+                            ©&nbsp;<%- config.author %>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main -->
+        <div id="main">
+            <% if (site.data.gallery) { %>
+                <% for (var i in site.data.gallery) { %>
+                    <article class="thumb">
+                        <a href="<%= site.data.gallery[i].full_link %>" class="image lazy" data-original="<%= site.data.gallery[i].thumb_link %>"><img class="lazy" data-original="<%= site.data.gallery[i].thumb_link %>" alt="<%= i %>" /></a>
+                        <h2><%= i %></h2>
+                        <p><%= site.data.gallery[i].descr %></p>
+                    </article>
+                <% } %>
+            <% } %>
+        </div>
+        <!-- Footer -->
+        <% if(theme.gallery.panel_show === true) { %>
+        <footer id="footer" class="panel">
+          <div class="inner split">
+		  <% if(theme.gallery.left_show === true) { %>
+            <div>
+              <section>
+                <h2><%= theme.gallery.left_title %></h2>
+                <p><%= theme.gallery.left_info %></p>
+              </section>
+              <!-- <p class="copyright">
+                &copy; Design: <a href="#">Gallery</a>.
+              </p> -->
+            </div>
+			<% } %>
+			<% if(theme.gallery.right_show === true) { %>
+            <div>
+              <section>
+                <h2><%= theme.gallery.right_title %></h2>
+                <form method="post" action="https://formspree.io/<%= theme.sns.email %>">
+                  <div class="field half first">
+                    <input type="text" id="Name" name="name" placeholder="Name" />
+                  </div>
+                  <div class="field half">
+                    <input pattern="[a-z,0-9,@,.,-,_]*" type="text" id="Email" name="_replyto" placeholder="Email" />
+                  </div>
+                  <div class="field">
+                    <textarea id="note" name="message" rows="4" placeholder="Message"></textarea>
+                  </div>
+                  <ul class="actions">
+                    <li><input type="submit" value="Send" class="special" /></li>
+                    <li><input type="reset" value="Reset" /></li>
+                  </ul>
+                </form>
+              </section>
+            </div>
+			<% } %>
+          </div>
+        </footer>
+        <% } %>
+
+    </div>
+
+    <!-- Scripts -->
+    <% if(theme.vendors.materialcdn) { %>
+        <script src="<%= theme.vendors.materialcdn + '/js/gallery/gallery.js' %>"></script>
+    <% } else { %>
+        <script src="<%= url_for('js/gallery/gallery.js') %>"></script>
+    <% } %>
+
+    <% if(theme.vendors.materialcdn) { %>
+        <%- jsLsload({path:(theme.vendors.materialcdn + '/js/lazyload.min.js'),key:'lazyload_js'}) %>
+    <% } else { %>
+        <%- jsLsload({path:('js/lazyload.min.js'),key:'lazyload_js'}) %>
+    <% } %>
+
+    <script>
+        queue.offer(function(){
+            $('.lazy').lazyload({
+              effect: 'fadeIn',
+              event: 'scrollstop'
+            });
+        })
+        <!-- Start Queue -->
+        $(document).ready(function(){
+            setInterval(function(){
+                queue.execNext();
+            },200);
+        });
+    </script>
+</body>

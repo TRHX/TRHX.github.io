@@ -1,0 +1,110 @@
+<!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    <% if(theme.scheme === 'Paradox') { %>
+        <!-- Paradox Footer Left Section -->
+        <%- partial('_partial/footer-left') %>
+
+            <!--Copyright-->
+            <div id="copyright">
+
+                <% if(theme.footer_text) { %>
+                    <div class="itbob-footer-text">
+                        <% if(Array.isArray(theme.footer_text)) { %>
+                            <%- theme.footer_text.join('<br>') %>
+                                <% } else { %>
+                                    <%- theme.footer_text %>
+                                        <% } %>
+                    </div>
+                    <% } %>
+
+                        Copyright&nbsp;©&nbsp;<span year></span>&nbsp;ITBOB丨
+
+                        <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+                        <script>
+                            var now = new Date();
+
+                            function createtime() {
+                                var grt = new Date("08/10/2018 17:38:00"); //在此处修改你的建站时间，格式：月/日/年 时:分:秒
+                                now.setTime(now.getTime() + 250);
+                                days = (now - grt) / 1000 / 60 / 60 / 24;
+                                dnum = Math.floor(days);
+                                hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                                hnum = Math.floor(hours);
+                                if (String(hnum).length == 1) {
+                                    hnum = "0" + hnum;
+                                }
+                                minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                                mnum = Math.floor(minutes);
+                                if (String(mnum).length == 1) {
+                                    mnum = "0" + mnum;
+                                }
+                                seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                                snum = Math.round(seconds);
+                                if (String(snum).length == 1) {
+                                    snum = "0" + snum;
+                                }
+                                document.getElementById("timeDate").innerHTML = "本站已运行了 " + dnum + " 天 ";
+                                document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+                            }
+                            setInterval("createtime()", 250);
+                        </script>
+
+
+            </div>
+
+            <!-- All Site UV -->
+            <!-- <% if(theme.busuanzi.all_site_uv === true) { %>
+        <br />
+        <span id="busuanzi_container_site_uv">本站访客数
+            <span id="busuanzi_value_site_uv">
+            </span>
+        </span>|
+        <span id="busuanzi_container_site_pv">本站总访问量
+            <span id="busuanzi_value_site_pv">
+                
+            </span>
+        </span>|
+        <i class="material-icons">keyboard</i>站点总字数<span class="post-count"><%= totalcount(site) %></span>
+        <% } %>
+        </div> -->
+            <!-- Paradox Footer Right Section -->
+
+            <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+            <!-- <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div> -->
+
+            <div class="mdl-mini-footer--right-section">
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">PV</span>
+                        <span class="badge-value bg-brightgreen" id="busuanzi_value_site_pv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Powered</span>
+                        <span class="badge-value bg-blue">Hexo</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">UV</span>
+                        <span class="badge-value bg-firebrick" id="busuanzi_value_site_uv"></span>
+                    </div>
+                    <div class="itbob-github-badge">
+                        <span class="badge-subject">Theme</span>
+                        <span class="badge-value bg-orange">Material</span>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+</footer>

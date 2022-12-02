@@ -1,0 +1,59 @@
+<div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title"><%= page.title ? page.title : "(无标题)" %></h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: <%= date(page.date) %>丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                <% if(theme.word_count) { %>
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: <%= wordcount(page.content) %>丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: <%= min2read(page.content) %>分丨
+                    </span>
+                <% } %>
+                <% if(page.tags) { %>
+                    <% page.tags.forEach((tag) => { %>
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="<%= url_for(tag.path) %>" class="post-tag">
+                            <%= tag.name %></a>
+                    <% }); %>
+                <% } %>
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <%- page.content %>
+            </div>
+        </article>
+    </div>
+    <br>
+    <% if (page.next || page.prev) { %>
+        <div class="next-prev-post">
+            <% if (page.prev) { %>
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="<%- url_for(page.prev.path) %>" 
+                            class="post-title gt-a-link"><%- page.prev.title %></a>
+                    </div>
+                </div>
+            <% } %>
+            <% if (page.next) { %>
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="<%- url_for(page.next.path) %>" 
+                            class="post-title gt-a-link"><%- page.next.title %></a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+    <%- partial("_includes/disqus.ejs") %>
+    <%- partial("_includes/gitalk") %>
+    <%- partial("_includes/valine") %>
+</div>

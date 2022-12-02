@@ -1,0 +1,44 @@
+<!-- Daily pic -->
+<div class="mdl-card <% if(theme.card_elevation) { %><%= 'mdl-shadow--' + theme.card_elevation + 'dp' %><% } %> daily-pic mdl-cell mdl-cell--8-col index-top-block">
+
+    <!-- Pic & Slogan -->
+    <!-- <div class="mdl-card__media mdl-color-text--grey-50" style="background-image:url(<%= url_for(theme.img.daily_pic) %>)">
+        <p class="index-top-block-slogan"><a href="<%= theme.url.daily_pic %>">
+        <% if(theme.uiux.slogan) { %>
+            <% if(Array.isArray(theme.uiux.slogan)) { %>
+                <%- theme.uiux.slogan.join('<br>') %>
+            <% } else { %>
+                <%- theme.uiux.slogan %>
+            <% } %>
+        <% } %>
+        </a>
+    </p>
+    </div> -->
+
+    <!-- Pic & Slogan -->
+    <div class="mdl-card__media mdl-color-text--grey-50" style="background-image:url(<%= url_for(theme.img.daily_pic) %>)">
+            <!-- Hitokoto 一言 -->
+            <p class="index-top-block-slogan" id="hitokoto"><a href="<%= theme.url.daily_pic %>"></a></p>
+            <script src="https://fastly.jsdelivr.net/npm/bluebird@3/js/browser/bluebird.min.js"></script>
+            <script src="https://fastly.jsdelivr.net/npm/whatwg-fetch@2.0.3/fetch.min.js"></script>
+            <script src="https://v1.hitokoto.cn/?c=c&c=d&c=e&c=k&encode=js&select=%23hitokoto&max_length=22" defer></script>
+    </div>
+
+    <!-- Avatar & Name -->
+    <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+        <!-- Author Avatar -->
+        <div id="author-avatar">
+            <img src="<%= url_for(theme.img.avatar) %>" width="32px" height="32px" alt="avatar">
+        </div>
+        <div>
+            <strong>I'M <%= config.author %>丨网络爬虫丨逆向安全丨数据挖掘丨数据分析
+                <!-- <script src="https://fastly.jsdelivr.net/gh/TRHX/CDN-for-itbob.cn@1.1/js/typed.js"></script>
+                <span id="subtitle"></span>
+                <span id="typed-cursor"></span>
+                <script>
+                    var typed = new Typed("#subtitle", { strings: ["原博客：www.itrhx.com"], startDelay: 1000, typeSpeed: 100, loop: !0, backSpeed: 60, backDelay: 2000, showCursor: !0 })
+                </script> -->
+            </strong>
+        </div>
+    </div>
+</div>

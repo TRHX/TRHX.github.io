@@ -1,0 +1,127 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+<% if (theme.force_https) { %>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<% } %>
+
+<!-- Title -->
+<title><%= page.archive ? `归档 - ${config.title}` : page.title ? `${page.title} - ${config.title}` : `${config.title}` %></title>
+
+<!-- Icon -->
+<link rel="icon" href="<%- url_for(theme.favicon) %>">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+<% if(theme.katex) { %>
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+<% } %>
+
+<!-- Style -->
+<%- css('styles/main') %>
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+<% if (theme.web_analytics && theme.web_analytics.enable) { %>
+    <% if (theme.web_analytics.google) { %>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.google_analytics.id  %>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '<%- theme.google_analytics.id  %>');
+        </script>
+    <% } %>
+    <% if (theme.web_analytics.baidu) { %>
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?<%= theme.web_analytics.baidu %>';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    <% } %>
+<% } %>
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+<% if (theme.fancybox) { %>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+<% } %>
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
