@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Matplotlib（五）：散点图的绘制 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -524,7 +527,7 @@ y = np.array([<span class="hljs-number">3</span>, <span class="hljs-number">8</s
 plt.scatter(x, y)
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/01.png" alt="01"></p>
 <h2 id="font-color-FF0000-【3x00】多条数据-font"><font color=#FF0000>【3x00】多条数据</font></h2>
 <p>绘制多条数据，设置不同数据，然后多次调用 <code>plt.scatter()</code> 函数即可，不同数据的线条颜色会不同，系统随机，可单独指定不同颜色。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -545,7 +548,7 @@ plt.scatter(x, y2)
 plt.scatter(x, y3)
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/02.png" alt="02"></p>
 <h2 id="font-color-FF0000-【4x00】设置颜色-样式-图例-font"><font color=#FF0000>【4x00】设置颜色 / 样式 / 图例</font></h2>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -567,7 +570,7 @@ plt.scatter(x, y3, color=<span class="hljs-string">&#x27;b&#x27;</span>, s=<span
 plt.legend(framealpha=<span class="hljs-number">0</span>)    <span class="hljs-comment"># 显示图例，设置为全透明</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/03.png" alt="03"></p>
 <h2 id="font-color-FF0000-【5x00】指定位置显示文本注释-font"><font color=#FF0000>【5x00】指定位置显示文本注释</font></h2>
 <p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定位置显示文本注释，参数解释常见前文：<br>
 <a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
@@ -595,7 +598,7 @@ plt.scatter(x, y, marker=<span class="hljs-string">&#x27;o&#x27;</span>, s=<span
                  va=<span class="hljs-string">&#x27;top&#x27;</span>)         <span class="hljs-comment"># 点在注释文本的上方</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/04.png" alt="04"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -624,7 +627,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
 plt.scatter(x, y, alpha=<span class="hljs-number">0.5</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/05.png" alt="05"></p>
 <h2 id="font-color-FF0000-【7x00】随机颜色与色条-font"><font color=#FF0000>【7x00】随机颜色与色条</font></h2>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -645,7 +648,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y 轴&#x27;</span>)
 plt.scatter(x, y, c=color, s=size, alpha=<span class="hljs-number">0.5</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/06.png" alt="06"></p>
 <p>可以用 <code>pyplot.colorbar()</code> 方法绘制颜色对照条。</p>
 <p>基本语法：<code>matplotlib.pyplot.colorbar([mappable=None, cax=None, ax=None, **kw])</code></p>
 <p>部分参数解释如下表，其他参数，如长度，宽度等请参考<a target="_blank" rel="noopener" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html">官方文档</a>。</p>
@@ -695,7 +698,7 @@ plt.scatter(x, y, c=color, s=size, alpha=<span class="hljs-number">0.5</span>)
 plt.colorbar()
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/07.png" alt="07"></p>
 <h2 id="font-color-FF0000-【8x00】不同图像之间的层级调整-font"><font color=#FF0000>【8x00】不同图像之间的层级调整</font></h2>
 <p><code>zorder</code> 参数用于设置不同图像之间的层级关系，数字越大，所处的层级越大，即显示越靠上。</p>
 <p>未设置 <code>zorder</code> 参数前：</p>
@@ -718,7 +721,7 @@ plt.scatter(x2, y2, c=<span class="hljs-string">&#x27;r&#x27;</span>, s=<span cl
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/08.png" alt="08"></p>
 <p>设置 <code>zorder</code> 参数后：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -739,7 +742,7 @@ plt.scatter(x2, y2, zorder=<span class="hljs-number">2</span>, c=<span class="hl
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/09.png" alt="09"></p>
 <h2 id="font-color-FF0000-【9x00】框选部分数据-font"><font color=#FF0000>【9x00】框选部分数据</font></h2>
 <p>有时候我们希望能够框选一部分数据来强调其重要性，<code>matplotlib.patches.Polygon()</code> 方法的作用是生成不规则的多边形补丁，<code>matplotlib.patches</code> 还有另外的方法可以生成矩形、圆形等其他图形，具体参见前面的文章<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828143">《Python 数据分析三剑客之 Matplotlib（三）：图例 / LaTeX / 刻度 / 子图 / 补丁等基本图像属性》</a>，生成补丁之后，通过 <code>axes.add_patch()</code> 方法将其添加到绘图区（axes）即可。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -774,7 +777,7 @@ ax = plt.gca()          <span class="hljs-comment"># 获取当前绘图区（gca
 ax.add_patch(polygon)   <span class="hljs-comment"># 将补丁添加到当前绘图区</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/018/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/018/10.png" alt="10"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -870,7 +873,7 @@ plt.show()</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -916,20 +919,15 @@ plt.show()</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

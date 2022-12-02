@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Pandas（十）：数据读写 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -469,7 +472,7 @@
 </table>
 <h3 id="font-color-4876FF-【01x01】简单示例-font"><font color=#4876FF>【01x01】简单示例</font></h3>
 <p>首先创建一个 test1.csv 文件：</p>
-<p><img src="/img/article/034/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/01.png" alt="01"></p>
 <p>使用 read_csv 方法将其读出为一个 DataFrame 对象：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test1.csv&#x27;</span>)
@@ -491,7 +494,7 @@
 <span class="hljs-number">2</span>  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11</span>  <span class="hljs-number">12</span>  python</code></pre>
 <h3 id="font-color-4876FF-【01x02】header-names-定制列标签-font"><font color=#4876FF>【01x02】header / names 定制列标签</font></h3>
 <p>以上示例中第一行为列标签，如果没有单独定义列标签，使用 read_csv 方法也会默认将第一行当作列标签：</p>
-<p><img src="/img/article/034/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/02.png" alt="02"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test2.csv&#x27;</span>)
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj
@@ -514,7 +517,7 @@
 <span class="hljs-number">2</span>  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11</span>  <span class="hljs-number">12</span>  python</code></pre>
 <h3 id="font-color-4876FF-【01x03】index-col-指定列为行索引-font"><font color=#4876FF>【01x03】index_col 指定列为行索引</font></h3>
 <p><code>index_col</code> 参数可以指定某一列作为 DataFrame 的行索引，传递的参数是列名称，在以下示例中，会将列名为 <code>message</code> 的列作为 DataFrame 的行索引：</p>
-<p><img src="/img/article/034/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/03.png" alt="03"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test2.csv&#x27;</span>, 
                 names=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;message&#x27;</span>], 
                 index_col=<span class="hljs-string">&#x27;message&#x27;</span>)
@@ -524,7 +527,7 @@ hello    <span class="hljs-number">1</span>   <span class="hljs-number">2</span>
 world    <span class="hljs-number">5</span>   <span class="hljs-number">6</span>   <span class="hljs-number">7</span>   <span class="hljs-number">8</span>
 python   <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11</span>  <span class="hljs-number">12</span></code></pre>
 <p>如果需要构造多层索引的 DataFrame 对象，则只需传入由列编号或列名组成的列表即可：</p>
-<p><img src="/img/article/034/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/04.png" alt="04"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test3.csv&#x27;</span>, index_col=[<span class="hljs-string">&#x27;key1&#x27;</span>, <span class="hljs-string">&#x27;key2&#x27;</span>])
            value1  value2
@@ -539,7 +542,7 @@ two  a          <span class="hljs-number">9</span>      <span class="hljs-number
      d         <span class="hljs-number">15</span>      <span class="hljs-number">16</span></code></pre>
 <h3 id="font-color-4876FF-【01x04】sep-指定分隔符-font"><font color=#4876FF>【01x04】sep 指定分隔符</font></h3>
 <p>在 read_table 中，sep 参数用于接收分隔符，如果遇到不是用固定的分隔符去分隔字段的，也可以传递一个正则表达式作为 read_table 的分隔符，如下面的 txt 文件数据之间是由不同的空白字符间隔开的：</p>
-<p><img src="/img/article/034/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/05.png" alt="05"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>pd.read_table(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test1.txt&#x27;</span>, sep=<span class="hljs-string">&#x27;\s+&#x27;</span>)
             A         B         C
@@ -549,7 +552,7 @@ ccc -<span class="hljs-number">0.264273</span> -<span class="hljs-number">0.3863
 ddd -<span class="hljs-number">0.871858</span> -<span class="hljs-number">0.348382</span>  <span class="hljs-number">1.100491</span></code></pre>
 <h3 id="font-color-4876FF-【01x05】skiprows-忽略行-font"><font color=#4876FF>【01x05】skiprows 忽略行</font></h3>
 <p>skiprows	参数可用于设置需要忽略的行数，或需要跳过的行号列表，在下面的示例中，读取文件时选择跳过第1、3、4行（索引值分别为0、2、3）：</p>
-<p><img src="/img/article/034/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/06.png" alt="06"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test4.csv&#x27;</span>, skiprows=[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
    a   b   c   d message
@@ -558,7 +561,7 @@ ddd -<span class="hljs-number">0.871858</span> -<span class="hljs-number">0.3483
 <span class="hljs-number">2</span>  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11</span>  <span class="hljs-number">12</span>  python</code></pre>
 <h3 id="font-color-4876FF-【01x06】na-values-设置缺失值-font"><font color=#4876FF>【01x06】na_values 设置缺失值</font></h3>
 <p>当文件中出现了空字符串或者 NA 值，Pandas 会将其标记成 NaN（缺失值），同样也可以使用 <code>isnull</code> 方法来判断结果值是否为缺失值：</p>
-<p><img src="/img/article/034/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/07.png" alt="07"></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test5.csv&#x27;</span>)
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj
@@ -597,7 +600,7 @@ ddd -<span class="hljs-number">0.871858</span> -<span class="hljs-number">0.3483
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>      NaN</code></pre>
 <h3 id="font-color-4876FF-【01x07】nrows-chunksize-行与块-font"><font color=#4876FF>【01x07】nrows / chunksize 行与块</font></h3>
 <p>以下 test6.csv 文件中包含 50 行数据：</p>
-<p><img src="/img/article/034/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/08.png" alt="08"></p>
 <p>可以设置 <code>pd.options.display.max_rows</code> 来紧凑地显示指定行数的数据：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>pd.options.display.max_rows = <span class="hljs-number">10</span>
@@ -734,7 +737,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 <span class="hljs-meta">&gt;&gt;&gt; </span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out1.csv&#x27;</span>)</code></pre>
-<p><img src="/img/article/034/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/09.png" alt="09"></p>
 <h3 id="font-color-4876FF-【02x02】sep-指定分隔符-font"><font color=#4876FF>【02x02】sep 指定分隔符</font></h3>
 <p>sep 参数可用于其他分隔符：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -746,7 +749,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 &gt;&gt;&gt;
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out2.csv&#x27;</span>, sep=<span class="hljs-string">&#x27;|&#x27;</span>)</code></pre>
-<p><img src="/img/article/034/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/10.png" alt="10"></p>
 <h3 id="font-color-4876FF-【02x03】na-rep-替换缺失值-font"><font color=#4876FF>【02x03】na_rep 替换缺失值</font></h3>
 <p>na_rep 参数可将缺失值（NaN）替换成其他字符串：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -758,7 +761,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 <span class="hljs-meta">&gt;&gt;&gt; </span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out3.csv&#x27;</span>, na_rep=<span class="hljs-string">&#x27;X&#x27;</span>)</code></pre>
-<p><img src="/img/article/034/11.png" alt="11"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/11.png" alt="11"></p>
 <h3 id="font-color-4876FF-【02x04】index-header-行与列标签-font"><font color=#4876FF>【02x04】index / header 行与列标签</font></h3>
 <p>设置 <code>index=False</code>, <code>header=False</code>，可以禁用行标签与列标签：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -770,7 +773,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 <span class="hljs-meta">&gt;&gt;&gt; </span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out4.csv&#x27;</span>, index=<span class="hljs-literal">False</span>, header=<span class="hljs-literal">False</span>)</code></pre>
-<p><img src="/img/article/034/12.png" alt="12"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/12.png" alt="12"></p>
 <p>还可以传入列表来重新设置列标签：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>data = pd.read_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\test5.csv&#x27;</span>)
@@ -781,7 +784,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 <span class="hljs-meta">&gt;&gt;&gt; </span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out5.csv&#x27;</span>, header=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;f&#x27;</span>])</code></pre>
-<p><img src="/img/article/034/13.png" alt="13"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/13.png" alt="13"></p>
 <h3 id="font-color-4876FF-【02x05】columns-指定列-font"><font color=#4876FF>【02x05】columns 指定列</font></h3>
 <p>可以通过设置 columns 参数，只写入部分列，并按照指定顺序排序：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -793,7 +796,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>     three  <span class="hljs-number">9</span>  <span class="hljs-number">10</span>  <span class="hljs-number">11.0</span>  <span class="hljs-number">12</span>  python
 &gt;&gt;&gt;
 <span class="hljs-meta">&gt;&gt;&gt; </span>data.to_csv(<span class="hljs-string">r&#x27;C:\Users\TanRe\Desktop\out6.csv&#x27;</span>, columns=[<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>])</code></pre>
-<p><img src="/img/article/034/14.png" alt="14"></p>
+<p><img src="https://cdn.itbob.cn/img/article/034/14.png" alt="14"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -889,7 +892,7 @@ dtype: float64</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -935,20 +938,15 @@ dtype: float64</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

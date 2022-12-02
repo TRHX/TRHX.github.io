@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Matplotlib（三）：图例/LaTeX/刻度/子图/补丁等基本图像属性 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -436,7 +439,7 @@ line2, = plt.plot(x, y)
 plt.legend((line1, line2), (<span class="hljs-string">&#x27;图例一&#x27;</span>, <span class="hljs-string">&#x27;图例二&#x27;</span>), loc=<span class="hljs-number">2</span>, edgecolor=<span class="hljs-string">&#x27;red&#x27;</span>, facecolor=<span class="hljs-string">&#x27;#F5F5F5&#x27;</span>)
 plt.show()</code></pre>
 <p>以上三种方法绘制的图形均一致：</p>
-<p><img src="/img/article/016/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/01.png" alt="01"></p>
 <h2 id="font-color-FF0000-【2x00】数学公式-LaTeX-font"><font color=#FF0000>【2x00】数学公式 LaTeX</font></h2>
 <p>LaTeX（LATEX，音译“拉泰赫”）是一种基于 TeX 的排版系统，常用于生成复杂表格和数学公式，Matplotlib 提供了自己的 TeX 表达式解析器，布局引擎和字体，布局引擎基于 Donald Knuth 的 TeX 布局算法改编。使用数学公式时用 <code>$</code> 将其包围起来即可。具体的符号与其对应的英文表示参见官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/text/mathtext.html">https://matplotlib.org/tutorials/text/mathtext.html</a></p>
 <p>应用举例：</p>
@@ -454,7 +457,7 @@ plt.ylabel(<span class="hljs-string">&#x27;volts (mV)&#x27;</span>)
 
 plt.plot(t, s)
 plt.show()</code></pre>
-<p><img src="/img/article/016/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/02.png" alt="02"></p>
 <h2 id="font-color-FF0000-【3x00】调整-x-y-轴刻度和范围-font"><font color=#FF0000>【3x00】调整 x / y 轴刻度和范围</font></h2>
 <p>在生成图像时，默认会按照所给的数据均匀设置几个刻度，如果对默认的刻度不满意，则可以使用 <code>xticks()</code> 或 <code>yticks()</code> 方法指定刻度值。<code>xlim()</code> 与 <code>ylim()</code> 则可以设置刻度的范围。</p>
 <p>基本语法：<br>
@@ -495,7 +498,7 @@ plt.plot(x, y)
 plt.xticks(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;the &#123;&#125; ticks&#x27;</span>.<span class="hljs-built_in">format</span>(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">26</span>, <span class="hljs-number">3</span>)), rotation=<span class="hljs-number">45</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/03.png" alt="03"></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
 plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
@@ -506,7 +509,7 @@ plt.xlim((<span class="hljs-number">0</span>, <span class="hljs-number">30</span
 plt.plot(x, y)
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/04.png" alt="04"></p>
 <h2 id="font-color-FF0000-【4x00】画布边框与坐标轴的移动-font"><font color=#FF0000>【4x00】画布边框与坐标轴的移动</font></h2>
 <p>Matplotlib 所绘制的图表中的每个绘图元素，例如线条 Line2D、文字 Text、刻度等在内存中都有一个对象与之对应。</p>
 <p><code>matplotlib.pyplot.gca()</code> 函数用于获取当前的绘图区 <code>Axes</code>（Get Current Axes）</p>
@@ -538,7 +541,7 @@ ax.spines[<span class="hljs-string">&#x27;bottom&#x27;</span>].set_position((<sp
 ax.spines[<span class="hljs-string">&#x27;left&#x27;</span>].set_position((<span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-number">0</span>))    <span class="hljs-comment"># 设置 y 轴在 (0, 0) 位置</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/05.png" alt="05"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -571,7 +574,7 @@ ax4 = fig.add_subplot(<span class="hljs-number">224</span>)   <span class="hljs-
 ax4.plot(-x, x ** <span class="hljs-number">2</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/06.png" alt="06"></p>
 <h3 id="font-color-1BC3FB-【5x02】方法二：pyplot-subplot-font"><font color=#1BC3FB>【5x02】方法二：pyplot.subplot()</font></h3>
 <p><code>matplotlib.pyplot.subplot()</code> 方法和 <code>add_subplot()</code> 方法有点儿类似，同样接收三个参数，前两个参数表示子图有几行几列，最后一个参数表示第几个子图。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -594,7 +597,7 @@ plt.subplot(<span class="hljs-number">224</span>)     <span class="hljs-comment"
 plt.plot(x, x ** <span class="hljs-number">4</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/07.png" alt="07"></p>
 <h3 id="font-color-1BC3FB-【5x03】方法三：pyplot-subplots-font"><font color=#1BC3FB>【5x03】方法三：pyplot.subplots()</font></h3>
 <p><code>matplotlib.pyplot.subplots()</code> 函数会将画布分割成指定的列和行，分割后依次在各个区域画图即可。注意与 <code>matplotlib.pyplot.subplot()</code> 略有差别。</p>
 <p><code>fig, axes = plt.subplots</code> 的意思是：<code>plt.subplots</code> 方法会返回一个包含 figure（画布） 和 axes（绘图区） 对象的元组，fig 和 axes 参数分别接收这两个对象，后期对不同绘图区进行处理即可。</p>
@@ -610,7 +613,7 @@ axes[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>].plo
 axes[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>].plot(x, -x ** <span class="hljs-number">2</span>)   <span class="hljs-comment"># 绘制第2行第2列</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/016/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/08.png" alt="08"></p>
 <h2 id="font-color-FF0000-【6x00】填充补丁-font"><font color=#FF0000>【6x00】填充补丁</font></h2>
 <p><code>matplotlib.patches</code> 可用于在画布上填充圆形、长方形、椭圆形、多边形等多种图像补丁。</p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/api/patches_api.html">https://matplotlib.org/api/patches_api.html</a></p>
@@ -703,7 +706,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.grid()
 plt.plot(x, y)
 plt.show()</code></pre>
-<p><img src="/img/article/016/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/09.png" alt="09"></p>
 <h2 id="font-color-FF0000-【7x00】保存图像-font"><font color=#FF0000>【7x00】保存图像</font></h2>
 <p><code>matplotlib.pyplot.savefig()</code> 方法可以将绘制的图像保存到本地，支持多种格式：eps, pdf, pgf, png, ps, raw, rgba, svg, svgz。</p>
 <p><font color=#FF0000> <strong>注意：因为调用 <code>plt.show()</code> 函数后，会创建一个新的空白的图片，所以在保存图片时注意要在 <code>plt.show()</code> 前调用 <code>plt.savefig()</code></strong> </font></p>
@@ -757,7 +760,7 @@ line2, = plt.plot(x, y)
 plt.legend((line1, line2), (<span class="hljs-string">&#x27;图例一&#x27;</span>, <span class="hljs-string">&#x27;图例二&#x27;</span>), loc=<span class="hljs-number">2</span>, edgecolor=<span class="hljs-string">&#x27;red&#x27;</span>, facecolor=<span class="hljs-string">&#x27;#F5F5F5&#x27;</span>)
 plt.savefig(<span class="hljs-string">&#x27;D:\\data\\pic.png&#x27;</span>, transparent=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 保存为透明文件</span>
 plt.show()</code></pre>
-<p><img src="/img/article/016/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/016/10.png" alt="10"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -853,7 +856,7 @@ plt.show()</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -899,20 +902,15 @@ plt.show()</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

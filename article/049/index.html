@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>拉勾网 traceparent、__lg_stoken__、X-S-HEADER 等参数逆向分析 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -266,7 +269,7 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
+                <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
 <h2 id="声明">声明</h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
@@ -282,19 +285,19 @@
 <h2 id="抓包分析">抓包分析</h2>
 <p>搜索职位，点击翻页，就可以看到一条名为 positionAjax.json 的 Ajax 请求，不难判断这就是返回的职位信息。重点参数已在图中框出来了。</p>
 <p>未登录，正常 IP，正常请求，Header 以及 Cookies：</p>
-<p><img src="/img/article/049/01.png" alt="01"></p>
-<p><img src="/img/article/049/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/02.png" alt="02"></p>
 <p>异常 IP，登录账号后再请求，Header 以及 Cookies：</p>
-<p><img src="/img/article/049/03.png" alt="03"></p>
-<p><img src="/img/article/049/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/04.png" alt="04"></p>
 <p>请求数据和返回数据都经过了加密：</p>
-<p><img src="/img/article/049/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/05.png" alt="05"></p>
 <h2 id="Cookies-参数">Cookies 参数</h2>
 <p>先看 cookies 里的关键参数，主要是 <code>user_trace_token</code>、<code>X_HTTP_TOKEN</code> 和 <code>__lg_stoken__</code>。</p>
 <h3 id="user-trace-token">user_trace_token</h3>
 <p>通过接口返回的，直接搜索就可以找到，如下图所示：</p>
-<p><img src="/img/article/049/06.png" alt="06"></p>
-<p><img src="/img/article/049/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/07.png" alt="07"></p>
 <p>请求参数，time 是时间戳，a 值随便，没有都可以，不影响，其他值都是定值，获取的关键代码如下：</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_trace_token</span>() -&gt; <span class="hljs-built_in">str</span>:</span>
     <span class="hljs-comment"># 获取 cookie 中的 user_trace_token</span>
@@ -334,13 +337,13 @@
         &#125;
     &#125;);
 &#125;)();</code></pre>
-<p><img src="/img/article/049/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/08.png" alt="08"></p>
 <p>往上跟栈调试，是一个小小的 OB 混淆，<code>_0x32e0d2</code> 就是最后的 <code>X_HTTP_TOKEN</code> 值了，如下图所示：</p>
-<p><img src="/img/article/049/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/09.png" alt="09"></p>
 <p>直接梭哈，才300多行，不必扣了，全部 copy 下来，本地运行，发现会报错 document 未定义，定位到代码位置，下断点调试一下，发现是正则匹配 cookie 中的 <code>user_trace_token</code> 的值，那么我们直接定义一下即可：<code>var document = &#123;&quot;cookie&quot;: cookie&#125;</code>，cookie 值把 <code>user_trace_token</code> 传过来即可。</p>
-<p><img src="/img/article/049/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/10.png" alt="10"></p>
 <p>补全 document 后，再次运行，又会报错 window 未定义，再次定位到源码，如下图所示：</p>
-<p><img src="/img/article/049/11.png" alt="11"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/11.png" alt="11"></p>
 <p>分析一下，取了 window XMLHttpRequest 对象，向 wafcheck.json 这个接口发送了一个 Ajax GET 请求，然后取了 Response Header 的 Date 值赋值给 <code>_0x309ac8</code>，注意这个 Date 值比正常时间晚了8个小时，然而取 Date 值并没有什么用，因为后面又 new 了一个新 Date 标准时间，赋值给了 <code>_0x150c4d</code>，<code>new Date(_0x309ac8[_0x3551('0x2d')](/-/g, '/'))</code> 语句虽然用到了前面的旧 Date，然而实际上是 <code>replace()</code> 替换方法，与旧的 Date 并没有什么关系，然后调用 <code>Date.parse()</code> 方法将新 Date 转换成时间戳赋值给 <code>_0x4e6d5d</code>，所以不需要这么复杂，直接本地把 <code>_0x89ea429</code> 方法修改一下就行了：</p>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 原方法</span>
 <span class="hljs-comment">// function _0x89ea42() &#123;</span>
@@ -365,24 +368,24 @@
     <span class="hljs-keyword">return</span> _0x4e6d5d / <span class="hljs-number">0x3e8</span>;
 &#125;</code></pre>
 <p>本地测试 OK：</p>
-<p><img src="/img/article/049/12.png" alt="12"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/12.png" alt="12"></p>
 <h3 id="lg-stoken"><strong>lg_stoken</strong></h3>
 <p><code>__lg_stoken__</code> 这个参数是在点击搜索后才开始生成的，直接搜索同样没值，Hook 一下，往上跟栈，很容易找到生成位置：</p>
-<p><img src="/img/article/049/13.png" alt="13"></p>
-<p><img src="/img/article/049/14.png" alt="14"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/13.png" alt="13"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/14.png" alt="14"></p>
 <p>可以看到 d 就是 <code>__lg_stoken__</code> 的值，<code>d = (new g()).a()</code>、<code>g = window.gt</code>，<code>window.gt</code> 实际上是调用了 <code>_0x11db59</code></p>
 <p>跟进混淆的 JS 看一下，就会发现末尾的这段代码是关键，这里用到了 prototype 原型对象，我们直接 <code>window.gt.prototype.a()</code> 或者 <code>(new window.gt).a()</code> 就能获取到 <code>__lg_stoken__</code>，如下图所示：</p>
-<p><img src="/img/article/049/15.png" alt="15"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/15.png" alt="15"></p>
 <p>到这里也许你想下断点去调试一下，看看能不能扣个逻辑出来，但是你会发现刷新之后断不下，因为这个混淆 JS 文件是一直在变化的，之前的断点就不管用了，然后你就可能会想到直接替换掉这个 JS，让文件名固定下来，就可以断点调试了，如果你这样操作的话，重新刷新会发现一直在加载中，打开控制台会发现报错了，造成这样的原因就在于这个混淆 JS 不仅文件名会改变，他的内容也会改变，当然，内容也不仅仅是改变了变量名那么简单，有些值也是动态变化的，比如：</p>
-<p><img src="/img/article/049/16.png" alt="16"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/16.png" alt="16"></p>
 <p>这里我们先不管那么多，直接把所有的混淆代码 copy 下来，先在本地调试一下，看看能不能跑通，调试过程中，先后会提示 <code>window is not defined</code>、<code>Cannot read properties of undefined (reading 'hostname')</code>，定位到代码，有个取 <code>window.location.hostname</code> 的操作，本地定义一下就行了：</p>
-<p><img src="/img/article/049/17.png" alt="17"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/17.png" alt="17"></p>
 <p>再次调试又会报错 <code> Cannot read properties of undefined (reading 'substr')</code>，<code>substr()</code> 方法可在字符串中抽取从指定下标开始的、指定数目的字符，是字符串对象 stringObject 具有的方法，我们定位到代码，发现是 <code>window.location.search</code> 对象调用了 <code>substr()</code> 方法，所以同样的，我们本地也要补齐。</p>
-<p><img src="/img/article/049/18.png" alt="18"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/18.png" alt="18"></p>
 <p>本地补齐参数后，运行结果与网页一致：</p>
-<p><img src="/img/article/049/19.png" alt="19"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/19.png" alt="19"></p>
 <p>执行结果没问题了，那么还有一个问题，<code>window.location.search</code> 的值就是待加密参数了，是咋来的呢？我们直接搜索，就可以看到是一个接口302跳转的地址，用的时候直接取就行了，这个接口是你搜索内容组成的，搜索不同参数，这个跳转地址也是不一样的：</p>
-<p><img src="/img/article/049/20.png" alt="20"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/20.png" alt="20"></p>
 <p>调试成功后，我们随便换一个搜索关键词，将得到的302跳转地址拿到这个 JS 中，加密一下，发现会报错，这说明混淆 JS 传入的参数和 JS 内容应该是相对应的，这里的做法是直接请求拿到这个 JS 文件内容，然后把要补的 window 和获取 <code>__lg_stoken__</code> 的方法加进去，然后直接执行就行了。</p>
 <p>获取 <code>__lg_stoken__</code>  的关键代码如下（<code>original_data</code> 为原始搜索数据）：</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_lg_stoken</span>(<span class="hljs-params">original_data: <span class="hljs-built_in">dict</span></span>) -&gt; <span class="hljs-built_in">str</span>:</span>
@@ -437,7 +440,7 @@
 <p>请求头参数比较多，有 <code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code>，其中最后两个 <code>x-anit</code> 开头的参数是登录后才有的，实际测试中，即便是登录了，不加这两个好像也行。不过还是分析一下吧。</p>
 <h3 id="x-anit-forge-code-x-anit-forge-token">x-anit-forge-code / x-anit-forge-token</h3>
 <p>这两个值是首次点击搜索生成的，第一次访问搜索接口，返回的 HTML 里面夹杂了一个 JSON 文件，里面的 <code>submitCode</code> 和 <code>submitToken</code> 就是 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 的值，如下图所示：</p>
-<p><img src="/img/article/049/21.png" alt="21"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/21.png" alt="21"></p>
 <p>请求这个接口要注意带上登录后的 cookies，有用的只有四个值，正确的 cookies 类似于：</p>
 <pre><code class="hljs python">cookies = &#123;
     <span class="hljs-string">&quot;login&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>,
@@ -482,11 +485,11 @@
         <span class="hljs-keyword">return</span> org.apply(<span class="hljs-built_in">this</span>, <span class="hljs-built_in">arguments</span>);
     &#125;;
 &#125;)();</code></pre>
-<p><img src="/img/article/049/22.png" alt="22"></p>
-<p><img src="/img/article/049/23.png" alt="23"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/22.png" alt="22"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/23.png" alt="23"></p>
 <p>观察上面的代码，三元表达式，<code>t.sampled</code> 为 <code>true</code>，所以 <code>e</code> 值为 <code>01</code>，<code>n</code> 值为 <code>t.id</code>，重点在于 <code>t.traceId</code> 和 <code>t.id</code> 了，跟栈发现很难调，直接搜索关键字，可找到生成的位置：</p>
-<p><img src="/img/article/049/24.png" alt="24"></p>
-<p><img src="/img/article/049/25.png" alt="25"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/24.png" alt="24"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/25.png" alt="25"></p>
 <p>把 <code>E()</code> 方法扣出来就行了，改写一下即可：</p>
 <pre><code class="hljs javascript">getRandomValues = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;get-random-values&#x27;</span>)
 
@@ -509,11 +512,11 @@
 <span class="hljs-comment">// console.log(getTraceparent())</span></code></pre>
 <h3 id="X-K-HEADER-X-SS-REQ-HEADER">X-K-HEADER / X-SS-REQ-HEADER</h3>
 <p><code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code> 数据是一样的，只不过后者是键值对形式，先直接全局搜索关键字，发现都是从本地拿这两个值，清除 cookie 就为空了，那么直接搜索值，发现是 agreement 这个接口返回的，<code>secretKeyValue</code> 值就是我们要的，有可能浏览器抓包直接搜索的话搜索不到，使用抓包工具，比如 Fiddler 就能搜到了，如下图所示：</p>
-<p><img src="/img/article/049/26.png" alt="26"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/26.png" alt="26"></p>
 <p>这个接口是 post 请求，请求带了一个 json 数据，<code>secretKeyDecode</code>，直接搜索关键字，就一个值，定位跟栈：</p>
-<p><img src="/img/article/049/27.png" alt="27"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/27.png" alt="27"></p>
 <p><code>zt()</code> 是从本地缓存中取，<code>At()</code> 是重新生成：</p>
-<p><img src="/img/article/049/28.png" alt="28"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/28.png" alt="28"></p>
 <p>这里就非常明显了，t 是32位随机字符串，赋值为 <code>aesKey</code>，后面紧接着一个 RSA 加密了 <code>aesKey</code>，赋值为 <code>rsaEncryptData</code>，而 <code>rsaEncryptData</code> 就是前面 agreement 接口请求的 <code>secretKeyValue</code> 值。</p>
 <p>这里先说一下，最终搜索职位请求的 data 和返回数据都是 AES 加密解密，会用到这个 <code>aesKey</code>，请求头的另一个参数 <code>X-S-HEADER</code> 也会用到，如果这个 key 没有经过 RSA 加密并通过 agreement 接口验证的话，是无效的，可以理解为 agreement 接口既是为了获取 <code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code>，也是为了激活这个 <code>aesKey</code>。</p>
 <p>这部分的 JS 代码和 Python 代码大致如下：</p>
@@ -559,8 +562,8 @@
     secret_key_value = response[<span class="hljs-string">&quot;content&quot;</span>][<span class="hljs-string">&quot;secretKeyValue&quot;</span>]</code></pre>
 <h3 id="X-S-HEADER">X-S-HEADER</h3>
 <p><code>X-S-HEADER</code> 你每次翻页都会改变，直接搜索关键字可定位：</p>
-<p><img src="/img/article/049/29.png" alt="29"></p>
-<p><img src="/img/article/049/30.png" alt="30"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/29.png" alt="29"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/30.png" alt="30"></p>
 <p>中间有一个 SHA256 加密，最后返回的 <code>Rt(JSON.stringify(&#123;originHeader: JSON.stringify(e), code: t&#125;))</code> 就是 <code>X-S-HEADER</code> 的值了，<code>Rt()</code> 是一个 AES 加密，比较关键的，<code>Vt(r)</code> 是一个 URL，比如你搜索职位就是 positionAjax.json，搜索公司就是 companyAjax.json，可根据实际情况定制，然后 <code>Lt(t)</code> 就是搜索信息，字符串形式，包含了城市、页码、关键词等。</p>
 <p>获取 <code>X-S-HEADER</code> 的 JS 代码大致如下：</p>
 <pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
@@ -599,8 +602,8 @@ Rt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<sp
 <span class="hljs-comment">// console.log(getXSHeader(aesKey, originalData, url))</span></code></pre>
 <h2 id="请求-返回数据解密">请求/返回数据解密</h2>
 <p>前面抓包我们已经发现 positionAjax.json 是 POST 请求，Form Data 中的数据是加密的，返回的 data 也是加密的，我们分析请求头参数的时候，就涉及到 AES 加密解密，所以我们直接搜索 <code>AES.encrypt</code>、<code>AES.decrypt</code>，下断点调试：</p>
-<p><img src="/img/article/049/31.png" alt="31"></p>
-<p><img src="/img/article/049/32.png" alt="32"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/31.png" alt="31"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/32.png" alt="32"></p>
 <p>非常明显了，这部分的 JS 代码大致如下：</p>
 <pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -693,12 +696,12 @@ It = <span class="hljs-function"><span class="hljs-keyword">function</span>(<spa
         decrypted_data = lagou_js.call(<span class="hljs-string">&quot;getResponseData&quot;</span>, response_data, aes_key)
         <span class="hljs-keyword">return</span> decrypted_data</code></pre>
 <p>最终整合所有代码，成功拿到数据：</p>
-<p><img src="/img/article/049/33.png" alt="33"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/33.png" alt="33"></p>
 <h2 id="逆向小技巧">逆向小技巧</h2>
 <p>浏览器开发者工具 Application - Storage 选项，可以一键清除所有 Cookies，也可以自定义存储配额：</p>
-<p><img src="/img/article/049/34.png" alt="34"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/34.png" alt="34"></p>
 <p>Storage - Cookies 可以查看每个站点的所有 Cookies，HttpOnly 打勾的表示是服务器返回的，选中一条 Cookie，右键可以直接定位到哪个请求带了这个 Cookie，也可以直接编辑值，还可以删除单个 Cookie，当你登录了账号，但又需要清除某个 Cookie，且不想重新登录时，这个功能或许有用。</p>
-<p><img src="/img/article/049/35.png" alt="35"></p>
+<p><img src="https://cdn.itbob.cn/img/article/049/35.png" alt="35"></p>
 <h2 id="完整代码">完整代码</h2>
 <p>文中给出了部分关键代码，不能直接运行，部分细节可能没提及到，完整代码已放 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
 <p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice">https://github.com/TRHX/Python3-Spider-Practice</a></p>
@@ -806,7 +809,7 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -852,20 +855,15 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

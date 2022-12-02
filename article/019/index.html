@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Matplotlib（六）：直方图/柱状图/条形图的绘制 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -439,7 +442,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)         <s
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <span class="hljs-comment"># y 轴标签</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/01.png" alt="01"></p>
 <h3 id="font-color-4876FF-【2x03】堆积的直方图-font"><font color=##4876FF>【2x03】堆积的直方图</font></h3>
 <p>参数 <code>stacked</code> 决定了将两份数据进行堆积显示。注意，有可能两个数据相似（y 轴的值相似），但是堆积在一起的时候，会把第一个数据的显示相对缩小一点。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -462,7 +465,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend(loc=<span class="hljs-string">&quot;upper left&quot;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/02.png" alt="02"></p>
 <h3 id="font-color-4876FF-【2x04】填充其他样式-font"><font color=##4876FF>【2x04】填充其他样式</font></h3>
 <p><code>hatch</code> 参数可以让直方图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -481,7 +484,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)         <s
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <span class="hljs-comment"># y 轴标签</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/03.png" alt="03"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
 <h2 id="font-color-FF0000-【3x00】柱状图的绘制-font"><font color=#FF0000>【3x00】柱状图的绘制</font></h2>
 <h3 id="font-color-4876FF-【3x01】函数介绍-matplotlib-pyplot-bar-font"><font color=##4876FF>【3x01】函数介绍 matplotlib.pyplot.bar()</font></h3>
@@ -605,7 +608,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/04.png" alt="04"></p>
 <h3 id="font-color-4876FF-【3x03】添加与标准差的误差线-font"><font color=##4876FF>【3x03】添加与标准差的误差线</font></h3>
 <p>首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -639,7 +642,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/05.png" alt="05"></p>
 <h3 id="font-color-4876FF-【3x04】多序列柱状图-font"><font color=##4876FF>【3x04】多序列柱状图</font></h3>
 <p>在绘制多序列的柱状图时，只需要多次调用 <code>matplotlib.pyplot.bar()</code> 函数即可，指定一个较小的宽度值（偏移量），绘制不同数据时设置不同的 x 位置刻度即可。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -667,7 +670,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/06.png" alt="06"></p>
 <h3 id="font-color-4876FF-【3x05】堆积的柱状图-font"><font color=##4876FF>【3x05】堆积的柱状图</font></h3>
 <p>所谓堆积图，就是将多序列数据堆积到一个矩形上显示，在柱状图中要实现堆积图，只需要改变 <code>bottom</code> 参数即可，<code>bottom</code> 参数用于设置 y 轴基线，即柱状图的底边在 y 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>bottom=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>bottom=data1+data2</code>，以此类推。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -691,7 +694,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/07.png" alt="07"></p>
 <h3 id="font-color-4876FF-【3x06】填充其他样式-font"><font color=##4876FF>【3x06】填充其他样式</font></h3>
 <p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -715,7 +718,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/08.png" alt="08"></p>
 <h3 id="font-color-4876FF-【3x07】添加文字描述-font"><font color=##4876FF>【3x07】添加文字描述</font></h3>
 <p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在柱状图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -750,7 +753,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/09.png" alt="09"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
@@ -877,7 +880,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/10.png" alt="10"></p>
 <h3 id="font-color-4876FF-【4x03】添加与标准差的误差线-font"><font color=##4876FF>【4x03】添加与标准差的误差线</font></h3>
 <p>与柱状图一样，首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -911,7 +914,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/11.png" alt="11"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/11.png" alt="11"></p>
 <h3 id="font-color-4876FF-【4x04】多序列条形图-font"><font color=##4876FF>【4x04】多序列条形图</font></h3>
 <p>与多序列柱状图类似，在绘制多序列的条形图时，只需要多次调用 <code>matplotlib.pyplot.barh()</code> 函数即可，指定一个较小的高度值（偏移量），绘制不同数据时设置不同的 y 位置刻度即可。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -939,7 +942,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/12.png" alt="12"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/12.png" alt="12"></p>
 <h3 id="font-color-4876FF-【4x05】堆积的条形图-font"><font color=##4876FF>【4x05】堆积的条形图</font></h3>
 <p>堆积图就是将多序列数据堆积到一个矩形上显示，和堆积的柱状图类似，在条形图中要实现堆积图，只需要改变 <code>left</code> 参数即可，<code>left</code> 参数用于设置 x 轴基线，即柱状图的底边在 x 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>left=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>left=data1+data2</code>，以此类推。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -963,7 +966,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/13.png" alt="13"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/13.png" alt="13"></p>
 <h3 id="font-color-4876FF-【4x06】填充其他样式-font"><font color=##4876FF>【4x06】填充其他样式</font></h3>
 <p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -987,7 +990,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/14.png" alt="14"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/14.png" alt="14"></p>
 <h3 id="font-color-4876FF-【4x07】添加文字描述-font"><font color=##4876FF>【4x07】添加文字描述</font></h3>
 <p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在条形图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -1022,7 +1025,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 plt.legend()
 
 plt.show()</code></pre>
-<p><img src="/img/article/019/15.png" alt="15"></p>
+<p><img src="https://cdn.itbob.cn/img/article/019/15.png" alt="15"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -1118,7 +1121,7 @@ plt.show()</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -1164,20 +1167,15 @@ plt.show()</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

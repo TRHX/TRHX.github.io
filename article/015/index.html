@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -338,7 +341,7 @@ y = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,
 plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
 plt.plot(x, y)
 plt.show()</code></pre>
-<p><img src="/img/article/015/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/01.png" alt="01"></p>
 <h3 id="font-color-1BC3FB-【1x02】为坐标轴添加标签：matplotlib-pyplot-xlabel-ylabel-font"><font color=#1BC3FB>【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() / ylabel()</font></h3>
 <p><code>matplotlib.pyplot.xlabel()</code>：为 x 轴添加标签；<br>
 <code>matplotlib.pyplot.ylabel()</code>：为 y 轴添加标签。</p>
@@ -383,7 +386,7 @@ plt.plot(x, y)
 plt.plot(a, b)
 
 plt.show()</code></pre>
-<p><img src="/img/article/015/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/02.png" alt="02"></p>
 <h3 id="font-color-1BC3FB-【1x03】任意位置添加文本：matplotlib-pyplot-text-font"><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.text()</font></h3>
 <p><code>matplotlib.pyplot.text()</code> 方法可以在画布上任意位置添加文本描述。</p>
 <p>基本语法：<code>matplotlib.pyplot.text(x, y, s[, fontdict=None, withdash=&lt;deprecated parameter&gt;])</code></p>
@@ -442,7 +445,7 @@ plt.text(<span class="hljs-number">27.5</span>, <span class="hljs-number">7.9</s
 plt.plot(a, b)
 
 plt.show()</code></pre>
-<p><img src="/img/article/015/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/03.png" alt="03"></p>
 <h3 id="font-color-1BC3FB-【1x03】任意位置添加文本：matplotlib-pyplot-annotate-font"><font color=#1BC3FB>【1x03】任意位置添加文本：matplotlib.pyplot.annotate()</font></h3>
 <p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定坐标点添加文本或 LaTeX 描述，也可以在其他位置添加描述后，使用箭头指向某个坐标点。比 <code>matplotlib.pyplot.text()</code> 更高级。</p>
 <p>基本语法：<code>matplotlib.pyplot.annotate(text, xy, xytext, xycoords, textcoords, ha, va, arrowprops, \*\*kwargs)</code></p>
@@ -724,7 +727,7 @@ plt.show()</code></pre>
 </tbody>
 </table>
 <table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color=#FF0000 size=3px>connectionstyle 样式举例</font></strong></td></tr></table>
-<p><img src="/img/article/015/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/04.png" alt="04"></p>
 <p>应用举例：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -746,7 +749,7 @@ plt.annotate(<span class="hljs-string">r&#x27;$\lim_&#123;x\to 0&#125;\frac&#123
              arrowprops=<span class="hljs-built_in">dict</span>(arrowstyle=<span class="hljs-string">&quot;-&gt;&quot;</span>, connectionstyle=<span class="hljs-string">&quot;arc3, rad=.2&quot;</span>))  <span class="hljs-comment"># 箭头样式</span>
 
 plt.show()</code></pre>
-<p><img src="/img/article/015/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/05.png" alt="05"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -950,7 +953,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="/img/article/015/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/06.png" alt="06"></p>
 <h3 id="font-color-1BC3FB-【2x03】指定单个字体：fontproperties-font"><font color=#1BC3FB>【2x03】指定单个字体：fontproperties</font></h3>
 <p><code>fontproperties</code> 参数可以加在要设置中文的地方</p>
 <p>优点：不污染全局；缺点：中文太多了挨个设置比较繁琐。</p>
@@ -966,10 +969,10 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, font
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="/img/article/015/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/07.png" alt="07"></p>
 <h3 id="font-color-1BC3FB-【2x04】指定文字路径：FontProperties-font"><font color=#1BC3FB>【2x04】指定文字路径：FontProperties</font></h3>
 <p><code>matplotlib</code> 中 <code>font_manager</code> 模块的 <code>FontProperties</code> 方法可以通过指定文字路径来使用本地文字，在 Windows 中，文字路径一般是 <code>C:\Windows\Fonts\</code>，文字名称可以通过其属性来获取，部分用户自己安装的字体可能包含多个类型，可打开字体合集后通过其属性来获取。</p>
-<p><img src="/img/article/015/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/08.png" alt="08"></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 <span class="hljs-keyword">from</span> matplotlib.font_manager <span class="hljs-keyword">import</span> FontProperties
 
@@ -983,7 +986,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, font
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="/img/article/015/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/09.png" alt="09"></p>
 <h3 id="font-color-1BC3FB-【2x05】文字更多属性：rc-font"><font color=#1BC3FB>【2x05】文字更多属性：rc</font></h3>
 <p>rc 参数支持文字的更多属性设置，如字体粗细、大小等，这种方法同样将影响全局。</p>
 <p>官方参考：<a target="_blank" rel="noopener" href="https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc">https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc</a></p>
@@ -1005,7 +1008,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="/img/article/015/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/10.png" alt="10"></p>
 <h2 id="font-color-FF0000-【3x00】设置画布大小-分辨率-颜色-font"><font color=#FF0000>【3x00】设置画布大小 / 分辨率 / 颜色</font></h2>
 <p><code>matplotlib.pyplot.figure()</code> 可以设置画布的大小、图片分辨率、颜色等。</p>
 <p>基本语法：<code>matplotlib.pyplot.figure(figsize=None, dpi=None, facecolor=None, edgecolor=None, frameon=True, \*\*kwargs)</code></p>
@@ -1050,7 +1053,7 @@ plt.figure(figsize=(<span class="hljs-number">6.5</span>, <span class="hljs-numb
 plt.plot(x, y)
 
 plt.show()</code></pre>
-<p><img src="/img/article/015/11.png" alt="11"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/11.png" alt="11"></p>
 <h2 id="font-color-FF0000-【4x00】设置网格-font"><font color=#FF0000>【4x00】设置网格</font></h2>
 <p><code>matplotlib.pyplot.grid()</code> 方法可以为图表设置网格显示。</p>
 <p>基本语法：<code>matplotlib.pyplot.grid([b=None, which='major', axis='both', \*\*kwargs])</code></p>
@@ -1125,7 +1128,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 plt.grid(axis=<span class="hljs-string">&#x27;x&#x27;</span>, color=<span class="hljs-string">&#x27;red&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-.&#x27;</span>, linewidth=<span class="hljs-number">2</span>)
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="/img/article/015/12.png" alt="12"></p>
+<p><img src="https://cdn.itbob.cn/img/article/015/12.png" alt="12"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -1221,7 +1224,7 @@ plt.show()</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -1267,20 +1270,15 @@ plt.show()</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>Python 数据分析三剑客之 Matplotlib（八）：等高线/等值线图的绘制 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -310,8 +313,8 @@
 <li>等高线经过山脊或山谷时改变方向，因此，山脊线或者山谷线应垂直于等高线转折点处的切线，即等高线与山脊线或者山谷线正交。</li>
 </ul>
 <p><font color=#FF0000><strong>在 Matplotlib 等高线的绘制中，需要传递三个基本参数：某个点的 x、y 轴坐标以及其高度。</strong></font></p>
-<p><img src="/img/article/021/01.png" alt="01"></p>
-<p><img src="/img/article/021/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/02.png" alt="02"></p>
 <h2 id="font-color-FF0000-【2x00】理解-numpy-meshgrid-font"><font color=#FF0000>【2x00】理解 numpy.meshgrid()</font></h2>
 <p><code>numpy.meshgrid()</code> 方法用于生成网格点坐标矩阵。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -523,7 +526,7 @@ res = np.meshgrid(a, b)
 <h2 id="font-color-FF0000-【6x00】Colormap-取值-font"><font color=#FF0000>【6x00】Colormap 取值</font></h2>
 <p><code>matplotlib.pyplot.contour()</code> 和 <code>matplotlib.pyplot.contourf()</code> 中 <code>cmap</code> 参数用于设置等高线的颜色，取值通常为 Colormap 中的值，通常包含一系列的渐变色或其他颜色组合。具体参加下图。</p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://matplotlib.org/tutorials/colors/colormaps.html">https://matplotlib.org/tutorials/colors/colormaps.html</a></p>
-<p><img src="/img/article/021/03.png" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/03.png" alt="03"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200512112427932.png" alt="分割线"></p>
 <h2 id="font-color-FF0000-【7x00】简单示例-font"><font color=#FF0000>【7x00】简单示例</font></h2>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -548,7 +551,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/021/04.png" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/04.png" alt="04"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200512112427932.png" alt="分割线"></p>
 <h2 id="font-color-FF0000-【8x00】添加标记-font"><font color=#FF0000>【8x00】添加标记</font></h2>
 <p><code>matplotlib.pyplot.clabel()</code> 方法用于给等高线添加标记。</p>
@@ -576,7 +579,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/021/05.png" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/05.png" alt="05"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200512112427932.png" alt="分割线"></p>
 <h2 id="font-color-FF0000-【9x00】轮廓线颜色和样式-font"><font color=#FF0000>【9x00】轮廓线颜色和样式</font></h2>
 <p><code>matplotlib.pyplot.contour()</code> 方法中，<code>colors</code> 参数即可为等高线轮廓设置颜色，可以是单色，也可以是一个颜色列表，<code>linestyles</code> 参数可以设置轮廓线样式，注意，如果线条颜色为单色，则负等高线（高度值为负）默认为虚线。</p>
@@ -605,7 +608,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/021/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/06.png" alt="06"></p>
 <p>如果想启用渐变色，则可以设置 <code>cmap</code>，取值参见<font color=#FF0000><strong>【6x00】Colormap 取值</strong></font>，<code>colorbar()</code> 方法可以显示颜色对照条。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -633,7 +636,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/021/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/07.png" alt="07"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200512112427932.png" alt="分割线"></p>
 <h2 id="font-color-FF0000-【10x00】颜色填充-font"><font color=#FF0000>【10x00】颜色填充</font></h2>
 <p><code>matplotlib.pyplot.contourf()</code> 方法用于对等高线之间的地方进行颜色填充。</p>
@@ -664,7 +667,7 @@ plt.xlabel(<span class="hljs-string">&#x27;x axis label&#x27;</span>)
 plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
-<p><img src="/img/article/021/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/021/08.png" alt="08"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
@@ -760,7 +763,7 @@ plt.show()</code></pre>
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -806,20 +809,15 @@ plt.show()</code></pre>
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>

@@ -32,25 +32,31 @@
         <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
 <!-- Title -->
 <title>逆向进阶，利用 AST 技术还原 JavaScript 混淆代码 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.png">
+<link rel="icon" href="/img/favicon.ico">
 
 <!-- Fonts -->
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
 
 <!-- Font Awesome -->
-<!-- <link rel="stylesheet" href="/css/font-awesome.all.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
 
 
     <!-- KaTeX -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
 
 
 <!-- Style -->
@@ -59,6 +65,7 @@
 
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
 
+<!-- Analytics -->
 
     
     
@@ -75,14 +82,33 @@
     
 
 
-<!-- 不蒜子 -->
+<!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="/js/busuanzi.pure.mini.js"></script>
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
 
-<!-- 打字效果 -->
+<!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
 
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    //protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
 <script>
     function makeMulti (string) {
         let l = new String(string)
@@ -121,29 +147,6 @@
     console.log(makeMulti(string));
     console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
-
-
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-
-<!-- 图片点击放大 -->
-
-    <link rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="/js/fancybox.js"> </script>
-
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
-  });
-</script> -->
-
 
     <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
 </head>
@@ -210,7 +213,7 @@
                 
                     <div class="nav-item">
                         <a href="https://travellings.link" target="_blank">
-                            <img src="/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -266,26 +269,26 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="/img/cover/ast.png" alt="ast"></p>
+                <p><img src="https://cdn.itbob.cn/img/cover/ast.png" alt="ast"></p>
 <h2 id="什么是-AST">什么是 AST</h2>
 <p>AST（Abstract Syntax Tree），中文抽象语法树，简称语法树（Syntax Tree），是源代码的抽象语法结构的树状表现形式，树上的每个节点都表示源代码中的一种结构。语法树不是某一种编程语言独有的，JavaScript、Python、Java、Golang 等几乎所有编程语言都有语法树。</p>
 <p>小时候我们得到一个玩具，总喜欢把玩具拆解成一个一个小零件，然后按照我们自己的想法，把零件重新组装起来，一个新玩具就诞生了。而 JavaScript 就像一台精妙运作的机器，通过 AST 解析，我们也可以像童年时拆解玩具一样，深入了解 JavaScript 这台机器的各个零部件，然后重新按照我们自己的意愿来组装。</p>
 <p>AST 的用途很广，IDE 的语法高亮、代码检查、格式化、压缩、转译等，都需要先将代码转化成 AST 再进行后续的操作，ES5 和 ES6 语法差异，为了向后兼容，在实际应用中需要进行语法的转换，也会用到 AST。AST 并不是为了逆向而生，但做逆向学会了 AST，在解混淆时可以如鱼得水。</p>
 <p>AST 有一个在线解析网站：<a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a> ，顶部可以选择语言、编译器、是否开启转化等，如下图所示，区域①是源代码，区域②是对应的 AST 语法树，区域③是转换代码，可以对语法树进行各种操作，区域④是转换后生成的新代码。图中原来的 Unicode 字符经过操作之后就变成了正常字符。</p>
 <p>语法树没有单一的格式，选择不同的语言、不同的编译器，得到的结果也是不一样的，在 JavaScript 中，编译器有 Acorn、Espree、Esprima、Recast、Uglify-JS 等，使用最多的是 Babel，后续的学习也是以 Babel 为例。</p>
-<p><img src="/img/article/051/01.png" alt="01"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/01.png" alt="01"></p>
 <h2 id="AST-在编译中的位置">AST 在编译中的位置</h2>
 <p>在编译原理中，编译器转换代码通常要经过三个步骤：词法分析（Lexical Analysis）、语法分析（Syntax Analysis）、代码生成（Code Generation），下图生动展示了这一过程：</p>
-<p><img src="/img/article/051/02.png" alt="02"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/02.png" alt="02"></p>
 <h3 id="词法分析">词法分析</h3>
 <p>词法分析阶段是编译过程的第一个阶段，这个阶段的任务是从左到右一个字符一个字符地读入源程序，然后根据构词规则识别单词，生成 token 符号流，比如 <code>isPanda('🐼')</code>，会被拆分成 <code>isPanda</code>，<code>(</code>，<code>'🐼'</code>，<code>)</code> 四部分，每部分都有不同的含义，可以将词法分析过程想象为不同类型标记的列表或数组。</p>
-<p><img src="/img/article/051/03.gif" alt="03"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/03.gif" alt="03"></p>
 <h3 id="语法分析">语法分析</h3>
 <p>语法分析是编译过程的一个逻辑阶段，语法分析的任务是在词法分析的基础上将单词序列组合成各类语法短语，比如“程序”，“语句”，“表达式”等，前面的例子中，<code>isPanda('🐼')</code> 就会被分析为一条表达语句 <code>ExpressionStatement</code>，<code>isPanda()</code> 就会被分析成一个函数表达式 <code>CallExpression</code>，<code>🐼</code> 就会被分析成一个变量 <code>Literal</code> 等，众多语法之间的依赖、嵌套关系，就构成了一个树状结构，即 AST 语法树。</p>
-<p><img src="/img/article/051/04.gif" alt="04"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/04.gif" alt="04"></p>
 <h3 id="代码生成">代码生成</h3>
 <p>代码生成是最后一步，将 AST 语法树转换成可执行代码即可，在转换之前，我们可以直接操作语法树，进行增删改查等操作，例如，我们可以确定变量的声明位置、更改变量的值、删除某些节点等，我们将语句 <code>isPanda('🐼')</code> 修改为一个布尔类型的 <code>Literal</code>：<code>true</code>，语法树就有如下变化：</p>
-<p><img src="/img/article/051/05.gif" alt="05"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/05.gif" alt="05"></p>
 <h2 id="Babel-简介">Babel 简介</h2>
 <p>Babel 是一个 JavaScript 编译器，也可以说是一个解析库，Babel 中文网：<a target="_blank" rel="noopener" href="https://www.babeljs.cn/">https://www.babeljs.cn/</a> ，Babel 英文官网：<a target="_blank" rel="noopener" href="https://babeljs.io/">https://babeljs.io/</a> ，Babel 内置了很多分析 JavaScript 代码的方法，我们可以利用 Babel 将 JavaScript 代码转换成 AST 语法树，然后增删改查等操作之后，再转换成 JavaScript 代码。</p>
 <p>Babel 包含的各种功能包、API、各方法可选参数等，都非常多，本文不一一列举，在实际使用过程中，应当多查询官方文档，或者参考文末给出的一些学习资料。Babel 的安装和其他 Node 包一样，需要哪个安装哪个即可，比如 <code>npm install @babel/core @babel/parser @babel/traverse @babel/generator</code></p>
@@ -297,7 +300,7 @@
 <li><code>@babel/generator</code>：将 AST 还原成 JavaScript 代码；</li>
 <li><code>@babel/types</code>：判断、验证节点的类型、构建新 AST 节点等。</li>
 </ol>
-<p><img src="/img/article/051/06.png" alt="06"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/06.png" alt="06"></p>
 <h3 id="babel-core">@babel/core</h3>
 <p>Babel 编译器本身，被拆分成了三个模块：<code>@babel/parser</code>、<code>@babel/traverse</code>、<code>@babel/generator</code>，比如以下方法的导入效果都是一样的：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>).parse;
@@ -345,7 +348,7 @@
 <span class="hljs-keyword">const</span> ast = parser.parse(code, &#123;<span class="hljs-attr">sourceType</span>: <span class="hljs-string">&quot;module&quot;</span>&#125;)
 <span class="hljs-built_in">console</span>.log(ast)</code></pre>
 <p><code>&#123;sourceType: &quot;module&quot;&#125;</code> 演示了如何添加可选参数，输出的就是 AST 语法树，这和在线网站 <a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a> 解析出来的语法树是一样的：</p>
-<p><img src="/img/article/051/07.png" alt="07"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/07.png" alt="07"></p>
 <h3 id="babel-generator">@babel/generator</h3>
 <p><code>@babel/generator</code> 可以将 AST 还原成 JavaScript 代码，提供了一个 <code>generate</code> 方法：<code>generate(ast, [&#123;options&#125;], code)</code>。</p>
 <p>部分可选参数 <code>options</code>：</p>
@@ -401,7 +404,7 @@ ast.program.body[<span class="hljs-number">0</span>].declarations[<span class="h
 <p>最终输出的是 <code>const b=2;</code>，变量名和值都成功更改了，由于加了压缩处理，等号左右两边的空格也没了。</p>
 <p>代码里 <code>&#123;minified: true&#125;</code> 演示了如何添加可选参数，这里表示压缩输出代码，<code>generate</code> 得到的 <code>result</code> 得到的是一个对象，其中的 <code>code</code> 属性才是最终的 JS 代码。</p>
 <p>代码里 <code>ast.program.body[0].declarations[0].id.name</code> 是 a 在 AST 中的位置，<code>ast.program.body[0].declarations[0].init.value</code> 是 1 在 AST 中的位置，如下图所示：</p>
-<p><img src="/img/article/051/08.png" alt="08"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/08.png" alt="08"></p>
 <h3 id="babel-traverse">@babel/traverse</h3>
 <p>当代码多了，我们不可能像前面那样挨个定位并修改，对于相同类型的节点，我们可以直接遍历所有节点来进行修改，这里就用到了 <code>@babel/traverse</code>，它通常和 <code>visitor</code> 一起使用，<code>visitor</code> 是一个对象，这个名字是可以随意取的，<code>visitor</code> 里可以定义一些方法来过滤节点，这里还是用一个例子来演示：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> parser = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>);
@@ -430,7 +433,7 @@ traverse(ast, visitor)
 <span class="hljs-keyword">const</span> result = generate(ast)
 <span class="hljs-built_in">console</span>.log(result.code)</code></pre>
 <p>这里的原始代码定义了 abcde 五个变量，其值有数字也有字符串，我们在 AST 中可以看到对应的类型为 <code>NumericLiteral</code> 和 <code>StringLiteral</code>：</p>
-<p><img src="/img/article/051/09.png" alt="09"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/09.png" alt="09"></p>
 <p>然后我们声明了一个 <code>visitor</code> 对象，然后定义对应类型的处理方法，<code>traverse</code> 接收两个参数，第一个是 AST 对象，第二个是 <code>visitor</code>，当 <code>traverse</code> 遍历所有节点，遇到节点类型为 <code>NumericLiteral</code> 和 <code>StringLiteral</code> 时，就会调用 <code>visitor</code> 中对应的处理方法，<code>visitor</code> 中的方法会接收一个当前节点的 <code>path</code> 对象，该对象的类型是 <code>NodePath</code>，该对象有非常多的属性，以下介绍几种最常用的：</p>
 <table>
 <thead>
@@ -518,9 +521,9 @@ traverse(ast, visitor)
 <h3 id="babel-types">@babel/types</h3>
 <p><code>@babel/types</code> 主要用于构建新的 AST 节点，前面的示例代码为 <code>const a = 1;</code>，如果想要增加内容，比如变成 <code>const a = 1; const b = a * 5 + 1;</code>，就可以通过 <code>@babel/types</code> 来实现。</p>
 <p>首先观察一下 AST 语法树，原语句只有一个 <code>VariableDeclaration</code> 节点，现在增加了一个：</p>
-<p><img src="/img/article/051/10.png" alt="10"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/10.png" alt="10"></p>
 <p>那么我们的思路就是在遍历节点时，遍历到 <code>VariableDeclaration</code> 节点，就在其后面增加一个 <code>VariableDeclaration</code> 节点，生成  <code>VariableDeclaration</code> 节点，可以使用 <code>types.variableDeclaration()</code> 方法，在 types 中各种方法名称和我们在 AST 中看到的是一样的，只不过首字母是小写的，所以我们不需要知道所有方法的情况下，也能大致推断其方法名，只知道这个方法还不行，还得知道传入的参数是什么，可以查文档，不过这里推荐直接看源码，非常清晰明了，以 Pycharm 为例，按住 Ctrl 键，再点击方法名，就进到源码里了：</p>
-<p><img src="/img/article/051/11.png" alt="11"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/11.png" alt="11"></p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">variableDeclaration</span>(<span class="hljs-params">kind: <span class="hljs-string">&quot;var&quot;</span> | <span class="hljs-string">&quot;let&quot;</span> | <span class="hljs-string">&quot;const&quot;</span>, declarations: <span class="hljs-built_in">Array</span>&lt;BabelNodeVariableDeclarator&gt;</span>)</span></code></pre>
 <p>可以看到需要 <code>kind</code> 和 <code>declarations</code> 两个参数，其中 <code>declarations</code> 是 <code>VariableDeclarator</code> 类型的节点组成的列表，所以我们可以先写出以下 <code>visitor</code> 部分的代码，其中 <code>path.insertAfter()</code> 是在该节点之后插入新节点的意思：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> visitor = &#123;
@@ -532,7 +535,7 @@ traverse(ast, visitor)
 <p>接下来我们还需要进一步定义 <code>declarator</code>，也就是 <code>VariableDeclarator</code> 类型的节点，查询其源码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">variableDeclarator</span>(<span class="hljs-params">id: BabelNodeLVal, init?: BabelNodeExpression</span>)</span></code></pre>
 <p>观察 AST，id 为 <code>Identifier</code> 对象，init 为 <code>BinaryExpression</code> 对象，如下图所示：</p>
-<p><img src="/img/article/051/12.png" alt="12"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/12.png" alt="12"></p>
 <p>先来处理 id，可以使用 <code>types.identifier()</code> 方法来生成，其源码为 <code>function identifier(name: string)</code>，name 在这里就是 b 了，此时 <code>visitor</code> 代码就可以这么写：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> visitor = &#123;
     <span class="hljs-function"><span class="hljs-title">VariableDeclaration</span>(<span class="hljs-params">path</span>)</span> &#123;
@@ -542,7 +545,7 @@ traverse(ast, visitor)
     &#125;
 &#125;</code></pre>
 <p>然后再来看 init 该如何定义，首先仍然是看 AST 结构：</p>
-<p><img src="/img/article/051/13.png" alt="13"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/13.png" alt="13"></p>
 <p>init 为 <code>BinaryExpression</code> 对象，left 左边是 <code>BinaryExpression</code>，right 右边是 <code>NumericLiteral</code>，可以用 <code>types.binaryExpression()</code> 方法来生成 init，其源码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">binaryExpression</span>(<span class="hljs-params"></span></span>
 <span class="hljs-params"><span class="hljs-function">    operator: <span class="hljs-string">&quot;+&quot;</span> | <span class="hljs-string">&quot;-&quot;</span> | <span class="hljs-string">&quot;/&quot;</span> | <span class="hljs-string">&quot;%&quot;</span> | <span class="hljs-string">&quot;*&quot;</span> | <span class="hljs-string">&quot;**&quot;</span> | <span class="hljs-string">&quot;&amp;&quot;</span> | <span class="hljs-string">&quot;|&quot;</span> | <span class="hljs-string">&quot;&gt;&gt;&quot;</span> | <span class="hljs-string">&quot;&gt;&gt;&gt;&quot;</span> | <span class="hljs-string">&quot;&lt;&lt;&quot;</span> | <span class="hljs-string">&quot;^&quot;</span> | <span class="hljs-string">&quot;==&quot;</span> | <span class="hljs-string">&quot;===&quot;</span> | <span class="hljs-string">&quot;!=&quot;</span> | <span class="hljs-string">&quot;!==&quot;</span> | <span class="hljs-string">&quot;in&quot;</span> | <span class="hljs-string">&quot;instanceof&quot;</span> | <span class="hljs-string">&quot;&gt;&quot;</span> | <span class="hljs-string">&quot;&lt;&quot;</span> | <span class="hljs-string">&quot;&gt;=&quot;</span> | <span class="hljs-string">&quot;&lt;=&quot;</span>,</span></span>
@@ -572,14 +575,14 @@ traverse(ast, visitor)
 &#125;</code></pre>
 <p>注意：<code>path.insertAfter()</code> 插入节点语句后面加了一句 <code>path.stop()</code>，表示插入完成后立即停止遍历当前节点和后续的子节点，添加的新节点也是 <code>VariableDeclaration</code>，如果不加停止语句的话，就会无限循环插入下去。</p>
 <p>插入新节点后，再转换成 JavaScript 代码，就可以看到多了一行新代码，如下图所示：</p>
-<p><img src="/img/article/051/14.png" alt="14"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/14.png" alt="14"></p>
 <h2 id="常见混淆还原">常见混淆还原</h2>
 <p>了解了 AST 和 babel 后，就可以对 JavaScript 混淆代码进行还原了，以下是部分样例，带你进一步熟悉 babel 的各种操作。</p>
 <h3 id="字符串还原">字符串还原</h3>
 <p>文章开头的图中举了个例子，正常字符被换成了 Unicode 编码：</p>
 <pre><code class="hljs javascript"><span class="hljs-built_in">console</span>[<span class="hljs-string">&#x27;\u006c\u006f\u0067&#x27;</span>](<span class="hljs-string">&#x27;\u0048\u0065\u006c\u006c\u006f\u0020\u0077\u006f\u0072\u006c\u0064\u0021&#x27;</span>)</code></pre>
 <p>观察 AST 结构：</p>
-<p><img src="/img/article/051/15.png" alt="15"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/15.png" alt="15"></p>
 <p>我们发现 Unicode 编码对应的是 <code>raw</code>，而 <code>rawValue</code> 和 <code>value</code> 都是正常的，所以我们可以将 <code>raw</code> 替换成 <code>rawValue</code> 或 <code>value</code> 即可，需要注意的是引号的问题，本来是 <code>console[&quot;log&quot;]</code>，你还原后变成了 <code>console[log]</code>，自然会报错的，除了替换值以外，这里直接删除 extra 节点，或者删除 raw 值也是可以的，所以以下几种写法都可以还原代码：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> parser = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>);
 <span class="hljs-keyword">const</span> generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/generator&quot;</span>).default
@@ -740,7 +743,7 @@ traverse(ast, visitor)
     <span class="hljs-keyword">return</span> a;
 &#125;;</code></pre>
 <p>观察 AST，判断条件对应的是 <code>test</code> 节点，if 对应的是 <code>consequent</code> 节点，else 对应的是 <code>alternate</code> 节点，如下图所示：</p>
-<p><img src="/img/article/051/16.png" alt="16"></p>
+<p><img src="https://cdn.itbob.cn/img/article/051/16.png" alt="16"></p>
 <p>AST 处理思路以及代码：</p>
 <ol>
 <li>筛选出 <code>BooleanLiteral</code> 和 <code>NumericLiteral</code> 节点，取其对应的值，即 <code>path.node.test.value</code>；</li>
@@ -1057,7 +1060,7 @@ traverse(ast, visitor)
         <br/>
 
         <span style="text-align: center; float: center;">
-            Copyright <i class="fa fa-copyright"></i> 2018-<span id="displayDateTime"></span> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
             <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
                 <i class="fab fa-creative-commons"></i>
                 <i class="fab fa-creative-commons-by"></i>
@@ -1103,20 +1106,15 @@ traverse(ast, visitor)
                 }
                 siteTime();
             </script>
-
-            <script>
-                var copyrightNow = new Date().getFullYear();
-                document.getElementById("displayDateTime").innerHTML = copyrightNow;
-            </script>
         </span>
         <br/>
         <br/>
         <span>
-            <img src="/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="/img/footer/upyun.png" class="nofancybox" alt="又拍云提供云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 提供云储存服务丨
-            <a href="https://www.foreverblog.cn/" target="_blank"><img src="/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
