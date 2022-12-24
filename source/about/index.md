@@ -3,6 +3,13 @@ title: 关于
 layout: about
 ---
 
+<div class="text-roll">
+    <p>
+        <span>ITBOB ● 鲍勃</span>
+        WWW.ITBOB.CN
+    </p>
+</div>
+
 ![](https://cdn.itbob.cn/img/bob.png)
 
 ### About
