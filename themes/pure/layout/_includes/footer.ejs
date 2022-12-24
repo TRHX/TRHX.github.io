@@ -23,7 +23,7 @@
                 <span class="badge-value bg-firebrick post-count"><%= totalcount(site) %></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Powered</span>
+                <span class="badge-subject">PoweredBy</span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
@@ -77,7 +77,12 @@
                     var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
                     var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
                     var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
-                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "
+                    + "<font style='color:#FE3C65;font-weight:bold'>" + diffYears + "</font>" + " 年 "
+                    + "<font style='color:#FFA500;font-weight:bold'>" + diffDays + "</font>" + " 天 "
+                    + "<font style='color:#1DBF97;font-weight:bold'>" + diffHours + "</font>" + " 小时 "
+                    + "<font style='color:#8A2BE2;font-weight:bold'>" + diffMinutes + "</font>" + " 分 "
+                    + "<font style='color:#007EC6;font-weight:bold'>" + diffSeconds + "</font>" + " 秒 ";
                 }
                 siteTime();
             </script>
@@ -93,3 +98,28 @@
         </span>
     </div>
 </div>
+
+<div class="sidebar_wo" id="leimu">
+    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+</div>
+<div class="sidebar_wo" id="lamu">
+    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+</div>
+
+<script>
+    /* 拉姆蕾姆回到顶部或底部按钮 */
+    $(function() {
+        $("#leimu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:$(document).height()},800);
+            return false;
+        });
+        $("#lamu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:0},800);
+            return false;
+        });
+    });
+</script>

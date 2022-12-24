@@ -697,7 +697,7 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
                 <span class="badge-value bg-firebrick post-count">279k</span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Powered</span>
+                <span class="badge-subject">PoweredBy</span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
@@ -751,7 +751,12 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
                     var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
                     var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
                     var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
-                    document.getElementById("sitetime").innerHTML="小破站已运行了 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分 "+diffSeconds+" 秒";
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "
+                    + "<font style='color:#FE3C65;font-weight:bold'>" + diffYears + "</font>" + " 年 "
+                    + "<font style='color:#FFA500;font-weight:bold'>" + diffDays + "</font>" + " 天 "
+                    + "<font style='color:#1DBF97;font-weight:bold'>" + diffHours + "</font>" + " 小时 "
+                    + "<font style='color:#8A2BE2;font-weight:bold'>" + diffMinutes + "</font>" + " 分 "
+                    + "<font style='color:#007EC6;font-weight:bold'>" + diffSeconds + "</font>" + " 秒 ";
                 }
                 siteTime();
             </script>
@@ -768,7 +773,62 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
     </div>
 </div>
 
+<div class="sidebar_wo" id="leimu">
+    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+</div>
+<div class="sidebar_wo" id="lamu">
+    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+</div>
+
+<script>
+    /* 拉姆蕾姆回到顶部或底部按钮 */
+    $(function() {
+        $("#leimu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:$(document).height()},800);
+            return false;
+        });
+        $("#lamu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:0},800);
+            return false;
+        });
+    });
+</script>
+
             </div>
         </div>
+        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <script>
+            (function () {
+                // When to show the scroll link
+                // higher number = scroll link appears further down the page   
+                var upperLimit = 100;
+                
+                // Our scroll link element
+                var scrollElem = $('#back-to-top');
+            
+                // Scroll to top speed
+                var scrollSpeed = 500;
+            
+                // Show and hide the scroll to top link based on scroll position   
+                scrollElem.hide();
+                $(window).scroll(function () {            
+                    var scrollTop = $(document).scrollTop();       
+                    if ( scrollTop > upperLimit ) {
+                        $(scrollElem).stop().fadeTo(200, 1); // fade back in           
+                    }else{       
+                        $(scrollElem).stop().fadeTo(200, 0); // fade out
+                    }
+                });
+
+                // Scroll to top animation on click
+                $(scrollElem).click(function(){
+                    $('html, body').animate({scrollTop:0}, scrollSpeed); return false;
+                });
+            })();
+        </script>
     </body>
 </html>

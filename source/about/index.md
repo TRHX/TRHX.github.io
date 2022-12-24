@@ -19,6 +19,7 @@ layout: about
 - Github：github.itbob.cn
 - Zhihu：zhihu.itbob.cn
 - CSDN：itrhx.blog.csdn.net
+- Group：Hexo 交流群：[735861501](https://jq.qq.com/?_wv=1027&k=Co8xooSK)，爬虫逆向交流群：[941013658](https://jq.qq.com/?_wv=1027&k=r2Pw3lPs)
 
 ### Timeline
 
