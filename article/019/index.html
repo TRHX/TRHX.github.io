@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 6.1k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 6.3k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 27分丨
@@ -270,7 +270,44 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Matplotlib 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-1x00-zhi-fang-tu-zhu-zhuang-tu-tiao-xing-tu-de-qu-bie-font"><font color="#FF0000">【1x00】直方图 / 柱状图 / 条形图的区别</font></a></li>
+<li><a href="#font-color-ff0000-2x00-zhi-fang-tu-de-hui-zhi-font"><font color="#FF0000">【2x00】直方图的绘制</font></a>
+<ul>
+<li><a href="#font-color-4876ff-2x01-han-shu-jie-shao-matplotlib-pyplot-hist-font"><font color="##4876FF">【2x01】函数介绍 matplotlib.pyplot.hist()</font></a></li>
+<li><a href="#font-color-4876ff-2x02-jian-dan-zhi-fang-tu-shi-li-font"><font color="##4876FF">【2x02】简单直方图示例</font></a></li>
+<li><a href="#font-color-4876ff-2x03-dui-ji-de-zhi-fang-tu-font"><font color="##4876FF">【2x03】堆积的直方图</font></a></li>
+<li><a href="#font-color-4876ff-2x04-tian-chong-qi-ta-yang-shi-font"><font color="##4876FF">【2x04】填充其他样式</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-3x00-zhu-zhuang-tu-de-hui-zhi-font"><font color="#FF0000">【3x00】柱状图的绘制</font></a>
+<ul>
+<li><a href="#font-color-4876ff-3x01-han-shu-jie-shao-matplotlib-pyplot-bar-font"><font color="##4876FF">【3x01】函数介绍 matplotlib.pyplot.bar()</font></a></li>
+<li><a href="#font-color-4876ff-3x02-jian-dan-zhu-zhuang-tu-shi-li-font"><font color="##4876FF">【3x02】简单柱状图示例</font></a></li>
+<li><a href="#font-color-4876ff-3x03-tian-jia-yu-biao-zhun-chai-de-wu-chai-xian-font"><font color="##4876FF">【3x03】添加与标准差的误差线</font></a></li>
+<li><a href="#font-color-4876ff-3x04-duo-xu-lie-zhu-zhuang-tu-font"><font color="##4876FF">【3x04】多序列柱状图</font></a></li>
+<li><a href="#font-color-4876ff-3x05-dui-ji-de-zhu-zhuang-tu-font"><font color="##4876FF">【3x05】堆积的柱状图</font></a></li>
+<li><a href="#font-color-4876ff-3x06-tian-chong-qi-ta-yang-shi-font"><font color="##4876FF">【3x06】填充其他样式</font></a></li>
+<li><a href="#font-color-4876ff-3x07-tian-jia-wen-zi-miao-shu-font"><font color="##4876FF">【3x07】添加文字描述</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-4x00-tiao-xing-tu-de-hui-zhi-font"><font color="#FF0000">【4x00】条形图的绘制</font></a>
+<ul>
+<li><a href="#font-color-4876ff-4x01-han-shu-jie-shao-matplotlib-pyplot-barh-font"><font color="##4876FF">【4x01】函数介绍 matplotlib.pyplot.barh()</font></a></li>
+<li><a href="#font-color-4876ff-4x02-jian-dan-tiao-xing-tu-shi-li-font"><font color="##4876FF">【4x02】简单条形图示例</font></a></li>
+<li><a href="#font-color-4876ff-4x03-tian-jia-yu-biao-zhun-chai-de-wu-chai-xian-font"><font color="##4876FF">【4x03】添加与标准差的误差线</font></a></li>
+<li><a href="#font-color-4876ff-4x04-duo-xu-lie-tiao-xing-tu-font"><font color="##4876FF">【4x04】多序列条形图</font></a></li>
+<li><a href="#font-color-4876ff-4x05-dui-ji-de-tiao-xing-tu-font"><font color="##4876FF">【4x05】堆积的条形图</font></a></li>
+<li><a href="#font-color-4876ff-4x06-tian-chong-qi-ta-yang-shi-font"><font color="##4876FF">【4x06】填充其他样式</font></a></li>
+<li><a href="#font-color-4876ff-4x07-tian-jia-wen-zi-miao-shu-font"><font color="##4876FF">【4x07】添加文字描述</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Matplotlib 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
 <li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
@@ -284,13 +321,16 @@
 <li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
 <li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
 </ul>
+<hr>
 <p>专栏：</p>
 <ul>
 <li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,27 +338,27 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【1x00】直方图-柱状图-条形图的区别-font"><font color=#FF0000>【1x00】直方图 / 柱状图 / 条形图的区别</font></h2>
+<h2><span id="1x00-zhi-fang-tu-zhu-zhuang-tu-tiao-xing-tu-de-qu-bie"><font color="#FF0000">【1x00】直方图 / 柱状图 / 条形图的区别</font></span></h2>
 <ul>
 <li>
-<p>直方图：直方图（Histogram）又称质量分布图，是一种统计报告图，由一系列高度不等的纵向条纹或线段表示数据分布的情况。<font color=##0000FF><strong>一般用于描述连续型数据的分布关系</strong></font>，用横轴表示数据类型，纵轴表示分布情况。直方图是用面积表示各组频数的多少，矩形的高度表示每一组的频数或频率，宽度则表示各组的组距，因此其<font color=##32CD32><strong>高度与宽度均有意义</strong></font>。其次，由于分组数据具有连续性，<font color=##32CD32><strong>直方图的各矩形通常是连续排列。</strong></font></p>
+<p>直方图：直方图（Histogram）又称质量分布图，是一种统计报告图，由一系列高度不等的纵向条纹或线段表示数据分布的情况。<font color="##0000FF"><strong>一般用于描述连续型数据的分布关系</strong></font>，用横轴表示数据类型，纵轴表示分布情况。直方图是用面积表示各组频数的多少，矩形的高度表示每一组的频数或频率，宽度则表示各组的组距，因此其<font color="##32CD32"><strong>高度与宽度均有意义</strong></font>。其次，由于分组数据具有连续性，<font color="##32CD32"><strong>直方图的各矩形通常是连续排列。</strong></font></p>
 </li>
 <li>
-<p>柱状图：柱状图（bar chart）又称条图、长条图、柱状统计图、条状图、棒形图，是一种以长方形的长度为变量的统计图表。<font color=##0000FF><strong>一般用于描述离散型分类数据的对比</strong></font>，长条图用来比较两个或以上的价值（不同时间或者不同条件），只有一个变量，通常利用于较小的数据集分析。柱状图亦可横向排列，或用多维方式表达。<font color=##32CD32><strong>柱状图各矩形的宽度固定，矩形之间分开排列，会有间距。</strong></font></p>
+<p>柱状图：柱状图（bar chart）又称条图、长条图、柱状统计图、条状图、棒形图，是一种以长方形的长度为变量的统计图表。<font color="##0000FF"><strong>一般用于描述离散型分类数据的对比</strong></font>，长条图用来比较两个或以上的价值（不同时间或者不同条件），只有一个变量，通常利用于较小的数据集分析。柱状图亦可横向排列，或用多维方式表达。<font color="##32CD32"><strong>柱状图各矩形的宽度固定，矩形之间分开排列，会有间距。</strong></font></p>
 </li>
 <li>
-<p>条形图：通常情况下<font color=#FF0000><strong>条形图 = 柱状图</strong></font>，也可以<font color=#FF0000><strong>将横向排列的柱状图称为条形图</strong></font>。在本文中会将条形图视为后者。</p>
+<p>条形图：通常情况下<font color="#FF0000"><strong>条形图 = 柱状图</strong></font>，也可以<font color="#FF0000"><strong>将横向排列的柱状图称为条形图</strong></font>。在本文中会将条形图视为后者。</p>
 </li>
 </ul>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
-<h2 id="font-color-FF0000-【2x00】直方图的绘制-font"><font color=#FF0000>【2x00】直方图的绘制</font></h2>
-<h3 id="font-color-4876FF-【2x01】函数介绍-matplotlib-pyplot-hist-font"><font color=##4876FF>【2x01】函数介绍 matplotlib.pyplot.hist()</font></h3>
+<h2><span id="2x00-zhi-fang-tu-de-hui-zhi"><font color="#FF0000">【2x00】直方图的绘制</font></span></h2>
+<h3><span id="2x01-han-shu-jie-shao-matplotlib-pyplot-hist"><font color="##4876FF">【2x01】函数介绍 matplotlib.pyplot.hist()</font></span></h3>
 <p><code>matplotlib.pyplot.hist()</code> 函数用于绘制直方图。</p>
 <p>基本语法：<code>matplotlib.pyplot.hist(x[, bins=None, range=None, density=False, bottom=None, histtype='bar', align='mid', orientation='vertical', rwidth=None, log=False, color=None, label=None, stacked=False, \*\*kwargs])</code></p>
 <p>基本参数：</p>
@@ -427,7 +467,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="font-color-4876FF-【2x02】简单直方图示例-font"><font color=##4876FF>【2x02】简单直方图示例</font></h3>
+<h3><span id="2x02-jian-dan-zhi-fang-tu-shi-li"><font color="##4876FF">【2x02】简单直方图示例</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
@@ -444,7 +484,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <s
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/01.png" alt="01"></p>
-<h3 id="font-color-4876FF-【2x03】堆积的直方图-font"><font color=##4876FF>【2x03】堆积的直方图</font></h3>
+<h3><span id="2x03-dui-ji-de-zhi-fang-tu"><font color="##4876FF">【2x03】堆积的直方图</font></span></h3>
 <p>参数 <code>stacked</code> 决定了将两份数据进行堆积显示。注意，有可能两个数据相似（y 轴的值相似），但是堆积在一起的时候，会把第一个数据的显示相对缩小一点。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -467,7 +507,7 @@ plt.legend(loc=<span class="hljs-string">&quot;upper left&quot;</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/02.png" alt="02"></p>
-<h3 id="font-color-4876FF-【2x04】填充其他样式-font"><font color=##4876FF>【2x04】填充其他样式</font></h3>
+<h3><span id="2x04-tian-chong-qi-ta-yang-shi"><font color="##4876FF">【2x04】填充其他样式</font></span></h3>
 <p><code>hatch</code> 参数可以让直方图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -487,8 +527,8 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)         <s
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/03.png" alt="03"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
-<h2 id="font-color-FF0000-【3x00】柱状图的绘制-font"><font color=#FF0000>【3x00】柱状图的绘制</font></h2>
-<h3 id="font-color-4876FF-【3x01】函数介绍-matplotlib-pyplot-bar-font"><font color=##4876FF>【3x01】函数介绍 matplotlib.pyplot.bar()</font></h3>
+<h2><span id="3x00-zhu-zhuang-tu-de-hui-zhi"><font color="#FF0000">【3x00】柱状图的绘制</font></span></h2>
+<h3><span id="3x01-han-shu-jie-shao-matplotlib-pyplot-bar"><font color="##4876FF">【3x01】函数介绍 matplotlib.pyplot.bar()</font></span></h3>
 <p><code>matplotlib.pyplot.bar()</code> 函数用于绘制柱状图。</p>
 <p>基本语法：<code>matplotlib.pyplot.bar(x, height[, width=0.8, bottom=None, align='center', \*\*kwargs])</code></p>
 <p>基本参数：</p>
@@ -589,7 +629,7 @@ plt.show()</code></pre>
 </tr>
 </tbody>
 </table>
-<h3 id="font-color-4876FF-【3x02】简单柱状图示例-font"><font color=##4876FF>【3x02】简单柱状图示例</font></h3>
+<h3><span id="3x02-jian-dan-zhu-zhuang-tu-shi-li"><font color="##4876FF">【3x02】简单柱状图示例</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
 plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
@@ -610,7 +650,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/04.png" alt="04"></p>
-<h3 id="font-color-4876FF-【3x03】添加与标准差的误差线-font"><font color=##4876FF>【3x03】添加与标准差的误差线</font></h3>
+<h3><span id="3x03-tian-jia-yu-biao-zhun-chai-de-wu-chai-xian"><font color="##4876FF">【3x03】添加与标准差的误差线</font></span></h3>
 <p>首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
@@ -644,7 +684,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/05.png" alt="05"></p>
-<h3 id="font-color-4876FF-【3x04】多序列柱状图-font"><font color=##4876FF>【3x04】多序列柱状图</font></h3>
+<h3><span id="3x04-duo-xu-lie-zhu-zhuang-tu"><font color="##4876FF">【3x04】多序列柱状图</font></span></h3>
 <p>在绘制多序列的柱状图时，只需要多次调用 <code>matplotlib.pyplot.bar()</code> 函数即可，指定一个较小的宽度值（偏移量），绘制不同数据时设置不同的 x 位置刻度即可。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -672,7 +712,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/06.png" alt="06"></p>
-<h3 id="font-color-4876FF-【3x05】堆积的柱状图-font"><font color=##4876FF>【3x05】堆积的柱状图</font></h3>
+<h3><span id="3x05-dui-ji-de-zhu-zhuang-tu"><font color="##4876FF">【3x05】堆积的柱状图</font></span></h3>
 <p>所谓堆积图，就是将多序列数据堆积到一个矩形上显示，在柱状图中要实现堆积图，只需要改变 <code>bottom</code> 参数即可，<code>bottom</code> 参数用于设置 y 轴基线，即柱状图的底边在 y 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>bottom=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>bottom=data1+data2</code>，以此类推。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -696,7 +736,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/07.png" alt="07"></p>
-<h3 id="font-color-4876FF-【3x06】填充其他样式-font"><font color=##4876FF>【3x06】填充其他样式</font></h3>
+<h3><span id="3x06-tian-chong-qi-ta-yang-shi"><font color="##4876FF">【3x06】填充其他样式</font></span></h3>
 <p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -720,7 +760,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/08.png" alt="08"></p>
-<h3 id="font-color-4876FF-【3x07】添加文字描述-font"><font color=##4876FF>【3x07】添加文字描述</font></h3>
+<h3><span id="3x07-tian-jia-wen-zi-miao-shu"><font color="##4876FF">【3x07】添加文字描述</font></span></h3>
 <p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在柱状图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -757,14 +797,14 @@ plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/09.png" alt="09"></p>
 <p><img src="https://img-blog.csdnimg.cn/20200509010455973.png" alt="分割线"></p>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【4x00】条形图的绘制-font"><font color=#FF0000>【4x00】条形图的绘制</font></h2>
-<h3 id="font-color-4876FF-【4x01】函数介绍-matplotlib-pyplot-barh-font"><font color=##4876FF>【4x01】函数介绍 matplotlib.pyplot.barh()</font></h3>
+<h2><span id="4x00-tiao-xing-tu-de-hui-zhi"><font color="#FF0000">【4x00】条形图的绘制</font></span></h2>
+<h3><span id="4x01-han-shu-jie-shao-matplotlib-pyplot-barh"><font color="##4876FF">【4x01】函数介绍 matplotlib.pyplot.barh()</font></span></h3>
 <p><code>matplotlib.pyplot.barh()</code> 函数用于绘制条形图（水平排列的柱状图）。</p>
 <p>基本语法：<code>matplotlib.pyplot.barh(y, width[, height=0.8, left=None, align='center', color, \*\*kwargs])</code></p>
 <table>
@@ -864,7 +904,7 @@ plt.show()</code></pre>
 </tr>
 </tbody>
 </table>
-<h3 id="font-color-4876FF-【4x02】简单条形图示例-font"><font color=##4876FF>【4x02】简单条形图示例</font></h3>
+<h3><span id="4x02-jian-dan-tiao-xing-tu-shi-li"><font color="##4876FF">【4x02】简单条形图示例</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
 plt.rcParams[<span class="hljs-string">&#x27;font.sans-serif&#x27;</span>] = [<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>]
@@ -882,7 +922,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/10.png" alt="10"></p>
-<h3 id="font-color-4876FF-【4x03】添加与标准差的误差线-font"><font color=##4876FF>【4x03】添加与标准差的误差线</font></h3>
+<h3><span id="4x03-tian-jia-yu-biao-zhun-chai-de-wu-chai-xian"><font color="##4876FF">【4x03】添加与标准差的误差线</font></span></h3>
 <p>与柱状图一样，首先定义一个列表，其中的元素是与每个值对应的标准差，<code>ecolor</code> 和 <code>capsize</code> 参数分别指定误差线的颜色和两头横线的宽度。这两个参数可以通过 <code>error_kw</code> 字典形式组合起来。以字典形式的组合优先级别要比单独指定高。另外，柱状图指定标准差时要用 <code>yerr</code>，条形图（横向排列的柱状图）指定标准差时要用 <code>xerr</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 
@@ -916,7 +956,7 @@ plt.ylabel(<span class="hljs-string">&#x27;y axis label&#x27;</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/11.png" alt="11"></p>
-<h3 id="font-color-4876FF-【4x04】多序列条形图-font"><font color=##4876FF>【4x04】多序列条形图</font></h3>
+<h3><span id="4x04-duo-xu-lie-tiao-xing-tu"><font color="##4876FF">【4x04】多序列条形图</font></span></h3>
 <p>与多序列柱状图类似，在绘制多序列的条形图时，只需要多次调用 <code>matplotlib.pyplot.barh()</code> 函数即可，指定一个较小的高度值（偏移量），绘制不同数据时设置不同的 y 位置刻度即可。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -944,7 +984,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/12.png" alt="12"></p>
-<h3 id="font-color-4876FF-【4x05】堆积的条形图-font"><font color=##4876FF>【4x05】堆积的条形图</font></h3>
+<h3><span id="4x05-dui-ji-de-tiao-xing-tu"><font color="##4876FF">【4x05】堆积的条形图</font></span></h3>
 <p>堆积图就是将多序列数据堆积到一个矩形上显示，和堆积的柱状图类似，在条形图中要实现堆积图，只需要改变 <code>left</code> 参数即可，<code>left</code> 参数用于设置 x 轴基线，即柱状图的底边在 x 轴上的起始刻度，第一条数据 <code>data1</code> 的基线可以设置为 0，即默认值，第二条数据 <code>data2</code> 的基线可以设置在 <code>data1</code> 的上方，即 <code>left=data1</code>，第三条数据 <code>data3</code> 的基线可以设置在 <code>data1 + data2</code> 的上方，即 <code>left=data1+data2</code>，以此类推。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -968,7 +1008,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/13.png" alt="13"></p>
-<h3 id="font-color-4876FF-【4x06】填充其他样式-font"><font color=##4876FF>【4x06】填充其他样式</font></h3>
+<h3><span id="4x06-tian-chong-qi-ta-yang-shi"><font color="##4876FF">【4x06】填充其他样式</font></span></h3>
 <p><code>hatch</code> 参数可以让柱状图的矩形填充其他样式，可选值有：<code>'/'</code>, <code>'\'</code>, <code>'|'</code>, <code>'-'</code>, <code>'+'</code>, <code>'x'</code>, <code>'o'</code>, <code>'O'</code>, <code>'.'</code>, <code>'*'</code>。可以是不同图案的组合形式，如果有相同的图案，则会增加填充的密度。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -992,7 +1032,7 @@ plt.legend()
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/14.png" alt="14"></p>
-<h3 id="font-color-4876FF-【4x07】添加文字描述-font"><font color=##4876FF>【4x07】添加文字描述</font></h3>
+<h3><span id="4x07-tian-jia-wen-zi-miao-shu"><font color="##4876FF">【4x07】添加文字描述</font></span></h3>
 <p>利用 <code>matplotlib.pyplot.text()</code> 方法可以在条形图每个矩形上方添加文字描述。具体参数解释可参考前面的文章：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/105828049">《Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性》</a></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -1028,8 +1068,8 @@ plt.legend()
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/019/15.png" alt="15"></p>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/105952856</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -1098,23 +1138,33 @@ plt.show()</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1177,16 +1227,16 @@ plt.show()</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1195,7 +1245,7 @@ plt.show()</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1213,7 +1263,10 @@ plt.show()</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

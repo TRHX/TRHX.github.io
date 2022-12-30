@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -251,7 +251,7 @@
                         <i class="fa fa-keyboard"></i> 字数统计: 2.5k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 10分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 11分丨
                     </span>
                 
                 
@@ -271,19 +271,36 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/app_reverse.png" alt="app_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#an-zhuang-adb">安装 ADB</a></li>
+<li><a href="#an-zhuang-frida">安装 Frida</a></li>
+<li><a href="#ni-xiang-fen-xi">逆向分析</a>
+<ul>
+<li><a href="#jie-he-python-shi-yong">结合 Python 使用</a></li>
+<li><a href="#frida-ming-ling">frida 命令</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <ul>
 <li>设备：Google Pixel4，Android 10，已 root</li>
 <li>APP：UnCrackable-Level1.apk（来源：<a target="_blank" rel="noopener" href="https://github.com/OWASP/owasp-mastg/tree/master/Crackmes">https://github.com/OWASP/owasp-mastg/tree/master/Crackmes</a> ）</li>
 <li>APP 检测了 root，如果手机 root 了，会强制退出 APP，过了 root 检测后，还需要输入一个字符串进行校验。</li>
 </ul>
-<h2 id="安装-ADB">安装 ADB</h2>
+<h2><span id="an-zhuang-adb">安装 ADB</span></h2>
 <p>adb（Android Debug Bridge）即安卓调试桥，安装后可以在电脑上与手机进行交互，Android Studio 等工具里面会自带 adb，有时候我们并不想下载这么大的工具，所以这里介绍一下 Android SDK Platform-Tools，它是 Android SDK 的一个组件，它包括与 Android 平台交互的工具，主要是 adb 和 fastboot，官方下载地址：<a target="_blank" rel="noopener" href="https://developer.android.com/studio/releases/platform-tools">https://developer.android.com/studio/releases/platform-tools</a> ，下载完成后将该目录添加到环境变量，USB 连接手机，手机上设置允许 USB 调试，使用命令 <code>adb version</code> 可查看版本信息，<code>adb devices</code> 可以查看当前连接的设备，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/055/01.png" alt="01"></p>
-<h2 id="安装-Frida">安装 Frida</h2>
+<h2><span id="an-zhuang-frida">安装 Frida</span></h2>
 <p>Frida 是一款基于 Python + JavaScript 的 Hook 与调试框架，首先电脑端使用命令 <code>pip install frida-tools</code> 安装 frida 模块（此命令默认会安装最新版的 frida 和 frida-tools，如），然后下载 frida-server，下载地址：<a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a></p>
 <p>frida-server 要根据你电脑端安装的 frida 版本和手机的 CPU 架构来选择对应的，使用命令 <code>frida --version</code> 可以查看 frida 版本，使用命令 <code>adb shell</code> 进入手机，输入 <code>getprop ro.product.cpu.abi</code> 查看 CPU 架构，如下图所示，我这里 frida 是 15.2.2 版本，手机 CPU 为 arm64，所以我下载的是 <code>frida-server-15.2.2-android-arm64.xz</code>。</p>
 <p>某些 Android 低版本使用高版本 frida 可能有问题，遇到问题可尝试降低 frida 版本来解决。</p>
@@ -293,7 +310,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/055/04.png" alt="04"></p>
 <p>然后另开一个 cmd 使用命令 <code>frida-ps -U </code> 可查看手机进程，有输出则正常。</p>
 <p><img src="https://cdn.itbob.cn/img/article/055/05.png" alt="05"></p>
-<h2 id="逆向分析">逆向分析</h2>
+<h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
 <p>使用 <code>adb install</code> 命令安装 UnCrackable-Level1.apk，打开该 APP，会检测到 root，出现 <code>Root detected!</code> 的提示，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/055/06.png" alt="06"></p>
 <p>使用 JEB、JADX、GDA 等工具反编译 apk，直接搜索关键字 <code>Root detected!</code> 即可定位到检测的地方：</p>
@@ -382,7 +399,7 @@
     &#125;
 )</code></pre>
 <p>运行 Hook 脚本有两种方式，一是结合 Python 使用，二是直接通过 frida 命令使用脚本，注入 Hook 代码也有个时机问题，有时候需要在 APP 启动就开始 Hook，有时候可以等 APP 启动加载完毕了再 Hook，本例中，过 root 检测的时候，如果采用第一、二种方法，即 Hook 三个检测方法或者 a 方法，那就需要在 APP 启动的时候就 Hook，如果采用第三、四种方法，即 Hook  <code>onClick()</code> 或者 <code>System.exit()</code> 方法，那么等 APP 启动了再 Hook 也可以。</p>
-<h3 id="结合-Python-使用">结合 Python 使用</h3>
+<h3><span id="jie-he-python-shi-yong">结合 Python 使用</span></h3>
 <p>首先来看一下结合 Python 怎么使用，JavaScript 代码如下（frida-hook.js）：</p>
 <pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
 <span class="hljs-comment"># @Time    : 2022-08-29</span>
@@ -490,7 +507,7 @@ sys.stdin.read()
 <p><img src="https://cdn.itbob.cn/img/article/055/13.png" alt="13"></p>
 <p>运行 Python 代码，注意手机端也要启动 frida-server，过掉 root 检测后，先随便输入字符串，点击 VERIFY 就会 Hook 到正确的字符串为 <code>I want to believe</code>，再次输入正确的字符串，即可验证成功。</p>
 <p><img src="https://cdn.itbob.cn/img/article/055/14.png" alt="14"></p>
-<h3 id="frida-命令">frida 命令</h3>
+<h3><span id="frida-ming-ling">frida 命令</span></h3>
 <p>不使用 Python，也可以直接使用 frida 命令来实现，和前面 Python  一样也有两种模式，同样的一个是 APP 名一个是包名：</p>
 <p><code>frida -U Uncrackable1 -l .\frida-hook.js</code>：attach 模式，APP 启动后注入 frida 代码；</p>
 <p><code>frida -U -f owasp.mstg.uncrackable1 -l .\frida-hook.js --no-pause</code>：spawn 模式，重启 APP，启动的同时注入 frida 代码。</p>
@@ -560,23 +577,33 @@ sys.stdin.read()
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -639,16 +666,16 @@ sys.stdin.read()
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -657,7 +684,7 @@ sys.stdin.read()
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -675,7 +702,10 @@ sys.stdin.read()
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

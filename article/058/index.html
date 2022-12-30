@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 1.1k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 1.2k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 4分丨
@@ -271,16 +271,33 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#zhua-bao-fen-xi">抓包分析</a></li>
+<li><a href="#ni-xiang-fen-xi">逆向分析</a>
+<ul>
+<li><a href="#tu-pian-jie-kou">图片接口</a></li>
+<li><a href="#yan-zheng-jie-kou">验证接口</a></li>
+</ul>
+</li>
+<li><a href="#jie-guo-yan-zheng">结果验证</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <ul>
 <li>目标：某片的滑动验证码和点选验证码逆向</li>
 <li>主页：<code>aHR0cHM6Ly93d3cueXVucGlhbi5jb20vcHJvZHVjdC9jYXB0Y2hh</code></li>
 </ul>
 <p><img src="https://cdn.itbob.cn/img/article/058/01.png" alt="01"></p>
-<h2 id="抓包分析">抓包分析</h2>
+<h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>验证码图片获取接口，GET 请求，包含四个参数：<code>cb</code>、<code>i</code>、<code>k</code>、<code>captchaId</code>，有时候可能也会有 <code>token</code> 参数，那是因为不是第一次加载图片，比如刷新图片，会将之前接口的 <code>token</code> 值带上。</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/02.png" alt="02"></p>
 <p>接口返回，如果是滑动验证码，则 <code>bg</code> 是背景图，<code>front</code> 是滑块图，还有个 <code>token</code> 值后续会用到。</p>
@@ -290,8 +307,8 @@
 <p>验证接口，包含五个参数：<code>cb</code>、<code>i</code>、<code>k</code>、<code>token</code>、<code>captchaId</code>，其中 <code>token</code> 就是获取验证码接口返回的。</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/05.png" alt="05"></p>
 <p><img src="https://cdn.itbob.cn/img/article/058/06.png" alt="06"></p>
-<h2 id="逆向分析">逆向分析</h2>
-<h3 id="图片接口">图片接口</h3>
+<h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
+<h3><span id="tu-pian-jie-kou">图片接口</span></h3>
 <p>先来看看获取验证码图片的接口，全局搜索关键字 <code>captchaId</code> 即可定位到 key 为 <code>jsonpRequest</code> 的地方，下图中的 <code>t</code> 就是完整的接口 URL 了：</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/07.png" alt="07"></p>
 <p>往上挨个找，先看看 <code>captchaId</code>，其实就是 <code>this.APP_ID</code>，多次刷新你会发现，对于滑块来讲，是定值 <code>974cd565f11545b6a5006d10dc324281</code>，对于点选来讲，是定值 <code>e1e7be036f9242c7aed023438af66f46</code>，这两个值在一个 JS 里是写死的，如下图所示：</p>
@@ -319,7 +336,7 @@ performance = perf.performance.now()
 <p><img src="https://cdn.itbob.cn/img/article/058/18.png" alt="18"></p>
 <p>来到 <code>getCaptcha</code> 这里，没啥特别的，扣就完事儿了，其中有个 <code>browserInfo</code> 是浏览器的一些东西，copy 下来就行了。</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/19.png" alt="19"></p>
-<h3 id="验证接口">验证接口</h3>
+<h3><span id="yan-zheng-jie-kou">验证接口</span></h3>
 <p>验证接口最后也是走的 <code>jsonpRequest</code>，和前面的获取图片接口类似，不同之处就是传入的 <code>e</code> 里面包含的值不一样，先来看看滑块：</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/20.png" alt="20"></p>
 <p>包含 <code>distanceX</code> 和 <code>points</code>，很明显 <code>points</code> 就是轨迹了，再往前跟看看，如下图所示，我们只需要 <code>i</code> 和 <code>r</code> 参数就行了，参数是一些图片高宽，固定就行，<code>offsetX</code> 是滑动的距离。</p>
@@ -330,7 +347,7 @@ performance = perf.performance.now()
 <p><img src="https://cdn.itbob.cn/img/article/058/23.png" alt="23"></p>
 <p>同样往上跟栈，这里的 <code>this.position</code> 才是真实坐标，后面每个坐标分别对 x 和 y 与图片的宽和高进行相除，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/058/24.png" alt="24"></p>
-<h2 id="结果验证">结果验证</h2>
+<h2><span id="jie-guo-yan-zheng">结果验证</span></h2>
 <p><img src="https://cdn.itbob.cn/img/article/058/25.png" alt="25"></p>
 
             </div>
@@ -389,23 +406,33 @@ performance = perf.performance.now()
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -468,16 +495,16 @@ performance = perf.performance.now()
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -486,7 +513,7 @@ performance = perf.performance.now()
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -504,7 +531,10 @@ performance = perf.performance.now()
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 3.7k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.8k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 16分丨
@@ -271,7 +271,18 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/rpc.png" alt="rpc"></p>
-<h2 id="什么是-RPC">什么是 RPC</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#shi-me-shi-rpc">什么是 RPC</a></li>
+<li><a href="#jsrpc">JSRPC</a></li>
+<li><a href="#sekiro">Sekiro</a></li>
+<li><a href="#you-que-dian">优缺点</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="shi-me-shi-rpc">什么是 RPC</span></h2>
 <p><s>RPC，英文 RangPaCong，中文让爬虫，旨在为爬虫开路，秒杀一切，让爬虫畅通无阻！</s></p>
 <p>开个玩笑，实际上 RPC 为远程过程调用，全称 Remote Procedure Call，是一种技术思想而非一种规范或协议。RPC 的诞生事实上离不开分布式的发展，RPC 主要解决了两个问题：</p>
 <ol>
@@ -280,7 +291,7 @@
 </ol>
 <p>RPC 的存在让构建分布式系统更加容易，相比于 HTTP 协议，RPC 采用二进制字节码传输，因此也更加高效、安全。在一个典型 RPC 的使用场景中，包含了服务发现、负载、容错、网络传输、序列化等组件，完整 RPC 架构图如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/047/01.jpg" alt="01"></p>
-<h2 id="JSRPC">JSRPC</h2>
+<h2><span id="jsrpc">JSRPC</span></h2>
 <p>RPC 技术是非常复杂的，对于我们搞爬虫、逆向的来说，不需要完全了解，只需要知道这项技术如何在逆向中应用就行了。</p>
 <p>RPC 在逆向中，简单来说就是将本地和浏览器，看做是服务端和客户端，二者之间通过 WebSocket 协议进行 RPC 通信，在浏览器中将加密函数暴露出来，在本地直接调用浏览器中对应的加密函数，从而得到加密结果，不必去在意函数具体的执行逻辑，也省去了扣代码、补环境等操作，可以省去大量的逆向调试时间。我们以某团网页端的登录为例来演示 RPC 在逆向中的具体使用方法。（假设你已经有一定逆向基础，了解 WebSocket 协议，纯小白可以先看看以前的文章）</p>
 <ul>
@@ -358,7 +369,7 @@ ws.onmessage = <span class="hljs-function"><span class="hljs-keyword">function</
 <p><img src="https://cdn.itbob.cn/img/article/047/04.png" alt="04"></p>
 <p>然后先运行本地服务端代码，网页上先登录一遍，网页上先登录一遍，网页上先登录一遍，重要的步骤说三遍！然后就可以在本地传入待加密字符串，获取 <code>utility.getH5fingerprint()</code> 加密后的结果了：</p>
 <p><img src="https://cdn.itbob.cn/img/article/047/05.png" alt="05"></p>
-<h2 id="Sekiro">Sekiro</h2>
+<h2><span id="sekiro">Sekiro</span></h2>
 <p>通过前面的示例，可以发现自己写服务端太麻烦了，不易扩展，那这方面有没有现成的轮子呢？答案是有的，这里介绍两个项目：</p>
 <ul>
 <li>JsRPC-hliang：<a target="_blank" rel="noopener" href="https://github.com/jxhczhl/JsRpc">https://github.com/jxhczhl/JsRpc</a></li>
@@ -690,7 +701,7 @@ client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<s
     <span class="hljs-built_in">setTimeout</span>(startSekiro, <span class="hljs-number">2000</span>)
 &#125;)();</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/047/10.png" alt="10"></p>
-<h2 id="优缺点">优缺点</h2>
+<h2><span id="you-que-dian">优缺点</span></h2>
 <p>目前如果不去逆向 JS 来实现加密参数的话，用得最多的就是自动化工具了，比如 Selenium、Puppeteer 等，很显然这些自动化工具配置繁琐、运行效率极低，而 RPC 技术不需要加载多余的资源，稳定性和效率明显都更高，RPC 不需要考虑浏览器指纹、各种环境，如果风控不严的话，高并发也是能够轻松实现的，相反，由于 RPC 是一直挂载在同一个浏览器上的，所以针对风控较严格的站点，比如检测 UA、IP 与加密参数绑定之类的，那么 PRC 调用太频繁就不太行了，当然也可以研究研究浏览器群控技术，操纵多个不同浏览器可以一定程度上缓解这个问题。总之 RPC 技术还是非常牛的，除了 JS 逆向，可以说是目前比较万能、高效的方法了，一定程度上做到了加密参数一把梭！</p>
 
             </div>
@@ -756,23 +767,33 @@ client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<s
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -835,16 +856,16 @@ client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<s
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -853,7 +874,7 @@ client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<s
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -871,7 +892,10 @@ client.registerAction(<span class="hljs-string">&quot;clientTime&quot;</span>,<s
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

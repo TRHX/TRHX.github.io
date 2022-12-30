@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 2.5k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 2.6k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 9分丨
@@ -265,26 +265,44 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <h2 id="写在前面">写在前面</h2>
-<p>网站在没有提交搜索引擎收录之前，直接搜索你网站的内容是搜不到的，只有提交搜索引擎之后，搜索引擎才能收录你的站点，通过爬虫抓取你网站的东西，<font color=#ff0000>对于 hexo 博客来说，如果你是部署在 GitHub Pages，那么你是无法被百度收录的，因为 GitHub 禁止了百度爬虫</font>，最常见的解决办法是双线部署到 Coding Pages 和 GitHub Pages，因为百度爬虫可以爬取到 Coding 上的内容，从而实现百度收录，如果你的 hexo 博客还没有实现双线部署，请参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36759224/article/details/100879609">《Hexo 双线部署到 Coding Pages 和 GitHub Pages 并实现全站 HPPTS》</a>，另外百度收录的所需的时间较长，大约半个月左右才会看到效果！</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#xie-zai-qian-mian">写在前面</a></li>
+<li><a href="#cha-kan-wang-zhan-shi-fou-bei-shou-lu">查看网站是否被收录</a></li>
+<li><a href="#bai-du-zi-yuan-ping-tai-tian-jia-wang-zhan">百度资源平台添加网站</a></li>
+<li><a href="#ti-jiao-bai-du-sou-suo">提交百度搜索</a>
+<ul>
+<li><a href="#zhu-dong-tui-song">主动推送</a></li>
+<li><a href="#zi-dong-tui-song">自动推送</a></li>
+<li><a href="#sitemap">sitemap</a></li>
+<li><a href="#shou-dong-ti-jiao">手动提交</a></li>
+</ul>
+</li>
+<li><a href="#ti-jiao-gu-ge-sou-suo">提交谷歌搜索</a></li>
+</ul>
+<!-- tocstop -->
 <hr>
-<h2 id="查看网站是否被收录">查看网站是否被收录</h2>
+<h2><span id="xie-zai-qian-mian">写在前面</span></h2>
+<p>网站在没有提交搜索引擎收录之前，直接搜索你网站的内容是搜不到的，只有提交搜索引擎之后，搜索引擎才能收录你的站点，通过爬虫抓取你网站的东西，<font color="#ff0000">对于 hexo 博客来说，如果你是部署在 GitHub Pages，那么你是无法被百度收录的，因为 GitHub 禁止了百度爬虫</font>，最常见的解决办法是双线部署到 Coding Pages 和 GitHub Pages，因为百度爬虫可以爬取到 Coding 上的内容，从而实现百度收录，如果你的 hexo 博客还没有实现双线部署，请参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36759224/article/details/100879609">《Hexo 双线部署到 Coding Pages 和 GitHub Pages 并实现全站 HPPTS》</a>，另外百度收录的所需的时间较长，大约半个月左右才会看到效果！</p>
+<hr>
+<h2><span id="cha-kan-wang-zhan-shi-fou-bei-shou-lu">查看网站是否被收录</span></h2>
 <p>首先我们可以输入 <code>site:域名</code> 来查看域名是否被搜索引擎收录，如下图所示，表示没有收录：</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/01.png" alt="01"></p>
 <hr>
-<h2 id="百度资源平台添加网站">百度资源平台添加网站</h2>
+<h2><span id="bai-du-zi-yuan-ping-tai-tian-jia-wang-zhan">百度资源平台添加网站</span></h2>
 <p>访问<a target="_blank" rel="noopener" href="https://ziyuan.baidu.com/">百度搜索资源平台官网</a>，注册或者登陆百度账号，依次选择【用户中心】-【站点管理】，添加你的网站，在添加站点时会让你选择协议头（http 或者 https），如果选择 https，它会验证你的站点，大约能在一天之内完成，我的网站已经实现了全站 https，因此选择了 https 协议，但是不知道为什么始终验证失败，实在是无解，只能选择 http 协议了，如果你的站点也实现了全站 https，也可以尝试一下</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/02.png" alt="02"></p>
 <p>之后会让你验证网站所有权，提供三种验证方式：</p>
 <ul>
-<li>文件验证：下载给定的文件，将其放到本地<font color=#ff0000>主题目录 source 文件夹</font>，然后部署上去完成验证</li>
+<li>文件验证：下载给定的文件，将其放到本地<font color="#ff0000">主题目录 source 文件夹</font>，然后部署上去完成验证</li>
 <li>HTML 标签验证：一般是给一个 meta 标签，放到首页 <code>&lt;head&gt;</code> 与 <code>&lt;/head&gt;</code> 标签之间即可完成验证</li>
 <li>CNAME 验证：个人觉得这种方法最简单，去域名 DNS 添加一个 CNAME 记录即可完成验证</li>
 </ul>
 <p><img src="https://cdn.itbob.cn/img/article/007/03.png" alt="03"></p>
 <p><img src="https://cdn.itbob.cn/img/article/007/04.png" alt="04"></p>
 <hr>
-<h2 id="提交百度搜索">提交百度搜索</h2>
+<h2><span id="ti-jiao-bai-du-sou-suo">提交百度搜索</span></h2>
 <p>百度提供了自动提交和手动提交两种方式，其中自动提交又分为主动推送、自动推送和 sitemap 三种方式，以下是官方给出的解释：</p>
 <ul>
 <li>
@@ -351,7 +369,7 @@
 </table>
 <p><strong>个人推荐同时使用主动推送和 sitemap 方式</strong>，下面将逐一介绍这四种提交方式的具体实现方法</p>
 <hr>
-<h3 id="主动推送">主动推送</h3>
+<h3><span id="zhu-dong-tui-song">主动推送</span></h3>
 <p>在博客根目录安装插件 <code>npm install hexo-baidu-url-submit --save</code>，然后在根目录 <code>_config.yml</code> 文件里写入以下配置：</p>
 <pre><code class="hljs txt">baidu_url_submit:
   count: 1               # 提交最新的多少个链接
@@ -366,9 +384,7 @@ url: https://www.itrhx.com
 root: /
 permalink: :year/:month/:day/:title/</code></pre>
 <p>最后，加入新的 deployer：</p>
-<pre><code class="hljs txt"># Deployment
-## Docs: https://hexo.io/docs/deployment.html
-deploy:
+<pre><code class="hljs txt">deploy:
 - type: git
   repository:
     github: git@github.com:TRHX/TRHX.github.io.git  # 这是原来的 github 配置
@@ -386,7 +402,7 @@ INFO  Deploy <span class="hljs-keyword">done</span>: baidu_url_submitter</code><
 </ul>
 <p>该插件的 GitHub 地址：<a target="_blank" rel="noopener" href="https://github.com/huiwang/hexo-baidu-url-submit">https://github.com/huiwang/hexo-baidu-url-submit</a></p>
 <hr>
-<h3 id="自动推送">自动推送</h3>
+<h3><span id="zi-dong-tui-song">自动推送</span></h3>
 <p>关于自动推送百度官网给出的解释是：自动推送是百度搜索资源平台为提高站点新增网页发现速度推出的工具，安装自动推送JS代码的网页，在页面被访问时，页面URL将立即被推送给百度</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/06.png" alt="06"></p>
 <p>此时要注意，有些 hexo 主题集成了这项功能，比如 next 主题，在 <code>themes\next\layout_scripts\</code> 下有个 <code>baidu_push.swig</code> 文件，我们只需要把如下代码粘贴到该文件，然后在主题配置文件设置 <code>baidu_push: true</code> 即可</p>
@@ -422,7 +438,7 @@ INFO  Deploy <span class="hljs-keyword">done</span>: baidu_url_submitter</code><
 &#125;)();
 &lt;/script&gt;</code></pre>
 <hr>
-<h3 id="sitemap">sitemap</h3>
+<h3><span id="sitemap">sitemap</span></h3>
 <p>首先我们要使用以下命令生成一个网站地图：</p>
 <pre><code class="hljs bash">npm install hexo-generator-sitemap --save     
 npm install hexo-generator-baidu-sitemap --save</code></pre>
@@ -437,11 +453,11 @@ permalink: :year/:month/:day/:title/</code></pre>
 <p>然后来到百度站长平台的 sitemap 提交页面，将你的 sitemap 地址提交即可，如果成功的话状态会显示为正常，初次提交要等几分钟，sitemap.xml 相比 baidusitemap.xml 来说等待时间也会更长，如果以后你博客有新的文章或其他页面，可以点击<strong>手动更新文件</strong>，更新一下新的 sitemap</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/07.png" alt="07"></p>
 <hr>
-<h3 id="手动提交">手动提交</h3>
+<h3><span id="shou-dong-ti-jiao">手动提交</span></h3>
 <p>手动提交不需要其他额外操作，直接把需要收录的页面的 url 提交即可，这种方法效率较低，更新较慢，不推荐使用</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/08.png" alt="08"></p>
 <hr>
-<h2 id="提交谷歌搜索">提交谷歌搜索</h2>
+<h2><span id="ti-jiao-gu-ge-sou-suo">提交谷歌搜索</span></h2>
 <p>提交谷歌搜索引擎比较简单，在提交之前，我们依然可以使用 <code>site:域名</code> 查看网站是否被收录，我的网站搭建了有差不多一年了，之前也没提交过收录，不过谷歌爬虫的确是强大，即使没有提交过，现在也能看到有一百多条结果了：</p>
 <p><img src="https://cdn.itbob.cn/img/article/007/09.png" alt="09"></p>
 <p>接下来我们将网站提交谷歌搜索引擎搜索，进入<a target="_blank" rel="noopener" href="https://www.google.com/webmasters/">谷歌站长平台</a>，登录你的谷歌账号之后会让你验证网站所有权：</p>
@@ -468,8 +484,8 @@ permalink: :year/:month/:day/:title/</code></pre>
 </tr>
 <tr>
 <td>示例</td>
-<td style="text-align:left">资源 <a target="_blank" rel="noopener" href="http://example.com/">http://example.com/</a><br><br><font color=#ff0000>✔</font> <a target="_blank" rel="noopener" href="http://example.com/dresses/1234">http://example.com/dresses/1234</a><br><font color=#ff0000>X</font> <a target="_blank" rel="noopener" href="https://example.com/dresses/1234">https://example.com/dresses/1234</a><br><font color=#ff0000>X</font> <a target="_blank" rel="noopener" href="http://www.example.com/dresses/1234">http://www.example.com/dresses/1234</a></td>
-<td style="text-align:left">资源 <a target="_blank" rel="noopener" href="http://example.com">example.com</a><br><br><font color=#ff0000>✔</font> <a target="_blank" rel="noopener" href="http://example.com/dresses/1234">http://example.com/dresses/1234</a><br><font color=#ff0000>✔</font> <a target="_blank" rel="noopener" href="https://example.com/dresses/1234">https://example.com/dresses/1234</a><br><font color=#ff0000>✔</font> <a target="_blank" rel="noopener" href="http://www.example.com/dresses/1234">http://www.example.com/dresses/1234</a><br><font color=#ff0000>✔</font> <a target="_blank" rel="noopener" href="http://support.m.example.com/dresses/1234">http://support.m.example.com/dresses/1234</a></td>
+<td style="text-align:left">资源 <a target="_blank" rel="noopener" href="http://example.com/">http://example.com/</a><br><br><font color="#ff0000">✔</font> <a target="_blank" rel="noopener" href="http://example.com/dresses/1234">http://example.com/dresses/1234</a><br><font color="#ff0000">X</font> <a target="_blank" rel="noopener" href="https://example.com/dresses/1234">https://example.com/dresses/1234</a><br><font color="#ff0000">X</font> <a target="_blank" rel="noopener" href="http://www.example.com/dresses/1234">http://www.example.com/dresses/1234</a></td>
+<td style="text-align:left">资源 <a target="_blank" rel="noopener" href="http://example.com">example.com</a><br><br><font color="#ff0000">✔</font> <a target="_blank" rel="noopener" href="http://example.com/dresses/1234">http://example.com/dresses/1234</a><br><font color="#ff0000">✔</font> <a target="_blank" rel="noopener" href="https://example.com/dresses/1234">https://example.com/dresses/1234</a><br><font color="#ff0000">✔</font> <a target="_blank" rel="noopener" href="http://www.example.com/dresses/1234">http://www.example.com/dresses/1234</a><br><font color="#ff0000">✔</font> <a target="_blank" rel="noopener" href="http://support.m.example.com/dresses/1234">http://support.m.example.com/dresses/1234</a></td>
 </tr>
 </tbody>
 </table>
@@ -541,23 +557,33 @@ permalink: :year/:month/:day/:title/</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -620,16 +646,16 @@ permalink: :year/:month/:day/:title/</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -638,7 +664,7 @@ permalink: :year/:month/:day/:title/</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -656,7 +682,10 @@ permalink: :year/:month/:day/:title/</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

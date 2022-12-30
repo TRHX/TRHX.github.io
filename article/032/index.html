@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 4.9k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 5k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 26分丨
@@ -270,7 +270,32 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Pandas 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-01x00-shu-ju-chong-su-font"><font color="#FF0000">【01x00】数据重塑</font></a>
+<ul>
+<li><a href="#font-color-4876ff-01x01-stack-font"><font color="#4876FF">【01x01】stack</font></a></li>
+<li><a href="#font-color-4876ff-01x02-unstack-font"><font color="#4876FF">【01x02】unstack</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-02x00-chong-fu-shu-ju-chu-li-font"><font color="#FF0000">【02x00】重复数据处理</font></a>
+<ul>
+<li><a href="#font-color-4876ff-02x01-duplicated-font"><font color="#4876FF">【02x01】duplicated</font></a></li>
+<li><a href="#font-color-4876ff-02x02-drop-duplicates-font"><font color="#4876FF">【02x02】drop_duplicates</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-03x00-shu-ju-ti-huan-font"><font color="#FF0000">【03x00】数据替换</font></a>
+<ul>
+<li><a href="#font-color-4876ff-03x01-replace-font"><font color="#4876FF">【03x01】replace</font></a></li>
+<li><a href="#font-color-4876ff-03x02-where-font"><font color="#4876FF">【03x02】where</font></a></li>
+<li><a href="#font-color-4876ff-03x03-mask-font"><font color="#4876FF">【03x03】mask</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -290,7 +315,9 @@
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,13 +325,13 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【01x00】数据重塑-font"><font color=#FF0000>【01x00】数据重塑</font></h2>
+<h2><span id="01x00-shu-ju-chong-su"><font color="#FF0000">【01x00】数据重塑</font></span></h2>
 <p>有许多用于重新排列表格型数据的基础运算。这些函数也称作重塑（reshape）或轴向旋转（pivot）运算。重塑层次化索引主要有以下两个方法：</p>
 <ul>
 <li>
@@ -314,7 +341,7 @@
 <p><code>unstack</code>：将数据的行转换成列。</p>
 </li>
 </ul>
-<h3 id="font-color-4876FF-【01x01】stack-font"><font color=#4876FF>【01x01】stack</font></h3>
+<h3><span id="01x01-stack"><font color="#4876FF">【01x01】stack</font></span></h3>
 <p><code>stack</code> 方法用于将数据的列转换成为行；</p>
 <p>基本语法：<code>DataFrame.stack(self, level=-1, dropna=True)</code></p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.stack.html</a></p>
@@ -434,7 +461,7 @@ dog kg     NaN     <span class="hljs-number">2.0</span>
 cat m      <span class="hljs-number">1.0</span>     NaN
 dog kg     NaN     <span class="hljs-number">2.0</span>
     m      <span class="hljs-number">3.0</span>     NaN</code></pre>
-<h3 id="font-color-4876FF-【01x02】unstack-font"><font color=#4876FF>【01x02】unstack</font></h3>
+<h3><span id="01x02-unstack"><font color="#4876FF">【01x02】unstack</font></span></h3>
 <p><code>unstack</code>：将数据的行转换成列。</p>
 <p>基本语法：</p>
 <ul>
@@ -564,13 +591,13 @@ two    left          <span class="hljs-number">4</span>     <span class="hljs-nu
 three  left          <span class="hljs-number">5</span>     <span class="hljs-number">2</span>
        right        <span class="hljs-number">10</span>     <span class="hljs-number">7</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【02x00】重复数据处理-font"><font color=#FF0000>【02x00】重复数据处理</font></h2>
+<h2><span id="02x00-chong-fu-shu-ju-chu-li"><font color="#FF0000">【02x00】重复数据处理</font></span></h2>
 <ul>
 <li>
 <p><code>duplicated</code>：判断是否为重复值；</p>
@@ -579,7 +606,7 @@ three  left          <span class="hljs-number">5</span>     <span class="hljs-nu
 <p><code>drop_duplicates</code>：删除重复值。</p>
 </li>
 </ul>
-<h3 id="font-color-4876FF-【02x01】duplicated-font"><font color=#4876FF>【02x01】duplicated</font></h3>
+<h3><span id="02x01-duplicated"><font color="#4876FF">【02x01】duplicated</font></span></h3>
 <p><code>duplicated</code> 方法可以判断值是否为重复数据。</p>
 <p>基本语法：</p>
 <ul>
@@ -717,7 +744,7 @@ dtype: <span class="hljs-built_in">bool</span>
 <span class="hljs-number">6</span>    <span class="hljs-literal">False</span>
 <span class="hljs-number">7</span>    <span class="hljs-literal">False</span>
 dtype: <span class="hljs-built_in">bool</span></code></pre>
-<h3 id="font-color-4876FF-【02x02】drop-duplicates-font"><font color=#4876FF>【02x02】drop_duplicates</font></h3>
+<h3><span id="02x02-drop-duplicates"><font color="#4876FF">【02x02】drop_duplicates</font></span></h3>
 <p><code>drop_duplicates</code> 方法会返回一个删除了重复值的序列。</p>
 <p>基本语法：</p>
 <pre><code class="hljs python">Series.drop_duplicates(self, keep=<span class="hljs-string">&#x27;first&#x27;</span>, inplace=<span class="hljs-literal">False</span>)</code></pre>
@@ -856,8 +883,8 @@ Name: animal, dtype: <span class="hljs-built_in">object</span></code></pre>
 <span class="hljs-number">0</span>     a      <span class="hljs-number">2</span>
 <span class="hljs-number">1</span>     a      <span class="hljs-number">1</span>
 <span class="hljs-number">2</span>     b      <span class="hljs-number">0</span></code></pre>
-<h2 id="font-color-FF0000-【03x00】数据替换-font"><font color=#FF0000>【03x00】数据替换</font></h2>
-<h3 id="font-color-4876FF-【03x01】replace-font"><font color=#4876FF>【03x01】replace</font></h3>
+<h2><span id="03x00-shu-ju-ti-huan"><font color="#FF0000">【03x00】数据替换</font></span></h2>
+<h3><span id="03x01-replace"><font color="#4876FF">【03x01】replace</font></span></h3>
 <p><code>replace</code> 方法可以根据值的内容进行替换。</p>
 <p>基本语法：</p>
 <ul>
@@ -1040,7 +1067,7 @@ dtype: int64</code></pre>
 <span class="hljs-number">0</span>   new  abc
 <span class="hljs-number">1</span>   new  new
 <span class="hljs-number">2</span>  bait  xyz</code></pre>
-<h3 id="font-color-4876FF-【03x02】where-font"><font color=#4876FF>【03x02】where</font></h3>
+<h3><span id="03x02-where"><font color="#4876FF">【03x02】where</font></span></h3>
 <p><code>where</code> 方法用于替换条件为 False 的值。</p>
 <p>基本语法：</p>
 <ul>
@@ -1136,7 +1163,7 @@ dtype: int64</code></pre>
 <span class="hljs-number">2</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
 <span class="hljs-number">3</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
 <span class="hljs-number">4</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span></code></pre>
-<h3 id="font-color-4876FF-【03x03】mask-font"><font color=#4876FF>【03x03】mask</font></h3>
+<h3><span id="03x03-mask"><font color="#4876FF">【03x03】mask</font></span></h3>
 <p><code>mask</code> 方法与 <code>where</code> 方法相反，<code>mask</code> 用于替换条件为 False 的值。</p>
 <p>基本语法：</p>
 <ul>
@@ -1234,8 +1261,8 @@ dtype: int64</code></pre>
 <span class="hljs-number">3</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span>
 <span class="hljs-number">4</span>  <span class="hljs-literal">True</span>  <span class="hljs-literal">True</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106900748</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -1304,23 +1331,33 @@ dtype: int64</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1383,16 +1420,16 @@ dtype: int64</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1401,7 +1438,7 @@ dtype: int64</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1419,7 +1456,10 @@ dtype: int64</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

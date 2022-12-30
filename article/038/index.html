@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -270,22 +270,34 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <h2 id="栈的概念">栈的概念</h2>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#zhan-de-gai-nian">栈的概念</a></li>
+<li><a href="#zhan-de-te-dian">栈的特点</a></li>
+<li><a href="#zhan-de-cao-zuo">栈的操作</a></li>
+<li><a href="#python-shi-xian-zhan">Python 实现栈</a></li>
+<li><a href="#zhan-de-jian-dan-ying-yong-gua-hao-pi-pei-wen-ti">栈的简单应用：括号匹配问题</a></li>
+<li><a href="#zhan-de-jian-dan-ying-yong-dao-xu-shu-chu-yi-zu-yuan-su">栈的简单应用：倒序输出一组元素</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="zhan-de-gai-nian">栈的概念</span></h2>
 <p>栈（stack）又名堆栈，栈是一种线性数据结构，用先进后出或者是后进先出的方式存储数据，栈中数据的插入删除操作都是在栈的顶端进行，这一端被称为栈顶，相对地，把另一端称为栈底。向一个栈插入新元素又称作进栈、入栈或压栈，它是把新元素放到栈顶元素的上面，使之成为新的栈顶元素；从一个栈删除元素又称作出栈或退栈，它是把栈顶元素删除掉，使其相邻的元素成为新的栈顶元素。</p>
 <p><img src="https://cdn.itbob.cn/img/article/038/01.png" alt="01"></p>
 <hr>
-<h2 id="栈的特点">栈的特点</h2>
+<h2><span id="zhan-de-te-dian">栈的特点</span></h2>
 <p>元素后进先出（Last in First Out，LIFO）</p>
 <hr>
-<h2 id="栈的操作">栈的操作</h2>
+<h2><span id="zhan-de-cao-zuo">栈的操作</span></h2>
 <ul>
-<li><font color=#FF0000><strong>push(item)</strong></font>：进栈（向栈顶添加元素）</li>
-<li><font color=#FF0000><strong>pop()</strong></font>：出栈（删除栈顶元素）</li>
-<li><font color=#FF0000><strong>top()</strong></font>：查看栈顶元素</li>
-<li><font color=#FF0000><strong>empty()</strong></font>：判断栈是否为空</li>
+<li><font color="#FF0000"><strong>push(item)</strong></font>：进栈（向栈顶添加元素）</li>
+<li><font color="#FF0000"><strong>pop()</strong></font>：出栈（删除栈顶元素）</li>
+<li><font color="#FF0000"><strong>top()</strong></font>：查看栈顶元素</li>
+<li><font color="#FF0000"><strong>empty()</strong></font>：判断栈是否为空</li>
 </ul>
 <hr>
-<h2 id="Python-实现栈">Python 实现栈</h2>
+<h2><span id="python-shi-xian-zhan">Python 实现栈</span></h2>
 <p>栈并不是 Python 的内建类型，在必要的时候可以使用列表来模拟基于数组的栈。如果将列表的末尾看作是栈的顶，列表方法 <code>append()</code> 就是将元素压入到栈中（进栈），而列表方法 <code>pop()</code> 会删除并返回栈顶的元素（出栈），列表索引的方式 <code>arr[-1]</code> 可以查看栈顶元素。具体代码实现如下：</p>
 <pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Stack</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
@@ -309,22 +321,22 @@
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">empty</span>(<span class="hljs-params">self</span>):</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(self.stack) == <span class="hljs-number">0</span></code></pre>
 <hr>
-<h2 id="栈的简单应用：括号匹配问题">栈的简单应用：括号匹配问题</h2>
-<p><font color=#2DAF8B><strong>问题描述：</strong></font></p>
+<h2><span id="zhan-de-jian-dan-ying-yong-gua-hao-pi-pei-wen-ti">栈的简单应用：括号匹配问题</span></h2>
+<p><font color="#2DAF8B"><strong>问题描述：</strong></font></p>
 <p>给定一个字符串，字符串中只包含小括号 <code>()</code>、中括号 <code>[]</code>、大括号 <code>&#123;&#125;</code>，求该字符串中的括号是否匹配。匹配规则：成对出现或者左右对称出现，例如：</p>
-<p><font color=#FF0000><strong>()[]{}</strong></font>：匹配；<font color=#FF0000><strong>{[()]}</strong></font>：匹配；<font color=#FF0000><strong>({}]</strong></font>：不匹配；<font color=#FF0000><strong>()]</strong></font>：不匹配；<font color=#FF0000><strong>({)}</strong></font>：不匹配</p>
-<p><font color=#2DAF8B><strong>通过栈来解决：</strong></font></p>
-<p>有字符串 <font color=#FF0000><strong>()[{}]</strong></font>，依次取每个括号，只要是左括号就进栈，只要是右括号就判断栈顶是否为对应的左括号，具体步骤如下：</p>
+<p><font color="#FF0000"><strong>()[]{}</strong></font>：匹配；<font color="#FF0000"><strong>{[()]}</strong></font>：匹配；<font color="#FF0000"><strong>({}]</strong></font>：不匹配；<font color="#FF0000"><strong>()]</strong></font>：不匹配；<font color="#FF0000"><strong>({)}</strong></font>：不匹配</p>
+<p><font color="#2DAF8B"><strong>通过栈来解决：</strong></font></p>
+<p>有字符串 <font color="#FF0000"><strong>()[{}]</strong></font>，依次取每个括号，只要是左括号就进栈，只要是右括号就判断栈顶是否为对应的左括号，具体步骤如下：</p>
 <ul>
-<li><strong>①</strong> 遇到左小括号 <font color=#FF0000><strong>(</strong></font>，执行进栈操作；</li>
-<li><strong>②</strong> 遇到右小括号 <font color=#FF0000><strong>)</strong></font>，判断此时栈顶是否为左小括号 <font color=#FF0000><strong>(</strong></font>，是则让左小括号 <font color=#FF0000><strong>(</strong></font> 出栈，此时栈为空;</li>
-<li><strong>③</strong> 遇到左中括号 <font color=#FF0000><strong>[</strong></font>，执行进栈操作；</li>
-<li><strong>④</strong> 遇到左大括号 <font color=#FF0000><strong>{</strong></font>，执行进栈操作；</li>
-<li><strong>⑤</strong> 遇到右大括号 <font color=#FF0000><strong>}</strong></font>，判断此时栈顶是否为左大括号 <font color=#FF0000><strong>{</strong></font>，是则让左大括号 <font color=#FF0000><strong>{</strong></font> 出栈，此时栈为空；</li>
-<li><strong>⑥</strong> 遇到右中括号 <font color=#FF0000><strong>]</strong></font>，判断此时栈顶是否为左中括号 <font color=#FF0000><strong>[</strong></font>，是则让左中括号 <font color=#FF0000><strong>[</strong></font> 出栈，此时栈为空；</li>
+<li><strong>①</strong> 遇到左小括号 <font color="#FF0000"><strong>(</strong></font>，执行进栈操作；</li>
+<li><strong>②</strong> 遇到右小括号 <font color="#FF0000"><strong>)</strong></font>，判断此时栈顶是否为左小括号 <font color="#FF0000"><strong>(</strong></font>，是则让左小括号 <font color="#FF0000"><strong>(</strong></font> 出栈，此时栈为空;</li>
+<li><strong>③</strong> 遇到左中括号 <font color="#FF0000"><strong>[</strong></font>，执行进栈操作；</li>
+<li><strong>④</strong> 遇到左大括号 <font color="#FF0000"><strong>{</strong></font>，执行进栈操作；</li>
+<li><strong>⑤</strong> 遇到右大括号 <font color="#FF0000"><strong>}</strong></font>，判断此时栈顶是否为左大括号 <font color="#FF0000"><strong>{</strong></font>，是则让左大括号 <font color="#FF0000"><strong>{</strong></font> 出栈，此时栈为空；</li>
+<li><strong>⑥</strong> 遇到右中括号 <font color="#FF0000"><strong>]</strong></font>，判断此时栈顶是否为左中括号 <font color="#FF0000"><strong>[</strong></font>，是则让左中括号 <font color="#FF0000"><strong>[</strong></font> 出栈，此时栈为空；</li>
 <li><strong>⑦</strong> 判断最终的栈是否为空，是则表示匹配，不是则表示不匹配。其中第 <strong>② ⑤ ⑥</strong> 步中，若判断为不是，则直接表示不匹配。</li>
 </ul>
-<p><font color=#2DAF8B><strong>Python 代码实现：</strong></font></p>
+<p><font color="#2DAF8B"><strong>Python 代码实现：</strong></font></p>
 <pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Stack</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
         self.stack = []
@@ -377,7 +389,7 @@
 <span class="hljs-literal">False</span>
 <span class="hljs-literal">False</span></code></pre>
 <hr>
-<h2 id="栈的简单应用：倒序输出一组元素">栈的简单应用：倒序输出一组元素</h2>
+<h2><span id="zhan-de-jian-dan-ying-yong-dao-xu-shu-chu-yi-zu-yuan-su">栈的简单应用：倒序输出一组元素</span></h2>
 <p>把元素存入栈，再顺序取出：</p>
 <pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Stack</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
@@ -478,23 +490,33 @@
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -557,16 +579,16 @@
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -575,7 +597,7 @@
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -593,7 +615,10 @@
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

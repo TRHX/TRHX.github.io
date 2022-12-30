@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,10 +248,10 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 3k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.1k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 11分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 12分丨
                     </span>
                 
                 
@@ -276,13 +276,41 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/sm_algorithm.png" alt="sm_algorithm"></p>
-<h2 id="简介">简介</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#jian-jie">简介</a></li>
+<li><a href="#suan-fa-gai-shu">算法概述</a></li>
+<li><a href="#suan-fa-xiang-jie">算法详解</a>
+<ul>
+<li><a href="#sm1-fen-zu-jia-mi-suan-fa">SM1 分组加密算法</a></li>
+<li><a href="#tuo-yuan-qu-xian-gong-yao-jia-mi-suan-fa">椭圆曲线公钥加密算法</a></li>
+<li><a href="#za-cou-suan-fa">杂凑算法</a></li>
+<li><a href="#fen-zu-jia-mi-suan-fa">分组加密算法</a></li>
+<li><a href="#fen-zu-jia-mi-suan-fa-1">分组加密算法</a></li>
+<li><a href="#biao-shi-jia-mi-suan-fa">标识加密算法</a></li>
+<li><a href="#zu-chong-zhi-suan-fa">祖冲之算法</a></li>
+</ul>
+</li>
+<li><a href="#bian-cheng-yu-yan-shi-xian">编程语言实现</a>
+<ul>
+<li><a href="#python-yu-yan-shi-xian">Python 语言实现</a></li>
+<li><a href="#javascript-yu-yan-shi-xian">JavaScript 语言实现</a></li>
+<li><a href="#qi-ta-yu-yan-shi-xian-yi-ji-can-kao-zi-liao">其他语言实现以及参考资料</a></li>
+</ul>
+</li>
+<li><a href="#fu-gm-t-mi-ma-xing-ye-biao-zhun">附：GM/T 密码行业标准</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="jian-jie">简介</span></h2>
 <p>国密即国家密码局认定的国产加密算法，爬虫工程师在做 JS 逆向的时候，会遇到各种各样的加密算法，其中 RSA、AES、SHA 等算法是最常见的，这些算法都是国外的，在我以前的文章里也有介绍：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/119250052">《史上最全总结！爬虫常见加密解密算法》</a></p>
 <p>事实上从 2010 年开始，我国国家密码管理局就已经开始陆续发布了一系列国产加密算法，这其中就包括 SM1、SM2、SM3 、SM4、SM7、SM9、ZUC（祖冲之加密算法）等，SM 代表商密，即商业密码，是指用于商业的、不涉及国家秘密的密码技术。<strong>SM1 和 SM7 的算法不公开</strong>，其余算法都已成为 ISO/IEC 国际标准。</p>
-<p>在这些国产加密算法中，<strong><font color=#B01B15>SM2、SM3、SM4 三种加密算法是比较常见的</font></strong>，在爬取部分 gov 网站时，也可能会遇到这些算法，所以作为爬虫工程师是有必要了解一下这些算法的，如下图所示某 gov 网站就使用了 SM2 和 SM4 加密算法：</p>
-<p><img src="https://img-blog.csdnimg.cn/758cb19d1fbc4ec5ad7cc33781c2f34e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAVFJIWCDigKIg6bKN5YuD,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt=""></p>
+<p>在这些国产加密算法中，<strong><font color="#B01B15">SM2、SM3、SM4 三种加密算法是比较常见的</font></strong>，在爬取部分 gov 网站时，也可能会遇到这些算法，所以作为爬虫工程师是有必要了解一下这些算法的，如下图所示某 gov 网站就使用了 SM2 和 SM4 加密算法：</p>
+<p><img src="https://img-blog.csdnimg.cn/758cb19d1fbc4ec5ad7cc33781c2f34e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAVFJIWCDigKIg6bKN5YuD,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" alt></p>
 <hr>
-<h2 id="算法概述">算法概述</h2>
+<h2><span id="suan-fa-gai-shu">算法概述</span></h2>
 <table>
 <thead>
 <tr>
@@ -338,10 +366,10 @@
 </tbody>
 </table>
 <hr>
-<h2 id="算法详解">算法详解</h2>
-<h3 id="SM1-分组加密算法">SM1 分组加密算法</h3>
+<h2><span id="suan-fa-xiang-jie">算法详解</span></h2>
+<h3><span id="sm1-fen-zu-jia-mi-suan-fa">SM1 分组加密算法</span></h3>
 <p>SM1 为分组加密算法，对称加密，分组长度和密钥长度都为 128 位，故对消息进行加解密时，若消息长度过长，需要进行分组，要消息长度不足，则要进行填充。算法安全保密强度及相关软硬件实现性能与 AES 相当，该算法不公开，仅以 IP 核的形式存在于芯片中，调用该算法时，需要通过加密芯片的接口进行调用，采用该算法已经研制了系列芯片、智能 IC 卡、智能密码钥匙、加密卡、加密机等安全产品，广泛应用于电子政务、电子商务及国民经济的各个应用领域（包括国家政务通、警务通等重要领域），一般了解的人比较少，爬虫工程师也不会遇到这种加密算法。</p>
-<h3 id="椭圆曲线公钥加密算法">椭圆曲线公钥加密算法</h3>
+<h3><span id="tuo-yuan-qu-xian-gong-yao-jia-mi-suan-fa">椭圆曲线公钥加密算法</span></h3>
 <p>SM2 为椭圆曲线（ECC）公钥加密算法，非对称加密，SM2 算法和 RSA 算法都是公钥加密算法，SM2 算法是一种更先进安全的算法，在我们国家商用密码体系中被用来替换 RSA 算法，在不少 gov 网站会见到此类加密算法。我国学者对椭圆曲线密码的研究从 20 世纪 80 年代开始，目前已取得不少成果，SM2 椭圆曲线公钥密码算法比 RSA 算法有以下优势：</p>
 <table>
 <thead>
@@ -384,9 +412,9 @@
 </tr>
 </tbody>
 </table>
-<h3 id="杂凑算法">杂凑算法</h3>
+<h3><span id="za-cou-suan-fa">杂凑算法</span></h3>
 <p>SM3 为密码杂凑算法，采用密码散列（hash）函数标准，用于替代 MD5/SHA-1/SHA-2 等国际算法，是在 SHA-256 基础上改进实现的一种算法，消息分组长度为 512 位，摘要值长度为 256 位，其中使用了异或、模、模加、移位、与、或、非运算，由填充、迭代过程、消息扩展和压缩函数所构成。在商用密码体系中，SM3 主要用于数字签名及验证、消息认证码生成及验证、随机数生成等。据国家密码管理局表示，其安全性及效率要高于 MD5 算法和 SHA-1 算法，与 SHA-256 相当。</p>
-<h3 id="分组加密算法">分组加密算法</h3>
+<h3><span id="fen-zu-jia-mi-suan-fa">分组加密算法</span></h3>
 <p>SM4 为无线局域网标准的分组加密算法，对称加密，用于替代 DES/AES 等国际算法，SM4 算法与 AES 算法具有相同的密钥长度和分组长度，均为 128 位，故对消息进行加解密时，若消息长度过长，需要进行分组，要消息长度不足，则要进行填充。加密算法与密钥扩展算法都采用 32 轮非线性迭代结构，解密算法与加密算法的结构相同，只是轮密钥的使用顺序相反，解密轮密钥是加密轮密钥的逆序。</p>
 <table>
 <thead>
@@ -412,15 +440,15 @@
 </tr>
 </tbody>
 </table>
-<h3 id="分组加密算法-t2">分组加密算法</h3>
+<h3><span id="fen-zu-jia-mi-suan-fa">分组加密算法</span></h3>
 <p>SM7 为分组加密算法，对称加密，该算法不公开，应用包括身份识别类应用（非接触式 IC 卡、门禁卡、工作证、参赛证等），票务类应用（大型赛事门票、展会门票等），支付与通卡类应用（积分消费卡、校园一卡通、企业一卡通等）。爬虫工程师基本上不会遇到此类算法。</p>
-<h3 id="标识加密算法">标识加密算法</h3>
+<h3><span id="biao-shi-jia-mi-suan-fa">标识加密算法</span></h3>
 <p>SM9 为标识加密算法（Identity-Based Cryptography），非对称加密，标识加密将用户的标识（如微信号、邮件地址、手机号码、QQ 号等）作为公钥，省略了交换数字证书和公钥过程，使得安全系统变得易于部署和管理，适用于互联网应用的各种新兴应用的安全保障，如基于云技术的密码服务、电子邮件安全、智能终端保护、物联网安全、云存储安全等等。这些安全应用可采用手机号码或邮件地址作为公钥，实现数据加密、身份认证、通话加密、通道加密等。在商用密码体系中，SM9 主要用于用户的身份认证，据新华网公开报道，SM9 的加密强度等同于 3072 位密钥的 RSA 加密算法。</p>
-<h3 id="祖冲之算法">祖冲之算法</h3>
+<h3><span id="zu-chong-zhi-suan-fa">祖冲之算法</span></h3>
 <p>ZUC 为流密码算法，对称加密，该机密性算法可适用于 3GPP LTE 通信中的加密和解密，该算法包括祖冲之算法（ZUC）、机密性算法（128-EEA3）和完整性算法（128-EIA3）三个部分。已经被国际组织 3GPP 推荐为 4G 无线通信的第三套国际加密和完整性标准的候选算法。</p>
 <hr>
-<h2 id="编程语言实现">编程语言实现</h2>
-<h3 id="Python-语言实现">Python 语言实现</h3>
+<h2><span id="bian-cheng-yu-yan-shi-xian">编程语言实现</span></h2>
+<h3><span id="python-yu-yan-shi-xian">Python 语言实现</span></h3>
 <p>在 Python 里面并没有比较官方的库来实现国密算法，这里仅列出了其中两个较为完善的第三方库，需要注意的是，SM1 和 SM7 算法不公开，目前大多库仅实现了 SM2、SM3、SM4 三种密算法。</p>
 <ul>
 <li>snowland-smx-python：<a target="_blank" rel="noopener" href="https://gitee.com/snowlandltd/snowland-smx-python">https://gitee.com/snowlandltd/snowland-smx-python</a></li>
@@ -470,7 +498,7 @@ verify = sm2_crypt.verify(sign, data)
 
 <span class="hljs-comment"># sign:  45cfe5306b1a87cf5d0034ef6712babdd1d98547e75bcf89a17f3bcb617150a3f111ab05597601bab8c41e2b980754b74ebe9a169a59db37d549569910ae273a</span>
 <span class="hljs-comment"># verify:  True</span></code></pre>
-<h3 id="JavaScript-语言实现">JavaScript 语言实现</h3>
+<h3><span id="javascript-yu-yan-shi-xian">JavaScript 语言实现</span></h3>
 <p>在 JavaScript 中已有比较成熟的实现库，这里推荐 sm-crypto，目前支持 SM2、SM3 和 SM4，需要注意的是，SM2 非对称加密的结果由 C1、C2、C3 三部分组成，其中 C1 是生成随机数的计算出的椭圆曲线点，C2 是密文数据，C3 是 SM3 的摘要值，最开始的国密标准的结果是按 C1C2C3 顺序的，新标准的是按 C1C3C2 顺序存放的，sm-crypto 支持设置 cipherMode，也就是 C1C2C3 的排列顺序。</p>
 <p>sm-crypto：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/sm-crypto">https://www.npmjs.com/package/sm-crypto</a></p>
 <p>以 SM2 算法为例，实现如下（其他算法和详细用法可参考其官方文档）：</p>
@@ -512,7 +540,7 @@ verify = sm2_crypt.verify(sign, data)
 
 <span class="hljs-comment">// sigValueHex:  924cbb9f2b5adb554ef77129ff1e3a00b2da42017ad3ec2f806d824a77646987ba8c8c4fb94576c38bc11ae69cc98ebbb40b5d47715171ec7dcea913dfc6ccc1</span>
 <span class="hljs-comment">// verifyResult:  true</span></code></pre>
-<h3 id="其他语言实现以及参考资料">其他语言实现以及参考资料</h3>
+<h3><span id="qi-ta-yu-yan-shi-xian-yi-ji-can-kao-zi-liao">其他语言实现以及参考资料</span></h3>
 <ul>
 <li>Java 语言实现：
 <ul>
@@ -527,7 +555,7 @@ verify = sm2_crypt.verify(sign, data)
 <li>密码标准委员会：<a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/">http://www.gmbz.org.cn/</a></li>
 </ul>
 <hr>
-<h2 id="附：GM-T-密码行业标准">附：GM/T 密码行业标准</h2>
+<h2><span id="fu-gm-t-mi-ma-xing-ye-biao-zhun">附：GM/T 密码行业标准</span></h2>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180117202410524608.html">GM/T 0001.1-2012：祖冲之序列密码算法：第1部分：算法描述</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.gmbz.org.cn/main/viewfile/20180107233806310781.html">GM/T 0001.2-2012：祖冲之序列密码算法：第2部分：基于祖冲之算法的机密性算法</a></li>
@@ -609,23 +637,33 @@ verify = sm2_crypt.verify(sign, data)
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -688,16 +726,16 @@ verify = sm2_crypt.verify(sign, data)
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -706,7 +744,7 @@ verify = sm2_crypt.verify(sign, data)
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -724,7 +762,10 @@ verify = sm2_crypt.verify(sign, data)
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

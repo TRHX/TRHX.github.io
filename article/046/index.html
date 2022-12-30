@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 3k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.1k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 12分丨
@@ -270,7 +270,18 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <h2 id="逆向目标">逆向目标</h2>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#hls-liu-mei-ti-chuan-shu-xie-yi">HLS 流媒体传输协议</a></li>
+<li><a href="#saz-fen-xi">SAZ 分析</a></li>
+<li><a href="#js-ni-xiang">JS 逆向</a></li>
+<li><a href="#ts-jie-mi-he-bing-zhuan-huan">TS 解密合并转换</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <p>本次逆向的目标来源于吾爱破解 2022 春节解题领红包之番外篇 Web 中级题，吾爱破解每年都会有派送红包活动（送吾爱币），需要大家使出看家逆向本领来分析内容获得口令红包，今年一共有五个题，一个送分题，两个 Windows 题、一个 Android 题和一个 Web 题，本文分析的正是  Web 题，<strong>吾爱有规定活动结束前不要外泄口令、讨论分享分析过程，所以本文在活动结束后才发出来。</strong></p>
 <p>此 Web 题题目是：小 D 最爱看的视频网站最近关站了，关站前他用 Fiddler 和 Web Archive 保存了一位主播的视频，但他发现存下来的文件无法播放。你能帮小 D 找回他的回忆吗？（.saz 与 .wacz 任选其一即可解题）</p>
 <ul>
@@ -281,7 +292,7 @@
 <p>Web 题地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17">https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17</a></p>
 </li>
 </ul>
-<h2 id="HLS-流媒体传输协议">HLS 流媒体传输协议</h2>
+<h2><span id="hls-liu-mei-ti-chuan-shu-xie-yi">HLS 流媒体传输协议</span></h2>
 <p>本题涉及到 HLS 流媒体传输协议，先简单介绍一下，了解的同志可直接跳过。</p>
 <p>HLS 全称 HTTP Live Streaming，即基于 HTTP 的自适应码率流媒体传输协议，是苹果研发的动态码率自适应技术，它包括一个 M3U(8) 的索引文件，若干 TS 视频流文件，如果视频流文件是加密的，那就还会存在一个 key 加密串文件。</p>
 <p>M3U8 文件是 M3U 的一种，只不过文件中存储的文本使用 UTF-8 字符编码，在极少数情况下，M3U8 文件可能会以 M3UP 扩展名保存。M3U8 文件是各种音频和视频播放程序使用的播放列表文件，它包含了媒体文件或媒体文件夹的路径或 URL，以及有关播放列表的相关信息。</p>
@@ -324,7 +335,7 @@ https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp
 <li><code>#EXT-X-ENDLIST</code>：表示不再将媒体片段添加到播放列表文件中，一般位于文件结尾。</li>
 </ul>
 <p>完整格式、标准标签可参考 HLS 标准协议中，对 Playlist file 的介绍：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08">https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08</a></p>
-<h2 id="SAZ-分析">SAZ 分析</h2>
+<h2><span id="saz-fen-xi">SAZ 分析</span></h2>
 <p>在 Fiddler 软件中，使用 SAZ 格式用来保存和读取 HTTP/HTTPS 请求信息，打开该文件可以注意到一些重要的请求：script.bundle.js、live.m3u8、drm 以及八个 ts 视频流文件。</p>
 <p>先来看看 m3u8 文件，可以看到是 AES-128 加密，加密的 key 文件地址为 <code>key://live</code>，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/046/02.png" alt="02.png"></p>
@@ -332,7 +343,7 @@ https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp
 <p>有经验的朋友应该一眼就能看出来 drm 这条请求最有可能是拿 key 的操作了，第一是 drm 这个关键词在 ts 解密里经常会出现，搞得多的朋友应该见过不少，第二 ping 请求返回的 success，通过其名称和返回值来看也不像 key，剩下就只有 drm 了，查看返回值是乱码的，查看 Hex 值，32 位 16 进制数据，而正常的 key 应该是 16 位 16 进制数据，所以你如果直接拿这个数据当作 key 去解密，肯定也是失败的。</p>
 <p>到这里我们应该有如下猜想：drm 返回的数据，经过了 script.bundle.js 二次处理就能得到正确的 key。</p>
 <p><img src="https://cdn.itbob.cn/img/article/046/03.png" alt="03.png"></p>
-<h2 id="JS-逆向">JS 逆向</h2>
+<h2><span id="js-ni-xiang">JS 逆向</span></h2>
 <p>我们把抓包记录的 script.bundle.js，右键，save - response - response body，保存到本地。</p>
 <p>格式化之后有 15000+ 行代码，又不能动态调试，从哪里找加密入口呢？可以大胆尝试一下：</p>
 <ul>
@@ -433,7 +444,7 @@ getKey()
 <span class="hljs-comment">// ]</span>
 <span class="hljs-comment">// keyHex:  a9fb8b364d3f4ae7afd00c28d571aaa9</span>
 <span class="hljs-comment">// keyBase64:  qfuLNk0/Suev0Awo1XGqqQ==</span></code></pre>
-<h2 id="TS-解密合并转换">TS 解密合并转换</h2>
+<h2><span id="ts-jie-mi-he-bing-zhuan-huan">TS 解密合并转换</span></h2>
 <p>通过 JS 逆向我们拿到了 16进制和 base64 形式的  key，不管什么形式都可以拿来解密，这里介绍两种对 TS 媒体流解密、合并、转换的方法。</p>
 <p>第一种方法是使用 FFmpeg 工具，FFmpeg 是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。官网地址：<a target="_blank" rel="noopener" href="https://ffmpeg.org/">https://ffmpeg.org/</a> ，下载编译好的程序，将 bin 目录添加到环境变量即可。</p>
 <p>首先我们要把 m3u8 文件和 ts 媒体流保存到同一个文件夹，由于是虚假的 Host，所以不能直接浏览器访问保存，可以直接在 Fiddler 里，右键，save - response - response body，保存到本地，如下图所示：</p>
@@ -518,23 +529,33 @@ getKey()
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -597,16 +618,16 @@ getKey()
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -615,7 +636,7 @@ getKey()
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -633,7 +654,10 @@ getKey()
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

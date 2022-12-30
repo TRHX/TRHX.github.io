@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,10 +248,10 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 7.6k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 7.8k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 37分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 38分丨
                     </span>
                 
                 
@@ -270,17 +270,58 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-1x00-qian-yan-font"><font color="#FF0000">【1x00】前言</font></a></li>
+<li><a href="#font-color-ff0000-2x00-si-wei-dao-tu-font"><font color="#FF0000">【2x00】思维导图</font></a></li>
+<li><a href="#font-color-ff0000-3x00-shu-ju-jie-gou-fen-xi-font"><font color="#FF0000">【3x00】数据结构分析</font></a></li>
+<li><a href="#font-color-ff0000-4x00-zhu-han-shu-main-font"><font color="#FF0000">【4x00】主函数 main()</font></a></li>
+<li><a href="#font-color-ff0000-5x00-shu-ju-huo-qu-mo-kuai-data-get-font"><font color="#FF0000">【5x00】数据获取模块 data_get</font></a>
+<ul>
+<li><a href="#font-color-4876ff-5x01-chu-shi-hua-han-shu-init-font"><font color="#4876FF">【5x01】初始化函数 init()</font></a></li>
+<li><a href="#font-color-4876ff-5x02-zhong-guo-zong-shu-ju-china-total-data-font"><font color="#4876FF">【5x02】中国总数据 china_total_data()</font></a></li>
+<li><a href="#font-color-4876ff-5x03-quan-qiu-zong-shu-ju-global-total-data-font"><font color="#4876FF">【5x03】全球总数据 global_total_data()</font></a></li>
+<li><a href="#font-color-4876ff-5x04-zhong-guo-mei-ri-shu-ju-china-daily-data-font"><font color="#4876FF">【5x04】中国每日数据 china_daily_data()</font></a></li>
+<li><a href="#font-color-4876ff-5x05-jing-wai-mei-ri-shu-ju-foreign-daily-data-font"><font color="#4876FF">【5x05】境外每日数据 foreign_daily_data()</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-6x00-ci-yun-tu-hui-zhi-mo-kuai-data-wordcloud-font"><font color="#FF0000">【6x00】词云图绘制模块 data_wordcloud</font></a>
+<ul>
+<li><a href="#font-color-4876ff-6x01-zhong-guo-lei-ji-que-zhen-ci-yun-tu-foreign-daily-data-font"><font color="#4876FF">【6x01】中国累计确诊词云图 foreign_daily_data()</font></a></li>
+<li><a href="#font-color-4876ff-6x02-quan-qiu-lei-ji-que-zhen-ci-yun-tu-foreign-daily-data-font"><font color="#4876FF">【6x02】全球累计确诊词云图 foreign_daily_data()</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-7x00-di-tu-hui-zhi-mo-kuai-data-map-font"><font color="#FF0000">【7x00】地图绘制模块 data_map</font></a>
+<ul>
+<li><a href="#font-color-4876ff-7x01-zhong-guo-lei-ji-que-zhen-di-tu-china-total-map-font"><font color="#4876FF">【7x01】中国累计确诊地图 china_total_map()</font></a></li>
+<li><a href="#font-color-4876ff-7x02-quan-qiu-lei-ji-que-zhen-di-tu-global-total-map-font"><font color="#4876FF">【7x02】全球累计确诊地图 global_total_map()</font></a></li>
+<li><a href="#font-color-4876ff-7x03-zhong-guo-mei-ri-shu-ju-zhe-xian-tu-china-daily-map-font"><font color="#4876FF">【7x03】中国每日数据折线图 china_daily_map()</font></a></li>
+<li><a href="#font-color-4876ff-7x04-jing-wai-mei-ri-shu-ju-zhe-xian-tu-foreign-daily-map-font"><font color="#4876FF">【7x04】境外每日数据折线图 foreign_daily_map()</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-8x00-jie-guo-jie-tu-font"><font color="#FF0000">【8x00】结果截图</font></a>
+<ul>
+<li><a href="#font-color-4876ff-8x01-shu-ju-chu-cun-excel-font"><font color="#4876FF">【8x01】数据储存 Excel</font></a></li>
+<li><a href="#font-color-4876ff-8x02-ci-yun-tu-font"><font color="#4876FF">【8x02】词云图</font></a></li>
+<li><a href="#font-color-4876ff-8x03-di-tu-zhe-xian-tu-font"><font color="#4876FF">【8x03】地图 + 折线图</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-9x00-wan-zheng-dai-ma-font"><font color="#FF0000">【9x00】完整代码</font></a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/107140534</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【1x00】前言-font"><font color=#FF0000>【1x00】前言</font></h2>
+<h2><span id="1x00-qian-yan"><font color="#FF0000">【1x00】前言</font></span></h2>
 <p>本来两三个月之前就想搞个疫情数据实时数据展示的，由于各种不可抗拒因素一而再再而三的鸽了，最近终于抽空写了一个，数据是用 Python 爬取的<a target="_blank" rel="noopener" href="https://voice.baidu.com/act/newpneumonia/newpneumonia/">百度疫情实时大数据报告</a>，请求库用的 requests，解析用的 Xpath 语法，词云用的 wordcloud 库，数据可视化用 pyecharts 绘制的地图和折线图，数据储存在 Excel 表格里面，使用 openpyxl 对表格进行处理。</p>
 <p>本程序实现了累计确诊地图展示和每日数据变化折线图展示，其他更多数据的获取和展示均可在程序中进行拓展，可以将程序部署在服务器上，设置定时运行，即可实时展示数据，pyecharts 绘图模块也可以整合到 Web 框架（Django、Flask等）中使用。</p>
-<p>在获取数据时有<font color=#FF0000><strong>全球</strong></font>和<font color=#FF0000><strong>境外</strong></font>两个概念，全球包含中国，境外不包含中国，后期绘制的四个图：中国累计确诊地图、全球累计确诊地图（包含中国）、中国每日数据折线图、境外每日数据折线图（不包含中国）。</p>
-<p><font color=#FF0000><strong>注意项：直接向该网页发送请求获取的响应中，没有每个国家的每日数据，该数据获取的地址是：<a href="https://voice.baidu.com/newpneumonia/get?target=trend&amp;isCaseIn=1&amp;stage=publish">https://voice.baidu.com/newpneumonia/get?target=trend&amp;isCaseIn=1&amp;stage=publish</a></strong></font></p>
+<p>在获取数据时有<font color="#FF0000"><strong>全球</strong></font>和<font color="#FF0000"><strong>境外</strong></font>两个概念，全球包含中国，境外不包含中国，后期绘制的四个图：中国累计确诊地图、全球累计确诊地图（包含中国）、中国每日数据折线图、境外每日数据折线图（不包含中国）。</p>
+<p><font color="#FF0000"><strong>注意项：直接向该网页发送请求获取的响应中，没有每个国家的每日数据，该数据获取的地址是：<a href="https://voice.baidu.com/newpneumonia/get?target=trend&amp;isCaseIn=1&amp;stage=publish">https://voice.baidu.com/newpneumonia/get?target=trend&amp;isCaseIn=1&amp;stage=publish</a></strong></font></p>
 <ul>
 <li><strong>预览地址</strong>：<s><a target="_blank" rel="noopener" href="http://cov.itrhx.com/">http://cov.itrhx.com/</a></s>（已失效）</li>
 <li><strong>数据来源</strong>：<a target="_blank" rel="noopener" href="https://voice.baidu.com/act/newpneumonia/newpneumonia/">https://voice.baidu.com/act/newpneumonia/newpneumonia/</a></li>
@@ -288,9 +329,9 @@
 <li><strong>openpyxl 文档</strong>：<a target="_blank" rel="noopener" href="https://openpyxl.readthedocs.io/">https://openpyxl.readthedocs.io/</a></li>
 <li><strong>wordcloud 文档</strong>：<a target="_blank" rel="noopener" href="http://amueller.github.io/word_cloud/">http://amueller.github.io/word_cloud/</a></li>
 </ul>
-<h2 id="font-color-FF0000-【2x00】思维导图-font"><font color=#FF0000>【2x00】思维导图</font></h2>
+<h2><span id="2x00-si-wei-dao-tu"><font color="#FF0000">【2x00】思维导图</font></span></h2>
 <p><img src="https://cdn.itbob.cn/img/article/035/01.png" alt="01"></p>
-<h2 id="font-color-FF0000-【3x00】数据结构分析-font"><font color=#FF0000>【3x00】数据结构分析</font></h2>
+<h2><span id="3x00-shu-ju-jie-gou-fen-xi"><font color="#FF0000">【3x00】数据结构分析</font></span></h2>
 <p>通过查看百度的疫情数据页面，可以看到很多整齐的数据，猜测就是疫情相关的数据，保存该页面，对其进行格式化，很容易可以分析出所有的数据都在 <code>&lt;script type=&quot;application/json&quot; id=&quot;captain-config&quot;&gt;&lt;/script&gt;</code> 里面，其中 title 里面是一些 Unicode 编码，将其转为中文后更容易得到不同的分类数据。</p>
 <p><img src="https://cdn.itbob.cn/img/article/035/02.png" alt="02"></p>
 <p>由于数据繁多，可以将数据主体部分提取出来，删除一些重复项和其他杂项，留下数据大体位置并分析数据结构，便于后期的数据提取，经过处理后的数据大致结构如下：</p>
@@ -524,7 +565,7 @@
         ]
     &#125;
 &lt;/script&gt;</code></pre>
-<h2 id="font-color-FF0000-【4x00】主函数-main-font"><font color=#FF0000>【4x00】主函数 main()</font></h2>
+<h2><span id="4x00-zhu-han-shu-main"><font color="#FF0000">【4x00】主函数 main()</font></span></h2>
 <p>分别将数据获取、词云图绘制、地图绘制写入三个文件：<code>data_get()</code>、<code>data_wordcloud()</code>、<code>data_map()</code>，然后使用一个主函数文件 <a target="_blank" rel="noopener" href="http://main.py">main.py</a> 来调用这三个文件里面的函数。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> data_get
 <span class="hljs-keyword">import</span> data_wordcloud
@@ -540,8 +581,8 @@ data_wordcloud.china_wordcloud()
 data_wordcloud.global_wordcloud()
 
 data_map.all_map()</code></pre>
-<h2 id="font-color-FF0000-【5x00】数据获取模块-data-get-font"><font color=#FF0000>【5x00】数据获取模块 data_get</font></h2>
-<h3 id="font-color-4876FF-【5x01】初始化函数-init-font"><font color="#4876FF">【5x01】初始化函数 init()</font></h3>
+<h2><span id="5x00-shu-ju-huo-qu-mo-kuai-data-get"><font color="#FF0000">【5x00】数据获取模块 data_get</font></span></h2>
+<h3><span id="5x01-chu-shi-hua-han-shu-init"><font color="#4876FF">【5x01】初始化函数 init()</font></span></h3>
 <p>使用 xpath 语法 <code>//script[@id=&quot;captain-config&quot;]/text()</code> 提取里面的值，利用 <code>json.loads</code> 方法将其转换为字典对象，以便后续的其他函数调用。</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init</span>():</span>
     headers = &#123;
@@ -554,7 +595,7 @@ data_map.all_map()</code></pre>
     <span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(dict1[<span class="hljs-number">0</span>]))
     dict2 = json.loads(dict1[<span class="hljs-number">0</span>])
     <span class="hljs-keyword">return</span> dict2</code></pre>
-<h3 id="font-color-4876FF-【5x02】中国总数据-china-total-data-font"><font color="#4876FF">【5x02】中国总数据 china_total_data()</font></h3>
+<h3><span id="5x02-zhong-guo-zong-shu-ju-china-total-data"><font color="#4876FF">【5x02】中国总数据 china_total_data()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">china_total_data</span>(<span class="hljs-params">data</span>):</span>
 
     <span class="hljs-string">&quot;&quot;&quot;</span>
@@ -625,7 +666,7 @@ data_map.all_map()</code></pre>
 
     wb.save(<span class="hljs-string">&#x27;COVID-19-China.xlsx&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;中国疫情数据已保存至 COVID-19-China.xlsx！&#x27;</span>)</code></pre>
-<h3 id="font-color-4876FF-【5x03】全球总数据-global-total-data-font"><font color="#4876FF">【5x03】全球总数据 global_total_data()</font></h3>
+<h3><span id="5x03-quan-qiu-zong-shu-ju-global-total-data"><font color="#4876FF">【5x03】全球总数据 global_total_data()</font></span></h3>
 <p>全球总数据在提取完成后，进行地图绘制时发现并没有中国的数据，因此在写入全球数据时注意要单独将中国的数据插入 Excel 中。</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_total_data</span>(<span class="hljs-params">data</span>):</span>
 
@@ -691,7 +732,7 @@ data_map.all_map()</code></pre>
 
     wb.save(<span class="hljs-string">&#x27;COVID-19-Global.xlsx&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;全球疫情数据已保存至 COVID-19-Global.xlsx！&#x27;</span>)</code></pre>
-<h3 id="font-color-4876FF-【5x04】中国每日数据-china-daily-data-font"><font color="#4876FF">【5x04】中国每日数据 china_daily_data()</font></h3>
+<h3><span id="5x04-zhong-guo-mei-ri-shu-ju-china-daily-data"><font color="#4876FF">【5x04】中国每日数据 china_daily_data()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">china_daily_data</span>(<span class="hljs-params">data</span>):</span>
 
     <span class="hljs-string">&quot;&quot;&quot;</span>
@@ -736,7 +777,7 @@ data_map.all_map()</code></pre>
 
     wb.save(<span class="hljs-string">&#x27;COVID-19-China.xlsx&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;中国每日累计确诊/治愈/死亡数据已保存至 COVID-19-China.xlsx！&#x27;</span>)</code></pre>
-<h3 id="font-color-4876FF-【5x05】境外每日数据-foreign-daily-data-font"><font color="#4876FF">【5x05】境外每日数据 foreign_daily_data()</font></h3>
+<h3><span id="5x05-jing-wai-mei-ri-shu-ju-foreign-daily-data"><font color="#4876FF">【5x05】境外每日数据 foreign_daily_data()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foreign_daily_data</span>(<span class="hljs-params">data</span>):</span>
 
     <span class="hljs-string">&quot;&quot;&quot;</span>
@@ -776,8 +817,8 @@ data_map.all_map()</code></pre>
 
     wb.save(<span class="hljs-string">&#x27;COVID-19-Global.xlsx&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;境外每日累计确诊/治愈/死亡数据已保存至 COVID-19-Global.xlsx！&#x27;</span>)</code></pre>
-<h2 id="font-color-FF0000-【6x00】词云图绘制模块-data-wordcloud-font"><font color=#FF0000>【6x00】词云图绘制模块 data_wordcloud</font></h2>
-<h3 id="font-color-4876FF-【6x01】中国累计确诊词云图-foreign-daily-data-font"><font color="#4876FF">【6x01】中国累计确诊词云图 foreign_daily_data()</font></h3>
+<h2><span id="6x00-ci-yun-tu-hui-zhi-mo-kuai-data-wordcloud"><font color="#FF0000">【6x00】词云图绘制模块 data_wordcloud</font></span></h2>
+<h3><span id="6x01-zhong-guo-lei-ji-que-zhen-ci-yun-tu-foreign-daily-data"><font color="#4876FF">【6x01】中国累计确诊词云图 foreign_daily_data()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">china_wordcloud</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-China.xlsx&#x27;</span>)  <span class="hljs-comment"># 获取已有的xlsx文件</span>
     ws_china = wb[<span class="hljs-string">&#x27;中国省份疫情数据&#x27;</span>]                     <span class="hljs-comment"># 获取中国省份疫情数据表</span>
@@ -792,7 +833,7 @@ data_map.all_map()</code></pre>
     word_cloud.generate_from_frequencies(china_dict)
     word_cloud.to_file(<span class="hljs-string">&#x27;WordCloud-China.png&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;中国省份疫情词云图绘制完毕！&#x27;</span>)</code></pre>
-<h3 id="font-color-4876FF-【6x02】全球累计确诊词云图-foreign-daily-data-font"><font color="#4876FF">【6x02】全球累计确诊词云图 foreign_daily_data()</font></h3>
+<h3><span id="6x02-quan-qiu-lei-ji-que-zhen-ci-yun-tu-foreign-daily-data"><font color="#4876FF">【6x02】全球累计确诊词云图 foreign_daily_data()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_wordcloud</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-Global.xlsx&#x27;</span>)
     ws_global = wb[<span class="hljs-string">&#x27;全球各国疫情数据&#x27;</span>]
@@ -807,14 +848,14 @@ data_map.all_map()</code></pre>
     word_cloud.to_file(<span class="hljs-string">&#x27;WordCloud-Global.png&#x27;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;全球各国疫情词云图绘制完毕！&#x27;</span>)</code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/107140534</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【7x00】地图绘制模块-data-map-font"><font color=#FF0000>【7x00】地图绘制模块 data_map</font></h2>
-<h3 id="font-color-4876FF-【7x01】中国累计确诊地图-china-total-map-font"><font color="#4876FF">【7x01】中国累计确诊地图 china_total_map()</font></h3>
+<h2><span id="7x00-di-tu-hui-zhi-mo-kuai-data-map"><font color="#FF0000">【7x00】地图绘制模块 data_map</font></span></h2>
+<h3><span id="7x01-zhong-guo-lei-ji-que-zhen-di-tu-china-total-map"><font color="#4876FF">【7x01】中国累计确诊地图 china_total_map()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">china_total_map</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-China.xlsx&#x27;</span>)  <span class="hljs-comment"># 获取已有的xlsx文件</span>
     ws_time = wb[<span class="hljs-string">&#x27;中国疫情数据更新时间&#x27;</span>]                   <span class="hljs-comment"># 获取文件中中国疫情数据更新时间表</span>
@@ -848,7 +889,7 @@ data_map.all_map()</code></pre>
         )
     )
     <span class="hljs-keyword">return</span> ct_map</code></pre>
-<h3 id="font-color-4876FF-【7x02】全球累计确诊地图-global-total-map-font"><font color="#4876FF">【7x02】全球累计确诊地图 global_total_map()</font></h3>
+<h3><span id="7x02-quan-qiu-lei-ji-que-zhen-di-tu-global-total-map"><font color="#4876FF">【7x02】全球累计确诊地图 global_total_map()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">global_total_map</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-Global.xlsx&#x27;</span>)
     ws_time = wb[<span class="hljs-string">&#x27;全球疫情数据更新时间&#x27;</span>]
@@ -1102,7 +1143,7 @@ data_map.all_map()</code></pre>
         )
     )
     <span class="hljs-keyword">return</span> gt_map</code></pre>
-<h3 id="font-color-4876FF-【7x03】中国每日数据折线图-china-daily-map-font"><font color="#4876FF">【7x03】中国每日数据折线图 china_daily_map()</font></h3>
+<h3><span id="7x03-zhong-guo-mei-ri-shu-ju-zhe-xian-tu-china-daily-map"><font color="#4876FF">【7x03】中国每日数据折线图 china_daily_map()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">china_daily_map</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-China.xlsx&#x27;</span>)
     ws_china_confirmed = wb[<span class="hljs-string">&#x27;中国每日累计确诊数据&#x27;</span>]
@@ -1157,7 +1198,7 @@ data_map.all_map()</code></pre>
         )
     )
     <span class="hljs-keyword">return</span> fi_map</code></pre>
-<h3 id="font-color-4876FF-【7x04】境外每日数据折线图-foreign-daily-map-font"><font color="#4876FF">【7x04】境外每日数据折线图 foreign_daily_map()</font></h3>
+<h3><span id="7x04-jing-wai-mei-ri-shu-ju-zhe-xian-tu-foreign-daily-map"><font color="#4876FF">【7x04】境外每日数据折线图 foreign_daily_map()</font></span></h3>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foreign_daily_map</span>():</span>
     wb = openpyxl.load_workbook(<span class="hljs-string">&#x27;COVID-19-Global.xlsx&#x27;</span>)
     ws_foreign_confirmed = wb[<span class="hljs-string">&#x27;境外每日累计确诊数据&#x27;</span>]
@@ -1212,22 +1253,22 @@ data_map.all_map()</code></pre>
         )
     )
     <span class="hljs-keyword">return</span> fte_map</code></pre>
-<h2 id="font-color-FF0000-【8x00】结果截图-font"><font color=#FF0000>【8x00】结果截图</font></h2>
-<h3 id="font-color-4876FF-【8x01】数据储存-Excel-font"><font color="#4876FF">【8x01】数据储存 Excel</font></h3>
+<h2><span id="8x00-jie-guo-jie-tu"><font color="#FF0000">【8x00】结果截图</font></span></h2>
+<h3><span id="8x01-shu-ju-chu-cun-excel"><font color="#4876FF">【8x01】数据储存 Excel</font></span></h3>
 <p><img src="https://cdn.itbob.cn/img/article/035/03.png" alt="03"></p>
 <p><img src="https://cdn.itbob.cn/img/article/035/04.png" alt="04"></p>
-<h3 id="font-color-4876FF-【8x02】词云图-font"><font color="#4876FF">【8x02】词云图</font></h3>
+<h3><span id="8x02-ci-yun-tu"><font color="#4876FF">【8x02】词云图</font></span></h3>
 <p><img src="https://cdn.itbob.cn/img/article/035/05.png" alt="05"></p>
 <p><img src="https://cdn.itbob.cn/img/article/035/06.png" alt="06"></p>
-<h3 id="font-color-4876FF-【8x03】地图-折线图-font"><font color="#4876FF">【8x03】地图 + 折线图</font></h3>
+<h3><span id="8x03-di-tu-zhe-xian-tu"><font color="#4876FF">【8x03】地图 + 折线图</font></span></h3>
 <p><img src="https://cdn.itbob.cn/img/article/035/07.png" alt="07"></p>
-<h2 id="font-color-FF0000-【9x00】完整代码-font"><font color=#FF0000>【9x00】完整代码</font></h2>
+<h2><span id="9x00-wan-zheng-dai-ma"><font color="#FF0000">【9x00】完整代码</font></span></h2>
 <p>预览地址：<s><a target="_blank" rel="noopener" href="http://cov.itrhx.com/">http://cov.itrhx.com/</a></s>（已失效）<br>
 完整代码地址（点亮 star 有 buff 加成）：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice">https://github.com/TRHX/Python3-Spider-Practice</a><br>
 爬虫实战专栏（持续更新）：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/category/9351278">https://itrhx.blog.csdn.net/article/category/9351278</a></p>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/107140534</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -1296,23 +1337,33 @@ data_map.all_map()</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1375,16 +1426,16 @@ data_map.all_map()</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1393,7 +1444,7 @@ data_map.all_map()</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1411,7 +1462,10 @@ data_map.all_map()</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

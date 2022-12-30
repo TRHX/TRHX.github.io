@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -271,15 +271,32 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#shi-me-shi-jsvmp">什么是 JSVMP？</a></li>
+<li><a href="#jsvmp-you-na-xie-xue-xi-zi-liao">JSVMP 有哪些学习资料？</a></li>
+<li><a href="#jsvmp-ni-xiang-fang-fa-you-na-xie">JSVMP 逆向方法有哪些？</a></li>
+<li><a href="#zhua-bao-qing-kuang">抓包情况</a></li>
+<li><a href="#ni-xiang-fen-xi">逆向分析</a></li>
+<li><a href="#cha-zhuang-fen-xi">插桩分析</a></li>
+<li><a href="#28-ge-zi-fu-sheng-cheng-luo-ji">28个字符生成逻辑</a></li>
+<li><a href="#luan-ma-zi-fu-chuan-sheng-cheng-luo-ji">乱码字符串生成逻辑</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <ul>
 <li>目标：某音短视频网页端用户信息接口 X-Bogus 参数</li>
 <li>接口：<code>aHR0cHM6Ly93d3cuZG91eWluLmNvbS9hd2VtZS92MS93ZWIvdXNlci9wcm9maWxlL290aGVyLw==</code></li>
 </ul>
-<h2 id="什么是-JSVMP？">什么是 JSVMP？</h2>
+<h2><span id="shi-me-shi-jsvmp">什么是 JSVMP？</span></h2>
 <p>JSVMP 全称 Virtual Machine based code Protection for JavaScript，即 JS 代码虚拟化保护方案。</p>
 <p>JSVMP 的概念最早应该是由西北大学2015级硕士研究生匡开圆，在其2018年的学位论文中提出的，论文标题为：《基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现》，同年还申请了国家专利，专利名称：《一种基于前端字节码技术的 JavaScript 虚拟化保护方法》，网上可以直接搜到，也可在公众号【K哥爬虫】后台回复 JSVMP，免费获取原版高清无水印的论文和专利。本文就简单介绍一下 JSVMP，想要详细了解，当然还是建议去读一下这篇论文。</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/01.png" alt="01"></p>
@@ -287,20 +304,20 @@
 <p><img src="https://cdn.itbob.cn/img/article/056/02.png" alt="02"></p>
 <p>一个完整的 JSVMP 保护系统，大致的架构应该是这样子的：服务器端读取 JavaScript 代码 —&gt; 词法分析 —&gt; 语法分析 —&gt; 生成AST语法树 —&gt; 生成私有指令 —&gt; 生成对应私有解释器，将私有指令加密与私有解释器发送给浏览器，然后一边解释，一边执行。</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/03.png" alt="03"></p>
-<h2 id="JSVMP-有哪些学习资料？">JSVMP 有哪些学习资料？</h2>
+<h2><span id="jsvmp-you-na-xie-xue-xi-zi-liao">JSVMP 有哪些学习资料？</span></h2>
 <p>除了匡开圆的论文以外，还有以下文章也值得学习：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/YDx5Dr-HDfAm-sAqeWW0qg">H5应用加固防破解-js虚拟机保护方案浅谈</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/w2sft/article/details/120843310">JS加密？用虚拟机opcode保护JS源码</a></li>
 <li><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-261414.htm">给&quot;某音&quot;的js虚拟机写一个编译器</a></li>
 </ul>
-<h2 id="JSVMP-逆向方法有哪些？">JSVMP 逆向方法有哪些？</h2>
+<h2><span id="jsvmp-ni-xiang-fang-fa-you-na-xie">JSVMP 逆向方法有哪些？</span></h2>
 <p>就目前来讲，JSVMP 的逆向方法有三种（自动化不算）：RPC 远程调用，补环境，日志断点还原算法，其中日志断点也称为插桩，找到关键位置，输出关键参数的日志信息，从结果往上倒推生成逻辑，以达到算法还原的目的，RPC 技术以前写过文章，补环境的方式以后有时间再写，本文主要介绍如何使用插桩来还原算法。</p>
-<h2 id="抓包情况">抓包情况</h2>
+<h2><span id="zhua-bao-qing-kuang">抓包情况</span></h2>
 <p>随便来到某个博主主页，抓包后搜索可发现一个接口，返回的是 JSON 数据，里面包含了博主某音号，认证信息、签名，关注、粉丝、获赞等，请求 <code>Query String Parameters</code> 里包含了一个 <code>X-Bogus</code> 参数，每次请求会改变，此外还有 <code>sec_user_id</code> 是博主主页 URL 后面那一串，<code>webid</code> 直接请求主页返回内容里就有，<code>msToken</code> 与 cookie 有关，清除 cookie 访问，就没这个参数了，实测该接口不验证 <code>webid</code> 和 <code>msToken</code>，直接置空即可。</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/04.png" alt="04"></p>
 <p><img src="https://cdn.itbob.cn/img/article/056/05.png" alt="05"></p>
-<h2 id="逆向分析">逆向分析</h2>
+<h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
 <p>这条请求是 XHR 请求，所以直接下个 XHR 断点，当 URL 中包含 <code>X-Bogus</code> 参数时就断下：</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/06.png" alt="06"></p>
 <p><img src="https://cdn.itbob.cn/img/article/056/07.png" alt="07"></p>
@@ -310,7 +327,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/056/09.png" alt="09"></p>
 <p>再往上看代码，S 是一个数组，单步调试的话会发现代码会一直走这个 <code>if-else</code> 的逻辑，几乎每一步都有 S 数组的参与，不断往里面增删改查值，for 循环里面的 I 值，决定着后续 if 语句的走向，这里也就是插桩的关键所在，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/10.png" alt="10"></p>
-<h2 id="插桩分析">插桩分析</h2>
+<h2><span id="cha-zhuang-fen-xi">插桩分析</span></h2>
 <p>大的 for 循环和 if-else 逻辑有两个地方，为了保证最后的日志更加详细完整，在这两个地方都下个日志断点（右键 <code>Add logpoint</code>），断点内容为：</p>
 <pre><code class="hljs text">&quot;位置 1&quot;, &quot;索引I&quot;, I, &quot;索引A&quot;, A, &quot;值S: &quot;, JSON.stringify(S, function(key, value) &#123;if (value == window) &#123;return undefined&#125; return value&#125;)
 
@@ -333,7 +350,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/056/13.png" alt="13"></p>
 <p>以上就是日志断点为什么要这样写的原因，下好日志断点后，注意前面我们下的 XHR 断点不要取消，然后刷新网页，控制台就开始打印日志了，因为有很多 XHR 请求都包含了 X-Bogus，如果你 XHR 断点取消了，日志就会一直打印直到卡死。日志输出完毕后，大约有8千多条，搜索就能看到最后一条日志 X-Bogus 已经生成了：</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/14.png" alt="14"></p>
-<h2 id="28个字符生成逻辑">28个字符生成逻辑</h2>
+<h2><span id="28-ge-zi-fu-sheng-cheng-luo-ji">28个字符生成逻辑</span></h2>
 <p>直接在打印的日志页面右键 <code>save as..</code>，将日志导出到本地进行分析。<code>X-Bogus</code> 由28个字符组成，现在要做的就是看 <code>DFSzswVOAATANH89SMHZqF9WX7n6</code> 这28个字符是怎么来的，在日志里搜索这个字符串，找到第一次出现的地方，观察一下可以发现，他是逐个字符依次生成的，如下图红框所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/056/15.png" alt="15"></p>
 <p>在上图中，第8511行，X-Bogus 字符串的下一个元素是 null，到了第8512行，就生成数字6了，那么在这两步之间就是数字6的生成逻辑，这个时候我们看第8511行的日志断点是 <code>位置 2 索引I 16 索引A 738</code>，那么我们回到原网页，在位置2，下一个条件断点（右键 <code>Add conditional breakpoint</code>），当 <code>I == 16 &amp;&amp; A == 738 &amp;&amp; S[7] &amp;&amp; S[7] == 21</code> 时就断下。之所以要加 <code>S[7]</code> 是因为 <code>索引I 16 索引A 738</code> 的位置有很多，在日志里搜一下大概有40多个，多加个限制条件就可以缩小范围，当然有可能加了多个条件仍然有多个位置都满足，这就需要你细心观察了，通过断点断下的时候看看控制台前面输出的日志来判断是不是我们想要的位置。这也是一个小细节，一定要找准位置，千万别搞混了。（提示一下，像我这样下断点的话，一般情况下会断下两次，第二次是满足要求的）</p>
@@ -455,7 +472,7 @@ short_str.charAt(20) = &#x27;6&#x27;</code></pre>
     &#125;
     <span class="hljs-keyword">return</span> XBogus;
 &#125;</code></pre>
-<h2 id="乱码字符串生成逻辑">乱码字符串生成逻辑</h2>
+<h2><span id="luan-ma-zi-fu-chuan-sheng-cheng-luo-ji">乱码字符串生成逻辑</span></h2>
 <p>在进行下一步之前，我们要注意两点：</p>
 <ul>
 <li>
@@ -686,23 +703,33 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -765,16 +792,16 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -783,7 +810,7 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -801,7 +828,10 @@ _0x2b6720.apply(null, [2, 255, &quot;\u0002ÿ-%.*yê^s6ðýÇýV,&quot;]
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

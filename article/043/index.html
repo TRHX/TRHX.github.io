@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 2.9k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 3k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 12分丨
@@ -271,20 +271,35 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#websocket-jian-jie">WebSocket 简介</a></li>
+<li><a href="#zhua-bao-fen-xi">抓包分析</a></li>
+<li><a href="#can-shu-huo-qu">参数获取</a></li>
+<li><a href="#python-shi-xian-websocket-qing-qiu">Python 实现 WebSocket 请求</a></li>
+<li><a href="#shi-xian-sao-ma-deng-lu">实现扫码登录</a></li>
+<li><a href="#wan-zheng-dai-ma">完整代码</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <ul>
 <li>目标：智慧树扫码登录，接口使用了 WebSocket 通信协议</li>
 <li>主页：<code>aHR0cHM6Ly9wYXNzcG9ydC56aGlodWlzaHUuY29tL2xvZ2luI3FyQ29kZUxvZ2lu</code></li>
 </ul>
-<h2 id="WebSocket-简介">WebSocket 简介</h2>
+<h2><span id="websocket-jian-jie">WebSocket 简介</span></h2>
 <p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议，WebSocket 使得客户端和服务器之间的数据交换变得更加简单。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
 <p>WebSocket 协议简称为 WS 或者 WSS（WebSocket Secure），其发送请求的 URL 以 <code>ws://</code> 或者 <code>wss://</code> 开头，WSS 是 WS 的加密版本，类似于 HTTP 与 HTTPS。</p>
 <p>WebSocket 协议的最大特点就是：服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。与 HTTP 的对比如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/043/01.png" alt="01.png"></p>
-<h2 id="抓包分析">抓包分析</h2>
+<h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>来到智慧树的扫码登录页面，抓包选中 WS，用来筛选 WebSocket 请求，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/043/02.png" alt="02.png"></p>
 <p>其中有一些比较特别的参数，是 HTTP/ HTTPS 请求中没有的：</p>
@@ -309,7 +324,7 @@
 <p>如何实现客户端每隔 8 秒发送一次数据的同时，实时接收服务端的信息？（观察请求扫码结果实时返回的，所以不能每隔 8 秒才接收一次）</p>
 </li>
 </ol>
-<h2 id="参数获取">参数获取</h2>
+<h2><span id="can-shu-huo-qu">参数获取</span></h2>
 <p>首先解决第一个问题，客户端发送的那串字符串是怎么来的，这里寻找加密字符串的方式和 HTTP/HTTPS 请求是一样的，在本例中，我们可以直接搜索这个字符串，发现是通过一个接口传过来的，其中 img 就是二维码图片的 base64 值，qrToken 就是客户端发送的那串字符串，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/043/04.png" alt="04.png"></p>
 <p>这里需要注意的是，并不是所有的 WebSocket 请求都是如此的简单的，有的客户端发送的数据是 Binary Message（二进制数据）、或者更复杂的加密参数，直接搜索无法获取，针对这种情况，我们也有解决方法：</p>
@@ -373,7 +388,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="Python-实现-WebSocket-请求">Python 实现 WebSocket 请求</h2>
+<h2><span id="python-shi-xian-websocket-qing-qiu">Python 实现 WebSocket 请求</span></h2>
 <p>接着前面说，第二个问题，在 Python 中应该如何实现 WebSocket 请求？Python 库中用于连接 WebSocket 的有很多，比较常用、稳定的有 <a target="_blank" rel="noopener" href="https://github.com/websocket-client/websocket-client">websocket-client</a>（非异步）、<a target="_blank" rel="noopener" href="https://github.com/aaugustin/websockets">websockets</a>（异步）、<a target="_blank" rel="noopener" href="https://github.com/asyncins/aiowebsocket">aiowebsocket</a>（异步）。在本案例中使用 websocket-client，这里还要注意第三个问题，对于客户端来说，要每隔 8 秒发送一次数据，对于服务端，我们需要实时接收服务端的信息，可以观察请求，扫码的结果是实时返回的，如果我们也每隔 8 秒才接收一次数据的话，有可能会丢失数据，而且也会使得整个程序的响应也不及时，效率变低。</p>
 <p>在 websocket-client 官方文档中给我们提供了一个长连接的 demo，它实现了连续发送三次数据，并实时监听服务端返回的数据，其中的 <code>websocket.enableTrace(True)</code> 表示是否显示连接详细信息：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> websocket
@@ -464,7 +479,7 @@ uuid = <span class="hljs-string">&quot;&quot;</span>
         on_close=wss_on_close
     )
     ws.run_forever()</code></pre>
-<h2 id="实现扫码登录">实现扫码登录</h2>
+<h2><span id="shi-xian-sao-ma-deng-lu">实现扫码登录</span></h2>
 <p>最重要的 WebSocket 请求部分已经解决了，扫码拿到 <code>oncePassword</code> 和 <code>uuid</code> 后，后续的处理步骤就比较简单了，现在来理一下完整的步骤：</p>
 <ol>
 <li>请求首页，第一次获取 cookie，包含：INGRESSCOOKIE、JSESSIONID、SERVERID、acw_tc；</li>
@@ -476,7 +491,7 @@ uuid = <span class="hljs-string">&quot;&quot;</span>
 </ol>
 <p>实际上 WebSocket 连接结束后，有很多请求，看起来都比较可以，但是经过测试，只有两个重定向比较有用，抓包如下：</p>
 <p><img src="https://cdn.itbob.cn/img/article/043/05.png" alt="05.png"></p>
-<h2 id="完整代码">完整代码</h2>
+<h2><span id="wan-zheng-dai-ma">完整代码</span></h2>
 <p><strong>以下只演示部分关键代码，不能直接运行！</strong> 完整代码仓库地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice/">https://github.com/TRHX/Python3-Spider-Practice/</a></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">import</span> json
@@ -678,23 +693,33 @@ cookie = &#123;&#125;
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -757,16 +782,16 @@ cookie = &#123;&#125;
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -775,7 +800,7 @@ cookie = &#123;&#125;
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -793,7 +818,10 @@ cookie = &#123;&#125;
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

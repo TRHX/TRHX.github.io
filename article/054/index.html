@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -271,14 +271,29 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#qian-yan">前言</a></li>
+<li><a href="#cookie-ru-kou-ding-wei">Cookie 入口定位</a></li>
+<li><a href="#vm-dai-ma-yi-ji-ts-bian-liang-huo-qu">VM 代码以及 $_ts 变量获取</a></li>
+<li><a href="#shan-yong-watch-gen-zong-gong-neng">善用 Watch 跟踪功能</a></li>
+<li><a href="#gen-zhan-fen-xi">跟栈分析</a></li>
+<li><a href="#hou-zhui-sheng-cheng">后缀生成</a></li>
+<li><a href="#zhi-wen-sheng-cheng">指纹生成</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="前言">前言</h2>
+<h2><span id="qian-yan">前言</span></h2>
 <p><img src="https://cdn.itbob.cn/img/article/054/01.png" alt="01"></p>
 <p>瑞数动态安全 Botgate（机器人防火墙）以“动态安全”技术为核心，通过动态封装、动态验证、动态混淆、动态令牌等技术对服务器网页底层代码持续动态变换，增加服务器行为的“不可预测性”，实现了从用户端到服务器端的全方位“主动防护”，为各类 Web、HTML5 提供强大的安全保护。</p>
 <p>在往期的文章<a href="https://www.itbob.cn/article/053/">《国内 Web 防护天花板，瑞数 4 代 JS 逆向分析》</a>中，详细介绍了瑞数的特征、如何区分不同版本、瑞数的代码结构以及各自的作用，本文就不再赘述了，不了解的同志可以先去看看之前的文章。</p>
-<h2 id="Cookie-入口定位">Cookie 入口定位</h2>
+<h2><span id="cookie-ru-kou-ding-wei">Cookie 入口定位</span></h2>
 <p>本文案例中瑞数 5 代网站为：<code>aHR0cHM6Ly93d3cubm1wYS5nb3YuY24vZGF0YXNlYXJjaC9ob21lLWluZGV4Lmh0bWw=</code></p>
 <p>定位 Cookie，首选 Hook 来的最快，通过 Fiddler 插件、油猴脚本、浏览器插件等方式注入以下 Hook 代码：</p>
 <pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
@@ -309,7 +324,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/054/03.png" alt="03"></p>
 <p>再往前跟栈，来到首页代码，这里就是我们熟悉的 call 位置了，图中 <code>_$ug</code> 实际上是 eval 方法，传入的第一个参数 <code>_$Cs</code> 是 Window 对象，第二个对象 <code>_$Dm</code> 是我们前面看到的 VM 虚拟机中的 IIFE 自执行代码。</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/04.png" alt="04"></p>
-<h2 id="VM-代码以及-ts-变量获取">VM 代码以及 $_ts 变量获取</h2>
+<h2><span id="vm-dai-ma-yi-ji-ts-bian-liang-huo-qu">VM 代码以及 $_ts 变量获取</span></h2>
 <p>获取 VM 代码和 <code>$_ts</code> 变量是第一步，和4代类似，复制外链 JS（例如 <code>fjtvkgf7LVI2.a670748.js</code>）的代码和 412 页面的自执行代码到文件，本地直接运行即可，需要轻度补一下环境，缺啥补啥，大致补一下 window、location、document 就行了，补的具体内容可以直接在浏览器控制台使用 <code>copy()</code> 命令复制过来，然后 VM 代码我们就可以直接 Hook eval 的方式得到，这里 <code>$_ts</code> 变量的获取和4代有点儿区别，4代我们的做法是运行完代码后直接取 <code>window.$_ts</code> 就行了，5代运行完代码后会有一个清空 <code>$_ts</code> 的操作，可以自己跟栈看一下逻辑，要么把清空的逻辑删了，要么定义一个全局变量，然后直接在 call 的地方将 <code>$_ts</code> 的值导出来：</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/05.png" alt="05"></p>
 <p>大致的补环境代码如下：</p>
@@ -341,10 +356,10 @@ location = &#123;
 &#125;</code></pre>
 <p>获取 VM 代码以及 <code>$_ts</code> 变量：</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/06.png" alt="06"></p>
-<h2 id="善用-Watch-跟踪功能">善用 Watch 跟踪功能</h2>
+<h2><span id="shan-yong-watch-gen-zong-gong-neng">善用 Watch 跟踪功能</span></h2>
 <p>在跟栈分析之前，有必要了解一下浏览器开发者工具的 Watch 功能，它能够持续跟踪某个变量的值，对于瑞数这种控制流很多的情况，设置相应的变量跟踪，能够让你知道你现在处于哪个控制流中，以及生成的数组的变化，不至于跟着跟着不知道到哪一步了。如下图所示，<code>_$S8</code> 表示目前正处于第 279 号大控制流，<code>_$5x</code> 表示大控制流下的哪个分支，<code>_$mz</code> 表示 128 位大数组。</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/07.png" alt="07"></p>
-<h2 id="跟栈分析">跟栈分析</h2>
+<h2><span id="gen-zhan-fen-xi">跟栈分析</span></h2>
 <p>老样子，本地替换一套 412 页面的代码，固定下来，然后开始跟栈分析。直接从 <code>(772, 1)</code> 开始跟（文中说的第多少号控制流、第几步均为作者自己的叫法，第多少步并不代表实际上的步骤，仅表示关键步骤）：</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/08.png" alt="08"></p>
 <p>单步进来，<code>_$qh</code> 是传进来的参数 1，即将进入 742 号控制流：</p>
@@ -538,7 +553,7 @@ location = &#123;
 <p><img src="https://cdn.itbob.cn/img/article/054/128.png" alt="128"></p>
 <p>代码中用到的 <code>$_ts</code> 的值需要我们自己去匹配出来，动态替换，这些步骤和 4 代是类似的，本文就不再重复叙述，可以参考 4 代的那篇逆向文章进行处理即可。</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/129.png" alt="129"></p>
-<h2 id="后缀生成">后缀生成</h2>
+<h2><span id="hou-zhui-sheng-cheng">后缀生成</span></h2>
 <p>本例中，请求头中有个 sign 参数，Query String Parameters 有两个后缀参数，这两个后缀和 4 代类似，都是瑞数生成的。</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/130.png" alt="130"></p>
 <p><img src="https://cdn.itbob.cn/img/article/054/131.png" alt="131"></p>
@@ -571,7 +586,7 @@ location = &#123;
 <p><img src="https://cdn.itbob.cn/img/article/054/143.png" alt="143"></p>
 <p>回到前面的 <code>_$UM</code> 方法，前缀 <code>8X7Yi61c</code> 与值组合，自此，两个后缀都拿到了：</p>
 <p><img src="https://cdn.itbob.cn/img/article/054/144.png" alt="144"></p>
-<h2 id="指纹生成">指纹生成</h2>
+<h2><span id="zhi-wen-sheng-cheng">指纹生成</span></h2>
 <p>我们前面已经分析了，在往 128 位数组里添加值的时候，会有取 <code>window.localStorage</code> 里面的某些值进行计算的步骤，这些值就是取浏览器 canvas 等指纹生成的，指纹随机就能并发，通常访问单独的一个 html 页面是不校验指纹的，生成的短 cookie 就能通过，但是一些查询数据接口会校验指纹，通过触发 load 事件来向 cookie 里添加指纹，使得 cookie 长度变长，怎么查找指纹在哪里生成的，这里推荐直接看视频资料，已经讲得很清楚了，篇幅太长，本文就不再赘述了，资料链接：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/DEUc1K8WaO_Cq1a2r0Ge5g">https://mp.weixin.qq.com/s/DEUc1K8WaO_Cq1a2r0Ge5g</a></p>
 
             </div>
@@ -637,23 +652,33 @@ location = &#123;
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -716,16 +741,16 @@ location = &#123;
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -734,7 +759,7 @@ location = &#123;
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -752,7 +777,10 @@ location = &#123;
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -271,10 +271,39 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#zhua-bao-fen-xi">抓包分析</a></li>
+<li><a href="#cookies-can-shu">Cookies 参数</a>
+<ul>
+<li><a href="#user-trace-token">user_trace_token</a></li>
+<li><a href="#x-http-token">X_HTTP_TOKEN</a></li>
+<li><a href="#lg-stoken">__lg_stoken__</a></li>
+</ul>
+</li>
+<li><a href="#qing-qiu-tou-can-shu">请求头参数</a>
+<ul>
+<li><a href="#x-anit-forge-code-x-anit-forge-token">x-anit-forge-code / x-anit-forge-token</a></li>
+<li><a href="#traceparent">traceparent</a></li>
+<li><a href="#x-k-header-x-ss-req-header">X-K-HEADER / X-SS-REQ-HEADER</a></li>
+<li><a href="#x-s-header">X-S-HEADER</a></li>
+</ul>
+</li>
+<li><a href="#qing-qiu-fan-hui-shu-ju-jie-mi">请求/返回数据解密</a></li>
+<li><a href="#ni-xiang-xiao-ji-qiao">逆向小技巧</a></li>
+<li><a href="#wan-zheng-dai-ma">完整代码</a></li>
+<li><a href="#chang-jian-wen-ti">常见问题</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <p>本次的目标是拉勾网职位的爬取，涉及到的一些关键参数如下：</p>
 <ul>
 <li>请求头参数：<code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code></li>
@@ -283,7 +312,7 @@
 </ul>
 <p>参数比较多，但事实上有些参数固定、或者直接不要，也是可以的，比如 Cookie 的三个值，请求头的 <code>X-K-HEADER</code>、<code>X-SS-REQ-HEADER</code> 等可以固定，<code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 可有可无。尽管如此，本文还是把每个参数的来源都分析了，可根据你实际情况灵活处理。</p>
 <p>另外即便是把所有参数都补齐了，拉勾网对于单个 IP 还有频率限制，抓不了几次就要求登录，可自行搭配代理进行抓取，或者复制账号登录后的 cookies 到代码里，可以解除限制，如果是账号登录后访问，请求头多了两个参数，即 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code>，经过测试这两个参数其实不要也行。</p>
-<h2 id="抓包分析">抓包分析</h2>
+<h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>搜索职位，点击翻页，就可以看到一条名为 positionAjax.json 的 Ajax 请求，不难判断这就是返回的职位信息。重点参数已在图中框出来了。</p>
 <p>未登录，正常 IP，正常请求，Header 以及 Cookies：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/01.png" alt="01"></p>
@@ -293,9 +322,9 @@
 <p><img src="https://cdn.itbob.cn/img/article/049/04.png" alt="04"></p>
 <p>请求数据和返回数据都经过了加密：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/05.png" alt="05"></p>
-<h2 id="Cookies-参数">Cookies 参数</h2>
+<h2><span id="cookies-can-shu">Cookies 参数</span></h2>
 <p>先看 cookies 里的关键参数，主要是 <code>user_trace_token</code>、<code>X_HTTP_TOKEN</code> 和 <code>__lg_stoken__</code>。</p>
-<h3 id="user-trace-token">user_trace_token</h3>
+<h3><span id="user-trace-token">user_trace_token</span></h3>
 <p>通过接口返回的，直接搜索就可以找到，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/06.png" alt="06"></p>
 <p><img src="https://cdn.itbob.cn/img/article/049/07.png" alt="07"></p>
@@ -319,7 +348,7 @@
     response = requests.get(url=json_url, headers=headers, params=params)
     user_trace_token = response.cookies.get_dict()[<span class="hljs-string">&quot;user_trace_token&quot;</span>]
     <span class="hljs-keyword">return</span> user_trace_token</code></pre>
-<h3 id="X-HTTP-TOKEN">X_HTTP_TOKEN</h3>
+<h3><span id="x-http-token">X_HTTP_TOKEN</span></h3>
 <p>直接搜索没有值，直接上 Hook 大法，小白朋友不清楚的话可以看以前的文章，都有详细教程，这里不再细说。</p>
 <pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
 <span class="hljs-meta">    &#x27;use strict&#x27;</span>;
@@ -370,7 +399,7 @@
 &#125;</code></pre>
 <p>本地测试 OK：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/12.png" alt="12"></p>
-<h3 id="lg-stoken"><strong>lg_stoken</strong></h3>
+<h3><span id="lg-stoken">__lg_stoken__</span></h3>
 <p><code>__lg_stoken__</code> 这个参数是在点击搜索后才开始生成的，直接搜索同样没值，Hook 一下，往上跟栈，很容易找到生成位置：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/13.png" alt="13"></p>
 <p><img src="https://cdn.itbob.cn/img/article/049/14.png" alt="14"></p>
@@ -437,9 +466,9 @@
 
     lg_stoken = execjs.<span class="hljs-built_in">compile</span>(lg_js).call(<span class="hljs-string">&quot;getLgStoken&quot;</span>)
     <span class="hljs-keyword">return</span> lg_stoken</code></pre>
-<h2 id="请求头参数">请求头参数</h2>
+<h2><span id="qing-qiu-tou-can-shu">请求头参数</span></h2>
 <p>请求头参数比较多，有 <code>traceparent</code>、<code>X-K-HEADER</code>、<code>X-S-HEADER</code>、<code>X-SS-REQ-HEADER</code>、<code>x-anit-forge-code</code>、<code>x-anit-forge-token</code>，其中最后两个 <code>x-anit</code> 开头的参数是登录后才有的，实际测试中，即便是登录了，不加这两个好像也行。不过还是分析一下吧。</p>
-<h3 id="x-anit-forge-code-x-anit-forge-token">x-anit-forge-code / x-anit-forge-token</h3>
+<h3><span id="x-anit-forge-code-x-anit-forge-token">x-anit-forge-code / x-anit-forge-token</span></h3>
 <p>这两个值是首次点击搜索生成的，第一次访问搜索接口，返回的 HTML 里面夹杂了一个 JSON 文件，里面的 <code>submitCode</code> 和 <code>submitToken</code> 就是 <code>x-anit-forge-code</code> 和 <code>x-anit-forge-token</code> 的值，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/21.png" alt="21"></p>
 <p>请求这个接口要注意带上登录后的 cookies，有用的只有四个值，正确的 cookies 类似于：</p>
@@ -474,7 +503,7 @@
     <span class="hljs-keyword">global</span> x_anit
     x_anit[<span class="hljs-string">&quot;x-anit-forge-code&quot;</span>] = submit_code
     x_anit[<span class="hljs-string">&quot;x-anit-forge-token&quot;</span>] = submit_token</code></pre>
-<h3 id="traceparent">traceparent</h3>
+<h3><span id="traceparent">traceparent</span></h3>
 <p>同样的 Hook 大法，跟栈：</p>
 <pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
     <span class="hljs-keyword">var</span> org = <span class="hljs-built_in">window</span>.XMLHttpRequest.prototype.setRequestHeader;
@@ -511,7 +540,7 @@
 
 <span class="hljs-comment">// 测试输出</span>
 <span class="hljs-comment">// console.log(getTraceparent())</span></code></pre>
-<h3 id="X-K-HEADER-X-SS-REQ-HEADER">X-K-HEADER / X-SS-REQ-HEADER</h3>
+<h3><span id="x-k-header-x-ss-req-header">X-K-HEADER / X-SS-REQ-HEADER</span></h3>
 <p><code>X-K-HEADER</code> 和 <code>X-SS-REQ-HEADER</code> 数据是一样的，只不过后者是键值对形式，先直接全局搜索关键字，发现都是从本地拿这两个值，清除 cookie 就为空了，那么直接搜索值，发现是 agreement 这个接口返回的，<code>secretKeyValue</code> 值就是我们要的，有可能浏览器抓包直接搜索的话搜索不到，使用抓包工具，比如 Fiddler 就能搜到了，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/26.png" alt="26"></p>
 <p>这个接口是 post 请求，请求带了一个 json 数据，<code>secretKeyDecode</code>，直接搜索关键字，就一个值，定位跟栈：</p>
@@ -561,7 +590,7 @@
     data = &#123;<span class="hljs-string">&quot;secretKeyDecode&quot;</span>: rsa_encrypt_data&#125;
     response = requests.post(url=url, headers=headers, json=data).json()
     secret_key_value = response[<span class="hljs-string">&quot;content&quot;</span>][<span class="hljs-string">&quot;secretKeyValue&quot;</span>]</code></pre>
-<h3 id="X-S-HEADER">X-S-HEADER</h3>
+<h3><span id="x-s-header">X-S-HEADER</span></h3>
 <p><code>X-S-HEADER</code> 你每次翻页都会改变，直接搜索关键字可定位：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/29.png" alt="29"></p>
 <p><img src="https://cdn.itbob.cn/img/article/049/30.png" alt="30"></p>
@@ -601,7 +630,7 @@ Rt = <span class="hljs-function"><span class="hljs-keyword">function</span> (<sp
 <span class="hljs-comment">// var aesKey = &quot;dgHY1qVeo/Z0yDaF5WV/EEXxYiwbr5Jt&quot;</span>
 <span class="hljs-comment">// var originalData = &#123;&quot;first&quot;: &quot;true&quot;, &quot;needAddtionalResult&quot;: &quot;false&quot;, &quot;city&quot;: &quot;全国&quot;, &quot;pn&quot;: &quot;2&quot;, &quot;kd&quot;: &quot;Java&quot;&#125;</span>
 <span class="hljs-comment">// console.log(getXSHeader(aesKey, originalData, url))</span></code></pre>
-<h2 id="请求-返回数据解密">请求/返回数据解密</h2>
+<h2><span id="qing-qiu-fan-hui-shu-ju-jie-mi">请求/返回数据解密</span></h2>
 <p>前面抓包我们已经发现 positionAjax.json 是 POST 请求，Form Data 中的数据是加密的，返回的 data 也是加密的，我们分析请求头参数的时候，就涉及到 AES 加密解密，所以我们直接搜索 <code>AES.encrypt</code>、<code>AES.decrypt</code>，下断点调试：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/31.png" alt="31"></p>
 <p><img src="https://cdn.itbob.cn/img/article/049/32.png" alt="32"></p>
@@ -698,15 +727,15 @@ It = <span class="hljs-function"><span class="hljs-keyword">function</span>(<spa
         <span class="hljs-keyword">return</span> decrypted_data</code></pre>
 <p>最终整合所有代码，成功拿到数据：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/33.png" alt="33"></p>
-<h2 id="逆向小技巧">逆向小技巧</h2>
+<h2><span id="ni-xiang-xiao-ji-qiao">逆向小技巧</span></h2>
 <p>浏览器开发者工具 Application - Storage 选项，可以一键清除所有 Cookies，也可以自定义存储配额：</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/34.png" alt="34"></p>
 <p>Storage - Cookies 可以查看每个站点的所有 Cookies，HttpOnly 打勾的表示是服务器返回的，选中一条 Cookie，右键可以直接定位到哪个请求带了这个 Cookie，也可以直接编辑值，还可以删除单个 Cookie，当你登录了账号，但又需要清除某个 Cookie，且不想重新登录时，这个功能或许有用。</p>
 <p><img src="https://cdn.itbob.cn/img/article/049/35.png" alt="35"></p>
-<h2 id="完整代码">完整代码</h2>
+<h2><span id="wan-zheng-dai-ma">完整代码</span></h2>
 <p>文中给出了部分关键代码，不能直接运行，部分细节可能没提及到，完整代码已放 GitHub，均有详细注释，欢迎 Star。所有内容仅供学习交流，严禁用于商业用途、非法用途，否则由此产生的一切后果均与作者无关，在仓库中下载的文件学习完毕之后请于 24 小时内删除！</p>
 <p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python3-Spider-Practice">https://github.com/TRHX/Python3-Spider-Practice</a></p>
-<h2 id="常见问题">常见问题</h2>
+<h2><span id="chang-jian-wen-ti">常见问题</span></h2>
 <ul>
 <li>
 <p>JS 代码里引用了三个库，npm install 安装一下即可，如果安装了还提示找不到库，那就是路径问题，推荐在当前目录下执行命令安装，或者在 Python 代码里指定完整路径，具体方法可自行百度。</p>
@@ -786,23 +815,33 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -865,16 +904,16 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -883,7 +922,7 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -901,7 +940,10 @@ subprocess.Popen = partial(subprocess.Popen, encoding=<span class="hljs-string">
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

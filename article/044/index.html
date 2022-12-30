@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 3.7k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.8k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 15分丨
@@ -271,22 +271,43 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#xie-zai-qian-mian">写在前面</a></li>
+<li><a href="#rao-guo-wu-xian-debugger">绕过无限 debugger</a>
+<ul>
+<li><a href="#fang-fa-yi">方法一</a></li>
+<li><a href="#fang-fa-er">方法二</a></li>
+<li><a href="#fang-fa-san">方法三</a></li>
+</ul>
+</li>
+<li><a href="#zhua-bao-fen-xi">抓包分析</a></li>
+<li><a href="#jia-mi-ru-kou">加密入口</a></li>
+<li><a href="#dong-tai-js">动态 JS</a></li>
+<li><a href="#ben-di-gai-xie">本地改写</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="逆向目标">逆向目标</h2>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
 <ul>
 <li>目标：某空气质量监测平台无限 debugger 以及请求数据、返回数据动态加密、解密</li>
 <li>主页：<code>aHR0cHM6Ly93d3cuYXFpc3R1ZHkuY24v</code></li>
 <li>接口：<code>aHR0cHM6Ly93d3cuYXFpc3R1ZHkuY24vYXBpbmV3L2FxaXN0dWR5YXBpLnBocA==</code></li>
 </ul>
-<h2 id="写在前面">写在前面</h2>
+<h2><span id="xie-zai-qian-mian">写在前面</span></h2>
 <p>这个站点更新频率很高，在我之前也已经有很多博主写了该站点的分析文章，近期有读者问请求数据的加密和返回数据的解密，发现其加解密 JS 变成了动态的，以前的那些文章提到的解决思路不太行了，但整体上来说也不是很难，只不过处理起来比较麻烦一点，还有一些小细节需要注意。</p>
 <p>在网站的“关于系统”里可以看到，这个站貌似是个人开发者在维护，最早在2013年就有了，在友情赞助列表里，可以看到大多数都是一些环境、测绘、公共卫生相关的大学专业、研究院人员，可以猜测到这些数据对于他们的研究是非常有帮助的，再加上反爬更新频繁，可以看出站长饱受爬虫之苦，咱们也不想给站长添加负担，毕竟这种站点咱们应该支持，让他长久维护下去，<strong>所以本期只分析逻辑和少部分代码，就不放完整代码了，如果有相关专业人士确实需要抓取数据做研究的，可以通过邮件联系我。</strong></p>
-<h2 id="绕过无限-debugger">绕过无限 debugger</h2>
+<h2><span id="rao-guo-wu-xian-debugger">绕过无限 debugger</span></h2>
 <p>右键 F12，会提示右键被禁用，不要紧，使用快捷键 <code>Ctrl+Shift+i</code> 或者浏览器右上角，更多工具，开发者工具，照样能打开。</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/01.png" alt="01.png"></p>
-<h3 id="方法一">方法一</h3>
+<h3><span id="fang-fa-yi">方法一</span></h3>
 <p>打开控制台后会进入第一个无限 debugger，往上跟一个栈，可以看到一个 try-catch 语句，你下断点会发现他会一直走 catch，调用 <code>setTimeout()</code> 方法，该方法用于在指定的毫秒数后调用函数或计算表达式，注意上面，是将 debugger 传递给了构造方法 constructor，所以这里我们有两种方法过掉 debugger，Hook 掉 constructor 或 setTimeout 都可以。</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/02.png" alt="02.png"></p>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 两种 Hook 任选一中</span>
@@ -319,17 +340,17 @@
 &#125;</code></pre>
 <p>我们观察到，其实这两个无限 debugger 都可以 Hook 构造方法来过掉，所以直接 Fiddler 注入该 Hook 构造方法的代码即可：</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/04.png" alt="04.png"></p>
-<h3 id="方法二">方法二</h3>
+<h3><span id="fang-fa-er">方法二</span></h3>
 <p>在我们遇到第二个无限 debugger 的时候，还可以直接跟栈到一个 city_realtime.php 的页面，里面有两个 eval 语句，执行第一个 eval 里面的语句你就会发现正是前面我们在 VM 虚拟机里面看到的 debugger 代码，所以这里理论上可以直接替换掉这个页面，去掉 eval 语句，就不会有无限 debugger 了，但是先告诉你，现在不行了，因为里面有加载了某个 JS，这个 JS 在后面加密解密中会用到，但是这个 JS 是动态的，每10分钟就会改变，我们后面还要通过此页面来获取动态的 JS，所以是不能替换的！这里只是提一下这个思路！</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/05.png" alt="05.png"></p>
 <p><img src="https://cdn.itbob.cn/img/article/044/06.png" alt="06.png"></p>
-<h3 id="方法三">方法三</h3>
+<h3><span id="fang-fa-san">方法三</span></h3>
 <p>当然，这里还有一种最简单的方法，直接右键选择 Never pause here，永不在此处断下即可，同样还需要把开发者工具窗口单独拿出来，不然会一直输出“检测到非法调试”。</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/07.png" alt="07.png"></p>
-<h2 id="抓包分析">抓包分析</h2>
+<h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>我们在实时监控页面，顺便点击查询一个城市，可以看到请求的 Form Data 和返回的数据都是加密的，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/08.png" alt="08.png"></p>
-<h2 id="加密入口">加密入口</h2>
+<h2><span id="jia-mi-ru-kou">加密入口</span></h2>
 <p>由于是 XHR，所以我们直接跟栈，很容易找到加密的位置：</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/09.png" alt="09.png"></p>
 <p><img src="https://cdn.itbob.cn/img/article/044/10.png" alt="10.png"></p>
@@ -340,7 +361,7 @@
 <p>跟进 <code>db0HpCYIy97HkHS7RkhUn()</code> 方法，可以看到是 AES+DES+BASE64 解密，传入的密钥 key 和偏移量 iv 都在头部有定义：</p>
 <p><img src="https://cdn.itbob.cn/img/article/044/13.png" alt="13.png"></p>
 <p><img src="https://cdn.itbob.cn/img/article/044/14.png" alt="14.png"></p>
-<h2 id="动态-JS">动态 JS</h2>
+<h2><span id="dong-tai-js">动态 JS</span></h2>
 <p>经过以上分析后，我们加密解密的逻辑都搞定了，但是你多调试一下就会发现，这一个加密解密的 JS 是动态变化的，定义的密钥 key 和偏移量 iv 都是隔段时间就会改变的，如果你在这段代码里下断点，停留时间过长，突然发现断点失效无法断下了，那就是 JS 变了，当前代码已经失效了。</p>
 <p>我们随便薅两个不同的 JS 下来（提示：JS 每隔10分钟会变化，后文有详细分析），利用 PyCharm 的文件对比功能（依次选择 View - Compare With）可以总结出以下几个变化的地方（变量名的变化不算）：</p>
 <ol>
@@ -403,7 +424,7 @@
             flag = <span class="hljs-literal">False</span>
     <span class="hljs-comment"># print(decrypted_js)</span>
     <span class="hljs-keyword">return</span> decrypted_js</code></pre>
-<h2 id="本地改写">本地改写</h2>
+<h2><span id="ben-di-gai-xie">本地改写</span></h2>
 <p>通过以上函数我们就拿到了动态的 JS 了，那么我们可以直接执行拿回来的 JS 吗？当然是不可以的，你可以自己本地执行一下，可以发现里面的 CryptoJS、Base64、hex_md5 都需要补齐才行，所以到这里我们就有两种做法：</p>
 <ol>
 <li>拿到解密后的动态 JS 后，动态 JS 和我们自己写的 Base64、hex_md5 等方法组成新的 JS 代码，执行新的 JS 代码拿到参数，这里还需要注意因为里面的其他方法名都是动态的，所以你还得想办法匹配到正确的方法名来调用才行，所以这种方法个人感觉还是稍微有点儿麻烦的；</li>
@@ -654,23 +675,33 @@
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -733,16 +764,16 @@
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -751,7 +782,7 @@
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -769,7 +800,10 @@
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link
