@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 5.6k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 5.8k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 21分丨
@@ -271,15 +271,45 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
-<h2 id="声明">声明</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#qian-yan">前言</a></li>
+<li><a href="#rui-shu-te-zheng-yi-ji-bu-tong-ban-ben-de-qu-bie">瑞数特征以及不同版本的区别</a></li>
+<li><a href="#cookie-ru-kou-ding-wei">Cookie 入口定位</a></li>
+<li><a href="#wen-jian-jie-gou-yu-luo-ji">文件结构与逻辑</a></li>
+<li><a href="#vm-dai-ma-yi-ji-ts-bian-liang-huo-qu">VM 代码以及 $_ts 变量获取</a></li>
+<li><a href="#kou-dai-ma">扣代码</a>
+<ul>
+<li><a href="#jia-cookie-sheng-cheng-luo-ji">假 Cookie 生成逻辑</a></li>
+<li><a href="#zhen-cookie-sheng-cheng-luo-ji">真 Cookie 生成逻辑</a>
+<ul>
+<li><a href="#qu-jia-cookie">取假 Cookie</a></li>
+<li><a href="#zi-dong-hua-gong-ju-jian-ce">自动化工具检测</a></li>
+<li><a href="#20-wei-he-xin-shu-zu">20 位核心数组</a></li>
+<li><a href="#qi-ta-yong-dao-ts-zhi-de-di-fang">其他用到 $_ts 值的地方</a></li>
+</ul>
+</li>
+<li><a href="#zhu-yi-shi-xiang">注意事项</a></li>
+<li><a href="#hou-zhui-mmewmd-sheng-cheng-luo-ji">后缀 MmEwMD 生成逻辑</a></li>
+</ul>
+</li>
+<li><a href="#shan-yong-watch-gen-zong-gong-neng">善用 Watch 跟踪功能</a></li>
+<li><a href="#jie-guo-yan-zheng">结果验证</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
 <p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
 <p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
-<h2 id="前言">前言</h2>
+<h2><span id="qian-yan">前言</span></h2>
 <p><img src="https://cdn.itbob.cn/img/article/053/01.png" alt="01"></p>
 <p>瑞数动态安全 Botgate（机器人防火墙）以“动态安全”技术为核心，通过动态封装、动态验证、动态混淆、动态令牌等技术对服务器网页底层代码持续动态变换，增加服务器行为的“不可预测性”，实现了从用户端到服务器端的全方位“主动防护”，为各类 Web、HTML5 提供强大的安全保护。</p>
 <p>瑞数 Botgate 多用于政企、金融、运营商行业，曾一度被视为反爬天花板，随着近年来逆向大佬越来越多，相关的逆向文章也层出不穷，真正到了人均瑞数的时代了，这里也感谢诸如 Nanda、懒神等逆向大佬，揭开了瑞数神秘的面纱，总结的经验让后来人少走了不少弯路。</p>
 <p>过瑞数的方法基本上有以下几种：自动化工具（要隐藏特征值）、RPC 远程调用、JS 逆向（硬扣代码和补环境），本文介绍的是 JS 逆向硬扣代码，尽可能多的介绍各种细节。</p>
-<h2 id="瑞数特征以及不同版本的区别">瑞数特征以及不同版本的区别</h2>
+<h2><span id="rui-shu-te-zheng-yi-ji-bu-tong-ban-ben-de-qu-bie">瑞数特征以及不同版本的区别</span></h2>
 <p>对于绝大多数使用了瑞数的网站来说，有以下几点特征（可能有特殊版本不一样，先仅看主流的）：</p>
 <p>1、打开开发者工具（F12）会依次出现两个典型的无限 debugger：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/02.png" alt="02"></p>
@@ -320,7 +350,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/053/15.png" alt="15"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/16.png" alt="16"></p>
 <p>当然要想精准区分不同版本，得各个条件结合起来看，最主要的还是得看看内部的实现逻辑，以及页面的代码结构，比如 4 代有一个生成假 Cookie 的步骤，而 5 代没有，有的特殊版本虽然看起来是 5 代，但是加了 jsvmp 和三目表达式，和传统的 5 代又有区别，偶尔愚人节啥的突然来个新版本，也会不一样，各版本在分析一遍之后，就很容易区分了。</p>
-<h2 id="Cookie-入口定位">Cookie 入口定位</h2>
+<h2><span id="cookie-ru-kou-ding-wei">Cookie 入口定位</span></h2>
 <p>本文案例中瑞数 4 代网站为：<code>aHR0cDovL3d3dy5mYW5nZGkuY29tLmNuL25ld19ob3VzZS9uZXdfaG91c2VfZGV0YWlsLmh0bWw=</code></p>
 <p>首先过掉无限 debugger（过不过其实无所谓，后面的分析其实这个基本上没影响），直接右键 <code>Never pause here</code> 永不在此处断下即可：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/17.png" alt="17"></p>
@@ -357,7 +387,7 @@
 <p>我们在文章开头介绍的这个位置就是这么分析得来的，这个位置通常在分析瑞数的时候作为入口，图中 <code>_$te</code> 实际上是 eval 方法，传入的第一个参数 <code>_$fY</code> 是 Window 对象，第二个对象 <code>_$F8</code> 是我们前面看到的 VM 虚拟机中的 IIFE 自执行代码。</p>
 <p>在知道了瑞数大致的入口之后，我们也可以使用事件监听中的 Script 断点，一直下一个断点（F8）就可以走到 202 页面，然后搜索 call 关键字就能快速定位到入口，Script 断点中的两个选项，第一个表示运行 JS 脚本的第一条语句时断下，第二个表示 JS 因为内容安全政策而被屏蔽时断下，一般选择第一个就可以了，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/22.png" alt="22"></p>
-<h2 id="文件结构与逻辑">文件结构与逻辑</h2>
+<h2><span id="wen-jian-jie-gou-yu-luo-ji">文件结构与逻辑</span></h2>
 <p>想要后续分析 Cookie 的生成，我们不得不要观察一下 202 页面的代码，meta 标签有个 content 内容，引用了一个类似于 <code>c.FxJzG50F.dfe1675.js</code> 的 JS 文件，接着跟一个自执行的 JS，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/23.png" alt="23"></p>
 <p>第1部分 meta 标签的 content 内容，每次都是变化的，第2部分引用的这个外部 JS 在不同页面也有所差别，但是同一个网站同一个页面 JS 里的内容一般是固定不会变的，第3部分自执行代码每次变化的只是变量名，整体逻辑不变，后续我们在扣代码的时候，也会用到这里的部分方法。自执行代码里同样也是有很多 <code>if-else</code> 控制流，开头的那个数组，比如上图中的 <code>_$Dk</code> 就是用来控制后续的控制流的。</p>
@@ -366,7 +396,7 @@
 <p><img src="https://cdn.itbob.cn/img/article/053/24.png" alt="24"></p>
 <p>VM 里面的代码是生成 Cookie 的主要代码，包含众多的 <code>if-else</code> 控制流，无疑增加了我们分析代码的成本，这里就可以使用 AST 技术做一下反混淆，比如 Nanda 就将 <code>if-else</code> 控制流转换成了 <code>switch-case</code> 的，同一个控制流下的代码放在了同一个 <code>case</code> 下，然后在 <code>call</code> 入口那个地方，将 VM 代码做一下本地替换，具体可以参考 Nanda 的文章：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/r3FXjvT5Mm9Ikg_bDEadcw">《某数4代逻辑分析》</a>，感兴趣的可以试试，不了解 AST 的可以看看以前的文章<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/fIbPuNMs5FRADJE5MOZXgA">《逆向进阶，利用 AST 技术还原 JavaScript 混淆代码》</a>，后续有时间再写写 AST 还原瑞数代码的实战，本文咱们选择硬刚！</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/25.jpg" alt="25"></p>
-<h2 id="VM-代码以及-ts-变量获取">VM 代码以及 $_ts 变量获取</h2>
+<h2><span id="vm-dai-ma-yi-ji-ts-bian-liang-huo-qu">VM 代码以及 $_ts 变量获取</span></h2>
 <p>前面我们了解了 VM 代码和 <code>$_ts</code> 的重要性，所以我们第一步是要想办法拿到他们，至于在什么时候有用到，文章后续再说，复制外链 JS，即  <code>c.FxJzG50F.dfe1675.js</code> 的代码和 202 页面的自执行代码到文件，本地直接运行即可，需要轻度补一下环境，缺啥补啥，大致补一下 window、location、document 就行了，补的具体内容可以直接在浏览器控制台使用 <code>copy()</code> 命令复制过来，然后 VM 代码我们就可以直接 Hook eval 的方式得到，大致的补环境代码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> eval_js = <span class="hljs-string">&quot;&quot;</span>
 
@@ -398,7 +428,7 @@ location = &#123;
 <p><img src="https://cdn.itbob.cn/img/article/053/26.png" alt="26"></p>
 <p>注意事项：<code>c.FxJzG50F.dfe1675.js</code> 外链 JS 如果你直接下载下来用编辑器打开可能会被自动编码，和原始数据有出入，导致运行报错，这里建议直接在浏览器在线访问这个文件，手动复制过来，或者在抓包软件里将响应内容复制过来，观察以下两种情况，第一种情况就可能会导致运行出错，第二种是正常的：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/27.png" alt="27"></p>
-<h2 id="扣代码">扣代码</h2>
+<h2><span id="kou-dai-ma">扣代码</span></h2>
 <p>前面说了这么多，现在终于可以进入主题了，那就是扣代码，找个好椅子，准备把屁股坐穿，此时你的键盘只有 F11 有用，不断单步调试，只需要亿点点细节，就完事儿了！</p>
 <p>扣代码步骤太多，不可能每一步都截图写出来，只写一下比较重要的，如有遗漏的地方，那也没办法，首先先在我们替换的 202 页面里，自执行代码开始的地方手动加个 debugger，一进入页面就断下，方便后续的分析：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/28.png" alt="28"></p>
@@ -406,7 +436,7 @@ location = &#123;
 <p><img src="https://cdn.itbob.cn/img/article/053/29.png" alt="29"></p>
 <p>通过前面我们的分析，我们也知道了有两次生成 Cookie 的地方，快速搜索 <code>(5)</code>，搜索结果第二个即为入口：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/30.png" alt="30"></p>
-<h3 id="假-Cookie-生成逻辑">假 Cookie 生成逻辑</h3>
+<h3><span id="jia-cookie-sheng-cheng-luo-ji">假 Cookie 生成逻辑</span></h3>
 <p>首先单步跟假 Cookie，虽然是假的，但是后续生成真 Cookie 中会用到，在跟的时候你会走到这个逻辑里面：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/31.png" alt="31"></p>
 <p>有一步会调用 <code>_$8e()</code> 方法，而 <code>_$8e = _$Q9</code>，<code>_$Q9</code> 又嵌套在 <code>_$d0</code> 里的，搜索一下哪里调用了 <code>_$d0</code>，发现是代码开头：</p>
@@ -433,24 +463,24 @@ location = &#123;
 <p><img src="https://cdn.itbob.cn/img/article/053/43.png" alt="43"></p>
 <p>接下来是生成 Cookie 的名字 <code>FSSBBIl1UgzbN7N80T</code>，然后将 Cookie 赋值给 <code>document.cookie</code>，然后又向 <code>localStorage</code> 里面的 <code>$_ck</code> 赋了个值，<code>localStorage</code> 的内容可以直接复制下来，没有太大影响。</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/44.png" alt="44"></p>
-<h3 id="真-Cookie-生成逻辑">真 Cookie 生成逻辑</h3>
+<h3><span id="zhen-cookie-sheng-cheng-luo-ji">真 Cookie 生成逻辑</span></h3>
 <p>单步跟真 Cookie，在本文中也就是 <code>_$ZN(768, 1);</code>，可以看到开始进入了无穷无尽的 <code>if-else</code> 控制流：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/45.png" alt="45"></p>
 <p>这里本地应该怎样处理呢？我的做法是以 <code>_$Hn</code> 和其值命名函数，<code>function _$Hn768()&#123;&#125;</code> 就表示所有走 768 号控制流的方法，继续跟，生成真 Cookie 的方法基本上在 747 号控制流，后续我们主要以 747 号控制流的各个步骤来看，747 号控制流扣出来的代码大致如下：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/46.png" alt="46"></p>
-<h4 id="取假-Cookie">取假 Cookie</h4>
+<h4><span id="qu-jia-cookie">取假 Cookie</span></h4>
 <p>单步跟 747 号控制流，会有个进入第 709 号控制流的步骤，会取先前生成的假 Cookie，经过一系列操作之后返回一个数组：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/47.png" alt="47"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/48.png" alt="48"></p>
 <p>至此我们在本地同步扣的代码，如果正常的话，返回的数组也应该是一样的（后续的数据就不一样了，有一些时间戳之类的参数参与运算）：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/49.png" alt="49"></p>
-<h4 id="自动化工具检测">自动化工具检测</h4>
+<h4><span id="zi-dong-hua-gong-ju-jian-ce">自动化工具检测</span></h4>
 <p>继续跟 747 号控制流，会进入 268 号控制流，接着进入 154 号控制流，这里面会针对自动化工具做一些检测，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/50.png" alt="50"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/51.png" alt="51"></p>
 <p>这里定义了一个变量 <code>_$iL</code>，检测不通过就是1，后续又把这个变量赋值给了 <code>_$aW</code>，所以我们本地保持一致，也为 false 即可（其实我们不用自动化工具的话，这一段检测就不用管直接返回 false 就行）：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/52.png" alt="52"></p>
-<h4 id="20-位核心数组">20 位核心数组</h4>
+<h4><span id="20-wei-he-xin-shu-zu">20 位核心数组</span></h4>
 <p>继续跟 268 号控制流，会进入 668 号控制流，668 号控制流就两个操作，一是生成一个 16 位数组，二是取 <code>$_ts</code> 里面的 4 个变量，加到前面的 16 位后面，组成一个 20 位数组，这 20 位数组的最后 4 位是瑞数核心，其中的映射关系搞错了请求是通不过的，在五代中这部分的处理逻辑会更加复杂。</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/53.png" alt="53"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/54.png" alt="54"></p>
@@ -489,13 +519,13 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/053/63.png" alt="63"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/64.png" alt="64"></p>
 <p>经过这样处理后，就能够保证这四个值的准确性了。</p>
-<h4 id="其他用到-ts-值的地方">其他用到 $_ts 值的地方</h4>
+<h4><span id="qi-ta-yong-dao-ts-zhi-de-di-fang">其他用到 $_ts 值的地方</span></h4>
 <p>除了上面说的 20 位数组里用到了 4 个 <code>$_ts</code> 的值以外，还有其他地方有 7 个值也用到了，直接搜索就能定位，这 7 个值相对较简单，每次都是固定取 <code>$_ts</code> 里面的第 2、3、4、15、16、17、19 位的值，同样的，找到对应位置，进行动态替换即可：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/65.png" alt="65"></p>
-<h3 id="注意事项">注意事项</h3>
+<h3><span id="zhu-yi-shi-xiang">注意事项</span></h3>
 <p>特别注意 VM 代码开头，会直接调用执行一些方法，某些变量的值就是通过这些方法生成的，当你一步一步跟的时候发现某些参数不对，或者没有，那么就得注意开头这些方法了，可能一开始就已经生成了。</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/66.png" alt="66"></p>
-<h3 id="后缀-MmEwMD-生成逻辑">后缀 MmEwMD 生成逻辑</h3>
+<h3><span id="hou-zhui-mmewmd-sheng-cheng-luo-ji">后缀 MmEwMD 生成逻辑</span></h3>
 <p>后续的其他 XHR 请求中，都带有一个后缀，这个后缀的值同样是由 JS 生成的，每次都会变化，当然不同网站，后缀名不一定都是一样的，本例中是 <code>MmEwMD</code>，先下一个 XHR 断点，当 XHR 请求中包含了 <code>MmEwMD=</code> 时就断下，然后刷新网页：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/67.png" alt="67"></p>
 <p>可以看到后传入 <code>l.open()</code> 的 URL 还是正常的，断下后到 <code>l.send()</code> 就带有后缀了，再看 <code>l.open()</code> 其实就是 <code>xhr.open()</code>，明显和正常的有区别，同样这个方法也在 VM 代码里，应该是重写了方法，可以和正常的做对比：</p>
@@ -504,10 +534,10 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/053/69.png" alt="69"></p>
 <p>跟进 <code>_$sd</code> 方法，前面都是对 url 做一些处理，后面有个进入第 779 号控制流的流程，实际上就是原来我们生成 Cookie 的步骤，跟一下就行了。</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/70.png" alt="70"></p>
-<h2 id="善用-Watch-跟踪功能">善用 Watch 跟踪功能</h2>
+<h2><span id="shan-yong-watch-gen-zong-gong-neng">善用 Watch 跟踪功能</span></h2>
 <p><img src="https://cdn.itbob.cn/img/article/053/71.png" alt="71"></p>
 <p>开发者工具的 Watch 功能能够持续跟踪某个变量的值，对于这种控制流很多的情况，设置相应的变量跟踪，能够让你知道你现在处于哪个控制流中，以及生成的数组的变化，不至于跟着跟着不知道到哪一步了。</p>
-<h2 id="结果验证">结果验证</h2>
+<h2><span id="jie-guo-yan-zheng">结果验证</span></h2>
 <p>如果整个流程没问题，代码也扣得正确，携带正确的 Cookie 和正确的后缀，就能成功访问：</p>
 <p><img src="https://cdn.itbob.cn/img/article/053/72.png" alt="72"></p>
 <p><img src="https://cdn.itbob.cn/img/article/053/73.png" alt="73"></p>
@@ -575,23 +605,33 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -654,16 +694,16 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -672,7 +712,7 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -690,7 +730,10 @@ _$sX._$D9 = _$oL(_$iL);</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

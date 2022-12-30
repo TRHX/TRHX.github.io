@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -251,7 +251,7 @@
                         <i class="fa fa-keyboard"></i> 字数统计: 2.5k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 10分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 11分丨
                     </span>
                 
                 
@@ -271,7 +271,31 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/webpack.png" alt="webpack"></p>
-<h2 id="简介">简介</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#jian-jie">简介</a></li>
+<li><a href="#han-shu-sheng-ming-yu-han-shu-biao-da-shi">函数声明与函数表达式</a></li>
+<li><a href="#iife-li-ji-diao-yong-han-shu-biao-da-shi">IIFE 立即调用函数表达式</a>
+<ul>
+<li><a href="#iife-ji-ben-yu-fa">IIFE 基本语法</a></li>
+<li><a href="#iife-can-shu-chuan-di">IIFE 参数传递</a></li>
+</ul>
+</li>
+<li><a href="#function-prototype-call-apply-bind">Function.prototype.call() / apply() / bind()</a>
+<ul>
+<li><a href="#call">call()</a></li>
+<li><a href="#apply">apply()</a></li>
+<li><a href="#bind">bind()</a></li>
+</ul>
+</li>
+<li><a href="#li-jie-webpack">理解 webpack</a></li>
+<li><a href="#gai-xie-webpack">改写 webpack</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="jian-jie">简介</span></h2>
 <p>在分析一些站点的 JavaScript 代码时，比较简单的代码，函数通常都是一个一个的，例如：</p>
 <pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;a&quot;</span>)&#125;
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>) </span>&#123;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;a&quot;</span>)&#125;
@@ -302,7 +326,7 @@
 <p>运行以上代码，会输出 <code>module0: hello world!</code>，相信通过浅显易懂的变量名和函数名，应该就可以看懂大致含义了，调用 <code>useModule(0)</code>，从所有函数里选择第一个，将 <code>hello world!</code> 传递给 <code>module0</code> 并输出。</p>
 <p>仔细观察以上代码，我们会发现主要用到了 <code>!function()&#123;&#125;()</code> 和 <code>function.call()</code> 语法，接下来就一一介绍一下。</p>
 <hr>
-<h2 id="函数声明与函数表达式">函数声明与函数表达式</h2>
+<h2><span id="han-shu-sheng-ming-yu-han-shu-biao-da-shi">函数声明与函数表达式</span></h2>
 <p>在 ECMAScript（JavaScript 的一个标准）中，有两个最常用的创建函数对象的方法，即使用函数声明或者函数表达式，ECMAScript 规范明确了一点，即函数声明必须始终带有一个标识符，也就是我们所说的函数名，而函数表达式则可以省略。</p>
 <p>函数声明，会给函数指定一个名字，会在代码执行以前被加载到作用域中，所以<strong>调用函数在函数声明之前或之后都是可以的</strong>：</p>
 <pre><code class="hljs javascript">test(<span class="hljs-string">&quot;Hello World!&quot;</span>)
@@ -317,10 +341,10 @@
 
 test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 <hr>
-<h2 id="IIFE-立即调用函数表达式">IIFE 立即调用函数表达式</h2>
+<h2><span id="iife-li-ji-diao-yong-han-shu-biao-da-shi">IIFE 立即调用函数表达式</span></h2>
 <p>IIFE 全称 Immediately-invoked Function Expressions，译为立即调用函数表达式，也称为自执行函数、立即执行函数、自执行匿名函数等，IIFE 是一种语法，这种模式本质上就是函数表达式（命名的或者匿名的）在创建后立即执行。当函数变成立即执行的函数表达式时，表达式中的变量不能从外部访问。IIFE 主要用来隔离作用域，避免污染。</p>
 <hr>
-<h3 id="IIFE-基本语法">IIFE 基本语法</h3>
+<h3><span id="iife-ji-ben-yu-fa">IIFE 基本语法</span></h3>
 <p>IIFE 的写法非常灵活，主要有以下几种格式：</p>
 <p>1、匿名函数前面加上一元操作符，后面加上 <code>()</code>：</p>
 <pre><code class="hljs javascript">!<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
@@ -364,7 +388,7 @@ test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 &#125;()</code></pre>
 <p>这是因为立即执行函数通常作为一个单独模块使用一般是没有问题的，但是还是建议在立即执行函数前面或者后面加上分号，这样可以有效地与前面或者后面的代码进行隔离，否则可能出现意想不到的错误。</p>
 <hr>
-<h3 id="IIFE-参数传递">IIFE 参数传递</h3>
+<h3><span id="iife-can-shu-chuan-di">IIFE 参数传递</span></h3>
 <p>将参数放在末尾的 <code>()</code> 里即可实现参数传递：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> text = <span class="hljs-string">&quot;I AM IIFE&quot;</span>;
 
@@ -392,7 +416,7 @@ test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 
 <span class="hljs-comment">// 15</span></code></pre>
 <hr>
-<h2 id="Function-prototype-call-apply-bind">Function.prototype.call() / apply() / bind()</h2>
+<h2><span id="function-prototype-call-apply-bind">Function.prototype.call() / apply() / bind()</span></h2>
 <p><code>Function.prototype.call()</code>、<code>Function.prototype.apply()</code>、<code>Function.prototype.bind()</code> 都是比较常用的方法。它们的作用一模一样，即<strong>改变函数中的 <code>this</code> 指向</strong>，它们的区别如下：</p>
 <ul>
 <li><code>call()</code> 方法会立即执行这个函数，接受一个多个参数，参数之间用逗号隔开；</li>
@@ -400,7 +424,7 @@ test(<span class="hljs-string">&quot;Hello World!&quot;</span>)</code></pre>
 <li><code>bind()</code> 方法不会立即执行这个函数，返回的是一个修改过后的函数，便于稍后调用，接受的参数和 <code>call()</code> 一样。</li>
 </ul>
 <hr>
-<h3 id="call">call()</h3>
+<h3><span id="call">call()</span></h3>
 <p><code>call()</code> 方法接受多个参数，第一个参数 thisArg 指定了函数体内 this 对象的指向，如果这个函数处于非严格模式下，指定为 null 或 undefined 时会自动替换为指向全局对象（浏览器中就是 window 对象），在严格模式下，函数体内的 this 还是为 null。从第二个参数开始往后，每个参数被依次传入函数，基本语法如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">function</span>.call(thisArg, arg1, arg2, ...)</code></pre>
 <p>示例：</p>
@@ -416,7 +440,7 @@ test.call(<span class="hljs-literal">null</span>, <span class="hljs-number">1</s
 <span class="hljs-keyword">var</span> data = &#123;<span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;Doe&quot;</span>&#125;
 test.call(data)  <span class="hljs-comment">// John Doe</span></code></pre>
 <hr>
-<h3 id="apply">apply()</h3>
+<h3><span id="apply">apply()</span></h3>
 <p><code>apply()</code> 方法接受两个参数，第一个参数 thisArg 与 <code>call()</code> 方法一致，第二个参数为一个带下标的集合，从 ECMAScript 第5版开始，这个集合可以为数组，也可以为类数组，<code>apply()</code> 方法把这个集合中的元素作为参数传递给被调用的函数，基本语法如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">function</span>.apply(thisArg, [arg1, arg2, ...])</code></pre>
 <p>示例：</p>
@@ -432,7 +456,7 @@ test.apply(<span class="hljs-literal">null</span>, [<span class="hljs-number">1<
 <span class="hljs-keyword">var</span> data = &#123;<span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;Doe&quot;</span>&#125;
 test.apply(data)  <span class="hljs-comment">// John Doe</span></code></pre>
 <hr>
-<h3 id="bind">bind()</h3>
+<h3><span id="bind">bind()</span></h3>
 <p><code>bind()</code> 方法和 <code>call()</code> 接受的参数是相同的，只不过 <code>bind()</code> 返回的是一个函数，基本语法如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">function</span>.bind(thisArg, arg1, arg2, ...)</code></pre>
 <p>示例：</p>
@@ -448,7 +472,7 @@ test.bind(<span class="hljs-literal">null</span>, <span class="hljs-number">1</s
 <span class="hljs-keyword">var</span> data = &#123;<span class="hljs-attr">firstName</span>: <span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-attr">lastName</span>: <span class="hljs-string">&quot;Doe&quot;</span>&#125;
 test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
 <hr>
-<h2 id="理解-webpack">理解 webpack</h2>
+<h2><span id="li-jie-webpack">理解 webpack</span></h2>
 <p>有了以上知识后，我们再来理解一下模块化编程，也就是前面所说的 webpack 写法：</p>
 <pre><code class="hljs javascript">!<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">allModule</span>) </span>&#123;
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useModule</span>(<span class="hljs-params">whichModule</span>) </span>&#123;
@@ -462,7 +486,7 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
 ]);</code></pre>
 <p>首先，这整个代码是一个 IIFE 立即调用函数表达式，传递的参数是一个数组，里面包含三个方法，分别是 <code>module0</code>、<code>module1</code> 和 <code>module2</code>，可以将其视为三个模块，那么 IIFE 接受的参数 <code>allModule</code> 就包含这三个模块，IIFE 里面还包含一个函数 <code>useModule()</code>，可以将其视为模块加载器，即要使用哪个模块，示例中 <code>useModule(0)</code> 即表示调用第一个模块，函数里面使用 <code>call()</code> 方法改变函数中的 <code>this</code> 指向并传递参数，调用相应的模块进行输出。</p>
 <hr>
-<h2 id="改写-webpack">改写 webpack</h2>
+<h2><span id="gai-xie-webpack">改写 webpack</span></h2>
 <p>对于我们爬虫逆向当中经常遇到的 webpack 模块化的写法，可以很容易对其进行改写，以下以一段加密代码为例：</p>
 <pre><code class="hljs javascript">CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;crypto-js&quot;</span>)
 
@@ -610,23 +634,33 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -689,16 +723,16 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -707,7 +741,7 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -725,7 +759,10 @@ test.bind(data)()  <span class="hljs-comment">// John Doe</span></code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

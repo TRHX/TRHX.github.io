@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,10 +248,10 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 6.3k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 6.4k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 28分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 29分丨
                     </span>
                 
                 
@@ -276,7 +276,107 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/encryption_algorithm.png" alt="encryption_algorithm"></p>
-<h2 id="简介">简介</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#jian-jie">简介</a>
+<ul>
+<li><a href="#javascript-jia-mi-jie-mi-mo-kuai">JavaScript 加密解密模块</a>
+<ul>
+<li><a href="#crypto-js">Crypto-JS</a></li>
+<li><a href="#node-rsa">Node-RSA</a></li>
+<li><a href="#jsencrypt">JSEncrypt</a></li>
+</ul>
+</li>
+<li><a href="#python-jia-mi-jie-mi-ku">Python 加密解密库</a>
+<ul>
+<li><a href="#cryptodome-crypto">Cryptodome &amp; Crypto</a></li>
+<li><a href="#hashlib">Hashlib</a></li>
+<li><a href="#hmac">HMAC</a></li>
+<li><a href="#pydes">pyDes</a></li>
+<li><a href="#esa">ESA</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#jia-mi-jie-mi-ji-ben-can-shu">加密解密基本参数</a>
+<ul>
+<li><a href="#chu-shi-xiang-liang-iv">初始向量 iv</a></li>
+<li><a href="#jia-mi-mo-shi-mode">加密模式 mode</a></li>
+<li><a href="#tian-chong-fang-shi-padding">填充方式 padding</a></li>
+</ul>
+</li>
+<li><a href="#base64">Base64</a>
+<ul>
+<li><a href="#javascript-shi-xian">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#md5">MD5</a>
+<ul>
+<li><a href="#javascript-shi-xian-1">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-1">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#pbkdf2">PBKDF2</a>
+<ul>
+<li><a href="#javascript-shi-xian-2">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-2">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#sha">SHA</a>
+<ul>
+<li><a href="#javascript-shi-xian-3">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-3">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#hmac-1">HMAC</a>
+<ul>
+<li><a href="#javascript-shi-xian-4">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-4">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#des">DES</a>
+<ul>
+<li><a href="#javascript-shi-xian-5">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-5">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#3des">3DES</a>
+<ul>
+<li><a href="#javascript-shi-xian-6">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-6">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#aes">AES</a>
+<ul>
+<li><a href="#javascript-shi-xian-7">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-7">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#rc4">RC4</a>
+<ul>
+<li><a href="#javascript-shi-xian-8">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-8">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#rabbit">Rabbit</a>
+<ul>
+<li><a href="#javascript-shi-xian-9">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-9">Python 实现</a></li>
+</ul>
+</li>
+<li><a href="#rsa">RSA</a>
+<ul>
+<li><a href="#javascript-shi-xian-10">JavaScript 实现</a></li>
+<li><a href="#python-shi-xian-10">Python 实现</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="jian-jie">简介</span></h2>
 <p>本文总结了在爬虫中常见的各种加密算法、编码算法的原理、在 JavaScript 中和 Python 中的基本实现方法，遇到 JS 加密的时候可以快速还原加密过程，有的网站在加密的过程中可能还经过了其他处理，但是大致的方法是一样的。</p>
 <p>常见加密算法：</p>
 <ol>
@@ -285,8 +385,8 @@
 <li>消息摘要算法/签名算法：MD5、SHA、HMAC、PBKDF2</li>
 </ol>
 <p>常见编码算法：Base64</p>
-<h3 id="JavaScript-加密解密模块">JavaScript 加密解密模块</h3>
-<h4 id="Crypto-JS">Crypto-JS</h4>
+<h3><span id="javascript-jia-mi-jie-mi-mo-kuai">JavaScript 加密解密模块</span></h3>
+<h4><span id="crypto-js">Crypto-JS</span></h4>
 <p>Crypto-JS 支持 MD5、SHA、RIPEMD-160、HMAC、PBKDF2、AES、DES、3DES（Triple DES）、Rabbit、RC4 等，<strong>不支持 RSA、ECC</strong>，是应用比较广的加密模块，使用命令 <code>npm install crypto-js</code> 安装。</p>
 <p>参考资料：</p>
 <ul>
@@ -297,17 +397,17 @@
 <p>Crypto-JS Github：<a target="_blank" rel="noopener" href="https://github.com/brix/crypto-js">https://github.com/brix/crypto-js</a></p>
 </li>
 </ul>
-<h4 id="Node-RSA">Node-RSA</h4>
+<h4><span id="node-rsa">Node-RSA</span></h4>
 <p>Node-RSA 对  RSA 算法提供了支持，使用命令 <code>npm install node-rsa </code> 安装。</p>
 <p>参考资料：Node-RSA Github：<a target="_blank" rel="noopener" href="https://github.com/rzcoder/node-rsa">https://github.com/rzcoder/node-rsa</a></p>
-<h4 id="JSEncrypt">JSEncrypt</h4>
+<h4><span id="jsencrypt">JSEncrypt</span></h4>
 <p>参考资料：JSEncrypt 对  RSA 算法提供了更加全面的支持，使用命令 <code>npm install jsencrypt </code> 安装。</p>
 <ul>
 <li>JSEncrypt 文档：<a target="_blank" rel="noopener" href="http://travistidwell.com/jsencrypt/">http://travistidwell.com/jsencrypt/</a></li>
 <li>JSEncrypt Github：<a target="_blank" rel="noopener" href="https://github.com/travist/jsencrypt">https://github.com/travist/jsencrypt</a></li>
 </ul>
-<h3 id="Python-加密解密库">Python 加密解密库</h3>
-<h4 id="Cryptodome-Crypto">Cryptodome &amp; Crypto</h4>
+<h3><span id="python-jia-mi-jie-mi-ku">Python 加密解密库</span></h3>
+<h4><span id="cryptodome-amp-crypto">Cryptodome &amp; Crypto</span></h4>
 <p>在 Python 中有很多算法是通过第三方库 Cryptodome 或者 Crypto 来实现的，Cryptodome 几乎是 Crypto 的替代品，Crypto 已经停止更新好多年了，有很多未知错误，所以<strong>不建议安装 Crypto ！</strong></p>
 <p>Cryptodome 支持几乎所有主流加密算法，包括 MD5、SHA、BLAKE2b、BLAKE2s、HMAC、PBKDF2、AES、DES、3DES（Triple DES）、ECC、RSA、RC4 等。</p>
 <p>Cryptodome 使用命令 <code>pip install pycryptodome</code> 进行安装，Crypto 使用命令 <code>pip install pycrypto </code> 进行安装。</p>
@@ -320,32 +420,32 @@
 <p>Cryptodome 库：<a target="_blank" rel="noopener" href="https://www.pycryptodome.org/en/latest/">https://www.pycryptodome.org/en/latest/</a></p>
 </li>
 </ul>
-<h4 id="Hashlib">Hashlib</h4>
+<h4><span id="hashlib">Hashlib</span></h4>
 <p>Python 的标准库 hashlib 提供了常见的摘要算法，如 MD5，SHA、BLAKE2b、BLAKE2s 等。</p>
 <p>参考资料：</p>
 <ul>
 <li>hashlib 库：<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/hashlib.html">https://docs.python.org/3/library/hashlib.html</a></li>
 <li>廖雪峰 hashlib：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017686752491744">https://www.liaoxuefeng.com/wiki/1016959663602400/1017686752491744</a></li>
 </ul>
-<h4 id="HMAC">HMAC</h4>
+<h4><span id="hmac">HMAC</span></h4>
 <p>Python 的标准库 hmac 对 HMAC 算法提供了支持。</p>
 <p>参考资料：</p>
 <ul>
 <li>hmac 库：<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/hmac.html">https://docs.python.org/3/library/hmac.html</a></li>
 <li>廖雪峰 hmac：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400/1183198304823296">https://www.liaoxuefeng.com/wiki/1016959663602400/1183198304823296</a></li>
 </ul>
-<h4 id="pyDes">pyDes</h4>
+<h4><span id="pydes">pyDes</span></h4>
 <p>Python 的第三方库 pyDes 对 DES 算法提供了支持。使用命令 <code>pip install pydes</code> 进行安装。</p>
 <p>参考资料：pyDes 库：<a target="_blank" rel="noopener" href="https://github.com/twhiteman/pyDes">https://github.com/twhiteman/pyDes</a></p>
-<h4 id="ESA">ESA</h4>
+<h4><span id="esa">ESA</span></h4>
 <p>Python 的第三方库 rsa 对 RSA 算法提供了支持。使用命令 <code>pip install rsa</code> 进行安装。</p>
 <p>参考资料：rsa 库：<a target="_blank" rel="noopener" href="https://stuvel.eu/python-rsa-doc/">https://stuvel.eu/python-rsa-doc/</a></p>
-<h2 id="加密解密基本参数">加密解密基本参数</h2>
+<h2><span id="jia-mi-jie-mi-ji-ben-can-shu">加密解密基本参数</span></h2>
 <p>在一些对称和非对称加密算法中，经常会用到以下三个参数：初始向量 iv、加密模式 mode、填充方式 padding，先介绍一下这三个参数的含义和作用：</p>
-<h3 id="初始向量-iv">初始向量 iv</h3>
+<h3><span id="chu-shi-xiang-liang-iv">初始向量 iv</span></h3>
 <p>在密码学中，初始向量（initialization vector，缩写为 iv），又称初始变数（starting variable，缩写为 sv），与密钥结合使用，作为加密数据的手段，它是一个固定长度的值，iv 的长度取决于加密方法，通常与使用的加密密钥或密码块的长度相当，一般在使用过程中会要求它是随机数或拟随机数，使用随机数产生的初始向量才能达到语义安全，让攻击者难以对原文一致且使用同一把密钥生成的密文进行破解。</p>
 <p>参考资料：维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Initialization_vector">https://en.wikipedia.org/wiki/Initialization_vector</a></p>
-<h3 id="加密模式-mode">加密模式 mode</h3>
+<h3><span id="jia-mi-mo-shi-mode">加密模式 mode</span></h3>
 <p>目前流行的加密和数字认证算法，都是采用块加密方式，就是将需要加密的明文分成固定大小的数据块，然后对其执行密码算法，得到密文。数据块的大小通常采用跟密钥一样的长度。加密模式在加密算法的基础上发展出来，同时也可以独立于加密算法而存在，加密模式定义了怎样通过重复利用加密算法将大于一个数据块大小的明文转化为密文，描述了加密每一数据块的过程。目前利用较多的加密模式有以下几种：</p>
 <ul>
 <li>
@@ -368,7 +468,7 @@
 </li>
 </ul>
 <p>参考资料：维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation">https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation</a></p>
-<h3 id="填充方式-padding">填充方式 padding</h3>
+<h3><span id="tian-chong-fang-shi-padding">填充方式 padding</span></h3>
 <p>块密码只能对确定长度的数据块进行处理，而消息的长度通常是可变的。因此部分模式最后一块数据在加密前需要进行填充。有数种填充方法，其中最简单的一种是在明文的最后填充空字符以使其长度为块长度的整数倍。常见填充方式有以下几种：</p>
 <ul>
 <li>
@@ -392,14 +492,14 @@
 <li>维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Padding_(cryptography)">https://en.wikipedia.org/wiki/Padding_(cryptography)</a></li>
 <li>PKCS7/PKCS5 填充算法：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019793040">https://segmentfault.com/a/1190000019793040</a></li>
 </ul>
-<h2 id="Base64">Base64</h2>
+<h2><span id="base64">Base64</span></h2>
 <p>简介：Base64 是一种用 64 个字符来表示任意二进制数据的方法。</p>
 <p>参考资料：</p>
 <ul>
 <li>Base64 百度百科：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/base64/8545775">https://baike.baidu.com/item/base64/8545775</a></li>
 <li>Base64 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Base64">https://en.wikipedia.org/wiki/Base64</a></li>
 </ul>
-<h3 id="JavaScript-实现">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -425,7 +525,7 @@
 
 <span class="hljs-comment">// Base64 编码:  SSBsb3ZlIFB5dGhvbiE=</span>
 <span class="hljs-comment">// Base64 解码:  I love Python!</span></code></pre>
-<h3 id="Python-实现">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> base64
 
 
@@ -448,14 +548,14 @@
 
 <span class="hljs-comment"># Base64 编码： b&#x27;SSBsb3ZlIFB5dGhvbiE=&#x27;</span>
 <span class="hljs-comment"># Base64 解码： b&#x27;I love Python!&#x27;</span></code></pre>
-<h2 id="MD5">MD5</h2>
+<h2><span id="md5">MD5</span></h2>
 <p>简介：全称 MD5 消息摘要算法（英文名称：MD5 Message-Digest Algorithm），又称哈希算法、散列算法，由美国密码学家罗纳德·李维斯特（Ronald Linn Rivest）设计，于 1992 年作为 RFC 1321 被公布，用以取代 MD4 算法。摘要算法是单向加密的，也就是说明文通过摘要算法加密之后，是不能解密的。摘要算法的第二个特点密文是固定长度的，它通过一个函数，把任意长度的数据转换为一个长度固定的数据串（通常用16进制的字符串表示）。之所以叫摘要算法，它的算法就是提取明文重要的特征。所以，两个不同的明文，使用了摘要算法之后，有可能他们的密文是一样的，不过这个概率非常的低。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 1321：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc1321/">https://datatracker.ietf.org/doc/rfc1321/</a></li>
 <li>MD5 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/MD5">https://en.wikipedia.org/wiki/MD5</a></li>
 </ul>
-<h3 id="JavaScript-实现-t2">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -465,7 +565,7 @@
 &#125;
 
 <span class="hljs-built_in">console</span>.log(MD5Test())  <span class="hljs-comment">// 21169ee3acd4a24e1fcb4322cfd9a2b8</span></code></pre>
-<h3 id="Python-实现-t2">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib
 
 
@@ -484,14 +584,14 @@
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     md5_test1()  <span class="hljs-comment"># 21169ee3acd4a24e1fcb4322cfd9a2b8</span>
     md5_test2()  <span class="hljs-comment"># 21169ee3acd4a24e1fcb4322cfd9a2b8</span></code></pre>
-<h2 id="PBKDF2">PBKDF2</h2>
+<h2><span id="pbkdf2">PBKDF2</span></h2>
 <p>简介：英文名称：Password-Based Key Derivation Function 2，PBKDF2 是 RSA 实验室的公钥加密标准（PKCS）系列的一部分，2017 年发布的 RFC 8018 （PKCS #5 v2.1）推荐使用 PBKDF2 进行密码散列。PBKDF2 将伪随机函数（例如 HMAC），把明文和一个盐值（salt）作为输入参数，然后进行重复运算，并最终产生密钥，如果重复的次数足够大，破解的成本就会变得很高。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 8018：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc8018/">https://datatracker.ietf.org/doc/rfc8018/</a></li>
 <li>PBKDF2 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PBKDF2">https://en.wikipedia.org/wiki/PBKDF2</a></li>
 </ul>
-<h3 id="JavaScript-实现-t3">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -504,7 +604,7 @@
 &#125;
 
 <span class="hljs-built_in">console</span>.log(pbkdf2Encrypt())  <span class="hljs-comment">// 7fee6e8350cfe96314c76aaa6e853a50</span></code></pre>
-<h3 id="Python-实现-t3">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> binascii
 <span class="hljs-keyword">from</span> Cryptodome.Hash <span class="hljs-keyword">import</span> SHA1
 <span class="hljs-keyword">from</span> Cryptodome.Protocol.KDF <span class="hljs-keyword">import</span> PBKDF2
@@ -516,14 +616,14 @@ result = PBKDF2(text,  salt, count=<span class="hljs-number">10</span>, hmac_has
 result = binascii.hexlify(result)
 <span class="hljs-built_in">print</span>(result)
 <span class="hljs-comment"># b&#x27;7fee6e8350cfe96314c76aaa6e853a50&#x27;</span></code></pre>
-<h2 id="SHA">SHA</h2>
+<h2><span id="sha">SHA</span></h2>
 <p>简介：全称安全哈希算法（英文名称：Secure Hash Algorithm），由美国国家安全局（NSA）所设计，主要适用于数字签名标准（Digital Signature Standard DSS）里面定义的数字签名算法（Digital Signature Algorithm DSA），SHA 通常指 SHA 家族的五个算法，分别是 SHA-1、SHA-224、SHA-256、SHA-384、SHA-512，后四者有时并称为 SHA-2，SHA 是比 MD5 更安全一点的摘要算法，MD5 的密文是 32 位，而 SHA-1 是 40 位，版本越强，密文越长，代价是速度越慢。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 3174：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc3174/">https://datatracker.ietf.org/doc/rfc3174/</a></li>
 <li>SHA 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Secure_Hash_Algorithms">https://en.wikipedia.org/wiki/Secure_Hash_Algorithms</a></li>
 </ul>
-<h3 id="JavaScript-实现-t4">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -533,7 +633,7 @@ result = binascii.hexlify(result)
 &#125;
 
 <span class="hljs-built_in">console</span>.log(SHA1Encrypt())  <span class="hljs-comment">// 23c02b203bd2e2ca19da911f1d270a06d86719fb</span></code></pre>
-<h3 id="Python-实现-t4">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib
 
 
@@ -551,14 +651,14 @@ result = binascii.hexlify(result)
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     sha1_test1()  <span class="hljs-comment"># 23c02b203bd2e2ca19da911f1d270a06d86719fb</span>
     sha1_test2()  <span class="hljs-comment"># 23c02b203bd2e2ca19da911f1d270a06d86719fb</span></code></pre>
-<h2 id="HMAC-t2">HMAC</h2>
+<h2><span id="hmac">HMAC</span></h2>
 <p>简介：全称散列消息认证码、密钥相关的哈希运算消息认证码（英文名称：Hash-based Message Authentication Code 或者 Keyed-hash Message Authentication Code），于 1996 年提出，1997 年作为 RFC 2104 被公布，HMAC 加密算法是一种安全的基于加密 Hash 函数和共享密钥的消息认证协议，它要求通信双方共享密钥 key、约定算法、对报文进行 Hash 运算，形成固定长度的认证码。通信双方通过认证码的校验来确定报文的合法性。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 2104：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc2104/">https://datatracker.ietf.org/doc/rfc2104/</a></li>
 <li>HMAC 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/HMAC">https://en.wikipedia.org/wiki/HMAC</a></li>
 </ul>
-<h3 id="JavaScript-实现-t5">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -571,7 +671,7 @@ result = binascii.hexlify(result)
 &#125;
 
 <span class="hljs-built_in">console</span>.log(HMACEncrypt())</code></pre>
-<h3 id="Python-实现-t5">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> hmac
 
 
@@ -593,7 +693,7 @@ result = binascii.hexlify(result)
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     hmac_test1()  <span class="hljs-comment"># 9c503a1f852edcc3526ea56976c38edf</span>
     hmac_test2()  <span class="hljs-comment"># 2d8449a4292d4bbeed99ce9ea570880d6e19b61a</span></code></pre>
-<h2 id="DES">DES</h2>
+<h2><span id="des">DES</span></h2>
 <p>简介：全称数据加密标准（英文名称：Data Encryption Standard），加密与解密使用同一密钥，属于对称加密算法，1977 年被美国联邦政府的国家标准局确定为联邦资料处理标准（FIPS），DES 是一个分组加密算法，使用 56 位的密钥（一般认为密钥是 64 位，但是密钥的每个第 8 位设置为奇偶校验位，所以实际上有效位只有 56 位），由于 56 位密钥长度相对较短，所以 DES 是不安全的，现在基本上已被更高级的加密标准 AES 取代。</p>
 <ul>
 <li>mode 支持：CBC，CFB，CTR，CTRGladman，ECB，OFB 等。</li>
@@ -604,7 +704,7 @@ result = binascii.hexlify(result)
 <li>RFC 4772：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc4772/">https://datatracker.ietf.org/doc/rfc4772/</a></li>
 <li>DES 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Data_Encryption_Standard">https://en.wikipedia.org/wiki/Data_Encryption_Standard</a></li>
 </ul>
-<h3 id="JavaScript-实现-t6">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -646,7 +746,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment">// 加密字符串:  +ndbEkWNw2QAfIYQtwC14w==</span>
 <span class="hljs-comment">// 解密字符串:  I love Python!</span></code></pre>
-<h3 id="Python-实现-t6">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> binascii
 <span class="hljs-comment"># 加密模式 CBC，填充方式 PAD_PKCS5</span>
 <span class="hljs-keyword">from</span> pyDes <span class="hljs-keyword">import</span> des, CBC, PAD_PKCS5
@@ -676,7 +776,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment"># 加密字符串： b&#x27;302d3abf2421169239f829b38a9545f1&#x27;</span>
 <span class="hljs-comment"># 解密字符串： b&#x27;I love Python!&#x27;</span></code></pre>
-<h2 id="3DES">3DES</h2>
+<h2><span id="3des">3DES</span></h2>
 <p>简介：全称三重数据加密算法（英文名称：Triple Data Encryption Standard、 Triple Data Encryption Algorithm、TDES、TDEA），是对称加密算法中的一种。70 年代初由 IBM 研发，后 1977 年被美国国家标准局采纳为数据加密标准，它相当于是对每个数据块应用三次 DES 加密算法。由于计算机运算能力的增强，原版 DES 密码的密钥长度变得容易被暴力破解；3DES 即是设计用来提供一种相对简单的方法，即通过增加 DES 的密钥长度来避免破解，所以严格来说 3DES 不是设计一种全新的块密码算法。</p>
 <ul>
 <li>mode 支持：CBC，CFB，CTR，CTRGladman，ECB，OFB 等。</li>
@@ -687,7 +787,7 @@ result = binascii.hexlify(result)
 <li>RFC 1851：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc1851/">https://datatracker.ietf.org/doc/rfc1851/</a></li>
 <li>3DES 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Triple_DES">https://en.wikipedia.org/wiki/Triple_DES</a></li>
 </ul>
-<h3 id="JavaScript-实现-t7">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -729,7 +829,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment">// 加密字符串:  3J0NX7x6GbewjjhoW2HKqg==</span>
 <span class="hljs-comment">// 解密字符串:  I love Python!</span></code></pre>
-<h3 id="Python-实现-t7">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> Cryptodome.Cipher <span class="hljs-keyword">import</span> DES3
 <span class="hljs-keyword">from</span> Cryptodome <span class="hljs-keyword">import</span> Random
 
@@ -767,7 +867,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment"># 加密字符串： b&#x27;\xa5\x8a\xd4R\x99\x16j\xba?vg\xf2\xb6\xa9&#x27;</span>
 <span class="hljs-comment"># 解密字符串： b&#x27;I love Python!&#x27;</span></code></pre>
-<h2 id="AES">AES</h2>
+<h2><span id="aes">AES</span></h2>
 <p>简介：全称高级加密标准（英文名称：Advanced Encryption Standard），在密码学中又称 Rijndael 加密法，由美国国家标准与技术研究院 （NIST）于 2001 年发布，并在 2002 年成为有效的标准，是美国联邦政府采用的一种区块加密标准。这个标准用来替代原先的 DES，已经被多方分析且广为全世界所使用，它本身只有一个密钥，即用来实现加密，也用于解密。</p>
 <ul>
 <li>mode 支持：CBC，CFB，CTR，CTRGladman，ECB，OFB 等。</li>
@@ -778,7 +878,7 @@ result = binascii.hexlify(result)
 <li>RFC 3268：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc3268/">https://datatracker.ietf.org/doc/rfc3268/</a></li>
 <li>AES 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">https://en.wikipedia.org/wiki/Advanced_Encryption_Standard</a></li>
 </ul>
-<h3 id="JavaScript-实现-t8">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
  <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -820,7 +920,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment">// 加密字符串:  dZL7TLJR786VGvuUvqYGoQ==</span>
 <span class="hljs-comment">// 解密字符串:  I love Python!</span></code></pre>
-<h3 id="Python-实现-t8">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> base64
 <span class="hljs-keyword">from</span> Cryptodome.Cipher <span class="hljs-keyword">import</span> AES
 
@@ -860,14 +960,14 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment"># 加密字符串： lAVKvkQh+GtdNpoKf4/mHA==</span>
 <span class="hljs-comment"># 解密字符串： I love Python!</span></code></pre>
-<h2 id="RC4">RC4</h2>
+<h2><span id="rc4">RC4</span></h2>
 <p>简介：英文名称：Rivest Cipher 4，也称为 ARC4 或 ARCFOUR，是一种流加密算法，密钥长度可变。它加解密使用相同的密钥，因此也属于对称加密算法。RC4 是有线等效加密（WEP）中采用的加密算法，也曾经是 TLS 可采用的算法之一，该算法的速度可以达到 DES 加密的 10 倍左右，且具有很高级别的非线性，虽然它在软件方面的简单性和速度非常出色，但在 RC4 中发现了多个漏洞，它特别容易受到攻击，RC4 作为一种老旧的验证和加密算法易于受到黑客攻击，现在逐渐不推荐使用了。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 7465：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7465/">https://datatracker.ietf.org/doc/rfc7465/</a></li>
 <li>RC4 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/RC4">https://en.wikipedia.org/wiki/RC4</a></li>
 </ul>
-<h3 id="JavaScript-实现-t9">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -890,7 +990,7 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment">// 加密字符串:  U2FsdGVkX18hMm9WWdoEQGPolnXzlg9ryArdGNwv</span>
 <span class="hljs-comment">// 解密字符串:  I love Python!</span></code></pre>
-<h3 id="Python-实现-t9">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> base64
 <span class="hljs-keyword">from</span> Cryptodome.Cipher <span class="hljs-keyword">import</span> ARC4
 
@@ -920,14 +1020,14 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment"># 加密字符串： b&#x27;8tNVu3/U/veJR2KgyBw=&#x27;</span>
 <span class="hljs-comment"># 解密字符串： b&#x27;I love Python!&#x27;</span></code></pre>
-<h2 id="Rabbit">Rabbit</h2>
+<h2><span id="rabbit">Rabbit</span></h2>
 <p>简介：Rabbit 加密算法是一个高性能的流密码加密方式，2003 年首次被提出，它从 128 位密钥和 64 位初始向量（iv）创建一个密钥流。</p>
 <p>参考资料：</p>
 <ul>
 <li>RFC 4503：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc4503/">https://datatracker.ietf.org/doc/rfc4503/</a></li>
 <li>Rabbit 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Rabbit_(cipher)">https://en.wikipedia.org/wiki/Rabbit_(cipher)</a></li>
 </ul>
-<h3 id="JavaScript-实现-t10">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 crypto-js 加密模块</span>
 <span class="hljs-keyword">var</span> CryptoJS = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;crypto-js&#x27;</span>)
 
@@ -950,15 +1050,15 @@ result = binascii.hexlify(result)
 
 <span class="hljs-comment">// 加密字符串:  U2FsdGVkX1+ZVCHRXlhmG5Xw87YPWMNIBlbukuh8</span>
 <span class="hljs-comment">// 解密字符串:  I love Python!</span></code></pre>
-<h3 id="Python-实现-t10">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <p>目前没有找到有第三方库可以直接实现 Rabbit 算法，在 Python 中实现可以参考：<a target="_blank" rel="noopener" href="https://asecuritysite.com/encryption/rabbit2">https://asecuritysite.com/encryption/rabbit2</a></p>
-<h2 id="RSA">RSA</h2>
+<h2><span id="rsa">RSA</span></h2>
 <p>简介：英文名称：Rivest-Shamir-Adleman，是 1977 年由罗纳德·李维斯特（Ron Rivest）、阿迪·萨莫尔（Adi Shamir）和伦纳德·阿德曼（Leonard Adleman）一起提出的，RSA 就是他们三人姓氏开头字母拼在一起组成的，RSA 加密算法是一种非对称加密算法。在公开密钥加密和电子商业中RSA被广泛使用。它被普遍认为是目前比较优秀的公钥方案之一。RSA是第一个能同时用于加密和数字签名的算法，它能够抵抗到目前为止已知的所有密码攻击。</p>
 <p>参考资料：</p>
 <ul>
 <li>RSA 维基百科：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">https://en.wikipedia.org/wiki/RSA_(cryptosystem)</a></li>
 </ul>
-<h3 id="JavaScript-实现-t11">JavaScript 实现</h3>
+<h3><span id="javascript-shi-xian">JavaScript 实现</span></h3>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 引用 node-rsa 加密模块</span>
 <span class="hljs-keyword">var</span> NodeRSA = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;node-rsa&#x27;</span>);
 
@@ -1007,7 +1107,7 @@ result = binascii.hexlify(result)
 <span class="hljs-comment">加密字符串:  hHXTF1K3w55Wd6OSjVYtqxceJ5VhlySNUahel9pwKD92Ef7wIT7DYPuJRKiqz5tuHtUqujbmbZBSL0qDE/EA+A==</span>
 <span class="hljs-comment">解密字符串:  I love Python!</span>
 <span class="hljs-comment">*/</span></code></pre>
-<h3 id="Python-实现-t11">Python 实现</h3>
+<h3><span id="python-shi-xian">Python 实现</span></h3>
 <p>模块：rsa：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> rsa
 
@@ -1116,23 +1216,33 @@ cipher_text = base64.b64encode(cipher.encrypt(data.encode(encoding=<span class="
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1195,16 +1305,16 @@ cipher_text = base64.b64encode(cipher.encrypt(data.encode(encoding=<span class="
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1213,7 +1323,7 @@ cipher_text = base64.b64encode(cipher.encrypt(data.encode(encoding=<span class="
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1231,7 +1341,10 @@ cipher_text = base64.b64encode(cipher.encrypt(data.encode(encoding=<span class="
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

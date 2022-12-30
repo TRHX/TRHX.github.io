@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,10 +248,10 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 6.2k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 6.3k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 31分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 32分丨
                     </span>
                 
                 
@@ -270,7 +270,28 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Pandas 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-01x00-concat-font"><font color="#FF0000">【01x00】concat</font></a></li>
+<li><a href="#font-color-ff0000-02x00-append-font"><font color="#FF0000">【02x00】append</font></a></li>
+<li><a href="#font-color-ff0000-03x00-merge-font"><font color="#FF0000">【03x00】merge</font></a>
+<ul>
+<li><a href="#font-color-4876ff-03x01-yi-dui-yi-lian-jie-font"><font color="#4876FF">【03x01】一对一连接</font></a></li>
+<li><a href="#font-color-4876ff-03x02-duo-dui-yi-lian-jie-font"><font color="#4876FF">【03x02】多对一连接</font></a></li>
+<li><a href="#font-color-4876ff-03x03-duo-dui-duo-lian-jie-font"><font color="#4876FF">【03x03】多对多连接</font></a></li>
+<li><a href="#font-color-4876ff-03x04-can-shu-on-left-on-right-on-font"><font color="#4876FF">【03x04】参数 on / left_on / right_on</font></a></li>
+<li><a href="#font-color-4876ff-03x05-can-shu-how-font"><font color="#4876FF">【03x05】参数 how</font></a></li>
+<li><a href="#font-color-4876ff-03x06-can-shu-suffixes-font"><font color="#4876FF">【03x06】参数 suffixes</font></a></li>
+<li><a href="#font-color-4876ff-03x07-can-shu-left-index-right-index-font"><font color="#4876FF">【03x07】参数 left_index / right_index</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-04x00-join-font"><font color="#FF0000">【04x00】join</font></a></li>
+<li><a href="#font-color-ff0000-05x00-si-chong-fang-fa-de-qu-bie-font"><font color="#FF0000">【05x00】四种方法的区别</font></a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -290,7 +311,9 @@
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,13 +321,13 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【01x00】concat-font"><font color=#FF0000>【01x00】concat</font></h2>
+<h2><span id="01x00-concat"><font color="#FF0000">【01x00】concat</font></span></h2>
 <p><code>pandas.concat</code> 可以沿着指定轴将多个对象堆叠到一起。</p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.concat.html">https://pandas.pydata.org/docs/reference/api/pandas.concat.html</a></p>
 <p>基本语法：</p>
@@ -529,7 +552,7 @@ ValueError: Indexes have overlapping values: [<span class="hljs-string">&#x27;a&
 <span class="hljs-number">1</span>    NaN      d       <span class="hljs-number">2</span>
 <span class="hljs-number">0</span>    cat      c       <span class="hljs-number">1</span>
 <span class="hljs-number">1</span>    dog      b       <span class="hljs-number">4</span></code></pre>
-<h2 id="font-color-FF0000-【02x00】append-font"><font color=#FF0000>【02x00】append</font></h2>
+<h2><span id="02x00-append"><font color="#FF0000">【02x00】append</font></span></h2>
 <p>Append 方法事实上是在一个 Series / DataFrame 对象后最追加另一个 Series / DataFrame 对象并返回一个新对象，不改变原对象的值。</p>
 <p>基本语法：</p>
 <ul>
@@ -680,10 +703,10 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">2</span>  <span class="hljs-number">2</span>
 <span class="hljs-number">3</span>  <span class="hljs-number">3</span>
 <span class="hljs-number">4</span>  <span class="hljs-number">4</span></code></pre>
-<h2 id="font-color-FF0000-【03x00】merge-font"><font color=#FF0000>【03x00】merge</font></h2>
+<h2><span id="03x00-merge"><font color="#FF0000">【03x00】merge</font></span></h2>
 <p>将不同的数据源进行合并是数据科学中常见的操作，这既包括将两个不同的数据集非常简单地拼接在一起，也包括用数据库那样的连接（join）与合并（merge）操作处理有重叠字段的数据集。Series 与DataFrame 都具备这类操作，Pandas 的函数与方法让数据合并变得快速简单。</p>
 <p>数据集的合并（merge）或连接（join）运算是通过一个或多个键将行连接起来的。这些运算是关系型数据库（基于SQL）的核心。Pandas 的 merge 函数是对数据应用这些算法的主要切入点。</p>
-<p><font color=#FF0000> <strong><code>pandas.merge</code> 可根据一个或多个连接键将不同 DataFrame 中的行连接起来。</strong></font></p>
+<p><font color="#FF0000"> <strong><code>pandas.merge</code> 可根据一个或多个连接键将不同 DataFrame 中的行连接起来。</strong></font></p>
 <p>基本语法：</p>
 <pre><code class="hljs python">pandas.merge(left,
              right,
@@ -718,7 +741,7 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 </tr>
 <tr>
 <td>how</td>
-<td>合并方式，默认 <code>'inner'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+<td>合并方式，默认 <code>'inner'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color="#FF0000"><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color="#FF0000"><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color="#FF0000"><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color="#FF0000"><strong>右</strong></font>对象中所有的键；</td>
 </tr>
 <tr>
 <td>on</td>
@@ -750,8 +773,8 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 </tr>
 </tbody>
 </table>
-<h3 id="font-color-4876FF-【03x01】一对一连接-font"><font color=#4876FF>【03x01】一对一连接</font></h3>
-<p><font color=#FF0000><strong>一对一连接是指两个 DataFrame 对象的列的值没有重复值。</strong></font></p>
+<h3><span id="03x01-yi-dui-yi-lian-jie"><font color="#4876FF">【03x01】一对一连接</font></span></h3>
+<p><font color="#FF0000"><strong>一对一连接是指两个 DataFrame 对象的列的值没有重复值。</strong></font></p>
 <p>如果不指定任何参数，调用 <code>merge</code> 方法，<code>merge</code> 就会将重叠的列的列名当做键来合并。</p>
 <p>在下面的示例中，两个 DataFrame 对象都有一个列名为 <code>key</code> 的列，未指定按照哪一列来合并，<code>merge</code> 就会默认按照 <code>key</code> 来合并：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -774,8 +797,8 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">0</span>   b      <span class="hljs-number">0</span>      <span class="hljs-number">2</span>
 <span class="hljs-number">1</span>   a      <span class="hljs-number">1</span>      <span class="hljs-number">0</span>
 <span class="hljs-number">2</span>   c      <span class="hljs-number">2</span>      <span class="hljs-number">1</span></code></pre>
-<h3 id="font-color-4876FF-【03x02】多对一连接-font"><font color=#4876FF>【03x02】多对一连接</font></h3>
-<p><font color=#FF0000><strong>多对一连接是指两个 DataFrame 对象中，有一个的列的值有重复值。</strong></font>通过多对一连接获得的结果，DataFrame  将会保留重复值。</p>
+<h3><span id="03x02-duo-dui-yi-lian-jie"><font color="#4876FF">【03x02】多对一连接</font></span></h3>
+<p><font color="#FF0000"><strong>多对一连接是指两个 DataFrame 对象中，有一个的列的值有重复值。</strong></font>通过多对一连接获得的结果，DataFrame  将会保留重复值。</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>)&#125;)
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
@@ -804,8 +827,8 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">3</span>   a      <span class="hljs-number">2</span>      <span class="hljs-number">0</span>
 <span class="hljs-number">4</span>   a      <span class="hljs-number">4</span>      <span class="hljs-number">0</span>
 <span class="hljs-number">5</span>   a      <span class="hljs-number">5</span>      <span class="hljs-number">0</span></code></pre>
-<h3 id="font-color-4876FF-【03x03】多对多连接-font"><font color=#4876FF>【03x03】多对多连接</font></h3>
-<p><font color=#FF0000><strong>多对多连接是指两个 DataFrame 对象中的列的值都有重复值。</strong></font></p>
+<h3><span id="03x03-duo-dui-duo-lian-jie"><font color="#4876FF">【03x03】多对多连接</font></span></h3>
+<p><font color="#FF0000"><strong>多对多连接是指两个 DataFrame 对象中的列的值都有重复值。</strong></font></p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>)&#125;)
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj2 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data2&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>)&#125;)
@@ -836,13 +859,13 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">6</span>   c      <span class="hljs-number">3</span>      <span class="hljs-number">4</span>
 <span class="hljs-number">7</span>   c      <span class="hljs-number">3</span>      <span class="hljs-number">5</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h3 id="font-color-4876FF-【03x04】参数-on-left-on-right-on-font"><font color=#4876FF>【03x04】参数 on / left_on / right_on</font></h3>
+<h3><span id="03x04-can-shu-on-left-on-right-on"><font color="#4876FF">【03x04】参数 on / left_on / right_on</font></span></h3>
 <p>参数 <code>on</code> 用于指定按照某一列来进行合并，若不指定该参数，则会默认按照重叠的列的列名当做键来合并：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>)&#125;)
@@ -918,13 +941,13 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">3</span>    a      <span class="hljs-number">2</span>    a      <span class="hljs-number">0</span>
 <span class="hljs-number">4</span>    a      <span class="hljs-number">4</span>    a      <span class="hljs-number">0</span>
 <span class="hljs-number">5</span>    a      <span class="hljs-number">5</span>    a      <span class="hljs-number">0</span></code></pre>
-<h3 id="font-color-4876FF-【03x05】参数-how-font"><font color=#4876FF>【03x05】参数 how</font></h3>
+<h3><span id="03x05-can-shu-how"><font color="#4876FF">【03x05】参数 how</font></span></h3>
 <p>在前面的示例中，结果里面 c 和 d 以及与之相关的数据消失了。默认情况下，<code>merge</code> 做的是内连接（<code>'inner'</code>），结果中的键是交集。其他方式还有：<code>'left'</code>、<code>'right'</code>、<code>'outer'</code>，含义如下：</p>
 <ul>
-<li><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；</li>
-<li><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；</li>
-<li><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；</li>
-<li><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</li>
+<li><code>'inner'</code>：内连接，即使用两个对象中<font color="#FF0000"><strong>都有</strong></font>的键（交集）；</li>
+<li><code>'outer'</code>：外连接，即使用两个对象中<font color="#FF0000"><strong>所有</strong></font>的键（并集）；</li>
+<li><code>'left'</code>：左连接，即使用<font color="#FF0000"><strong>左</strong></font>对象中所有的键；</li>
+<li><code>'right'</code>：右连接，即使用<font color="#FF0000"><strong>右</strong></font>对象中所有的键；</li>
 </ul>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.DataFrame(&#123;<span class="hljs-string">&#x27;key&#x27;</span>: [<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>], <span class="hljs-string">&#x27;data1&#x27;</span>: <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>)&#125;)
@@ -984,7 +1007,7 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">4</span>   a    <span class="hljs-number">4.0</span>      <span class="hljs-number">0</span>
 <span class="hljs-number">5</span>   a    <span class="hljs-number">5.0</span>      <span class="hljs-number">0</span>
 <span class="hljs-number">6</span>   d    NaN      <span class="hljs-number">2</span></code></pre>
-<h3 id="font-color-4876FF-【03x06】参数-suffixes-font"><font color=#4876FF>【03x06】参数 suffixes</font></h3>
+<h3><span id="03x06-can-shu-suffixes"><font color="#4876FF">【03x06】参数 suffixes</font></span></h3>
 <p><code>suffixes</code> 参数用于指定附加到左右两个 DataFrame 对象的重叠列名上的字符串：</p>
 <p>在以下示例中，选择按照 <code>key1</code> 进行合并，而两个 DataFrame 对象都包含 <code>key2</code> 列，如果未指定 <code>suffixes</code> 参数，则默认会为两个对象的 <code>key2</code> 加上 <code>_x</code> 和 <code>_y</code>，以便区分它们，如果指定了 <code>suffixes</code> 参数，就会按照添加指定的后缀：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -1024,7 +1047,7 @@ ValueError: Indexes have overlapping values: Int64Index([<span class="hljs-numbe
 <span class="hljs-number">3</span>  foo       two     <span class="hljs-number">2</span>        one     <span class="hljs-number">5</span>
 <span class="hljs-number">4</span>  bar       one     <span class="hljs-number">3</span>        one     <span class="hljs-number">6</span>
 <span class="hljs-number">5</span>  bar       one     <span class="hljs-number">3</span>        two     <span class="hljs-number">7</span></code></pre>
-<h3 id="font-color-4876FF-【03x07】参数-left-index-right-index-font"><font color=#4876FF>【03x07】参数 left_index / right_index</font></h3>
+<h3><span id="03x07-can-shu-left-index-right-index"><font color="#4876FF">【03x07】参数 left_index / right_index</font></span></h3>
 <p>有时候，DataFrame 中的连接键位于其索引中。在这种情况下，可以使用 <code>left_index=True</code> 或<code>right_index=True</code>（或两个都传）以说明索引应该被用作连接键。这种方法称为按索引连接，在 Pandas 中还有个 <code>join</code> 方法可以实现这个功能。</p>
 <p>在以下示例中，按照 left 的 key 列进行连接，而 right 对象的连接键位于其索引中，因此要指定 <code>right_index=True</code>：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -1051,7 +1074,7 @@ b        <span class="hljs-number">7.0</span>
 <span class="hljs-number">3</span>   a      <span class="hljs-number">3</span>        <span class="hljs-number">3.5</span>
 <span class="hljs-number">1</span>   b      <span class="hljs-number">1</span>        <span class="hljs-number">7.0</span>
 <span class="hljs-number">4</span>   b      <span class="hljs-number">4</span>        <span class="hljs-number">7.0</span></code></pre>
-<h2 id="font-color-FF0000-【04x00】join-font"><font color=#FF0000>【04x00】join</font></h2>
+<h2><span id="04x00-join"><font color="#FF0000">【04x00】join</font></span></h2>
 <p>join 方法只适用于 DataFrame 对象，Series 对象没有该方法，该方法用于连接另一个 DataFrame 对象的列（columns）。</p>
 <p>基本语法：<code>DataFrame.join(self, other, on=None, how='left', lsuffix='', rsuffix='', sort=False) → ’DataFrame’</code></p>
 <p>参数描述：</p>
@@ -1073,7 +1096,7 @@ b        <span class="hljs-number">7.0</span>
 </tr>
 <tr>
 <td>how</td>
-<td>合并方式，默认 <code>'left'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color=#FF0000><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color=#FF0000><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color=#FF0000><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color=#FF0000><strong>右</strong></font>对象中所有的键；</td>
+<td>合并方式，默认 <code>'left'</code><br><code>'inner'</code>：内连接，即使用两个对象中<font color="#FF0000"><strong>都有</strong></font>的键（交集）；<br><code>'outer'</code>：外连接，即使用两个对象中<font color="#FF0000"><strong>所有</strong></font>的键（并集）；<br><code>'left'</code>：左连接，即使用<font color="#FF0000"><strong>左</strong></font>对象中所有的键；<br><code>'right'</code>：右连接，即使用<font color="#FF0000"><strong>右</strong></font>对象中所有的键；</td>
 </tr>
 <tr>
 <td>lsuffix</td>
@@ -1140,7 +1163,7 @@ K1  C1  D1
 <span class="hljs-number">1</span>  A1  B1  K1  C1  D1
 <span class="hljs-number">2</span>  A2  B2  K0  C0  D0
 <span class="hljs-number">3</span>  A3  B3  K1  C1  D1</code></pre>
-<h2 id="font-color-FF0000-【05x00】四种方法的区别-font"><font color=#FF0000>【05x00】四种方法的区别</font></h2>
+<h2><span id="05x00-si-chong-fang-fa-de-qu-bie"><font color="#FF0000">【05x00】四种方法的区别</font></span></h2>
 <ul>
 <li>
 <p><code>concat</code>：可用于两个或多个 Series 或 DataFrame 对象间，通过 <code>axis</code> 参数指定按照行方向（增加行）或列方向（增加列）进合并操作，默认行合并（增加行），取并集；</p>
@@ -1156,8 +1179,8 @@ K1  C1  D1
 </li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106830112</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -1226,23 +1249,33 @@ K1  C1  D1
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1305,16 +1338,16 @@ K1  C1  D1
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1323,7 +1356,7 @@ K1  C1  D1
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1341,7 +1374,10 @@ K1  C1  D1
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

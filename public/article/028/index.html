@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -270,7 +270,29 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Pandas 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-01x00-han-shu-ying-yong-he-ying-she-font"><font color="#FF0000">【01x00】函数应用和映射</font></a></li>
+<li><a href="#font-color-ff0000-02x00-pai-xu-font"><font color="#FF0000">【02x00】排序</font></a>
+<ul>
+<li><a href="#font-color-4876ff-02x01-sort-index-suo-yin-pai-xu-font"><font color="#4876FF">【02x01】sort_index() 索引排序</font></a></li>
+<li><a href="#font-color-4876ff-02x02-sort-values-an-zhi-pai-xu-font"><font color="#4876FF">【02x02】sort_values() 按值排序</font></a></li>
+<li><a href="#font-color-4876ff-02x03-rank-fan-hui-pai-xu-hou-yuan-su-suo-yin-font"><font color="#4876FF">【02x03】rank() 返回排序后元素索引</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-03x00-ceng-ji-suo-yin-font"><font color="#FF0000">【03x00】层级索引</font></a>
+<ul>
+<li><a href="#font-color-4876ff-03x01-ren-shi-ceng-ji-suo-yin-font"><font color="#4876FF">【03x01】认识层级索引</font></a></li>
+<li><a href="#font-color-4876ff-03x02-multiindex-suo-yin-dui-xiang-font"><font color="#4876FF">【03x02】MultiIndex 索引对象</font></a></li>
+<li><a href="#font-color-4876ff-03x03-ti-qu-zhi-font"><font color="#4876FF">【03x03】提取值</font></a></li>
+<li><a href="#font-color-4876ff-03x04-jiao-huan-fen-ceng-yu-pai-xu-font"><font color="#4876FF">【03x04】交换分层与排序</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -290,7 +312,9 @@
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,13 +322,13 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【01x00】函数应用和映射-font"><font color=#FF0000>【01x00】函数应用和映射</font></h2>
+<h2><span id="01x00-han-shu-ying-yong-he-ying-she"><font color="#FF0000">【01x00】函数应用和映射</font></span></h2>
 <p>Pandas 可直接使用 NumPy 的 ufunc（元素级数组方法） 函数：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -369,8 +393,8 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>   <span class="hljs-number">0.28</span>  -<span class="hljs-number">3.12</span>  -<span class="hljs-number">1.43</span>  -<span class="hljs-number">1.08</span>
 <span class="hljs-number">3</span>  -<span class="hljs-number">0.25</span>  -<span class="hljs-number">0.45</span>  -<span class="hljs-number">3.08</span>  -<span class="hljs-number">0.29</span>
 <span class="hljs-number">4</span>  -<span class="hljs-number">1.50</span>  -<span class="hljs-number">1.69</span>  -<span class="hljs-number">0.56</span>  -<span class="hljs-number">1.81</span></code></pre>
-<h2 id="font-color-FF0000-【02x00】排序-font"><font color=#FF0000>【02x00】排序</font></h2>
-<h3 id="font-color-4876FF-【02x01】sort-index-索引排序-font"><font color=#4876FF>【02x01】sort_index() 索引排序</font></h3>
+<h2><span id="02x00-pai-xu"><font color="#FF0000">【02x00】排序</font></span></h2>
+<h3><span id="02x01-sort-index-suo-yin-pai-xu"><font color="#4876FF">【02x01】sort_index() 索引排序</font></span></h3>
 <p>根据条件对数据集排序（sorting）也是一种重要的内置运算。要对行或列索引进行排序（按字典顺序），可使用 <code>sort_index</code> 方法，它将返回一个已排序的新对象。</p>
 <p>在 Series 和 DataFrame 中的基本语法如下：</p>
 <pre><code class="hljs python">Series.sort_index(self,
@@ -457,7 +481,7 @@ one    <span class="hljs-number">5</span>  <span class="hljs-number">6</span>  <
        d  c  b  a
 three  <span class="hljs-number">0</span>  <span class="hljs-number">3</span>  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>
 one    <span class="hljs-number">4</span>  <span class="hljs-number">7</span>  <span class="hljs-number">6</span>  <span class="hljs-number">5</span></code></pre>
-<h3 id="font-color-4876FF-【02x02】sort-values-按值排序-font"><font color=#4876FF>【02x02】sort_values() 按值排序</font></h3>
+<h3><span id="02x02-sort-values-an-zhi-pai-xu"><font color="#4876FF">【02x02】sort_values() 按值排序</font></span></h3>
 <p>在 Series 和 DataFrame 中的基本语法如下：</p>
 <pre><code class="hljs python">Series.sort_values(self,
                    axis=<span class="hljs-number">0</span>,
@@ -590,7 +614,7 @@ A  <span class="hljs-number">0</span>  <span class="hljs-number">4</span>  <span
 B  <span class="hljs-number">1</span>  <span class="hljs-number">4</span>  <span class="hljs-number">4</span>
 C  <span class="hljs-number">0</span> -<span class="hljs-number">3</span>  <span class="hljs-number">1</span>
 D  <span class="hljs-number">1</span>  <span class="hljs-number">2</span>  <span class="hljs-number">3</span></code></pre>
-<h3 id="font-color-4876FF-【02x03】rank-返回排序后元素索引-font"><font color=#4876FF>【02x03】rank() 返回排序后元素索引</font></h3>
+<h3><span id="02x03-rank-fan-hui-pai-xu-hou-yuan-su-suo-yin"><font color="#4876FF">【02x03】rank() 返回排序后元素索引</font></span></h3>
 <p>rank() 函数会返回一个对象，对象的值是原对象经过排序后的索引值，即下标。</p>
 <p>在 Series 和 DataFrame 中的基本语法如下：</p>
 <pre><code class="hljs python">Series.rank(self: ~ FrameOrSeries,
@@ -715,14 +739,14 @@ dtype: float64</code></pre>
 <span class="hljs-number">2</span>  <span class="hljs-number">1.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>
 <span class="hljs-number">3</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">1.0</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【03x00】层级索引-font"><font color=#FF0000>【03x00】层级索引</font></h2>
-<h3 id="font-color-4876FF-【03x01】认识层级索引-font"><font color=#4876FF>【03x01】认识层级索引</font></h3>
+<h2><span id="03x00-ceng-ji-suo-yin"><font color="#FF0000">【03x00】层级索引</font></span></h2>
+<h3><span id="03x01-ren-shi-ceng-ji-suo-yin"><font color="#4876FF">【03x01】认识层级索引</font></span></h3>
 <p>以下示例将创建一个 Series 对象， 索引 Index 由两个子 list 组成，第一个子 list 是外层索引，第二个 list 是内层索引：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -741,9 +765,9 @@ d  <span class="hljs-number">0</span>    <span class="hljs-number">1.242363</spa
    <span class="hljs-number">1</span>   -<span class="hljs-number">0.822011</span>
    <span class="hljs-number">2</span>   -<span class="hljs-number">0.085682</span>
 dtype: float64</code></pre>
-<h3 id="font-color-4876FF-【03x02】MultiIndex-索引对象-font"><font color=#4876FF>【03x02】MultiIndex 索引对象</font></h3>
+<h3><span id="03x02-multiindex-suo-yin-dui-xiang"><font color="#4876FF">【03x02】MultiIndex 索引对象</font></span></h3>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html">https://pandas.pydata.org/docs/reference/api/pandas.MultiIndex.html</a></p>
-<p>尝试打印上面示例中 Series 的索引类型，会得到一个 MultiIndex 对象，MultiIndex 对象的 <font color=#FF0000>levels</font> 属性表示两个层级中分别有那些标签，<font color=#FF0000>codes</font> 属性表示每个位置分别是什么标签，如下所示：</p>
+<p>尝试打印上面示例中 Series 的索引类型，会得到一个 MultiIndex 对象，MultiIndex 对象的 <font color="#FF0000">levels</font> 属性表示两个层级中分别有那些标签，<font color="#FF0000">codes</font> 属性表示每个位置分别是什么标签，如下所示：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.Series(np.random.randn(<span class="hljs-number">12</span>),index=[[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]])
@@ -839,7 +863,7 @@ MultiIndex([(<span class="hljs-number">1</span>,  <span class="hljs-string">&#x2
 </tr>
 </tbody>
 </table>
-<h3 id="font-color-4876FF-【03x03】提取值-font"><font color=#4876FF>【03x03】提取值</font></h3>
+<h3><span id="03x03-ti-qu-zhi"><font color="#4876FF">【03x03】提取值</font></span></h3>
 <p>对于这种有多层索引的对象，如果只传入一个参数，则会对外层索引进行提取，其中包含对应所有的内层索引，如果传入两个参数，则第一个参数表示外层索引，第二个参数表示内层索引，示例如下：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -874,7 +898,7 @@ b   -<span class="hljs-number">0.326541</span>
 c    <span class="hljs-number">0.273106</span>
 d   -<span class="hljs-number">2.343777</span>
 dtype: float64</code></pre>
-<h3 id="font-color-4876FF-【03x04】交换分层与排序-font"><font color=#4876FF>【03x04】交换分层与排序</font></h3>
+<h3><span id="03x04-jiao-huan-fen-ceng-yu-pai-xu"><font color="#4876FF">【03x04】交换分层与排序</font></span></h3>
 <p>MultiIndex 对象的 <code>swaplevel()</code> 方法可以交换外层与内层索引，<code>sortlevel()</code> 方法会先对外层索引进行排序，再对内层索引进行排序，默认是升序，如果设置 <code>ascending</code> 参数为 False 则会降序排列，示例如下：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -924,8 +948,8 @@ dtype: float64
             (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;d&#x27;</span>)],
            ), array([ <span class="hljs-number">0</span>,  <span class="hljs-number">3</span>,  <span class="hljs-number">6</span>,  <span class="hljs-number">9</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">4</span>,  <span class="hljs-number">7</span>, <span class="hljs-number">10</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">5</span>,  <span class="hljs-number">8</span>, <span class="hljs-number">11</span>], dtype=int32))</code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106758103</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -994,23 +1018,33 @@ dtype: float64
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1073,16 +1107,16 @@ dtype: float64
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1091,7 +1125,7 @@ dtype: float64
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1109,7 +1143,10 @@ dtype: float64
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

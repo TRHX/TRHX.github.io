@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 5.6k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 5.7k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 30分丨
@@ -270,7 +270,38 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Pandas 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-01x00-groupby-ji-zhi-font"><font color="#FF0000">【01x00】GroupBy 机制</font></a></li>
+<li><a href="#font-color-ff0000-02x00-groupby-dui-xiang-font"><font color="#FF0000">【02x00】GroupBy 对象</font></a></li>
+<li><a href="#font-color-ff0000-03x00-groupby-split-shu-ju-fen-lie-font"><font color="#FF0000">【03x00】GroupBy Split 数据分裂</font></a>
+<ul>
+<li><a href="#font-color-4876ff-03x01-fen-zu-yun-suan-font"><font color="#4876FF">【03x01】分组运算</font></a></li>
+<li><a href="#font-color-4876ff-03x02-an-lei-xing-an-lie-fen-zu-font"><font color="#4876FF">【03x02】按类型按列分组</font></a></li>
+<li><a href="#font-color-4876ff-03x03-zi-ding-yi-fen-zu-font"><font color="#4876FF">【03x03】自定义分组</font></a>
+<ul>
+<li><a href="#font-color-ffa500-03x03x01-zi-dian-fen-zu-font"><font color="#FFA500">【03x03x01】字典分组</font></a></li>
+<li><a href="#font-color-ffa500-03x03x02-han-shu-fen-zu-font"><font color="#FFA500">【03x03x02】函数分组</font></a></li>
+<li><a href="#font-color-ffa500-03x03x03-suo-yin-ceng-ji-fen-zu-font"><font color="#FFA500">【03x03x03】索引层级分组</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-4876ff-03x04-fen-zu-die-dai-font"><font color="#4876FF">【03x04】分组迭代</font></a></li>
+<li><a href="#font-color-4876ff-03x05-dui-xiang-zhuan-huan-font"><font color="#4876FF">【03x05】对象转换</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-04x00-groupby-apply-shu-ju-ying-yong-font"><font color="#FF0000">【04x00】GroupBy Apply 数据应用</font></a>
+<ul>
+<li><a href="#font-color-4876ff-04x01-ju-he-han-shu-font"><font color="#4876FF">【04x01】聚合函数</font></a></li>
+<li><a href="#font-color-4876ff-04x02-zi-ding-yi-han-shu-font"><font color="#4876FF">【04x02】自定义函数</font></a></li>
+<li><a href="#font-color-4876ff-04x03-dui-bu-tong-lie-zuo-yong-bu-tong-han-shu-font"><font color="#4876FF">【04x03】对不同列作用不同函数</font></a></li>
+<li><a href="#font-color-4876ff-04x04-groupby-apply-font"><font color="#4876FF">【04x04】GroupBy.apply()</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -290,7 +321,9 @@
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,13 +331,13 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106804881</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【01x00】GroupBy-机制-font"><font color=#FF0000>【01x00】GroupBy 机制</font></h2>
+<h2><span id="01x00-groupby-ji-zhi"><font color="#FF0000">【01x00】GroupBy 机制</font></span></h2>
 <p>对数据集进行分组并对各组应用一个函数（无论是聚合还是转换），通常是数据分析工作中的重要环节。在将数据集加载、融合、准备好之后，通常就是计算分组统计或生成透视表。Pandas 提供了一个灵活高效的 GroupBy 功能，虽然“分组”（group by）这个名字是借用 SQL 数据库语言的命令，但其理念引用发明 R 语言 frame 的 Hadley Wickham 的观点可能更合适：分裂（Split）、应用（Apply）和组合（Combine）。</p>
 <p>分组运算过程：Split —&gt; Apply —&gt; Combine</p>
 <ul>
@@ -314,7 +347,7 @@
 </ul>
 <p>官方介绍：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/user_guide/groupby.html">https://pandas.pydata.org/docs/user_guide/groupby.html</a></p>
 <p><img src="https://cdn.itbob.cn/img/article/030/01.png" alt="01"></p>
-<h2 id="font-color-FF0000-【02x00】GroupBy-对象-font"><font color=#FF0000>【02x00】GroupBy 对象</font></h2>
+<h2><span id="02x00-groupby-dui-xiang"><font color="#FF0000">【02x00】GroupBy 对象</font></span></h2>
 <p>常见的 GroupBy 对象：Series.groupby、DataFrame.groupby，基本语法如下：</p>
 <pre><code class="hljs python">Series.groupby(self,
                by=<span class="hljs-literal">None</span>,
@@ -407,8 +440,8 @@
 <span class="hljs-meta">&gt;&gt;&gt; </span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj[<span class="hljs-string">&#x27;data1&#x27;</span>].groupby(obj[<span class="hljs-string">&#x27;key1&#x27;</span>])
 &lt;pandas.core.groupby.generic.SeriesGroupBy <span class="hljs-built_in">object</span> at <span class="hljs-number">0x03CDB748</span>&gt;</code></pre>
-<h2 id="font-color-FF0000-【03x00】GroupBy-Split-数据分裂-font"><font color=#FF0000>【03x00】GroupBy Split 数据分裂</font></h2>
-<h3 id="font-color-4876FF-【03x01】分组运算-font"><font color=#4876FF>【03x01】分组运算</font></h3>
+<h2><span id="03x00-groupby-split-shu-ju-fen-lie"><font color="#FF0000">【03x00】GroupBy Split 数据分裂</font></span></h2>
+<h3><span id="03x01-fen-zu-yun-suan"><font color="#4876FF">【03x01】分组运算</font></span></h3>
 <p>前面通过 <code>groupby()</code> 方法获得了一个 GroupBy 对象，它实际上还没有进行任何计算，只是含有一些有关分组键 <code>obj['key1']</code> 的中间数据而已。换句话说，该对象已经有了接下来对各分组执行运算所需的一切信息。例如，我们可以调用 GroupBy 的 <code>mean()</code> 方法来计算分组平均值，<code>size()</code> 方法返回每个分组的元素个数：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -455,7 +488,7 @@ key1
 a    <span class="hljs-number">5</span>
 b    <span class="hljs-number">3</span>
 Name: data1, dtype: int64</code></pre>
-<h3 id="font-color-4876FF-【03x02】按类型按列分组-font"><font color=#4876FF>【03x02】按类型按列分组</font></h3>
+<h3><span id="03x02-an-lei-xing-an-lie-fen-zu"><font color="#4876FF">【03x02】按类型按列分组</font></span></h3>
 <p><code>groupby()</code> 方法 <code>axis</code> 参数默认是 0，通过设置也可以在其他任何轴上进行分组，也支持按照类型（dtype）进行分组：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -497,7 +530,7 @@ dtype: int64
 <span class="hljs-number">5</span>  <span class="hljs-number">3.141203</span>    btwo
 <span class="hljs-number">6</span>  <span class="hljs-number">0.304819</span>    aone
 <span class="hljs-number">7</span>  <span class="hljs-number">0.117251</span>  athree</code></pre>
-<h3 id="font-color-4876FF-【03x03】自定义分组-font"><font color=#4876FF>【03x03】自定义分组</font></h3>
+<h3><span id="03x03-zi-ding-yi-fen-zu"><font color="#4876FF">【03x03】自定义分组</font></span></h3>
 <p><code>groupby()</code> 方法中可以一次传入多个数组的列表，也可以自定义一组分组键。也可以通过一个字典、一个函数，或者按照索引层级进行分组。</p>
 <p>传入多个数组的列表：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -558,7 +591,7 @@ Beijing  <span class="hljs-number">2005</span>   -<span class="hljs-number">0.76
 Wuhan    <span class="hljs-number">2005</span>   -<span class="hljs-number">0.199242</span>
          <span class="hljs-number">2006</span>    <span class="hljs-number">0.755452</span>
 Name: data1, dtype: float64</code></pre>
-<h4 id="font-color-FFA500-【03x03x01】字典分组-font"><font color=#FFA500>【03x03x01】字典分组</font></h4>
+<h4><span id="03x03x01-zi-dian-fen-zu"><font color="#FFA500">【03x03x01】字典分组</font></span></h4>
 <p>通过字典进行分组：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -595,7 +628,7 @@ B    <span class="hljs-number">7</span>    <span class="hljs-number">12</span>  
 C    <span class="hljs-number">5</span>     <span class="hljs-number">3</span>      <span class="hljs-number">17</span>
 D    <span class="hljs-number">8</span>     <span class="hljs-number">5</span>       <span class="hljs-number">6</span>
 E    <span class="hljs-number">2</span>    <span class="hljs-number">10</span>      <span class="hljs-number">12</span></code></pre>
-<h4 id="font-color-FFA500-【03x03x02】函数分组-font"><font color=#FFA500>【03x03x02】函数分组</font></h4>
+<h4><span id="03x03x02-han-shu-fen-zu"><font color="#FFA500">【03x03x02】函数分组</font></span></h4>
 <p>通过函数进行分组：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -621,7 +654,7 @@ EE   <span class="hljs-number">8</span>  <span class="hljs-number">8</span>  <sp
 <span class="hljs-number">2</span>    <span class="hljs-number">3</span>
 <span class="hljs-number">3</span>    <span class="hljs-number">1</span>
 dtype: int64</code></pre>
-<h4 id="font-color-FFA500-【03x03x03】索引层级分组-font"><font color=#FFA500>【03x03x03】索引层级分组</font></h4>
+<h4><span id="03x03x03-suo-yin-ceng-ji-fen-zu"><font color="#FFA500">【03x03x03】索引层级分组</font></span></h4>
 <p>通过不同索引层级进行分组：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -652,7 +685,7 @@ index   A   B  C
 <span class="hljs-number">2</span>       <span class="hljs-number">7</span>   <span class="hljs-number">6</span>  <span class="hljs-number">9</span>
 <span class="hljs-number">3</span>      <span class="hljs-number">12</span>   <span class="hljs-number">4</span>  <span class="hljs-number">8</span>
 <span class="hljs-number">4</span>      <span class="hljs-number">16</span>   <span class="hljs-number">4</span>  <span class="hljs-number">8</span></code></pre>
-<h3 id="font-color-4876FF-【03x04】分组迭代-font"><font color=#4876FF>【03x04】分组迭代</font></h3>
+<h3><span id="03x04-fen-zu-die-dai"><font color="#4876FF">【03x04】分组迭代</font></span></h3>
 <p>GroupBy 对象支持迭代，对于单层分组，可以产生一组二元元组，由分组名和数据块组成：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -733,7 +766,7 @@ b
 (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;two&#x27;</span>)
   key1 key2     data1     data2
 <span class="hljs-number">5</span>    b  two  <span class="hljs-number">1.982858</span>  <span class="hljs-number">1.501877</span></code></pre>
-<h3 id="font-color-4876FF-【03x05】对象转换-font"><font color=#4876FF>【03x05】对象转换</font></h3>
+<h3><span id="03x05-dui-xiang-zhuan-huan"><font color="#4876FF">【03x05】对象转换</font></span></h3>
 <p>GroupBy 对象支持转换成列表或字典：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -777,9 +810,9 @@ b
 <span class="hljs-number">1</span>    b    one  <span class="hljs-number">0.150818</span> -<span class="hljs-number">0.025095</span>
 <span class="hljs-number">3</span>    b  three  <span class="hljs-number">0.446061</span>  <span class="hljs-number">1.708797</span>
 <span class="hljs-number">5</span>    b    two  <span class="hljs-number">0.981877</span>  <span class="hljs-number">2.159327</span>&#125;</code></pre>
-<h2 id="font-color-FF0000-【04x00】GroupBy-Apply-数据应用-font"><font color=#FF0000>【04x00】GroupBy Apply 数据应用</font></h2>
+<h2><span id="04x00-groupby-apply-shu-ju-ying-yong"><font color="#FF0000">【04x00】GroupBy Apply 数据应用</font></span></h2>
 <p>聚合指的是任何能够从数组产生标量值的数据转换过程，常用于对分组后的数据进行计算</p>
-<h3 id="font-color-4876FF-【04x01】聚合函数-font"><font color=#4876FF>【04x01】聚合函数</font></h3>
+<h3><span id="04x01-ju-he-han-shu"><font color="#4876FF">【04x01】聚合函数</font></span></h3>
 <p>之前的例子已经用过一些内置的聚合函数，比如 mean、count、min 以及 sum 等。常见的聚合运算如下表所示：</p>
 <p>官方文档：<a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/reference/groupby.html">https://pandas.pydata.org/docs/reference/groupby.html</a></p>
 <table>
@@ -915,7 +948,7 @@ a      <span class="hljs-number">5.0</span>  <span class="hljs-number">3.800000<
 b      <span class="hljs-number">3.0</span>  <span class="hljs-number">4.333333</span>  <span class="hljs-number">1.154701</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">4.0</span>  ...   <span class="hljs-number">4.0</span>  <span class="hljs-number">6.5</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span>  <span class="hljs-number">9.0</span>
 
 [<span class="hljs-number">2</span> rows x <span class="hljs-number">16</span> columns]</code></pre>
-<h3 id="font-color-4876FF-【04x02】自定义函数-font"><font color=#4876FF>【04x02】自定义函数</font></h3>
+<h3><span id="04x02-zi-ding-yi-han-shu"><font color="#4876FF">【04x02】自定义函数</font></span></h3>
 <p>如果自带的内置函数满足不了我们的要求，则可以自定义一个聚合函数，然后传入 <code>GroupBy.agg(func)</code> 或 <code>GroupBy.aggregate(func) </code> 方法中即可。func 的参数为 groupby 索引对应的记录。</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -950,7 +983,7 @@ b         <span class="hljs-number">2</span>      <span class="hljs-number">5</s
 key1              
 a         <span class="hljs-number">8</span>      <span class="hljs-number">7</span>
 b         <span class="hljs-number">2</span>      <span class="hljs-number">5</span></code></pre>
-<h3 id="font-color-4876FF-【04x03】对不同列作用不同函数-font"><font color=#4876FF>【04x03】对不同列作用不同函数</font></h3>
+<h3><span id="04x03-dui-bu-tong-lie-zuo-yong-bu-tong-han-shu"><font color="#4876FF">【04x03】对不同列作用不同函数</font></span></h3>
 <p>使用字典可以对不同列作用不同的聚合函数：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -985,7 +1018,7 @@ b     <span class="hljs-number">4.333333</span>     <span class="hljs-number">22
 key1                    
 a     <span class="hljs-number">3.800000</span>   <span class="hljs-number">9</span>    <span class="hljs-number">24</span>
 b     <span class="hljs-number">4.333333</span>   <span class="hljs-number">5</span>    <span class="hljs-number">22</span></code></pre>
-<h3 id="font-color-4876FF-【04x04】GroupBy-apply-font"><font color=#4876FF>【04x04】GroupBy.apply()</font></h3>
+<h3><span id="04x04-groupby-apply"><font color="#4876FF">【04x04】GroupBy.apply()</font></span></h3>
 <p><code>apply()</code> 方法会将待处理的对象拆分成多个片段，然后对各片段调用传入的函数，最后尝试将各片段组合到一起。</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame(&#123;<span class="hljs-string">&#x27;A&#x27;</span>:[<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;sos&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>,<span class="hljs-string">&#x27;bob&#x27;</span>],
@@ -1048,8 +1081,8 @@ A
 bob  bob  one  <span class="hljs-number">2</span>  <span class="hljs-number">1</span>
 sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106804881</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -1118,23 +1151,33 @@ sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1197,16 +1240,16 @@ sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1215,7 +1258,7 @@ sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1233,7 +1276,10 @@ sos  sos  one  <span class="hljs-number">1</span>  <span class="hljs-number">2</
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

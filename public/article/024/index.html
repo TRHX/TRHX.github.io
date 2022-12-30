@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,10 +248,10 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 14.1k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 14.7k丨
                     </span>
                     <span class="post-count">
-                        <i class="fa fa-hourglass-half"></i> 阅读时长: 76分丨
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 78分丨
                     </span>
                 
                 
@@ -270,7 +270,93 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Matplotlib 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-1x00-jie-shao-introduction-font"><font color="#FF0000">【1x00】介绍（Introduction）</font></a></li>
+<li><a href="#font-color-ff0000-2x00-zhun-bei-gong-zuo-setup-font"><font color="#FF0000">【2x00】准备工作（Setup）</font></a></li>
+<li><a href="#font-color-ff0000-3x00-guan-lian-correlation-font"><font color="#FF0000">【3x00】关联（Correlation） </font></a>
+<ul>
+<li><a href="#font-color-4876ff-01-san-dian-tu-scatter-plot-font"><font color="##4876FF">【01】散点图（Scatter plot）</font></a></li>
+<li><a href="#font-color-4876ff-02-dai-bian-jie-de-qi-pao-tu-bubble-plot-with-encircling-font"><font color="##4876FF">【02】带边界的气泡图（Bubble plot with Encircling）</font></a></li>
+<li><a href="#font-color-4876ff-03-dai-xian-xing-hui-gui-zui-jia-ni-he-xian-de-san-dian-tu-scatter-plot-with-linear-regression-line-of-best-fit-font"><font color="##4876FF">【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</font></a></li>
+<li><a href="#font-color-4876ff-04-dou-dong-tu-jittering-with-stripplot-font"><font color="##4876FF">【04】抖动图（Jittering with stripplot）</font></a></li>
+<li><a href="#font-color-4876ff-05-ji-shu-tu-counts-plot-font"><font color="##4876FF">【05】计数图（Counts Plot）</font></a></li>
+<li><a href="#font-color-4876ff-06-bian-yuan-zhi-fang-tu-marginal-histogram-font"><font color="##4876FF">【06】边缘直方图（Marginal Histogram）</font></a></li>
+<li><a href="#font-color-4876ff-07-bian-yuan-xiang-xing-tu-marginal-boxplot-font"><font color="##4876FF">【07】边缘箱形图（Marginal Boxplot）</font></a></li>
+<li><a href="#font-color-4876ff-08-xiang-guan-tu-correllogram-font"><font color="##4876FF">【08】相关图（Correllogram）</font></a></li>
+<li><a href="#font-color-4876ff-09-cheng-dui-tu-pairwise-plot-font"><font color="##4876FF">【09】成对图（Pairwise Plot）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-4x00-pian-chai-deviation-font"><font color="#FF0000">【4x00】偏差（Deviation）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-10-fa-san-xing-tiao-xing-tu-diverging-bars-font"><font color="##4876FF">【10】发散型条形图（Diverging Bars）</font></a></li>
+<li><a href="#font-color-4876ff-11-fa-san-xing-wen-ben-tu-diverging-texts-font"><font color="##4876FF">【11】发散型文本图（Diverging Texts）</font></a></li>
+<li><a href="#font-color-4876ff-12-fa-san-xing-san-dian-tu-diverging-dot-plot-font"><font color="##4876FF">【12】发散型散点图（Diverging Dot Plot）</font></a></li>
+<li><a href="#font-color-4876ff-13-dai-biao-ji-de-fa-san-xing-bang-bang-tang-tu-diverging-lollipop-chart-with-markers-font"><font color="##4876FF">【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</font></a></li>
+<li><a href="#font-color-4876ff-14-mian-ji-tu-area-chart-font"><font color="##4876FF">【14】面积图（Area Chart）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-5x00-pai-xu-ranking-font"><font color="#FF0000">【5x00】排序（Ranking）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-15-you-xu-tiao-xing-tu-ordered-bar-chart-font"><font color="##4876FF">【15】有序条形图（Ordered Bar Chart）</font></a></li>
+<li><a href="#font-color-4876ff-16-bang-bang-tang-tu-lollipop-chart-font"><font color="##4876FF">【16】棒棒糖图（Lollipop Chart）</font></a></li>
+<li><a href="#font-color-4876ff-17-dian-tu-dot-plot-font"><font color="##4876FF">【17】点图（Dot Plot）</font></a></li>
+<li><a href="#font-color-4876ff-18-po-du-tu-slope-chart-font"><font color="##4876FF">【18】坡度图（Slope Chart）</font></a></li>
+<li><a href="#font-color-4876ff-19-ya-ling-tu-dumbbell-plot-font"><font color="##4876FF">【19】哑铃图（Dumbbell Plot）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-6x00-fen-bu-distribution-font"><font color="#FF0000">【6x00】分布（Distribution）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-20-lian-xu-bian-liang-de-zhi-fang-tu-histogram-for-continuous-variable-font"><font color="##4876FF">【20】连续变量的直方图（Histogram for Continuous Variable）</font></a></li>
+<li><a href="#font-color-4876ff-21-fen-lei-bian-liang-de-zhi-fang-tu-histogram-for-categorical-variable-font"><font color="##4876FF">【21】分类变量的直方图（Histogram for Categorical Variable）</font></a></li>
+<li><a href="#font-color-4876ff-22-mi-du-tu-density-plot-font"><font color="##4876FF">【22】密度图（Density Plot）</font></a></li>
+<li><a href="#font-color-4876ff-23-zhi-fang-tu-mi-du-qu-xian-density-curves-with-histogram-font"><font color="##4876FF">【23】直方图密度曲线（Density Curves with Histogram）</font></a></li>
+<li><a href="#font-color-4876ff-24-shan-feng-die-luan-tu-huan-le-tu-joy-plot-font"><font color="##4876FF">【24】山峰叠峦图 / 欢乐图（Joy Plot）</font></a></li>
+<li><a href="#font-color-4876ff-25-fen-bu-shi-dian-tu-distributed-dot-plot-font"><font color="##4876FF">【25】分布式点图（Distributed Dot Plot）</font></a></li>
+<li><a href="#font-color-4876ff-26-xiang-xing-tu-box-plot-font"><font color="##4876FF">【26】箱形图（Box Plot）</font></a></li>
+<li><a href="#font-color-4876ff-27-dian-xiang-xing-tu-dot-box-plot-font"><font color="##4876FF">【27】点 + 箱形图（Dot + Box Plot）</font></a></li>
+<li><a href="#font-color-4876ff-28-xiao-ti-qin-tu-violin-plot-font"><font color="##4876FF">【28】小提琴图（Violin Plot）</font></a></li>
+<li><a href="#font-color-4876ff-29-ren-kou-jin-zi-ta-tu-population-pyramid-font"><font color="##4876FF">【29】人口金字塔图（Population Pyramid）</font></a></li>
+<li><a href="#font-color-4876ff-30-fen-lei-tu-categorical-plots-font"><font color="##4876FF">【30】分类图（Categorical Plots）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-7x00-zu-cheng-composition-font"><font color="#FF0000">【7x00】组成（Composition）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-31-hua-fu-bing-tu-waffle-chart-font"><font color="##4876FF">【31】华夫饼图（Waffle Chart）</font></a></li>
+<li><a href="#font-color-4876ff-32-bing-tu-pie-chart-font"><font color="##4876FF">【32】饼图（Pie Chart）</font></a></li>
+<li><a href="#font-color-4876ff-33-ju-zhen-shu-xing-tu-treemap-font"><font color="##4876FF">【33】矩阵树形图（Treemap）</font></a></li>
+<li><a href="#font-color-4876ff-34-tiao-xing-tu-bar-chart-font"><font color="##4876FF">【34】条形图（Bar Chart）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-8x00-bian-hua-change-font"><font color="#FF0000">【8x00】变化（Change）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-35-shi-jian-xu-lie-tu-time-series-plot-font"><font color="##4876FF">【35】时间序列图（Time Series Plot）</font></a></li>
+<li><a href="#font-color-4876ff-36-dai-bo-feng-he-bo-gu-zhu-shi-de-shi-jian-xu-lie-tu-time-series-with-peaks-and-troughs-annotated-font"><font color="##4876FF">【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</font></a></li>
+<li><a href="#font-color-4876ff-37-zi-xiang-guan-acf-he-bu-fen-zi-xiang-guan-pacf-tu-autocorrelation-acf-and-partial-autocorrelation-pacf-plot-font"><font color="##4876FF">【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</font></a></li>
+<li><a href="#font-color-4876ff-38-jiao-cha-xiang-guan-tu-cross-correlation-plot-font"><font color="##4876FF">【38】交叉相关图（Cross Correlation plot）</font></a></li>
+<li><a href="#font-color-4876ff-39-shi-jian-xu-lie-fen-jie-tu-time-series-decomposition-plot-font"><font color="##4876FF">【39】时间序列分解图（Time Series Decomposition Plot）</font></a></li>
+<li><a href="#font-color-4876ff-40-duo-chong-shi-jian-xu-lie-multiple-time-series-font"><font color="##4876FF">【40】多重时间序列（Multiple Time Series）</font></a></li>
+<li><a href="#font-color-4876ff-41-shi-yong-ci-yao-de-y-zhou-lai-hui-zhi-bu-tong-fan-wei-de-tu-xing-plotting-with-different-scales-using-secondary-y-axis-font"><font color="##4876FF">【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</font></a></li>
+<li><a href="#font-color-4876ff-42-dai-wu-chai-dai-de-shi-jian-xu-lie-time-series-with-error-bands-font"><font color="##4876FF">【42】带误差带的时间序列（Time Series with Error Bands）</font></a></li>
+<li><a href="#font-color-4876ff-43-dui-ji-mian-ji-tu-stacked-area-chart-font"><font color="##4876FF">【43】堆积面积图（Stacked Area Chart）</font></a></li>
+<li><a href="#font-color-4876ff-44-wei-dui-ji-mian-ji-tu-area-chart-unstacked-font"><font color="##4876FF">【44】未堆积面积图（Area Chart UnStacked）</font></a></li>
+<li><a href="#font-color-4876ff-45-ri-li-re-li-tu-calendar-heat-map-font"><font color="##4876FF">【45】日历热力图（Calendar Heat Map）</font></a></li>
+<li><a href="#font-color-4876ff-46-ji-jie-tu-seasonal-plot-font"><font color="##4876FF">【46】季节图（Seasonal Plot）</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-9x00-fen-zu-groups-font"><font color="#FF0000">【9x00】分组（ Groups）</font></a>
+<ul>
+<li><a href="#font-color-4876ff-47-shu-zhuang-tu-dendrogram-font"><font color="##4876FF">【47】树状图（Dendrogram）</font></a></li>
+<li><a href="#font-color-4876ff-48-ju-lei-tu-cluster-plot-font"><font color="##4876FF">【48】聚类图（Cluster Plot）</font></a></li>
+<li><a href="#font-color-4876ff-49-an-de-lu-si-qu-xian-andrews-curve-font"><font color="##4876FF">【49】安德鲁斯曲线（Andrews Curve）</font></a></li>
+<li><a href="#font-color-4876ff-50-ping-xing-zuo-biao-tu-parallel-coordinates-font"><font color="##4876FF">【50】平行坐标图（Parallel Coordinates）</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Matplotlib 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/014/">Python 数据分析三剑客之 Matplotlib（一）：初识 Matplotlib 与其 matplotibrc 配置文件</a></li>
 <li><a href="https://www.itbob.cn/article/015/">Python 数据分析三剑客之 Matplotlib（二）：文本描述 / 中文支持 / 画布 / 网格等基本图像属性</a></li>
@@ -284,13 +370,16 @@
 <li><a href="https://www.itbob.cn/article/023/">Python 数据分析三剑客之 Matplotlib（十）：3D 图的绘制</a></li>
 <li><a href="https://www.itbob.cn/article/024/">Python 数据分析三剑客之 Matplotlib（十一）：最热门最常用的 50 个图表</a>【译文】</li>
 </ul>
+<hr>
 <p>专栏：</p>
 <ul>
 <li>NumPy 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780393.html">https://itrhx.blog.csdn.net/category_9780393.html</a></li>
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -313,12 +402,12 @@
 ★ 本文50个示例代码已打包为 .py 文件，可直接下载：<a target="_blank" rel="noopener" href="https://download.csdn.net/download/qq_36759224/12507219">https://download.csdn.net/download/qq_36759224/12507219</a></p>
 </blockquote>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本译文首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">Selva</span> <span class="hljs-string">Prabhakaran，译者</span> <span class="hljs-string">TRHX。</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106558131</span>
 <span class="hljs-string">原文链接：https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【1x00】介绍（Introduction）-font"><font color=#FF0000>【1x00】介绍（Introduction）</font></h2>
+<h2><span id="1x00-jie-shao-introduction"><font color="#FF0000">【1x00】介绍（Introduction）</font></span></h2>
 <p>在数据分析和可视化中最常用的、最有价值的前 50 个 Matplotlib 图表。这些图表会让你懂得在不同情况下合理使用 Python 的 Matplotlib 和 Seaborn 库来达到数据可视化效果。</p>
 <p>这些图表根据可视化目标的 7 个不同情景进行分组。 例如，如果要想象两个变量之间的关系，请查看“关联”部分下的图表。 或者，如果您想要显示值如何随时间变化，请查看“变化”部分，依此类推。</p>
 <p>有效图表的重要特征：</p>
@@ -328,7 +417,7 @@
 <li>从审美角度支持信息而不是掩盖信息；</li>
 <li>信息没有超负荷。</li>
 </ul>
-<h2 id="font-color-FF0000-【2x00】准备工作（Setup）-font"><font color=#FF0000>【2x00】准备工作（Setup）</font></h2>
+<h2><span id="2x00-zhun-bei-gong-zuo-setup"><font color="#FF0000">【2x00】准备工作（Setup）</font></span></h2>
 <p>在代码运行前先引入下面的基本设置，当然，个别图表可能会重新定义显示要素。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># !pip install brewer2mpl</span>
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -355,9 +444,9 @@ sns.set_style(<span class="hljs-string">&quot;white&quot;</span>)
 <span class="hljs-comment"># Version</span>
 <span class="hljs-built_in">print</span>(mpl.__version__)  <span class="hljs-comment">#&gt; 3.0.0</span>
 <span class="hljs-built_in">print</span>(sns.__version__)  <span class="hljs-comment">#&gt; 0.9.0</span></code></pre>
-<h2 id="font-color-FF0000-【3x00】关联（Correlation）-font"><font color=#FF0000>【3x00】关联（Correlation） </font></h2>
+<h2><span id="3x00-guan-lian-correlation"><font color="#FF0000">【3x00】关联（Correlation） </font></span></h2>
 <p>关联图用于可视化两个或多个变量之间的关系。也就是说，一个变量相对于另一个变量如何变化。</p>
-<h3 id="font-color-4876FF-【01】散点图（Scatter-plot）-font"><font color=##4876FF>【01】散点图（Scatter plot）</font></h3>
+<h3><span id="01-san-dian-tu-scatter-plot"><font color="##4876FF">【01】散点图（Scatter plot）</font></span></h3>
 <p>散点图是研究两个变量之间关系的经典和基本的绘图。如果数据中有多个组，则可能需要以不同的颜色显示每个组。在 Matplotlib 中，您可以使用 <code>plt.scatterplot()</code> 方便地执行此操作。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import dataset </span>
 midwest = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/midwest_filter.csv&quot;</span>)
@@ -385,7 +474,7 @@ plt.title(<span class="hljs-string">&quot;Scatterplot of Midwest Area vs Populat
 plt.legend(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/01.png" alt="01"></p>
-<h3 id="font-color-4876FF-【02】带边界的气泡图（Bubble-plot-with-Encircling）-font"><font color=##4876FF>【02】带边界的气泡图（Bubble plot with Encircling）</font></h3>
+<h3><span id="02-dai-bian-jie-de-qi-pao-tu-bubble-plot-with-encircling"><font color="##4876FF">【02】带边界的气泡图（Bubble plot with Encircling）</font></span></h3>
 <p>有时候您想在一个边界内显示一组点来强调它们的重要性。在本例中，您将从被包围的数据中获取记录，并将其传递给下面的代码中描述的 <code>encircle()</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> patches
 <span class="hljs-keyword">from</span> scipy.spatial <span class="hljs-keyword">import</span> ConvexHull
@@ -431,7 +520,7 @@ plt.title(<span class="hljs-string">&quot;Bubble Plot with Encircling&quot;</spa
 plt.legend(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/02.png" alt="02"></p>
-<h3 id="font-color-4876FF-【03】带线性回归最佳拟合线的散点图（Scatter-plot-with-linear-regression-line-of-best-fit）-font"><font color=##4876FF>【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</font></h3>
+<h3><span id="03-dai-xian-xing-hui-gui-zui-jia-ni-he-xian-de-san-dian-tu-scatter-plot-with-linear-regression-line-of-best-fit"><font color="##4876FF">【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</font></span></h3>
 <p>如果你想了解两个变量之间是如何变化的，那么最佳拟合线就是常用的方法。下图显示了数据中不同组之间的最佳拟合线的差异。若要禁用分组并只为整个数据集绘制一条最佳拟合线，请从 <code>sns.lmplot()</code> 方法中删除 <code>hue ='cyl'</code> 参数。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -467,7 +556,7 @@ gridobj = sns.lmplot(x=<span class="hljs-string">&quot;displ&quot;</span>, y=<sp
 gridobj.<span class="hljs-built_in">set</span>(xlim=(<span class="hljs-number">0.5</span>, <span class="hljs-number">7.5</span>), ylim=(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>))
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/04.png" alt="04"></p>
-<h3 id="font-color-4876FF-【04】抖动图（Jittering-with-stripplot）-font"><font color=##4876FF>【04】抖动图（Jittering with stripplot）</font></h3>
+<h3><span id="04-dou-dong-tu-jittering-with-stripplot"><font color="##4876FF">【04】抖动图（Jittering with stripplot）</font></span></h3>
 <p>通常，多个数据点具有完全相同的 X 和 Y 值。 此时多个点绘制会重叠并隐藏。为避免这种情况，可以将数据点稍微抖动，以便可以直观地看到它们。 使用 <code>seaborn</code> 库的 <code>stripplot()</code> 方法可以很方便的实现这个功能。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -480,7 +569,7 @@ sns.stripplot(df.cty, df.hwy, jitter=<span class="hljs-number">0.25</span>, size
 plt.title(<span class="hljs-string">&#x27;Use jittered plots to avoid overlapping of points&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/05.png" alt="05"></p>
-<h3 id="font-color-4876FF-【05】计数图（Counts-Plot）-font"><font color=##4876FF>【05】计数图（Counts Plot）</font></h3>
+<h3><span id="05-ji-shu-tu-counts-plot"><font color="##4876FF">【05】计数图（Counts Plot）</font></span></h3>
 <p>避免点重叠问题的另一个选择是根据点的位置增加点的大小。所以，点的大小越大，它周围的点就越集中。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -497,7 +586,7 @@ sns.stripplot(df_counts.cty, df_counts.hwy, sizes=df_counts.counts*<span class="
 plt.title(<span class="hljs-string">&#x27;Counts Plot - Size of circle is bigger as more points overlap&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/06.png" alt="06"></p>
-<h3 id="font-color-4876FF-【06】边缘直方图（Marginal-Histogram）-font"><font color=##4876FF>【06】边缘直方图（Marginal Histogram）</font></h3>
+<h3><span id="06-bian-yuan-zhi-fang-tu-marginal-histogram"><font color="##4876FF">【06】边缘直方图（Marginal Histogram）</font></span></h3>
 <p>边缘直方图是具有沿 X 和 Y 轴变量的直方图。 这用于可视化 X 和 Y 之间的关系以及单独的 X 和 Y 的单变量分布。 这种图经常用于探索性数据分析（EDA）。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -531,7 +620,7 @@ xlabels = ax_main.get_xticks().tolist()
 ax_main.set_xticklabels(xlabels)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/07.png" alt="07"></p>
-<h3 id="font-color-4876FF-【07】边缘箱形图（Marginal-Boxplot）-font"><font color=##4876FF>【07】边缘箱形图（Marginal Boxplot）</font></h3>
+<h3><span id="07-bian-yuan-xiang-xing-tu-marginal-boxplot"><font color="##4876FF">【07】边缘箱形图（Marginal Boxplot）</font></span></h3>
 <p>边缘箱形图与边缘直方图具有相似的用途。 然而，箱线图有助于精确定位 X 和 Y 的中位数、第25和第75百分位数。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -567,7 +656,7 @@ ax_main.title.set_fontsize(<span class="hljs-number">20</span>)
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/08.png" alt="08"></p>
-<h3 id="font-color-4876FF-【08】相关图（Correllogram）-font"><font color=##4876FF>【08】相关图（Correllogram）</font></h3>
+<h3><span id="08-xiang-guan-tu-correllogram"><font color="##4876FF">【08】相关图（Correllogram）</font></span></h3>
 <p>相关图用于直观地查看给定数据帧（或二维数组）中所有可能的数值变量对之间的相关性度量。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Dataset</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;</span>)
@@ -582,7 +671,7 @@ plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/09.png" alt="09"></p>
-<h3 id="font-color-4876FF-【09】成对图（Pairwise-Plot）-font"><font color=##4876FF>【09】成对图（Pairwise Plot）</font></h3>
+<h3><span id="09-cheng-dui-tu-pairwise-plot"><font color="##4876FF">【09】成对图（Pairwise Plot）</font></span></h3>
 <p>成对图是探索性分析中最受欢迎的一种方法，用来理解所有可能的数值变量对之间的关系。它是二元分析的必备工具。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
 df = sns.load_dataset(<span class="hljs-string">&#x27;iris&#x27;</span>)
@@ -600,8 +689,8 @@ plt.figure(figsize=(<span class="hljs-number">10</span>, <span class="hljs-numbe
 sns.pairplot(df, kind=<span class="hljs-string">&quot;reg&quot;</span>, hue=<span class="hljs-string">&quot;species&quot;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/11.png" alt="11"></p>
-<h2 id="font-color-FF0000-【4x00】偏差（Deviation）-font"><font color=#FF0000>【4x00】偏差（Deviation）</font></h2>
-<h3 id="font-color-4876FF-【10】发散型条形图（Diverging-Bars）-font"><font color=##4876FF>【10】发散型条形图（Diverging Bars）</font></h3>
+<h2><span id="4x00-pian-chai-deviation"><font color="#FF0000">【4x00】偏差（Deviation）</font></span></h2>
+<h3><span id="10-fa-san-xing-tiao-xing-tu-diverging-bars"><font color="##4876FF">【10】发散型条形图（Diverging Bars）</font></span></h3>
 <p>如果您想根据单个指标查看项目的变化情况，并可视化此差异的顺序和数量，那么散型条形图是一个很好的工具。 它有助于快速区分数据组的性能，并且非常直观，并且可以立即传达这一点。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;</span>)
@@ -622,7 +711,7 @@ plt.title(<span class="hljs-string">&#x27;Diverging Bars of Car Mileage&#x27;</s
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/12.png" alt="12"></p>
-<h3 id="font-color-4876FF-【11】发散型文本图（Diverging-Texts）-font"><font color=##4876FF>【11】发散型文本图（Diverging Texts）</font></h3>
+<h3><span id="11-fa-san-xing-wen-ben-tu-diverging-texts"><font color="##4876FF">【11】发散型文本图（Diverging Texts）</font></span></h3>
 <p>发散型文本图与发散型条形图相似，如果你希望以一种美观的方式显示图表中每个项目的值，就可以使用这种方法。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;</span>)
@@ -646,7 +735,7 @@ plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span 
 plt.xlim(-<span class="hljs-number">2.5</span>, <span class="hljs-number">2.5</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/13.png" alt="13"></p>
-<h3 id="font-color-4876FF-【12】发散型散点图（Diverging-Dot-Plot）-font"><font color=##4876FF>【12】发散型散点图（Diverging Dot Plot）</font></h3>
+<h3><span id="12-fa-san-xing-san-dian-tu-diverging-dot-plot"><font color="##4876FF">【12】发散型散点图（Diverging Dot Plot）</font></span></h3>
 <p>发散型散点图类似于发散型条形图。 但是，与发散型条形图相比，没有条形会减少组之间的对比度和差异。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;</span>)
@@ -677,7 +766,7 @@ plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span 
 plt.xlim(-<span class="hljs-number">2.5</span>, <span class="hljs-number">2.5</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/14.png" alt="14"></p>
-<h3 id="font-color-4876FF-【13】带标记的发散型棒棒糖图（Diverging-Lollipop-Chart-with-Markers）-font"><font color=##4876FF>【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</font></h3>
+<h3><span id="13-dai-biao-ji-de-fa-san-xing-bang-bang-tang-tu-diverging-lollipop-chart-with-markers"><font color="##4876FF">【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</font></span></h3>
 <p>带有标记的棒棒糖提供了一种灵活的方式，强调您想要引起注意的任何重要数据点并在图表中适当地给出推理。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mtcars.csv&quot;</span>)
@@ -717,7 +806,7 @@ plt.title(<span class="hljs-string">&#x27;Diverging Bars of Car Mileage&#x27;</s
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/15.png" alt="15"></p>
-<h3 id="font-color-4876FF-【14】面积图（Area-Chart）-font"><font color=##4876FF>【14】面积图（Area Chart）</font></h3>
+<h3><span id="14-mian-ji-tu-area-chart"><font color="##4876FF">【14】面积图（Area Chart）</font></span></h3>
 <p>通过对轴和线之间的区域进行着色，面积图不仅强调波峰和波谷，还强调波峰和波谷的持续时间。 高点持续时间越长，线下面积越大。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -749,8 +838,8 @@ plt.ylabel(<span class="hljs-string">&#x27;Monthly returns %&#x27;</span>)
 plt.grid(alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/16.png" alt="16"></p>
-<h2 id="font-color-FF0000-【5x00】排序（Ranking）-font"><font color=#FF0000>【5x00】排序（Ranking）</font></h2>
-<h3 id="font-color-4876FF-【15】有序条形图（Ordered-Bar-Chart）-font"><font color=##4876FF>【15】有序条形图（Ordered Bar Chart）</font></h3>
+<h2><span id="5x00-pai-xu-ranking"><font color="#FF0000">【5x00】排序（Ranking）</font></span></h2>
+<h3><span id="15-you-xu-tiao-xing-tu-ordered-bar-chart"><font color="##4876FF">【15】有序条形图（Ordered Bar Chart）</font></span></h3>
 <p>有序条形图有效地传达了项目的排序顺序。在图表上方添加度量标准的值，用户就可以从图表本身获得精确的信息。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df_raw = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -781,7 +870,7 @@ fig.add_artist(p1)
 fig.add_artist(p2)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/17.png" alt="17"></p>
-<h3 id="font-color-4876FF-【16】棒棒糖图（Lollipop-Chart）-font"><font color=##4876FF>【16】棒棒糖图（Lollipop Chart）</font></h3>
+<h3><span id="16-bang-bang-tang-tu-lollipop-chart"><font color="##4876FF">【16】棒棒糖图（Lollipop Chart）</font></span></h3>
 <p>棒棒糖图表以一种视觉上令人愉悦的方式提供与有序条形图类似的目的。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df_raw = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -807,7 +896,7 @@ ax.set_ylim(<span class="hljs-number">0</span>, <span class="hljs-number">30</sp
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/18.png" alt="18"></p>
-<h3 id="font-color-4876FF-【17】点图（Dot-Plot）-font"><font color=##4876FF>【17】点图（Dot Plot）</font></h3>
+<h3><span id="17-dian-tu-dot-plot"><font color="##4876FF">【17】点图（Dot Plot）</font></span></h3>
 <p>点图可以表示项目的排名顺序。由于它是沿水平轴对齐的，所以可以更容易地看到点之间的距离。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
 df_raw = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -828,7 +917,7 @@ ax.set_yticklabels(df.manufacturer.<span class="hljs-built_in">str</span>.title(
 ax.set_xlim(<span class="hljs-number">10</span>, <span class="hljs-number">27</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/19.png" alt="19"></p>
-<h3 id="font-color-4876FF-【18】坡度图（Slope-Chart）-font"><font color=##4876FF>【18】坡度图（Slope Chart）</font></h3>
+<h3><span id="18-po-du-tu-slope-chart"><font color="##4876FF">【18】坡度图（Slope Chart）</font></span></h3>
 <p>坡度图最适合比较给定人员/项目的“前”和“后”位置。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.lines <span class="hljs-keyword">as</span> mlines
 
@@ -888,7 +977,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">.0</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/20.png" alt="20"></p>
-<h3 id="font-color-4876FF-【19】哑铃图（Dumbbell-Plot）-font"><font color=##4876FF>【19】哑铃图（Dumbbell Plot）</font></h3>
+<h3><span id="19-ya-ling-tu-dumbbell-plot"><font color="##4876FF">【19】哑铃图（Dumbbell Plot）</font></span></h3>
 <p>哑铃图传达了各种项目的“前”和“后”位置以及项目的等级顺序。如果您希望可视化特定项目/计划对不同对象的影响，那么它非常有用。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.lines <span class="hljs-keyword">as</span> mlines
 
@@ -932,8 +1021,8 @@ ax.set_xticklabels([<span class="hljs-string">&#x27;5%&#x27;</span>, <span class
 ax.set_xticklabels([<span class="hljs-string">&#x27;5%&#x27;</span>, <span class="hljs-string">&#x27;15%&#x27;</span>, <span class="hljs-string">&#x27;20%&#x27;</span>, <span class="hljs-string">&#x27;25%&#x27;</span>])
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/21.png" alt="21"></p>
-<h2 id="font-color-FF0000-【6x00】分布（Distribution）-font"><font color=#FF0000>【6x00】分布（Distribution）</font></h2>
-<h3 id="font-color-4876FF-【20】连续变量的直方图（Histogram-for-Continuous-Variable）-font"><font color=##4876FF>【20】连续变量的直方图（Histogram for Continuous Variable）</font></h3>
+<h2><span id="6x00-fen-bu-distribution"><font color="#FF0000">【6x00】分布（Distribution）</font></span></h2>
+<h3><span id="20-lian-xu-bian-liang-de-zhi-fang-tu-histogram-for-continuous-variable"><font color="##4876FF">【20】连续变量的直方图（Histogram for Continuous Variable）</font></span></h3>
 <p>连续变量的直方图显示给定变量的频率分布。下面的图表基于分类变量对频率条进行分组，从而更深入地了解连续变量和分类变量。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -958,7 +1047,7 @@ plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">25</span>
 plt.xticks(ticks=bins[::<span class="hljs-number">3</span>], labels=[<span class="hljs-built_in">round</span>(b, <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> bins[::<span class="hljs-number">3</span>]])
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/22.png" alt="22"></p>
-<h3 id="font-color-4876FF-【21】分类变量的直方图（Histogram-for-Categorical-Variable）-font"><font color=##4876FF>【21】分类变量的直方图（Histogram for Categorical Variable）</font></h3>
+<h3><span id="21-fen-lei-bian-liang-de-zhi-fang-tu-histogram-for-categorical-variable"><font color="##4876FF">【21】分类变量的直方图（Histogram for Categorical Variable）</font></span></h3>
 <p>分类变量的直方图显示该变量的频率分布。通过给条形图上色，您可以将分布与表示颜色的另一个类型变量相关联。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -983,7 +1072,7 @@ plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">40</span>
 plt.xticks(ticks=bins, labels=np.unique(df[x_var]).tolist(), rotation=<span class="hljs-number">90</span>, horizontalalignment=<span class="hljs-string">&#x27;left&#x27;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/23.png" alt="23"></p>
-<h3 id="font-color-4876FF-【22】密度图（Density-Plot）-font"><font color=##4876FF>【22】密度图（Density Plot）</font></h3>
+<h3><span id="22-mi-du-tu-density-plot"><font color="##4876FF">【22】密度图（Density Plot）</font></span></h3>
 <p>密度图是连续变量分布可视化的常用工具。通过按“response”变量对它们进行分组，您可以检查 X 和 Y 之间的关系。如果出于代表性目的来描述城市里程分布如何随气缸数而变化，请参见下面的情况。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -1000,7 +1089,7 @@ plt.title(<span class="hljs-string">&#x27;Density Plot of City Mileage by n_Cyli
 plt.legend()
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/24.png" alt="24"></p>
-<h3 id="font-color-4876FF-【23】直方图密度曲线（Density-Curves-with-Histogram）-font"><font color=##4876FF>【23】直方图密度曲线（Density Curves with Histogram）</font></h3>
+<h3><span id="23-zhi-fang-tu-mi-du-qu-xian-density-curves-with-histogram"><font color="##4876FF">【23】直方图密度曲线（Density Curves with Histogram）</font></span></h3>
 <p>具有直方图的密度曲线将两个图所传达的信息集合在一起，因此您可以将它们都放在一个图形中，而不是放在两个图形中。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -1020,7 +1109,7 @@ plt.title(<span class="hljs-string">&#x27;Density Plot of City Mileage by Vehicl
 plt.legend()
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/25.png" alt="25"></p>
-<h3 id="font-color-4876FF-【24】山峰叠峦图-欢乐图（Joy-Plot）-font"><font color=##4876FF>【24】山峰叠峦图 / 欢乐图（Joy Plot）</font></h3>
+<h3><span id="24-shan-feng-die-luan-tu-huan-le-tu-joy-plot"><font color="##4876FF">【24】山峰叠峦图 / 欢乐图（Joy Plot）</font></span></h3>
 <p>Joy Plot 允许不同组的密度曲线重叠，这是一种很好的可视化方法，可以直观地显示大量分组之间的关系。它看起来赏心悦目，清楚地传达了正确的信息。它可以使用基于 <code>matplotlib</code> 的 <code>joypy</code> 包轻松构建。</p>
 <p>【译者 TRHX 注：Joy Plot 看起来就像是山峰叠峦，山峦起伏，层次分明，但取名为 Joy，欢乐的意思，所以不太好翻译，在使用该方法时要先安装 joypy 库】</p>
 <pre><code class="hljs python"><span class="hljs-comment"># !pip install joypy</span>
@@ -1038,7 +1127,7 @@ fig, axes = joypy.joyplot(mpg, column=[<span class="hljs-string">&#x27;hwy&#x27;
 plt.title(<span class="hljs-string">&#x27;Joy Plot of City and Highway Mileage by Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/26.png" alt="26"></p>
-<h3 id="font-color-4876FF-【25】分布式点图（Distributed-Dot-Plot）-font"><font color=##4876FF>【25】分布式点图（Distributed Dot Plot）</font></h3>
+<h3><span id="25-fen-bu-shi-dian-tu-distributed-dot-plot"><font color="##4876FF">【25】分布式点图（Distributed Dot Plot）</font></span></h3>
 <p>分布点图显示按组分割的点的单变量分布。点越暗，数据点在该区域的集中程度就越高。通过对中值进行不同的着色，这些组的真实位置立即变得明显。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.patches <span class="hljs-keyword">as</span> mpatches
 
@@ -1085,7 +1174,7 @@ plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_visible(
 plt.grid(axis=<span class="hljs-string">&#x27;both&#x27;</span>, alpha=<span class="hljs-number">.4</span>, linewidth=<span class="hljs-number">.1</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/27.png" alt="27"></p>
-<h3 id="font-color-4876FF-【26】箱形图（Box-Plot）-font"><font color=##4876FF>【26】箱形图（Box Plot）</font></h3>
+<h3><span id="26-xiang-xing-tu-box-plot"><font color="##4876FF">【26】箱形图（Box Plot）</font></span></h3>
 <p>箱形图是可视化分布的一种好方法，同时牢记中位数，第 25 个第 75 个四分位数和离群值。 但是，在解释方框的大小时需要小心，这可能会扭曲该组中包含的点数。 因此，手动提供每个框中的观察次数可以帮助克服此缺点。</p>
 <p>例如，左侧的前两个框，尽管它们分别具有 5 和 47 个 obs，但是却具有相同大小， 因此，有必要写下该组中的观察数。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1113,7 +1202,7 @@ plt.title(<span class="hljs-string">&#x27;Box Plot of Highway Mileage by Vehicle
 plt.ylim(<span class="hljs-number">10</span>, <span class="hljs-number">40</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/28.png" alt="28"></p>
-<h3 id="font-color-4876FF-【27】点-箱形图（Dot-Box-Plot）-font"><font color=##4876FF>【27】点 + 箱形图（Dot + Box Plot）</font></h3>
+<h3><span id="27-dian-xiang-xing-tu-dot-box-plot"><font color="##4876FF">【27】点 + 箱形图（Dot + Box Plot）</font></span></h3>
 <p>点 + 箱形图传达类似于分组的箱形图信息。此外，这些点还提供了每组中有多少数据点的含义。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -1131,7 +1220,7 @@ plt.title(<span class="hljs-string">&#x27;Box Plot of Highway Mileage by Vehicle
 plt.legend(title=<span class="hljs-string">&#x27;Cylinders&#x27;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/29.png" alt="29"></p>
-<h3 id="font-color-4876FF-【28】小提琴图（Violin-Plot）-font"><font color=##4876FF>【28】小提琴图（Violin Plot）</font></h3>
+<h3><span id="28-xiao-ti-qin-tu-violin-plot"><font color="##4876FF">【28】小提琴图（Violin Plot）</font></span></h3>
 <p>小提琴图是箱形图在视觉上令人愉悦的替代品。 小提琴的形状或面积取决于它所持有的观察次数。 但是，小提琴图可能更难以阅读，并且在专业设置中不常用。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -1144,7 +1233,7 @@ sns.violinplot(x=<span class="hljs-string">&#x27;class&#x27;</span>, y=<span cla
 plt.title(<span class="hljs-string">&#x27;Violin Plot of Highway Mileage by Vehicle Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/30.png" alt="30"></p>
-<h3 id="font-color-4876FF-【29】人口金字塔图（Population-Pyramid）-font"><font color=##4876FF>【29】人口金字塔图（Population Pyramid）</font></h3>
+<h3><span id="29-ren-kou-jin-zi-ta-tu-population-pyramid"><font color="##4876FF">【29】人口金字塔图（Population Pyramid）</font></span></h3>
 <p>人口金字塔可用于显示按体积排序的组的分布。或者它也可以用于显示人口的逐级过滤，因为它是用来显示有多少人通过一个营销漏斗（Marketing Funnel）的每个阶段。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Read data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/email_campaign_funnel.csv&quot;</span>)
@@ -1166,7 +1255,7 @@ plt.title(<span class="hljs-string">&quot;Population Pyramid of the Marketing Fu
 plt.legend()
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/31.png" alt="31"></p>
-<h3 id="font-color-4876FF-【30】分类图（Categorical-Plots）-font"><font color=##4876FF>【30】分类图（Categorical Plots）</font></h3>
+<h3><span id="30-fen-lei-tu-categorical-plots"><font color="##4876FF">【30】分类图（Categorical Plots）</font></span></h3>
 <p>由 <code>seaborn</code> 库提供的分类图可用于可视化彼此相关的两个或更多分类变量的计数分布。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
 titanic = sns.load_dataset(<span class="hljs-string">&quot;titanic&quot;</span>)
@@ -1194,8 +1283,8 @@ sns.catplot(x=<span class="hljs-string">&quot;age&quot;</span>, y=<span class="h
 <span class="hljs-comment"># 译者 TRHX 添加了这行代码</span>
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/33.png" alt="33"></p>
-<h2 id="font-color-FF0000-【7x00】组成（Composition）-font"><font color=#FF0000>【7x00】组成（Composition）</font></h2>
-<h3 id="font-color-4876FF-【31】华夫饼图（Waffle-Chart）-font"><font color=##4876FF>【31】华夫饼图（Waffle Chart）</font></h3>
+<h2><span id="7x00-zu-cheng-composition"><font color="#FF0000">【7x00】组成（Composition）</font></span></h2>
+<h3><span id="31-hua-fu-bing-tu-waffle-chart"><font color="##4876FF">【31】华夫饼图（Waffle Chart）</font></span></h3>
 <p>华夫饼图可以使用 <code>pywaffle</code> 包创建，用于显示较大群体中的组的组成。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 pywaffle 库】</p>
 <pre><code class="hljs python"><span class="hljs-comment"># ! pip install pywaffle</span>
@@ -1285,7 +1374,7 @@ fig = plt.figure(
 <span class="hljs-comment"># 译者 TRHX 添加了这行代码</span>
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/35.png" alt="35"></p>
-<h3 id="font-color-4876FF-【32】饼图（Pie-Chart）-font"><font color=##4876FF>【32】饼图（Pie Chart）</font></h3>
+<h3><span id="32-bing-tu-pie-chart"><font color="##4876FF">【32】饼图（Pie Chart）</font></span></h3>
 <p>饼图是显示组成的经典方法。然而，现在一般不宜使用，因为馅饼部分的面积有时会产生误导。因此，如果要使用饼图，强烈建议您显式地记下饼图每个部分的百分比或数字。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import</span>
 df_raw = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
@@ -1335,7 +1424,7 @@ plt.setp(autotexts, size=<span class="hljs-number">10</span>, weight=<span class
 ax.set_title(<span class="hljs-string">&quot;Class of Vehicles: Pie Chart&quot;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/37.png" alt="37"></p>
-<h3 id="font-color-4876FF-【33】矩阵树形图（Treemap）-font"><font color=##4876FF>【33】矩阵树形图（Treemap）</font></h3>
+<h3><span id="33-ju-zhen-shu-xing-tu-treemap"><font color="##4876FF">【33】矩阵树形图（Treemap）</font></span></h3>
 <p>矩阵树形图类似于饼图，它可以更好地完成工作而不会误导每个组的贡献。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 squarify 库】</p>
 <pre><code class="hljs python"><span class="hljs-comment"># pip install squarify</span>
@@ -1359,7 +1448,7 @@ plt.title(<span class="hljs-string">&#x27;Treemap of Vechile Class&#x27;</span>)
 plt.axis(<span class="hljs-string">&#x27;off&#x27;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/38.png" alt="38"></p>
-<h3 id="font-color-4876FF-【34】条形图（Bar-Chart）-font"><font color=##4876FF>【34】条形图（Bar Chart）</font></h3>
+<h3><span id="34-tiao-xing-tu-bar-chart"><font color="##4876FF">【34】条形图（Bar Chart）</font></span></h3>
 <p>条形图是一种基于计数或任何给定度量的可视化项的经典方法。在下面的图表中，我为每个项目使用了不同的颜色，但您通常可能希望为所有项目选择一种颜色，除非您按组对它们进行着色。颜色名称存储在下面代码中的 <code>all_colors</code> 中。您可以通过在 <code>plt.plot()</code> 中设置 <code>color</code> 参数来更改条形的颜色。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> random
 
@@ -1386,8 +1475,8 @@ plt.ylabel(<span class="hljs-string">&#x27;# Vehicles&#x27;</span>)
 plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">45</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/39.png" alt="39"></p>
-<h2 id="font-color-FF0000-【8x00】变化（Change）-font"><font color=#FF0000>【8x00】变化（Change）</font></h2>
-<h3 id="font-color-4876FF-【35】时间序列图（Time-Series-Plot）-font"><font color=##4876FF>【35】时间序列图（Time Series Plot）</font></h3>
+<h2><span id="8x00-bian-hua-change"><font color="#FF0000">【8x00】变化（Change）</font></span></h2>
+<h3><span id="35-shi-jian-xu-lie-tu-time-series-plot"><font color="##4876FF">【35】时间序列图（Time Series Plot）</font></span></h3>
 <p>时间序列图用于可视化给定指标随时间的变化。在这里你可以看到 1949 年到 1969 年间的航空客运量是如何变化的。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&#x27;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#x27;</span>)
@@ -1412,7 +1501,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">0.3</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/40.png" alt="40"></p>
-<h3 id="font-color-4876FF-【36】带波峰和波谷注释的时间序列图（Time-Series-with-Peaks-and-Troughs-Annotated）-font"><font color=##4876FF>【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</font></h3>
+<h3><span id="36-dai-bo-feng-he-bo-gu-zhu-shi-de-shi-jian-xu-lie-tu-time-series-with-peaks-and-troughs-annotated"><font color="##4876FF">【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</font></span></h3>
 <p>下面的时间序列绘制了所有的波峰和波谷，并注释了所选特殊事件的发生。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&#x27;https://github.com/selva86/datasets/raw/master/AirPassengers.csv&#x27;</span>)
@@ -1456,7 +1545,7 @@ plt.legend(loc=<span class="hljs-string">&#x27;upper left&#x27;</span>)
 plt.grid(axis=<span class="hljs-string">&#x27;y&#x27;</span>, alpha=<span class="hljs-number">.3</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/41.png" alt="41"></p>
-<h3 id="font-color-4876FF-【37】自相关-ACF-和部分自相关-PACF-图（Autocorrelation-ACF-and-Partial-Autocorrelation-PACF-Plot）-font"><font color=##4876FF>【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</font></h3>
+<h3><span id="37-zi-xiang-guan-acf-he-bu-fen-zi-xiang-guan-pacf-tu-autocorrelation-acf-and-partial-autocorrelation-pacf-plot"><font color="##4876FF">【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</font></span></h3>
 <p>自相关图（ACF图）显示了时间序列与其自身滞后的相关性。 每条垂直线（在自相关图上）表示系列与滞后 0 之间的滞后的相关性。图中的蓝色阴影区域是显著性级别。 那些位于蓝线之上的滞后是显著的滞后。</p>
 <p>那么如何解释呢？</p>
 <p>对于航空乘客来说，我们看到超过 14 个滞后已经越过蓝线，因此意义重大。这意味着，14 年前的航空客运量对今天的交通量产生了影响。</p>
@@ -1483,7 +1572,7 @@ ax1.tick_params(axis=<span class="hljs-string">&#x27;both&#x27;</span>, labelsiz
 ax2.tick_params(axis=<span class="hljs-string">&#x27;both&#x27;</span>, labelsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/42.png" alt="42"></p>
-<h3 id="font-color-4876FF-【38】交叉相关图（Cross-Correlation-plot）-font"><font color=##4876FF>【38】交叉相关图（Cross Correlation plot）</font></h3>
+<h3><span id="38-jiao-cha-xiang-guan-tu-cross-correlation-plot"><font color="##4876FF">【38】交叉相关图（Cross Correlation plot）</font></span></h3>
 <p>交叉相关图显示了两个时间序列相互之间的滞后。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> statsmodels.tsa.stattools <span class="hljs-keyword">as</span> stattools
 
@@ -1514,7 +1603,7 @@ plt.title(<span class="hljs-string">&#x27;$Cross\; Correlation\; Plot:\; mdeaths
 plt.xlim(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(ccs))
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/43.png" alt="43"></p>
-<h3 id="font-color-4876FF-【39】时间序列分解图（Time-Series-Decomposition-Plot）-font"><font color=##4876FF>【39】时间序列分解图（Time Series Decomposition Plot）</font></h3>
+<h3><span id="39-shi-jian-xu-lie-fen-jie-tu-time-series-decomposition-plot"><font color="##4876FF">【39】时间序列分解图（Time Series Decomposition Plot）</font></span></h3>
 <p>时间序列分解图将时间序列分解为趋势、季节和残差分量。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> statsmodels.tsa.seasonal <span class="hljs-keyword">import</span> seasonal_decompose
 <span class="hljs-keyword">from</span> dateutil.parser <span class="hljs-keyword">import</span> parse
@@ -1532,7 +1621,7 @@ plt.rcParams.update(&#123;<span class="hljs-string">&#x27;figure.figsize&#x27;</
 result.plot().suptitle(<span class="hljs-string">&#x27;Time Series Decomposition of Air Passengers&#x27;</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/44.png" alt="44"></p>
-<h3 id="font-color-4876FF-【40】多重时间序列（Multiple-Time-Series）-font"><font color=##4876FF>【40】多重时间序列（Multiple Time Series）</font></h3>
+<h3><span id="40-duo-chong-shi-jian-xu-lie-multiple-time-series"><font color="##4876FF">【40】多重时间序列（Multiple Time Series）</font></span></h3>
 <p>您可以在同一图表上绘制多个测量相同值的时间序列，如下所示。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&#x27;https://github.com/selva86/datasets/raw/master/mortality.csv&#x27;</span>)
@@ -1572,7 +1661,7 @@ plt.ylim(y_LL, y_UL)
 plt.xlim(-<span class="hljs-number">2</span>, <span class="hljs-number">80</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/45.png" alt="45"></p>
-<h3 id="font-color-4876FF-【41】使用次要的-Y-轴来绘制不同范围的图形（Plotting-with-different-scales-using-secondary-Y-axis）-font"><font color=##4876FF>【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</font></h3>
+<h3><span id="41-shi-yong-ci-yao-de-y-zhou-lai-hui-zhi-bu-tong-fan-wei-de-tu-xing-plotting-with-different-scales-using-secondary-y-axis"><font color="##4876FF">【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</font></span></h3>
 <p>如果要显示在同一时间点测量两个不同数量的两个时间序列，则可以在右侧的次要 Y 轴上再绘制第二个系列。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/economics.csv&quot;</span>)
@@ -1606,7 +1695,7 @@ ax2.set_title(<span class="hljs-string">&quot;Personal Savings Rate vs Unemploye
 fig.tight_layout()
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/46.png" alt="46"></p>
-<h3 id="font-color-4876FF-【42】带误差带的时间序列（Time-Series-with-Error-Bands）-font"><font color=##4876FF>【42】带误差带的时间序列（Time Series with Error Bands）</font></h3>
+<h3><span id="42-dai-wu-chai-dai-de-shi-jian-xu-lie-time-series-with-error-bands"><font color="##4876FF">【42】带误差带的时间序列（Time Series with Error Bands）</font></span></h3>
 <p>如果您有一个时间序列数据集，其中每个时间点（日期/时间戳）有多个观测值，则可以构造具有误差带的时间序列。下面您可以看到一些基于一天中不同时间的订单的示例。还有一个关于45天内到达的订单数量的例子。</p>
 <p>在这种方法中，订单数量的平均值用白线表示。并计算95%的置信区间，并围绕平均值绘制。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> scipy.stats <span class="hljs-keyword">import</span> sem
@@ -1681,7 +1770,7 @@ plt.ylim(<span class="hljs-number">4</span>, <span class="hljs-number">10</span>
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/48.png" alt="48"></p>
-<h3 id="font-color-4876FF-【43】堆积面积图（Stacked-Area-Chart）-font"><font color=##4876FF>【43】堆积面积图（Stacked Area Chart）</font></h3>
+<h3><span id="43-dui-ji-mian-ji-tu-stacked-area-chart"><font color="##4876FF">【43】堆积面积图（Stacked Area Chart）</font></span></h3>
 <p>堆积面积图提供了多个时间序列的贡献程度的可视化表示，以便相互比较。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&#x27;https://raw.githubusercontent.com/selva86/datasets/master/nightvisitors.csv&#x27;</span>)
@@ -1727,7 +1816,7 @@ plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<s
 
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/49.png" alt="49"></p>
-<h3 id="font-color-4876FF-【44】未堆积面积图（Area-Chart-UnStacked）-font"><font color=##4876FF>【44】未堆积面积图（Area Chart UnStacked）</font></h3>
+<h3><span id="44-wei-dui-ji-mian-ji-tu-area-chart-unstacked"><font color="##4876FF">【44】未堆积面积图（Area Chart UnStacked）</font></span></h3>
 <p>未堆积的面积图用于可视化两个或多个序列彼此之间的进度（起伏）。在下面的图表中，你可以清楚地看到，随着失业持续时间的中位数增加，个人储蓄率是如何下降的。未堆积面积图很好地展示了这一现象。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/economics.csv&quot;</span>)
@@ -1763,7 +1852,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">.3</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/50.png" alt="50"></p>
-<h3 id="font-color-4876FF-【45】日历热力图（Calendar-Heat-Map）-font"><font color=##4876FF>【45】日历热力图（Calendar Heat Map）</font></h3>
+<h3><span id="45-ri-li-re-li-tu-calendar-heat-map"><font color="##4876FF">【45】日历热力图（Calendar Heat Map）</font></span></h3>
 <p>与时间序列相比，日历地图是另一种基于时间的数据可视化的不太受欢迎的方法。虽然在视觉上很吸引人，但数值并不十分明显。然而，它能很好地描绘极端值和假日效果。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 calmap 库】</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib <span class="hljs-keyword">as</span> mpl
@@ -1779,7 +1868,7 @@ calmap.calendarplot(df[<span class="hljs-string">&#x27;2014&#x27;</span>][<span 
                     yearlabel_kws=&#123;<span class="hljs-string">&#x27;color&#x27;</span>: <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-string">&#x27;fontsize&#x27;</span>: <span class="hljs-number">14</span>&#125;, subplot_kws=&#123;<span class="hljs-string">&#x27;title&#x27;</span>: <span class="hljs-string">&#x27;Yahoo Stock Prices&#x27;</span>&#125;)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/51.png" alt="51"></p>
-<h3 id="font-color-4876FF-【46】季节图（Seasonal-Plot）-font"><font color=##4876FF>【46】季节图（Seasonal Plot）</font></h3>
+<h3><span id="46-ji-jie-tu-seasonal-plot"><font color="##4876FF">【46】季节图（Seasonal Plot）</font></span></h3>
 <p>季节图可用于比较上一季度同一天（年/月/周等）时间序列的表现。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> dateutil.parser <span class="hljs-keyword">import</span> parse
 
@@ -1820,8 +1909,8 @@ plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<s
 <span class="hljs-comment"># plt.legend(loc=&#x27;upper right&#x27;, ncol=2, fontsize=12)</span>
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/52.png" alt="52"></p>
-<h2 id="font-color-FF0000-【9x00】分组（-Groups）-font"><font color=#FF0000>【9x00】分组（ Groups）</font></h2>
-<h3 id="font-color-4876FF-【47】树状图（Dendrogram）-font"><font color=##4876FF>【47】树状图（Dendrogram）</font></h3>
+<h2><span id="9x00-fen-zu-groups"><font color="#FF0000">【9x00】分组（ Groups）</font></span></h2>
+<h3><span id="47-shu-zhuang-tu-dendrogram"><font color="##4876FF">【47】树状图（Dendrogram）</font></span></h3>
 <p>树状图根据给定的距离度量将相似的点组合在一起，并根据点的相似性将它们组织成树状链接。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> scipy.cluster.hierarchy <span class="hljs-keyword">as</span> shc
 
@@ -1836,7 +1925,7 @@ dend = shc.dendrogram(shc.linkage(df[[<span class="hljs-string">&#x27;Murder&#x2
 plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/53.png" alt="53"></p>
-<h3 id="font-color-4876FF-【48】聚类图（Cluster-Plot）-font"><font color=##4876FF>【48】聚类图（Cluster Plot）</font></h3>
+<h3><span id="48-ju-lei-tu-cluster-plot"><font color="##4876FF">【48】聚类图（Cluster Plot）</font></span></h3>
 <p>聚类图可以用来划分属于同一个聚类的点。下面是一个基于 USArrests 数据集将美国各州分成 5 组的代表性示例。这个聚类图使用 ‘murder’ 和 ‘assault’ 作为 X 轴和 Y 轴。或者，您可以将第一个主元件用作 X 轴和 Y 轴。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 sklearn 库】</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.cluster <span class="hljs-keyword">import</span> AgglomerativeClustering
@@ -1875,7 +1964,7 @@ plt.ylabel(<span class="hljs-string">&#x27;Assault&#x27;</span>); plt.yticks(fon
 plt.title(<span class="hljs-string">&#x27;Agglomerative Clustering of USArrests (5 Groups)&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/54.png" alt="54"></p>
-<h3 id="font-color-4876FF-【49】安德鲁斯曲线（Andrews-Curve）-font"><font color=##4876FF>【49】安德鲁斯曲线（Andrews Curve）</font></h3>
+<h3><span id="49-an-de-lu-si-qu-xian-andrews-curve"><font color="##4876FF">【49】安德鲁斯曲线（Andrews Curve）</font></span></h3>
 <p>安德鲁斯曲线有助于可视化是否存在基于给定分组的数值特征的固有分组。如果特征（数据集中的列）不能帮助区分组（cyl），则行将不会像下图所示被很好地分隔开。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> pandas.plotting <span class="hljs-keyword">import</span> andrews_curves
 
@@ -1900,7 +1989,7 @@ plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/55.png" alt="55"></p>
-<h3 id="font-color-4876FF-【50】平行坐标图（Parallel-Coordinates）-font"><font color=##4876FF>【50】平行坐标图（Parallel Coordinates）</font></h3>
+<h3><span id="50-ping-xing-zuo-biao-tu-parallel-coordinates"><font color="##4876FF">【50】平行坐标图（Parallel Coordinates）</font></span></h3>
 <p>平行坐标有助于可视化功能是否有助于有效地隔离组。如果一个分离受到影响，则该特征可能在预测该组时非常有用。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> pandas.plotting <span class="hljs-keyword">import</span> parallel_coordinates
 
@@ -1924,7 +2013,7 @@ plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
 <p><img src="https://cdn.itbob.cn/img/article/024/56.png" alt="56"></p>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本译文首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">Selva</span> <span class="hljs-string">Prabhakaran，译者</span> <span class="hljs-string">TRHX。</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106558131</span>
 <span class="hljs-string">原文链接：https://www.machinelearningplus.com/plots/top-50-matplotlib-visualizations-the-master-plots-python/</span></code></pre>
@@ -1993,23 +2082,33 @@ plt.show()</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -2072,16 +2171,16 @@ plt.show()</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -2090,7 +2189,7 @@ plt.show()</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -2108,7 +2207,10 @@ plt.show()</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 7.1k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 7.2k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 30分丨
@@ -271,26 +271,61 @@
             <hr>
             <div class="post-content gt-c-content-color-first">
                 <p><img src="https://cdn.itbob.cn/img/cover/ast.png" alt="ast"></p>
-<h2 id="什么是-AST">什么是 AST</h2>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#shi-me-shi-ast">什么是 AST</a></li>
+<li><a href="#ast-zai-bian-yi-zhong-de-wei-zhi">AST 在编译中的位置</a>
+<ul>
+<li><a href="#ci-fa-fen-xi">词法分析</a></li>
+<li><a href="#yu-fa-fen-xi">语法分析</a></li>
+<li><a href="#dai-ma-sheng-cheng">代码生成</a></li>
+</ul>
+</li>
+<li><a href="#babel-jian-jie">Babel 简介</a>
+<ul>
+<li><a href="#babel-core">@babel/core</a></li>
+<li><a href="#babel-parser">@babel/parser</a></li>
+<li><a href="#babel-generator">@babel/generator</a></li>
+<li><a href="#babel-traverse">@babel/traverse</a></li>
+<li><a href="#babel-types">@babel/types</a></li>
+</ul>
+</li>
+<li><a href="#chang-jian-hun-yao-huan-yuan">常见混淆还原</a>
+<ul>
+<li><a href="#zi-fu-chuan-huan-yuan">字符串还原</a></li>
+<li><a href="#biao-da-shi-huan-yuan">表达式还原</a></li>
+<li><a href="#shan-chu-wei-shi-yong-bian-liang">删除未使用变量</a></li>
+<li><a href="#shan-chu-rong-yu-luo-ji-dai-ma">删除冗余逻辑代码</a></li>
+<li><a href="#switch-case-fan-kong-zhi-liu-ping-tan-hua">switch-case 反控制流平坦化</a></li>
+</ul>
+</li>
+<li><a href="#can-kao-zi-liao">参考资料</a></li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="shi-me-shi-ast">什么是 AST</span></h2>
 <p>AST（Abstract Syntax Tree），中文抽象语法树，简称语法树（Syntax Tree），是源代码的抽象语法结构的树状表现形式，树上的每个节点都表示源代码中的一种结构。语法树不是某一种编程语言独有的，JavaScript、Python、Java、Golang 等几乎所有编程语言都有语法树。</p>
 <p>小时候我们得到一个玩具，总喜欢把玩具拆解成一个一个小零件，然后按照我们自己的想法，把零件重新组装起来，一个新玩具就诞生了。而 JavaScript 就像一台精妙运作的机器，通过 AST 解析，我们也可以像童年时拆解玩具一样，深入了解 JavaScript 这台机器的各个零部件，然后重新按照我们自己的意愿来组装。</p>
 <p>AST 的用途很广，IDE 的语法高亮、代码检查、格式化、压缩、转译等，都需要先将代码转化成 AST 再进行后续的操作，ES5 和 ES6 语法差异，为了向后兼容，在实际应用中需要进行语法的转换，也会用到 AST。AST 并不是为了逆向而生，但做逆向学会了 AST，在解混淆时可以如鱼得水。</p>
 <p>AST 有一个在线解析网站：<a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a> ，顶部可以选择语言、编译器、是否开启转化等，如下图所示，区域①是源代码，区域②是对应的 AST 语法树，区域③是转换代码，可以对语法树进行各种操作，区域④是转换后生成的新代码。图中原来的 Unicode 字符经过操作之后就变成了正常字符。</p>
 <p>语法树没有单一的格式，选择不同的语言、不同的编译器，得到的结果也是不一样的，在 JavaScript 中，编译器有 Acorn、Espree、Esprima、Recast、Uglify-JS 等，使用最多的是 Babel，后续的学习也是以 Babel 为例。</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/01.png" alt="01"></p>
-<h2 id="AST-在编译中的位置">AST 在编译中的位置</h2>
+<h2><span id="ast-zai-bian-yi-zhong-de-wei-zhi">AST 在编译中的位置</span></h2>
 <p>在编译原理中，编译器转换代码通常要经过三个步骤：词法分析（Lexical Analysis）、语法分析（Syntax Analysis）、代码生成（Code Generation），下图生动展示了这一过程：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/02.png" alt="02"></p>
-<h3 id="词法分析">词法分析</h3>
+<h3><span id="ci-fa-fen-xi">词法分析</span></h3>
 <p>词法分析阶段是编译过程的第一个阶段，这个阶段的任务是从左到右一个字符一个字符地读入源程序，然后根据构词规则识别单词，生成 token 符号流，比如 <code>isPanda('🐼')</code>，会被拆分成 <code>isPanda</code>，<code>(</code>，<code>'🐼'</code>，<code>)</code> 四部分，每部分都有不同的含义，可以将词法分析过程想象为不同类型标记的列表或数组。</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/03.gif" alt="03"></p>
-<h3 id="语法分析">语法分析</h3>
+<h3><span id="yu-fa-fen-xi">语法分析</span></h3>
 <p>语法分析是编译过程的一个逻辑阶段，语法分析的任务是在词法分析的基础上将单词序列组合成各类语法短语，比如“程序”，“语句”，“表达式”等，前面的例子中，<code>isPanda('🐼')</code> 就会被分析为一条表达语句 <code>ExpressionStatement</code>，<code>isPanda()</code> 就会被分析成一个函数表达式 <code>CallExpression</code>，<code>🐼</code> 就会被分析成一个变量 <code>Literal</code> 等，众多语法之间的依赖、嵌套关系，就构成了一个树状结构，即 AST 语法树。</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/04.gif" alt="04"></p>
-<h3 id="代码生成">代码生成</h3>
+<h3><span id="dai-ma-sheng-cheng">代码生成</span></h3>
 <p>代码生成是最后一步，将 AST 语法树转换成可执行代码即可，在转换之前，我们可以直接操作语法树，进行增删改查等操作，例如，我们可以确定变量的声明位置、更改变量的值、删除某些节点等，我们将语句 <code>isPanda('🐼')</code> 修改为一个布尔类型的 <code>Literal</code>：<code>true</code>，语法树就有如下变化：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/05.gif" alt="05"></p>
-<h2 id="Babel-简介">Babel 简介</h2>
+<h2><span id="babel-jian-jie">Babel 简介</span></h2>
 <p>Babel 是一个 JavaScript 编译器，也可以说是一个解析库，Babel 中文网：<a target="_blank" rel="noopener" href="https://www.babeljs.cn/">https://www.babeljs.cn/</a> ，Babel 英文官网：<a target="_blank" rel="noopener" href="https://babeljs.io/">https://babeljs.io/</a> ，Babel 内置了很多分析 JavaScript 代码的方法，我们可以利用 Babel 将 JavaScript 代码转换成 AST 语法树，然后增删改查等操作之后，再转换成 JavaScript 代码。</p>
 <p>Babel 包含的各种功能包、API、各方法可选参数等，都非常多，本文不一一列举，在实际使用过程中，应当多查询官方文档，或者参考文末给出的一些学习资料。Babel 的安装和其他 Node 包一样，需要哪个安装哪个即可，比如 <code>npm install @babel/core @babel/parser @babel/traverse @babel/generator</code></p>
 <p>在做逆向解混淆中，主要用到了 Babel 的以下几个功能包，本文也仅介绍以下几个功能包：</p>
@@ -302,14 +337,14 @@
 <li><code>@babel/types</code>：判断、验证节点的类型、构建新 AST 节点等。</li>
 </ol>
 <p><img src="https://cdn.itbob.cn/img/article/051/06.png" alt="06"></p>
-<h3 id="babel-core">@babel/core</h3>
+<h3><span id="babel-core">@babel/core</span></h3>
 <p>Babel 编译器本身，被拆分成了三个模块：<code>@babel/parser</code>、<code>@babel/traverse</code>、<code>@babel/generator</code>，比如以下方法的导入效果都是一样的：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>).parse;
 <span class="hljs-keyword">const</span> parse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/core&quot;</span>).parse;
 
 <span class="hljs-keyword">const</span> traverse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/traverse&quot;</span>).default
 <span class="hljs-keyword">const</span> traverse = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/core&quot;</span>).traverse</code></pre>
-<h3 id="babel-parser">@babel/parser</h3>
+<h3><span id="babel-parser">@babel/parser</span></h3>
 <p><code>@babel/parser</code> 可以将 JavaScript 代码解析成 AST 语法树，其中主要提供了两个方法：</p>
 <ul>
 <li><code>parser.parse(code, [&#123;options&#125;])</code>：解析一段 JavaScript 代码；</li>
@@ -350,7 +385,7 @@
 <span class="hljs-built_in">console</span>.log(ast)</code></pre>
 <p><code>&#123;sourceType: &quot;module&quot;&#125;</code> 演示了如何添加可选参数，输出的就是 AST 语法树，这和在线网站 <a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a> 解析出来的语法树是一样的：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/07.png" alt="07"></p>
-<h3 id="babel-generator">@babel/generator</h3>
+<h3><span id="babel-generator">@babel/generator</span></h3>
 <p><code>@babel/generator</code> 可以将 AST 还原成 JavaScript 代码，提供了一个 <code>generate</code> 方法：<code>generate(ast, [&#123;options&#125;], code)</code>。</p>
 <p>部分可选参数 <code>options</code>：</p>
 <table>
@@ -406,7 +441,7 @@ ast.program.body[<span class="hljs-number">0</span>].declarations[<span class="h
 <p>代码里 <code>&#123;minified: true&#125;</code> 演示了如何添加可选参数，这里表示压缩输出代码，<code>generate</code> 得到的 <code>result</code> 得到的是一个对象，其中的 <code>code</code> 属性才是最终的 JS 代码。</p>
 <p>代码里 <code>ast.program.body[0].declarations[0].id.name</code> 是 a 在 AST 中的位置，<code>ast.program.body[0].declarations[0].init.value</code> 是 1 在 AST 中的位置，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/08.png" alt="08"></p>
-<h3 id="babel-traverse">@babel/traverse</h3>
+<h3><span id="babel-traverse">@babel/traverse</span></h3>
 <p>当代码多了，我们不可能像前面那样挨个定位并修改，对于相同类型的节点，我们可以直接遍历所有节点来进行修改，这里就用到了 <code>@babel/traverse</code>，它通常和 <code>visitor</code> 一起使用，<code>visitor</code> 是一个对象，这个名字是可以随意取的，<code>visitor</code> 里可以定义一些方法来过滤节点，这里还是用一个例子来演示：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> parser = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/parser&quot;</span>);
 <span class="hljs-keyword">const</span> generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@babel/generator&quot;</span>).default
@@ -519,7 +554,7 @@ traverse(ast, visitor)
     &#125;
 &#125;</code></pre>
 <p>以上几种写法中有用到了 <code>enter</code> 方法，在节点的遍历过程中，进入节点（enter）与退出（exit）节点都会访问一次节点，<code>traverse</code> 默认在进入节点时进行节点的处理，如果要在退出节点时处理，那么在 <code>visitor</code> 中就必须声明 <code>exit</code> 方法。</p>
-<h3 id="babel-types">@babel/types</h3>
+<h3><span id="babel-types">@babel/types</span></h3>
 <p><code>@babel/types</code> 主要用于构建新的 AST 节点，前面的示例代码为 <code>const a = 1;</code>，如果想要增加内容，比如变成 <code>const a = 1; const b = a * 5 + 1;</code>，就可以通过 <code>@babel/types</code> 来实现。</p>
 <p>首先观察一下 AST 语法树，原语句只有一个 <code>VariableDeclaration</code> 节点，现在增加了一个：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/10.png" alt="10"></p>
@@ -577,9 +612,9 @@ traverse(ast, visitor)
 <p>注意：<code>path.insertAfter()</code> 插入节点语句后面加了一句 <code>path.stop()</code>，表示插入完成后立即停止遍历当前节点和后续的子节点，添加的新节点也是 <code>VariableDeclaration</code>，如果不加停止语句的话，就会无限循环插入下去。</p>
 <p>插入新节点后，再转换成 JavaScript 代码，就可以看到多了一行新代码，如下图所示：</p>
 <p><img src="https://cdn.itbob.cn/img/article/051/14.png" alt="14"></p>
-<h2 id="常见混淆还原">常见混淆还原</h2>
+<h2><span id="chang-jian-hun-yao-huan-yuan">常见混淆还原</span></h2>
 <p>了解了 AST 和 babel 后，就可以对 JavaScript 混淆代码进行还原了，以下是部分样例，带你进一步熟悉 babel 的各种操作。</p>
-<h3 id="字符串还原">字符串还原</h3>
+<h3><span id="zi-fu-chuan-huan-yuan">字符串还原</span></h3>
 <p>文章开头的图中举了个例子，正常字符被换成了 Unicode 编码：</p>
 <pre><code class="hljs javascript"><span class="hljs-built_in">console</span>[<span class="hljs-string">&#x27;\u006c\u006f\u0067&#x27;</span>](<span class="hljs-string">&#x27;\u0048\u0065\u006c\u006c\u006f\u0020\u0077\u006f\u0072\u006c\u0064\u0021&#x27;</span>)</code></pre>
 <p>观察 AST 结构：</p>
@@ -607,7 +642,7 @@ traverse(ast, visitor)
 <span class="hljs-built_in">console</span>.log(result.code)</code></pre>
 <p>还原结果：</p>
 <pre><code class="hljs javascript"><span class="hljs-built_in">console</span>[<span class="hljs-string">&quot;log&quot;</span>](<span class="hljs-string">&quot;Hello world!&quot;</span>);</code></pre>
-<h3 id="表达式还原">表达式还原</h3>
+<h3><span id="biao-da-shi-huan-yuan">表达式还原</span></h3>
 <p>之前写过 <a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/122057377">JSFuck 混淆的还原</a>，其中有介绍 <code>![]</code> 可表示 false，<code>!![]</code> 或者 <code>!+[]</code> 可表示 true，在一些混淆代码中，经常有这些操作，把简单的表达式复杂化，往往需要执行一下语句，才能得到真正的结果，示例代码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> a = !![]+!![]+!![];
 <span class="hljs-keyword">const</span> b = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-number">12.34</span> * <span class="hljs-number">2.12</span>)
@@ -660,7 +695,7 @@ traverse(ast, visitor)
 <span class="hljs-keyword">const</span> e = <span class="hljs-built_in">parseInt</span>(<span class="hljs-string">&quot;1.89345.9088&quot;</span>);
 <span class="hljs-keyword">const</span> f = <span class="hljs-built_in">parseFloat</span>(<span class="hljs-string">&quot;23.233421.89112&quot;</span>);
 <span class="hljs-keyword">const</span> g = <span class="hljs-string">&quot;\u6210\u5E74&quot;</span>;</code></pre>
-<h3 id="删除未使用变量">删除未使用变量</h3>
+<h3><span id="shan-chu-wei-shi-yong-bian-liang">删除未使用变量</span></h3>
 <p>有时候代码里会有一些并没有使用到的多余变量，删除这些多余变量有助于更加高效的分析代码，示例代码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> a = <span class="hljs-number">1</span>;
 <span class="hljs-keyword">const</span> b = a * <span class="hljs-number">2</span>;
@@ -727,7 +762,7 @@ traverse(ast, visitor)
 <span class="hljs-keyword">const</span> b = a * <span class="hljs-number">2</span>;
 <span class="hljs-keyword">const</span> d = b + <span class="hljs-number">1</span>;
 <span class="hljs-built_in">console</span>.log(d);</code></pre>
-<h3 id="删除冗余逻辑代码">删除冗余逻辑代码</h3>
+<h3><span id="shan-chu-rong-yu-luo-ji-dai-ma">删除冗余逻辑代码</span></h3>
 <p>有时候为了增加逆向难度，会有很多嵌套的 if-else 语句，大量判断为假的冗余逻辑代码，同样可以利用 AST 将其删除掉，只留下判断为真的，示例代码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> example = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
     <span class="hljs-keyword">let</span> a;
@@ -800,7 +835,7 @@ traverse(ast, visitor)
   a = <span class="hljs-number">2</span>;
   <span class="hljs-keyword">return</span> a;
 &#125;;</code></pre>
-<h3 id="switch-case-反控制流平坦化">switch-case 反控制流平坦化</h3>
+<h3><span id="switch-case-fan-kong-zhi-liu-ping-tan-hua">switch-case 反控制流平坦化</span></h3>
 <p>控制流平坦化是混淆当中最常见的，通过 <code>if-else</code> 或者 <code>while-switch-case</code> 语句分解步骤，示例代码：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">const</span> _0x34e16a = <span class="hljs-string">&#x27;3,4,0,5,1,2&#x27;</span>[<span class="hljs-string">&#x27;split&#x27;</span>](<span class="hljs-string">&#x27;,&#x27;</span>);
 <span class="hljs-keyword">let</span> _0x2eff02 = <span class="hljs-number">0x0</span>;
@@ -964,14 +999,14 @@ traverse(ast, visitor)
 <span class="hljs-keyword">let</span> _0x37b9f3 = <span class="hljs-number">0x5</span> || _0x38cb15;
 <span class="hljs-keyword">let</span> _0x1e0e5e = _0x37b9f3[_0x50cee0(<span class="hljs-number">0x2e0</span>, <span class="hljs-number">0x2e8</span>, <span class="hljs-number">0x2e1</span>, <span class="hljs-number">0x2e4</span>)];
 <span class="hljs-keyword">let</span> _0x35d732 = [_0x388d4b(-<span class="hljs-number">0x134</span>, -<span class="hljs-number">0x134</span>, -<span class="hljs-number">0x139</span>, -<span class="hljs-number">0x138</span>)](_0x38cb15 &gt;&gt; _0x4588f1);</code></pre>
-<h2 id="参考资料">参考资料</h2>
+<h2><span id="can-kao-zi-liao">参考资料</span></h2>
 <p>本文有参考以下资料，也是比较推荐的在线学习资料：</p>
 <ul>
 <li>Youtube 视频，Babel 入门：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=UeVq_U5obnE">https://www.youtube.com/watch?v=UeVq_U5obnE</a></li>
 <li>官方手册 Babel Handbook：<a target="_blank" rel="noopener" href="https://github.com/jamiebuilds/babel-handbook">https://github.com/jamiebuilds/babel-handbook</a></li>
 <li>非官方 Babel API 中文文档：<a target="_blank" rel="noopener" href="https://evilrecluse.top/Babel-traverse-api-doc/">https://evilrecluse.top/Babel-traverse-api-doc/</a></li>
 </ul>
-<h2 id="END">END</h2>
+<h2><span id="end">END</span></h2>
 <p>Babel 编译器国内的资料其实不是很多，多看源码、同时在线对照可视化的 AST 语法树，耐心一点儿一层一层分析即可，本文中的案例也只是最基本操作，实际遇到一些混淆还得视情况进行修改，比如需要加一些类型判断来限制等，后续会用实战来带领大家进一步熟悉解混淆当中的其他操作。</p>
 
             </div>
@@ -1037,23 +1072,33 @@ traverse(ast, visitor)
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1116,16 +1161,16 @@ traverse(ast, visitor)
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1134,7 +1179,7 @@ traverse(ast, visitor)
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1152,7 +1197,10 @@ traverse(ast, visitor)
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link

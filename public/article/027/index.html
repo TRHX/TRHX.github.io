@@ -105,7 +105,7 @@
     }
   });
   $('[data-fancybox]').fancybox({//启用函数，必须
-    //protect: true //图片右键不能下载，可选
+    protect: true //图片右键不能下载，可选
   });
 </script> -->
 
@@ -248,7 +248,7 @@
                 </span>
                 
                     <span class="post-count">
-                        <i class="fa fa-keyboard"></i> 字数统计: 4.3k丨
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.4k丨
                     </span>
                     <span class="post-count">
                         <i class="fa fa-hourglass-half"></i> 阅读时长: 22分丨
@@ -270,7 +270,29 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p>Pandas 系列文章：</p>
+                <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#font-color-ff0000-01x00-pandas-suan-zhu-yun-suan-font"><font color="#FF0000">【01x00】Pandas 算术运算</font></a>
+<ul>
+<li><a href="#font-color-4876ff-01x01-shi-yong-numpy-tong-yong-han-shu-font"><font color="#4876FF">【01x01】使用 NumPy 通用函数</font></a></li>
+<li><a href="#font-color-4876ff-01x02-shu-ju-dui-qi-font"><font color="#4876FF">【01x02】数据对齐</font></a></li>
+<li><a href="#font-color-4876ff-01x03-dataframe-yu-series-zhi-jian-de-yun-suan-font"><font color="#4876FF">【01x03】DataFrame 与 Series 之间的运算</font></a></li>
+<li><a href="#font-color-4876ff-01x04-pandas-suan-zhu-fang-fa-font"><font color="#4876FF">【01x04】Pandas 算术方法</font></a></li>
+</ul>
+</li>
+<li><a href="#font-color-ff0000-02x00-chu-li-que-shi-zhi-font"><font color="#FF0000">【02x00】处理缺失值</font></a>
+<ul>
+<li><a href="#font-color-4876ff-02x01-fill-value-zhi-ding-zhi-yu-que-shi-zhi-jin-xing-yun-suan-font"><font color="#4876FF">【02x01】fill_value() 指定值与缺失值进行运算</font></a></li>
+<li><a href="#font-color-4876ff-02x02-isnull-notnull-pan-duan-que-shi-zhi-font"><font color="#4876FF">【02x02】isnull() / notnull() 判断缺失值</font></a></li>
+<li><a href="#font-color-4876ff-02x03-dropna-shan-chu-que-shi-zhi-font"><font color="#4876FF">【02x03】dropna() 删除缺失值</font></a></li>
+<li><a href="#font-color-4876ff-02x04-fillna-tian-chong-que-shi-zhi-font"><font color="#4876FF">【02x04】fillna() 填充缺失值</font></a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<p>Pandas 系列文章：</p>
 <ul>
 <li><a href="https://www.itbob.cn/article/025/">Python 数据分析三剑客之 Pandas（一）：认识 Pandas 及其 Series、DataFrame 对象</a></li>
 <li><a href="https://www.itbob.cn/article/026/">Python 数据分析三剑客之 Pandas（二）：Index 索引对象以及各种索引操作</a></li>
@@ -290,7 +312,9 @@
 <li>Pandas 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780397.html">https://itrhx.blog.csdn.net/category_9780397.html</a></li>
 <li>Matplotlib 专栏：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/category_9780418.html">https://itrhx.blog.csdn.net/category_9780418.html</a></li>
 </ul>
-<p>推荐学习资料与网站：</p>
+<br>
+推荐学习资料与网站：
+<br><br>
 <ul>
 <li>NumPy 官方中文网：<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">https://www.numpy.org.cn/</a></li>
 <li>Pandas 官方中文网：<a target="_blank" rel="noopener" href="https://www.pypandas.cn/">https://www.pypandas.cn/</a></li>
@@ -298,15 +322,15 @@
 <li>NumPy、Matplotlib、Pandas 速查表：<a target="_blank" rel="noopener" href="https://github.com/TRHX/Python-quick-reference-table">https://github.com/TRHX/Python-quick-reference-table</a></li>
 </ul>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【01x00】Pandas-算术运算-font"><font color=#FF0000>【01x00】Pandas 算术运算</font></h2>
+<h2><span id="01x00-pandas-suan-zhu-yun-suan"><font color="#FF0000">【01x00】Pandas 算术运算</font></span></h2>
 <p>Pandas 继承了 NumPy 的功能，NumPy 的基本能力之一是快速对每个元素进行运算，既包括基本算术运算（加、减、乘、除），也包括更复杂的运算（三角函数、指数函数和对数函数等）。具体可以参考 NumPy 系列文章。</p>
-<h3 id="font-color-4876FF-【01x01】使用-NumPy-通用函数-font"><font color=#4876FF>【01x01】使用 NumPy 通用函数</font></h3>
+<h3><span id="01x01-shi-yong-numpy-tong-yong-han-shu"><font color="#4876FF">【01x01】使用 NumPy 通用函数</font></span></h3>
 <p>因为 Pandas 是建立在 NumPy 基础之上的，所以 NumPy 的通用函数同样适用于 Pandas 的 Series 和 DataFrame 对象，如下所示：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -351,8 +375,8 @@ dtype: float64</code></pre>
 <span class="hljs-number">0</span> -<span class="hljs-number">1.000000</span>  <span class="hljs-number">7.071068e-01</span>  <span class="hljs-number">1.000000</span> -<span class="hljs-number">1.000000e+00</span>
 <span class="hljs-number">1</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.224647e-16</span>  <span class="hljs-number">0.707107</span> -<span class="hljs-number">7.071068e-01</span>
 <span class="hljs-number">2</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.000000e+00</span> -<span class="hljs-number">0.707107</span>  <span class="hljs-number">1.224647e-16</span></code></pre>
-<h3 id="font-color-4876FF-【01x02】数据对齐-font"><font color=#4876FF>【01x02】数据对齐</font></h3>
-<p>Pandas 最重要的一个功能是，它可以对不同索引的对象进行算术运算。在将对象相加时，如果存在不同的索引对，则结果的索引就是该索引对的并集。自动的数据对齐操作会在不重叠的索引处引入缺失值，即 <font color=#FF0000>NaN</font>，缺失值会在算术运算过程中传播。</p>
+<h3><span id="01x02-shu-ju-dui-qi"><font color="#4876FF">【01x02】数据对齐</font></span></h3>
+<p>Pandas 最重要的一个功能是，它可以对不同索引的对象进行算术运算。在将对象相加时，如果存在不同的索引对，则结果的索引就是该索引对的并集。自动的数据对齐操作会在不重叠的索引处引入缺失值，即 <font color="#FF0000">NaN</font>，缺失值会在算术运算过程中传播。</p>
 <p>Series 对象的数据对齐操作：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj1 = pd.Series([<span class="hljs-number">7.3</span>, -<span class="hljs-number">2.5</span>, <span class="hljs-number">3.4</span>, <span class="hljs-number">1.5</span>], index=[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>])
@@ -404,7 +428,7 @@ Ohio      <span class="hljs-number">3.0</span> NaN   <span class="hljs-number">6
 Oregon    NaN NaN   NaN NaN
 Texas     <span class="hljs-number">9.0</span> NaN  <span class="hljs-number">12.0</span> NaN
 Utah      NaN NaN   NaN NaN</code></pre>
-<h3 id="font-color-4876FF-【01x03】DataFrame-与-Series-之间的运算-font"><font color=#4876FF>【01x03】DataFrame 与 Series 之间的运算</font></h3>
+<h3><span id="01x03-dataframe-yu-series-zhi-jian-de-yun-suan"><font color="#4876FF">【01x03】DataFrame 与 Series 之间的运算</font></span></h3>
 <p>首先回忆 NumPy 中的广播（参见：<a target="_blank" rel="noopener" href="https://itrhx.blog.csdn.net/article/details/104988137">《Python 数据分析三剑客之 NumPy（二）：数组索引 / 切片 / 广播 / 拼接 / 分割》</a>），跟不同维度的 NumPy 数组一样，DataFrame 和 Series 之间算术运算也是有明确规定的。首先回忆一下 NumPy 中不同维度的数组之间的运算：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-meta">&gt;&gt;&gt; </span>arr = np.arange(<span class="hljs-number">12.</span>).reshape((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>))
@@ -493,7 +517,7 @@ AA -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  
 BB -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>
 CC -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span>
 DD -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  <span class="hljs-number">1.0</span></code></pre>
-<h3 id="font-color-4876FF-【01x04】Pandas-算术方法-font"><font color=#4876FF>【01x04】Pandas 算术方法</font></h3>
+<h3><span id="01x04-pandas-suan-zhu-fang-fa"><font color="#4876FF">【01x04】Pandas 算术方法</font></span></h3>
 <p>完整的 Pandas 算术方法见下表：</p>
 <table>
 <thead>
@@ -562,15 +586,15 @@ DD -<span class="hljs-number">1.0</span>  <span class="hljs-number">0.0</span>  
 <span class="hljs-number">1</span>  <span class="hljs-number">0.250</span>  <span class="hljs-number">0.200000</span>  <span class="hljs-number">0.166667</span>  <span class="hljs-number">0.142857</span>
 <span class="hljs-number">2</span>  <span class="hljs-number">0.125</span>  <span class="hljs-number">0.111111</span>  <span class="hljs-number">0.100000</span>  <span class="hljs-number">0.090909</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
 <hr>
-<h2 id="font-color-FF0000-【02x00】处理缺失值-font"><font color=#FF0000>【02x00】处理缺失值</font></h2>
+<h2><span id="02x00-chu-li-que-shi-zhi"><font color="#FF0000">【02x00】处理缺失值</font></span></h2>
 <p>在现实中遇到的数据很少是干净整齐的，许多数据集都会有数据缺失的现象，缺失值主要有三种形式：null、NaN（NAN，nan） 或 NA。</p>
-<h3 id="font-color-4876FF-【02x01】fill-value-指定值与缺失值进行运算-font"><font color=#4876FF>【02x01】fill_value() 指定值与缺失值进行运算</font></h3>
+<h3><span id="02x01-fill-value-zhi-ding-zhi-yu-que-shi-zhi-jin-xing-yun-suan"><font color="#4876FF">【02x01】fill_value() 指定值与缺失值进行运算</font></span></h3>
 <p>使用 <code>add</code>, <code>sub</code>, <code>div</code>, <code>mul</code> 等算术方法时，通过 <code>fill_value</code> 指定填充值，未对齐的数据将和填充值做运算。</p>
 <p>Series 中的应用：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
@@ -639,7 +663,7 @@ dtype: float64</code></pre>
 <span class="hljs-number">1</span>   <span class="hljs-number">9.0</span>  <span class="hljs-number">15.0</span>  <span class="hljs-number">13.0</span>  <span class="hljs-number">15.0</span>  <span class="hljs-number">19.0</span>
 <span class="hljs-number">2</span>  <span class="hljs-number">18.0</span>  <span class="hljs-number">20.0</span>  <span class="hljs-number">22.0</span>  <span class="hljs-number">24.0</span>  <span class="hljs-number">24.0</span>
 <span class="hljs-number">3</span>  <span class="hljs-number">25.0</span>  <span class="hljs-number">26.0</span>  <span class="hljs-number">27.0</span>  <span class="hljs-number">28.0</span>  <span class="hljs-number">29.0</span></code></pre>
-<h3 id="font-color-4876FF-【02x02】isnull-notnull-判断缺失值-font"><font color=#4876FF>【02x02】isnull() / notnull() 判断缺失值</font></h3>
+<h3><span id="02x02-isnull-notnull-pan-duan-que-shi-zhi"><font color="#4876FF">【02x02】isnull() / notnull() 判断缺失值</font></span></h3>
 <p><code>isnull()</code>：为缺失值时为 <code>True</code>，否则为 <code>False</code>；</p>
 <p><code>notnull()</code> 为缺失值时为 <code>False</code>，否则为 <code>True</code>。</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -665,7 +689,7 @@ dtype: <span class="hljs-built_in">bool</span>
 <span class="hljs-number">2</span>     <span class="hljs-literal">True</span>
 <span class="hljs-number">3</span>    <span class="hljs-literal">False</span>
 dtype: <span class="hljs-built_in">bool</span></code></pre>
-<h3 id="font-color-4876FF-【02x03】dropna-删除缺失值-font"><font color=#4876FF>【02x03】dropna() 删除缺失值</font></h3>
+<h3><span id="02x03-dropna-shan-chu-que-shi-zhi"><font color="#4876FF">【02x03】dropna() 删除缺失值</font></span></h3>
 <p><code>dropna()</code> 方法用于返回一个删除了缺失值的新 Series 或 DataFrame 对象。</p>
 <p>在 Series 对象当中，<code>dropna()</code> 方法的语法如下（其他参数用法可参考在 DataFrame 中的应用）：</p>
 <p><code>Series.dropna(self, axis=0, inplace=False, how=None)</code></p>
@@ -751,7 +775,7 @@ dtype: <span class="hljs-built_in">object</span></code></pre>
 <span class="hljs-number">0</span>  <span class="hljs-number">1.0</span>  NaN  <span class="hljs-number">2</span>
 <span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span>
 <span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6</span></code></pre>
-<p>指定 thresh 参数，设置行或列中<font color=#FF0000><strong>非缺失值</strong></font>的最小数量，以下示例中，第一行和第三行只有两个非缺失值，所以会被删除：</p>
+<p>指定 thresh 参数，设置行或列中<font color="#FF0000"><strong>非缺失值</strong></font>的最小数量，以下示例中，第一行和第三行只有两个非缺失值，所以会被删除：</p>
 <pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj = pd.DataFrame([[<span class="hljs-number">1</span>, np.nan, <span class="hljs-number">2</span>, np.nan], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, np.nan], [np.nan, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, np.nan]])
@@ -764,7 +788,7 @@ dtype: <span class="hljs-built_in">object</span></code></pre>
 <span class="hljs-meta">&gt;&gt;&gt; </span>obj.dropna(axis=<span class="hljs-string">&#x27;rows&#x27;</span>, thresh=<span class="hljs-number">3</span>)
      <span class="hljs-number">0</span>    <span class="hljs-number">1</span>  <span class="hljs-number">2</span>   <span class="hljs-number">3</span>
 <span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5</span> NaN</code></pre>
-<h3 id="font-color-4876FF-【02x04】fillna-填充缺失值-font"><font color=#4876FF>【02x04】fillna() 填充缺失值</font></h3>
+<h3><span id="02x04-fillna-tian-chong-que-shi-zhi"><font color="#4876FF">【02x04】fillna() 填充缺失值</font></span></h3>
 <p><code>fillna()</code> 方法可以将缺失值替换成有效的数值。</p>
 <p>在 Series 对象中，<code>fillna()</code> 方法的语法如下：</p>
 <p><code>Series.fillna(self, value=None, method=None, axis=None, inplace=False, limit=None, downcast=None)</code></p>
@@ -865,8 +889,8 @@ dtype: float64</code></pre>
 <span class="hljs-number">1</span>  <span class="hljs-number">2.0</span>  <span class="hljs-number">3.0</span>  <span class="hljs-number">5.0</span>  <span class="hljs-number">5.0</span>
 <span class="hljs-number">2</span>  NaN  <span class="hljs-number">4.0</span>  <span class="hljs-number">6.0</span>  <span class="hljs-number">6.0</span></code></pre>
 <hr>
-<pre><code class="hljs yaml"><span class="hljs-string">这里是一段防爬虫文本，请读者忽略。</span>
-<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">TRHX。</span>
+<pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
+<span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
 <span class="hljs-string">博客首页：https://itrhx.blog.csdn.net/</span>
 <span class="hljs-string">本文链接：https://itrhx.blog.csdn.net/article/details/106743778</span>
 <span class="hljs-string">未经授权，禁止转载！恶意转载，后果自负！尊重原创，远离剽窃！</span></code></pre>
@@ -935,23 +959,33 @@ dtype: float64</code></pre>
         <span style="text-align: left;"></span> -->
         <span>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PV</span>
-                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
-            </div>
-            <div class="itbob-github-badge">
-                <span class="badge-subject">UV</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
                 <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">WordCount</span>
-                <span class="badge-value bg-firebrick post-count">279k</span>
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">PoweredBy</span>
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">284.5k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
                 <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
             </div>
             <div class="itbob-github-badge">
-                <span class="badge-subject">Theme</span>
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
                 <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
             </div>
         </span>
@@ -1014,16 +1048,16 @@ dtype: float64</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:19px; margin-bottom:-2px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:17px; margin-bottom:-2px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:21px; margin-bottom:-5px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
             <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
             <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
         </span>
     </div>
 </div>
 
-<div class="sidebar_wo" id="leimu">
+<!-- <div class="sidebar_wo" id="leimu">
     <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
@@ -1032,7 +1066,7 @@ dtype: float64</code></pre>
     <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
     onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
     onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
-</div>
+</div> -->
 
 <script>
     /* 拉姆蕾姆回到顶部或底部按钮 */
@@ -1050,7 +1084,10 @@ dtype: float64</code></pre>
 
             </div>
         </div>
-        <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
         <script>
             (function () {
                 // When to show the scroll link
