@@ -1,0 +1,954 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>极验行为验证，三代滑块验证码逆向分析 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- https://fontawesome.dashgame.com/ -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "BOB'S BLOG",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://travellings.link" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">极验行为验证，三代滑块验证码逆向分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2022-12-20丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 4.8k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 21分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            爬虫</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            验证码逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><img src="https://cdn.itbob.cn/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
+<blockquote>
+<p><strong>极验全家桶，交流请咨询微信：IT-BOB</strong><br>
+<strong>极验全家桶，交流请咨询微信：IT-BOB</strong><br>
+<strong>极验全家桶，交流请咨询微信：IT-BOB</strong></p>
+</blockquote>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#tong-xun-liu-cheng">通讯流程</a></li>
+<li><a href="#zhua-bao-fen-xi">抓包分析</a></li>
+<li><a href="#ni-xiang-fen-xi">逆向分析</a>
+<ul>
+<li><a href="#w-can-shu">w 参数</a>
+<ul>
+<li><a href="#u-can-shu">u 参数</a></li>
+<li><a href="#l-can-shu">l 参数</a></li>
+</ul>
+</li>
+<li><a href="#di-tu-huan-yuan">底图还原</a></li>
+<li><a href="#cuo-wu-jie-guo">错误结果</a></li>
+<li><a href="#jie-guo-yan-zheng">结果验证</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
+<p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
+<p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
+<ul>
+<li>目标：某验三代滑块验证码，底图还原及 w 参数逆向</li>
+<li>验证码 demo 列表：<code>aHR0cHM6Ly93d3cuZ2VldGVzdC5jb20vZGVtby8=</code></li>
+<li>滑块验证码：<code>aHR0cHM6Ly93d3cuZ2VldGVzdC5jb20vZGVtby9zbGlkZS1mbG9hdC5odG1s</code></li>
+<li>加密算法：RSA、AES、MD5</li>
+</ul>
+<h2><span id="tong-xun-liu-cheng">通讯流程</span></h2>
+<p>接口相关：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/01.png" alt="01"></p>
+<p>完整流程：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/02.jpg" alt="02"></p>
+<h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
+<p>进入网页后，打开开发者人员工具进行抓包</p>
+<p>1.未点击按钮进行验证之前，Network 中抓包到了以下信息：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/03.png" alt="03"></p>
+<p><code>register-slide?t=xxx</code>：注册滑块请求，响应预览中返回的信息中重要的是 gt 和 challenge，gt 是固定值，不同网页对应不同的 gt 值，类似于特征码，challenge 的值每次刷新页面都会变化，gt 参数会通过 url string 的形式传递给 gettype.php：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/04.png" alt="04"></p>
+<p><code>gettype.php?gt=xxx&amp;callback=xxx</code>：获取验证码，HTTP 请求中不同的请求方式和设置不同的 Content-Type 时，参数传递的方式会不一样，一般为 Query String Parameters、Form Data、Request Payload，这里是 Query String Parameters，在 GET 请求时，参数会以 url string 的形式进行传递，即 ? 后的字符串则为其请求参数，并以 &amp; 作为分隔符，这里传递了 gt 参数的值以及 callback，callback 为 geetest_ + 时间戳：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/05.png" alt="05"></p>
+<p>响应预览中返回了一些 js 文件及对应的版本号：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/06.png" alt="06"></p>
+<p>第一个<code> get.php?xxx</code>，url 中传递了一些参数，关键部分如下：</p>
+<ul>
+<li><code>gt</code>：register-slide 响应返回的 gt 值；</li>
+<li><code>challenge</code>：register-slide 响应返回的 challenge 值；</li>
+<li><code>w</code>：对轨迹、滑动时间等进行加密后的参数，该网站第一个 w 值可以直接置空；</li>
+<li><code>callback</code>：geetest_ + 时间戳。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/07.png" alt="07"></p>
+<p>响应内容如下，这里没什么需要注意的，feedback 就是某验的帮助中心：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/08.png" alt="08"></p>
+<p>2.点击按钮进行验证之后，Network 中抓包到了以下信息：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/09.png" alt="09"></p>
+<p>第一个 <code>ajax.php?xxx</code>，url 中传递了一些参数，关键部分如下：</p>
+<ul>
+<li><code>gt</code>：register-slide 响应返回的 gt 值；</li>
+<li><code>challenge</code>：register-slide 响应返回的 challenge 值；</li>
+<li><code>w</code>：对轨迹、滑动时间等进行加密后的参数，该网站第二个 w 值也可以直接置空；</li>
+<li><code>callback</code>：geetest_ + 时间戳。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/10.png" alt="10"></p>
+<p>响应返回验证码模式，滑块验证码为 slide，点选验证码为 click：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/11.png" alt="11"></p>
+<p>第二个 <code>get.php?xxx</code>，url 中传递了一些参数，关键部分如下：</p>
+<ul>
+<li><code>gt</code>：register-slide 响应返回的 gt 值；</li>
+<li><code>challenge</code>：register-slide 响应返回的 challenge 值；</li>
+<li><code>callback</code>：geetest_ + 时间戳。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/12.png" alt="12"></p>
+<p>这个响应返回了很多关键内容：</p>
+<ul>
+<li><code>bg</code>：被打乱的带缺口背景图，需要还原，<code>372fe236d.webp</code></li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/13.png" alt="13"></p>
+<ul>
+<li><code>fullbg</code>：被打乱的完整背景图，需要还原，<code>7bfaaa72b.webp</code></li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/14.png" alt="14"></p>
+<ul>
+<li><code>slice</code>：滑块图片，不需要还原，<code>372fe236d.png</code></li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/15.png" alt="15"></p>
+<ul>
+<li><code>c</code>：关键参数，与后面 aa 参数的值有关，固定值；</li>
+<li><code>s</code>：关键参数，与后面 aa 参数的值有关。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/16.png" alt="16"></p>
+<p>第二个 <code>ajax.php?xxx</code>，url 中传递了一些参数，关键部分如下：</p>
+<ul>
+<li><code>gt</code>：register-slide 响应返回的 gt 值；</li>
+<li><code>challenge</code>：register-slide 响应返回的 challenge 值 + 两位字符串，注意多了两位，是第二个 get.php?xxx 返回值中得到的；</li>
+<li><code>w</code>：对轨迹、滑动时间等进行加密后的参数，需要通过逆向得到；</li>
+<li><code>callback</code>：geetest_ + 时间戳。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/17.png" alt="17"></p>
+<p>滑动滑块验证通过即会返回以下内容：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/18.png" alt="18"></p>
+<p>失败则会返回：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/19.png" alt="19"></p>
+<h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
+<h3><span id="w-can-shu">w 参数</span></h3>
+<p>跟到 w 参数的值方法很多，以下讲两种：</p>
+<p>1.很简便，w 参数在 js 文件中有特征码，点击按钮进行验证之后，ctrl + shift + f 全局搜索 <code>&quot;\u0077&quot;</code>，因为 <code>\u0077</code> 就是 w 的 Unicode 编码，然后点击进入 slide.7.8.9.js 文件中，7.8.9 为当前版本，注意没点击验证的话是不会有这个 js 文件的：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/20.png" alt="20"></p>
+<p>进入后点击左下角 <code>&#123;&#125;</code> 大括号，格式化文件，再 ctrl + f  局部搜索 <code>&quot;\u0077&quot;</code>，只有一个结果，在第 6086 行，在第 6088 行打下断点，滑动滑块即会断住，h + u 即为 w 参数的值：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/21.png" alt="21"></p>
+<p>2.通过 Initiator 跟栈，跟进到 <code>$_CId</code> 中：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/22.png" alt="22"></p>
+<p>进去同样格式化后，会跳转到第 4583 行，在该行打下断点：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/23.png" alt="23"></p>
+<p>向上跟栈到 <code>$_CCBv</code> 中同样会找到刚刚的位置：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/24.png" alt="24"></p>
+<p>由以上分析可知，w 参数是 h 和 u 相加得到的，所以找到定义的位置，看看是怎么构造生成的，u 参数定义在第 6077 行，h 参数定义在第 6079 行，内容如下：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> u = r[$_CAIAt(<span class="hljs-number">754</span>)]()
+, l = V[$_CAIAt(<span class="hljs-number">353</span>)](gt[$_CAIAt(<span class="hljs-number">218</span>)](o), r[$_CAIAt(<span class="hljs-number">756</span>)]())
+, h = m[$_CAIAt(<span class="hljs-number">782</span>)](l)</code></pre>
+<p>可以看到，h 参数是传入了 l 参数后经过 <code>m[$_CAIAt(782)]</code> 方法处理后得到的，所以依次往下分析，现在看看 u 参数是怎么生成的：</p>
+<h4><span id="u-can-shu">u 参数</span></h4>
+<p>u 参数通过 <code>r[$_CAIAt(754)]</code> 方法生成，选中后跟进到方法定义位置：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/25.png" alt="25"></p>
+<p>会跳转到第 6218 行，在 6227 行 return 处打下断点，重新拖动滑块，即会断住：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/26.png" alt="26"></p>
+<p>e 为 u 参数的值，其定义在第 6266 行：</p>
+<pre><code class="hljs JavaScript">e = <span class="hljs-keyword">new</span> U()[$_CBGAZ(<span class="hljs-number">353</span>)](<span class="hljs-built_in">this</span>[$_CBGAZ(<span class="hljs-number">756</span>)](!<span class="hljs-number">0</span>));</code></pre>
+<p>在控制台中打印输出一下各部分内容：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/27.png" alt="27"></p>
+<pre><code class="hljs JavaScript">e = <span class="hljs-keyword">new</span> U()[<span class="hljs-string">&quot;encrypt&quot;</span>](<span class="hljs-built_in">this</span>[<span class="hljs-string">&quot;$_CCEc&quot;</span>](!<span class="hljs-number">0</span>));</code></pre>
+<p>从打印出来的结果可以看出，e 参数的值可能是将 16 位的随机字符串加密后得到的，跟进到 <code>this[$_CBGAZ(756)]</code> 中验证一下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/28.png" alt="28"></p>
+<p>跳转到第 6208 行，在第 6214 行 return 处打下断点：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/29.png" alt="29"></p>
+<p><code>Ot</code> 即 16 为字符串，<code>Ot = rt()</code>，跟进到 <code>rt</code> 函数中，在第 4213 行，于第 4219 行打下断点后会发现，16 位字符串是由四个 <code>t()</code> 方法的结果相加得到的：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/30.png" alt="30"></p>
+<p>跟进到 <code>t()</code> 方法的定义位置，在第 4203 行，第 4208 行即为随机字符串算法：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/31.png" alt="31"></p>
+<p>还原混淆后内容如下，<code>Math.random()</code> 是随机选取大于等于 0.0 且小于 1.0 的伪随机 double 值，<code>toString(16)</code> 为十六进制字符串：</p>
+<pre><code class="hljs javascript">(<span class="hljs-number">65536</span> * (<span class="hljs-number">1</span> + <span class="hljs-built_in">Math</span>[<span class="hljs-string">&quot;random&quot;</span>]()) | <span class="hljs-number">0</span>)[<span class="hljs-string">&quot;toString&quot;</span>](<span class="hljs-number">16</span>)[<span class="hljs-string">&quot;substring&quot;</span>](<span class="hljs-number">1</span>)</code></pre>
+<p>JavaScript 复现：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">random</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">var</span> random_str = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>; index &lt; <span class="hljs-number">4</span>; index++) &#123;
+        random_str += (<span class="hljs-number">65536</span> * (<span class="hljs-number">1</span> + <span class="hljs-built_in">Math</span>[<span class="hljs-string">&quot;random&quot;</span>]()) | <span class="hljs-number">0</span>)[<span class="hljs-string">&quot;toString&quot;</span>](<span class="hljs-number">16</span>)[<span class="hljs-string">&quot;substring&quot;</span>](<span class="hljs-number">1</span>);
+    &#125;
+    <span class="hljs-keyword">return</span> random_str;
+&#125;</code></pre>
+<p><code>this[&quot;$_CCEc&quot;]</code> 分析完了，那 <code>new U()[&quot;encrypt&quot;]</code> 是什么呢，选中 <code>new U()</code> 后，从原型链中可以看到 <code>setPublic</code>，根据经验很有可能就是 RSA 加密设置公钥，加解密相关算法可以查看往期文章 <a href="https://www.itbob.cn/article/045/">CTF&amp;爬虫：掌握这些特征，一秒识别密文加密方式</a>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/32.png" alt="32"></p>
+<p>跟进去查看一下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/33.png" alt="33"></p>
+<p>跳转到第 2908 行，在第 2922 行断住后，<code>$_BACAs(332)</code> 的值为 <code>&quot;Invalid RSA public key&quot;</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/34.png" alt="34"></p>
+<p>第 2908 行，ut 函数传入了两个值，t 为公钥值，e 为公钥模数，都是固定值：</p>
+<ul>
+<li><code>t</code>：<code>&quot;00C1E3934D1614465B33053E7F48EE4EC87B14B95EF88947713D25EECBFF7E74C7977D02DC1D9451F79DD5D1C10C29ACB6A9B4D6FB7D0A0279B6719E1772565F09AF627715919221AEF91899CAE08C0D686D748B20A3603BE2318CA6BC2B59706592A9219D0BF05C9F65023A21D2330807252AE0066D59CEEFA5F2748EA80BAB81&quot;</code></li>
+<li><code>e</code>：<code>&quot;10001&quot;</code></li>
+</ul>
+<p>这里可以直接引库复现，也可以选择将算法部分扣下来，局部搜索 <code>var U = function</code>，在第 2043 行，将整个自执行函数扣下来，这里随机数后期写成固定值，后面也有随机数，不然会造成传参不匹配：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> U = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-comment">// 此处过长，省略</span>
+&#125;();
+<span class="hljs-comment">// 随机数, 一组四个数</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">t</span>(<span class="hljs-params"></span>) </span>&#123;
+    random_str = (<span class="hljs-number">65536</span> * (<span class="hljs-number">1</span> + <span class="hljs-built_in">Math</span>[<span class="hljs-string">&quot;random&quot;</span>]()) | <span class="hljs-number">0</span>)[<span class="hljs-string">&quot;toString&quot;</span>](<span class="hljs-number">16</span>)[<span class="hljs-string">&quot;substring&quot;</span>](<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> random_str;
+&#125;
+
+<span class="hljs-comment">// 随机数, 四个数一组, 四组</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRandomStr</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">return</span> t() + t() + t() + t();
+&#125;
+
+<span class="hljs-comment">// u 值</span>
+<span class="hljs-keyword">var</span> u = <span class="hljs-keyword">new</span> U()[<span class="hljs-string">&#x27;encrypt&#x27;</span>](getRandomStr());
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;u 参数的值为:&#x27;</span>, u);</code></pre>
+<p>运行后报错提示，<code>QBLnx is not defined</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/35.png" alt="35"></p>
+<p>其定义在第 136 行，是个函数对象，补上即可：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">QBLnx</span>(<span class="hljs-params"></span>) </span>&#123;&#125;;</code></pre>
+<p>运行后报错提示，<code>$_IBAe is not a function</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/36.png" alt="36"></p>
+<p>搜索后可知，其定义在第 128 行：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/37.png" alt="37"></p>
+<p>跟进过去将该部分扣下来：</p>
+<pre><code class="hljs JavaScript">QBLnx.$_CM = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> QBLnx.$_Ak.$_DBGGT === <span class="hljs-string">&#x27;function&#x27;</span> ? QBLnx.$_Ak.$_DBGGT.apply(QBLnx.$_Ak, <span class="hljs-built_in">arguments</span>) : QBLnx.$_Ak.$_DBGGT;
+&#125;;</code></pre>
+<p>接着报错提示，<code>Cannot read property '$_DBGGT' of undefined</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/38.png" alt="38"></p>
+<p>定义在第 7 行，直接将 <code>QBLnx.$_Ak</code> 整个扣下来即可，然后会报错提示，window 和 ht 未定义，ht 为 navigator：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/39.png" alt="39"></p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> <span class="hljs-built_in">window</span> = &#123;
+    <span class="hljs-string">&quot;navigator&quot;</span>: &#123;
+        <span class="hljs-string">&quot;appName&quot;</span>: <span class="hljs-string">&quot;Netscape&quot;</span>,
+    &#125;,
+&#125;
+
+ht = <span class="hljs-built_in">window</span>[<span class="hljs-string">&quot;navigator&quot;</span>];</code></pre>
+<p>又报错提示，<code>QBLnx.$_Db is not a function</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/40.png" alt="40"></p>
+<p>其定义在第 132 行，扣下来补上：</p>
+<pre><code class="hljs JavaScript">QBLnx.$_Db = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> QBLnx.$_BP.$_DBHGJ === <span class="hljs-string">&#x27;function&#x27;</span> ? QBLnx.$_BP.$_DBHGJ.apply(QBLnx.$_BP, <span class="hljs-built_in">arguments</span>) : QBLnx.$_BP.$_DBHGJ;
+&#125;;</code></pre>
+<p>报错提示，<code>Cannot read property '$_DBHGJ' of undefined</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/41.png" alt="41"></p>
+<p>通过搜索，其定义在第 68 行，将 <code>QBLnx.$_BP</code> 整个扣下来即可，至此，u 参数成功复现：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/42.png" alt="42"></p>
+<h4><span id="l-can-shu">l 参数</span></h4>
+<p>u 参数解决后，接着需要分析 l 参数，内容如下：</p>
+<pre><code class="hljs javascript"><span class="hljs-comment">// 混淆</span>
+l = V[$_CAIAt(<span class="hljs-number">353</span>)](gt[$_CAIAt(<span class="hljs-number">218</span>)](o), r[$_CAIAt(<span class="hljs-number">756</span>)]());
+<span class="hljs-comment">// 未混淆</span>
+l = V[<span class="hljs-string">&quot;encrypt&quot;</span>](gt[<span class="hljs-string">&quot;stringify&quot;</span>](o), r[<span class="hljs-string">&quot;$_CCEc&quot;</span>]());</code></pre>
+<p>可以知道，l 参数的结果是将 <code>gt[&quot;stringify&quot;](o)</code> 和 <code>r[&quot;$_CCEc&quot;]()</code> 加密后得到的，先来分析 <code>r[&quot;$_CCEc&quot;]()</code> ，选中后跟进进去，跳转到了熟悉的第 6208 行，就是之前的 16 位随机字符串：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/43.png" alt="43"></p>
+<p>将这里写成跟之前一样的固定值， <code>gt[&quot;stringify&quot;](o)</code> 返回的是 JSON 格式的数据，由 o 参数生成：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/44.png" alt="44"></p>
+<p>对比分析以下 o 参数中，哪些是定值，哪些是动态变化的，可以看到箭头所指的值都不一样了：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/45.png" alt="45"></p>
+<ul>
+<li><code>userresponse</code>：滑动距离 + challenge 的值；</li>
+<li><code>passtime</code>：滑块滑动时间；</li>
+<li><code>imgload</code>：图片加载时间；</li>
+<li><code>aa</code>：轨迹加密；</li>
+<li><code>ep-tm</code>：<code>window[&quot;performance&quot;][&quot;timing&quot;]</code> 相关；</li>
+<li><code>mocq</code>：每天 key、value 会变，后文分析；</li>
+<li><code>rp</code>：gt + 32 位 challenge + passtime，再经过 MD5 加密。</li>
+</ul>
+<p>接下来对关键值进行分析，先来分析下 <code>userresponse</code>，o 定义在第 6012 行：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/46.png" alt="46"></p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> o = &#123;
+    <span class="hljs-string">&quot;lang&quot;</span>: i[$_CAIAt(<span class="hljs-number">116</span>)] || $_CAHJd(<span class="hljs-number">103</span>),
+    <span class="hljs-string">&quot;userresponse&quot;</span>: H(t, i[$_CAHJd(<span class="hljs-number">182</span>)]),
+    <span class="hljs-string">&quot;passtime&quot;</span>: n,
+    <span class="hljs-string">&quot;imgload&quot;</span>: r[$_CAIAt(<span class="hljs-number">750</span>)],
+    <span class="hljs-string">&quot;aa&quot;</span>: e,
+    <span class="hljs-string">&quot;ep&quot;</span>: r[$_CAHJd(<span class="hljs-number">714</span>)]()
+&#125;;</code></pre>
+<p><code>userresponse</code> 定义在第 6014 行，需要分析 <code>H(t, i[$_CAHJd(182)])</code>，控制台打印一下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/47.png" alt="47"></p>
+<p>t 为滑动滑块的距离，需要注意的是 <code>i[$_CAHJd(182)]</code> 为第二个 <code>ajax.php?xxx</code> 传递的 <code>challenge</code>，比注册请求时的 <code>challenge</code> 长两位，再将 H 参数扣下来即可，其定义在第 704 行，报错提示，<code>$_CJFA is not defined</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/48.png" alt="48"></p>
+<p>定义在第 159 行：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> $_CJEl = QBLnx.$_CM
+, $_CJDa = [<span class="hljs-string">&#x27;$_CJHo&#x27;</span>].concat($_CJEl)
+, $_CJFA = $_CJDa[<span class="hljs-number">1</span>];</code></pre>
+<p>至此，<code>userresponse</code> 成功复现，接下来看 <code>passtime</code>，<code>n</code> 值此时已经生成了，为 1010，向上跟栈到 <code>$_CGlj</code> 中：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/49.png" alt="49"></p>
+<p><code>n[$_DAAAV(871)]</code> 为 <code>passtime</code> 值，定义在第 8164 行，为滑动结束时间 - 开始时间：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/50.png" alt="50"></p>
+<p>接下来分析下 <code>aa</code> 参数，其定义在第 6017 行，值由参数 <code>e</code> 传递，同样向上跟栈到 <code>$_CGlj</code> 中，为第 8168 行的 l 值，l 定义在第 8167 行，三个参数加密后得到：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/51.png" alt="51"></p>
+<ul>
+<li><code>n[$_DAAAV(913)][$_CJJJb(1066)]()</code> ：轨迹加密后的结果；</li>
+<li><code>n[$_DAAAV(69)][$_CJJJb(1097)]</code> ：c 值，在第二个 <code>get.php?xxx</code> 返回的响应中得到；</li>
+<li><code>n[$_DAAAV(69)][$_CJJJb(319)]</code> ：s 值，在第二个 <code>get.php?xxx</code> 返回的响应中得到。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/060/52.png" alt="52"></p>
+<p>接下来跟进到 <code>n[$_DAAAV(913)][$_CJJJb(1066)]</code> 中，分析下轨迹是如何加密的，在第 4065 行，于第 4133 行打下断点，第 4108 行的 <code>this[$_BEHAL(343)]</code> 即为轨迹值，关于轨迹算法后面会专门出一期文章：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/53.png" alt="53"></p>
+<p>将整个算法部分抠出来，先将轨迹值固定，写成参数传递进去，不然会报错提示，<code>Cannot read property 'length' of undefined</code>，因为轨迹值是别的算法生成的，不传值即为空，运行程序，会报错提示，<code>ct is not defined</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/54.png" alt="54"></p>
+<p>ct 定义在第 4223 行，扣下来，报错提示，<code>(intermediate value)[$_BEHAL(...)] is not a function</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/55.png" alt="55"></p>
+<p>定义在第 4326 行，补上以下内容，即可复现：</p>
+<pre><code class="hljs JavaScript">ct[<span class="hljs-string">&quot;prototype&quot;</span>] = &#123;
+<span class="hljs-string">&quot;\u0024\u005f\u0043\u0041\u0051&quot;</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>&#123;
+        <span class="hljs-keyword">var</span> $_BFFJi = QBLnx.$_CM
+            , $_BFFIX = [<span class="hljs-string">&#x27;$_BFGCq&#x27;</span>].concat($_BFFJi)
+            , $_BFGAT = $_BFFIX[<span class="hljs-number">1</span>];
+        $_BFFIX.shift();
+        <span class="hljs-keyword">var</span> $_BFGBV = $_BFFIX[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> e = <span class="hljs-built_in">this</span>[$_BFFJi(<span class="hljs-number">461</span>)];
+        <span class="hljs-keyword">if</span> (e[$_BFGAT(<span class="hljs-number">419</span>)])
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ct(e[$_BFFJi(<span class="hljs-number">419</span>)](t));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = [], r = <span class="hljs-number">0</span>, i = e[$_BFGAT(<span class="hljs-number">125</span>)]; r &lt; i; r += <span class="hljs-number">1</span>)
+            n[r] = t(e[r], r, <span class="hljs-built_in">this</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ct(n);
+    &#125;,
+&#125;;</code></pre>
+<p>结果对比一致：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/56.png" alt="56"></p>
+<p>后面三个参数的值都分析完了，回到第 8167 行 l 处，跟进到 <code>n[$_DAAAV(913)][$_DAAAV(1059)]</code> 中，在第 4135 行，扣下来即可：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getAA</span>(<span class="hljs-params">t, e, n</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> $_BEIJl = QBLnx.$_CM
+      , $_BEIIt = [<span class="hljs-string">&#x27;$_BEJC_&#x27;</span>].concat($_BEIJl)
+      , $_BEJAy = $_BEIIt[<span class="hljs-number">1</span>];
+    $_BEIIt.shift();
+    <span class="hljs-keyword">var</span> $_BEJBr = $_BEIIt[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">if</span> (!e || !n)
+        <span class="hljs-keyword">return</span> t;
+    <span class="hljs-keyword">var</span> r, i = <span class="hljs-number">0</span>, o = t, s = e[<span class="hljs-number">0</span>], a = e[<span class="hljs-number">2</span>], _ = e[<span class="hljs-number">4</span>];
+    <span class="hljs-keyword">while</span> (r = n[$_BEIJl(<span class="hljs-number">229</span>)](i, <span class="hljs-number">2</span>)) &#123;
+        i += <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">var</span> c = <span class="hljs-built_in">parseInt</span>(r, <span class="hljs-number">16</span>)
+          , u = <span class="hljs-built_in">String</span>[$_BEJAy(<span class="hljs-number">237</span>)](c)
+          , l = (s * c * c + a * c + _) % t[$_BEJAy(<span class="hljs-number">125</span>)];
+        o = o[$_BEJAy(<span class="hljs-number">229</span>)](<span class="hljs-number">0</span>, l) + u + o[$_BEJAy(<span class="hljs-number">229</span>)](l);
+    &#125;
+    <span class="hljs-keyword">return</span> o;
+&#125;;</code></pre>
+<p>将 c 和 s 写为固定值，对比结果一致：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/57.png" alt="57"></p>
+<p>aa 参数分析完成，接下来分析 rp 参数，定义在第 6076 行：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/58.png" alt="58"></p>
+<pre><code class="hljs JavaScript"><span class="hljs-comment">// 混淆</span>
+o[$_CAIAt(<span class="hljs-number">791</span>)] = X(i[$_CAIAt(<span class="hljs-number">104</span>)] + i[$_CAIAt(<span class="hljs-number">182</span>)][$_CAHJd(<span class="hljs-number">139</span>)](<span class="hljs-number">0</span>, <span class="hljs-number">32</span>) + o[$_CAHJd(<span class="hljs-number">704</span>)]);
+<span class="hljs-comment">// 未混淆</span>
+o[<span class="hljs-string">&quot;rp&quot;</span>] = X(i[<span class="hljs-string">&quot;gt&quot;</span>] + i[<span class="hljs-string">&quot;challenge&quot;</span>][<span class="hljs-string">&quot;slice&quot;</span>](<span class="hljs-number">0</span>, <span class="hljs-number">32</span>) + o[<span class="hljs-string">&quot;passtime&quot;</span>]);</code></pre>
+<p>后面三个参数都很明显了，跟进到 X 函数中，在第 1876 行，扣下来即可，对比结果一致：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/59.png" alt="59"></p>
+<p>这里是 MD5 加密，也可以直接通过引库复现：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/60.png" alt="60"></p>
+<p>ep 定义在第 6018 行，跟进到 <code>r[$_CAHJd(714)]</code> 中，tm 参数定义在第 6239 行：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/61.png" alt="61"></p>
+<p>跟进 <code>new bt()[$_CBGEC(760)]</code> 中，在第 5268 行打下断点，tm 结果如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/62.png" alt="62"></p>
+<p>o 中这个键值对内容每天都会变化：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/63.png" alt="63"></p>
+<p>在第 6021 行打下断点，此时的 o 中还没有生成以上键值对：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/64.png" alt="64"></p>
+<p>接着往下找，第 6026 行 <code>a = window[$_CAHJd(744)](s)</code> 执行之后 s 中生成了以上的键值对，所以跟进到 <code>window[$_CAHJd(744)]</code> 中，会跳转到 <code>gct.xxxxxxxx.js</code> 文件中，这个文件的路径可以从 get.php 接口获取到：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/65.png" alt="65"></p>
+<p>在该文件的第 1253 行打下断点，可以看到此时的 t 中已经生成了 <code>h9s9: &quot;1803797734&quot;</code> ：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/66.png" alt="66"></p>
+<p>跟进到 <code>StJC</code> 方法中，其定义在第 1202 行，在第 1208 行打下断点，键值对在此处生成，可以通过全局导出调用：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/67.png" alt="67"></p>
+<p>至此，参数 o 复现完毕，回到第 6078 行，分析完 <code>V[$_CAIAt(353)]</code> l 即完成，跟进，定义在第 3218 行，在第 3230 行打下断点，这里为 AES 加密，初始向量 iv 值为 <code>&quot;0000000000000000&quot;</code>：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/68.png" alt="68"></p>
+<p>直接引库复现：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">aesV</span>(<span class="hljs-params">o_text, random_str</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> key = CryptoJS.enc.Utf8.parse(random_str);
+    <span class="hljs-keyword">var</span> iv = CryptoJS.enc.Utf8.parse(<span class="hljs-string">&quot;0000000000000000&quot;</span>);
+    <span class="hljs-keyword">var</span> srcs = CryptoJS.enc.Utf8.parse(o_text);
+    <span class="hljs-keyword">var</span> encrypted = CryptoJS.AES.encrypt(srcs, key, &#123;
+        <span class="hljs-attr">iv</span>: iv,
+        <span class="hljs-attr">mode</span>: CryptoJS.mode.CBC,
+        <span class="hljs-attr">padding</span>: CryptoJS.pad.Pkcs7
+    &#125;);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> r = encrypted, o = r.ciphertext.words, i = r.ciphertext.sigBytes, s = [], a = <span class="hljs-number">0</span>; a &lt; i; a++) &#123;
+        <span class="hljs-keyword">var</span> c = o[a &gt;&gt;&gt; <span class="hljs-number">2</span>] &gt;&gt;&gt; <span class="hljs-number">24</span> - a % <span class="hljs-number">4</span> * <span class="hljs-number">8</span> &amp; <span class="hljs-number">255</span>;
+        s.push(c);
+    &#125;
+    <span class="hljs-keyword">return</span> s;
+&#125;;</code></pre>
+<p>对比结果一致：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/69.png" alt="69"></p>
+<p>l 参数分析完毕，终于只剩下一个 h 了，<code>m[$_CAIAt(782)](l)</code> 即将 l 加密后得到的，跟进 <code>m[$_CAIAt(782)]</code>，定义在第 1568 行，在第 1575 行打下断点，为 e 中两个 value 值相加：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/70.png" alt="70"></p>
+<p>e 定义在第 1574 行，t 为传入的 l 参数，跟进到 <code>this[$_GFJn(264)]</code> 中，在第 1523 行，复现如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/71.png" alt="71"></p>
+<p>校验结果一致：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/72.png" alt="72"></p>
+<p>w 参数至此终于全部复现完成！</p>
+<h3><span id="di-tu-huan-yuan">底图还原</span></h3>
+<p>前文说过，拿到的完整背景图以及带缺口背景图都是被打乱了的，这里需要还原才能计算滑动距离以及轨迹等，极验的底图是通过 Canvas 绘制出来的，直接打下事件断点：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/73.png" alt="73"></p>
+<p>点击按钮进行验证即会断住，格式化后跳转到第 295 行，</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/74.png" alt="74"></p>
+<p>简单解一波混淆，会清晰一些：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">$_BEG</span>(<span class="hljs-params">t, e</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> $_DAHHo = QBLnx.$_Db()[<span class="hljs-number">12</span>][<span class="hljs-number">19</span>];
+    <span class="hljs-keyword">for</span> (; $_DAHHo !== QBLnx.$_Db()[<span class="hljs-number">15</span>][<span class="hljs-number">16</span>];) &#123;
+        <span class="hljs-keyword">switch</span> ($_DAHHo) &#123;
+            <span class="hljs-keyword">case</span> QBLnx.$_Db()[<span class="hljs-number">15</span>][<span class="hljs-number">19</span>]:
+                t = t[<span class="hljs-string">&quot;$_CGz&quot;</span>],
+                e = e[<span class="hljs-string">&quot;$_CGz&quot;</span>];
+                <span class="hljs-keyword">var</span> n = t[<span class="hljs-string">&quot;width&quot;</span>]
+                    , r = t[<span class="hljs-string">&quot;height&quot;</span>]
+                    , i = h[<span class="hljs-string">&quot;createElement&quot;</span>](<span class="hljs-string">&quot;canvas&quot;</span>);
+                i[<span class="hljs-string">&quot;width&quot;</span>] = n,
+                i[<span class="hljs-string">&quot;height&quot;</span>] = r;
+                $_DAHHo = QBLnx.$_Db()[<span class="hljs-number">3</span>][<span class="hljs-number">18</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> QBLnx.$_Db()[<span class="hljs-number">0</span>][<span class="hljs-number">18</span>]:
+                <span class="hljs-keyword">var</span> o = i[<span class="hljs-string">&quot;getContext&quot;</span>](<span class="hljs-string">&quot;2d&quot;</span>);
+                o[<span class="hljs-string">&quot;drawImage&quot;</span>](t, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+                <span class="hljs-keyword">var</span> s = e[<span class="hljs-string">&quot;getContext&quot;</span>](<span class="hljs-string">&quot;2d&quot;</span>);
+                $_DAHHo = QBLnx.$_Db()[<span class="hljs-number">0</span>][<span class="hljs-number">17</span>];
+                <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">case</span> QBLnx.$_Db()[<span class="hljs-number">12</span>][<span class="hljs-number">17</span>]:
+                e[<span class="hljs-string">&quot;height&quot;</span>] = <span class="hljs-number">160</span>,
+                e[<span class="hljs-string">&quot;width&quot;</span>] = <span class="hljs-number">260</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = r / <span class="hljs-number">2</span>, _ = <span class="hljs-number">0</span>; _ &lt; <span class="hljs-number">52</span>; _ += <span class="hljs-number">1</span>) &#123;
+                    <span class="hljs-keyword">var</span> c = Ut[_] % <span class="hljs-number">26</span> * <span class="hljs-number">12</span> + <span class="hljs-number">1</span>
+                        , u = <span class="hljs-number">25</span> &lt; Ut[_] ? a : <span class="hljs-number">0</span>
+                        , l = o[<span class="hljs-string">&quot;getImageData&quot;</span>](c, u, <span class="hljs-number">10</span>, a);
+                    s[<span class="hljs-string">&quot;putImageData&quot;</span>](l, _ % <span class="hljs-number">26</span> * <span class="hljs-number">10</span>, <span class="hljs-number">25</span> &lt; _ ? a : <span class="hljs-number">0</span>);
+                &#125;
+                $_DAHHo = QBLnx.$_Db()[<span class="hljs-number">15</span>][<span class="hljs-number">16</span>];
+                <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+&#125;</code></pre>
+<p>控制流平坦化混淆，可以通过 AST 技术解混淆，AST 相关可以看往期文章：<a href="https://www.itbob.cn/article/051/">逆向进阶，利用 AST 技术还原 JavaScript 混淆代码</a>，这里就不对此进行讲解了，这里就是 Canvas 绘图的过程，关键乱序算法部分在 <code>QBLnx.$_Db()[12][17]</code> 中：</p>
+<pre><code class="hljs JavaScript">e[<span class="hljs-string">&quot;height&quot;</span>] = <span class="hljs-number">160</span>,
+e[<span class="hljs-string">&quot;width&quot;</span>] = <span class="hljs-number">260</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> a = r / <span class="hljs-number">2</span>, _ = <span class="hljs-number">0</span>; _ &lt; <span class="hljs-number">52</span>; _ += <span class="hljs-number">1</span>) &#123;
+    <span class="hljs-keyword">var</span> c = Ut[_] % <span class="hljs-number">26</span> * <span class="hljs-number">12</span> + <span class="hljs-number">1</span>
+        , u = <span class="hljs-number">25</span> &lt; Ut[_] ? a : <span class="hljs-number">0</span>
+        , l = o[<span class="hljs-string">&quot;getImageData&quot;</span>](c, u, <span class="hljs-number">10</span>, a);
+    s[<span class="hljs-string">&quot;putImageData&quot;</span>](l, _ % <span class="hljs-number">26</span> * <span class="hljs-number">10</span>, <span class="hljs-number">25</span> &lt; _ ? a : <span class="hljs-number">0</span>);
+&#125;</code></pre>
+<p>原图比例为 312 x 160，宽为 320，长为 160：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/75.png" alt="75"></p>
+<p><code>e[&quot;height&quot;] = 160</code>、<code>e[&quot;width&quot;] = 260</code> 指还原后的图片比例为 260 x 160，a 的值为 r / 2 即 80，就是将整张图片分为了上下两等分，再将图片纵向切割为了 26 等份，Ut 数组的长度为 52，<code>Ut[_]</code> 即依次取数组中的元素，<code>Ut</code> 数组即为图片还原的顺序，是固定的，<code>25 &lt; Ut[_] ? a : 0 </code> 判断图片是上半部分还是下半部分，<code>_ % 26 * 10</code> 表示每个小块取 10 px 像素，正确图片的顺序为：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/76.png" alt="76"></p>
+<pre><code class="hljs JavaScript">[<span class="hljs-number">39</span>,<span class="hljs-number">38</span>,<span class="hljs-number">48</span>,<span class="hljs-number">49</span>,<span class="hljs-number">41</span>,<span class="hljs-number">40</span>,<span class="hljs-number">46</span>,<span class="hljs-number">47</span>,<span class="hljs-number">35</span>,<span class="hljs-number">34</span>,<span class="hljs-number">50</span>,<span class="hljs-number">51</span>,<span class="hljs-number">33</span>,<span class="hljs-number">32</span>,<span class="hljs-number">28</span>,<span class="hljs-number">29</span>,<span class="hljs-number">27</span>,<span class="hljs-number">26</span>,<span class="hljs-number">36</span>,<span class="hljs-number">37</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">44</span>,<span class="hljs-number">45</span>,<span class="hljs-number">43</span>,<span class="hljs-number">42</span>,<span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">23</span>,<span class="hljs-number">22</span>,<span class="hljs-number">14</span>,<span class="hljs-number">15</span>,<span class="hljs-number">21</span>,<span class="hljs-number">20</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">25</span>,<span class="hljs-number">24</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">11</span>,<span class="hljs-number">10</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">19</span>,<span class="hljs-number">18</span>,<span class="hljs-number">16</span>,<span class="hljs-number">17</span>]</code></pre>
+<p>示例：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/77.png" alt="77"></p>
+<p>Python 复现：</p>
+<pre><code class="hljs JavaScript">def restore_picture():
+    img_list = [<span class="hljs-string">&quot;./乱序缺口背景图.png&quot;</span>, <span class="hljs-string">&quot;./乱序背景图.png&quot;</span>]
+    <span class="hljs-keyword">for</span> index, img <span class="hljs-keyword">in</span> enumerate(img_list):
+        image = Image.open(img)
+        s = Image.new(<span class="hljs-string">&quot;RGBA&quot;</span>, (<span class="hljs-number">260</span>, <span class="hljs-number">160</span>))
+        ut = [<span class="hljs-number">39</span>, <span class="hljs-number">38</span>, <span class="hljs-number">48</span>, <span class="hljs-number">49</span>, <span class="hljs-number">41</span>, <span class="hljs-number">40</span>, <span class="hljs-number">46</span>, <span class="hljs-number">47</span>, <span class="hljs-number">35</span>, <span class="hljs-number">34</span>, <span class="hljs-number">50</span>, <span class="hljs-number">51</span>, <span class="hljs-number">33</span>, <span class="hljs-number">32</span>, <span class="hljs-number">28</span>, <span class="hljs-number">29</span>, <span class="hljs-number">27</span>, <span class="hljs-number">26</span>, <span class="hljs-number">36</span>, <span class="hljs-number">37</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, <span class="hljs-number">44</span>, <span class="hljs-number">45</span>, <span class="hljs-number">43</span>,<span class="hljs-number">42</span>,<span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">23</span>, <span class="hljs-number">22</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">21</span>, <span class="hljs-number">20</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">25</span>, <span class="hljs-number">24</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">11</span>, <span class="hljs-number">10</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">19</span>, <span class="hljs-number">18</span>, <span class="hljs-number">16</span>, <span class="hljs-number">17</span>]
+        height_half = <span class="hljs-number">80</span>
+        <span class="hljs-keyword">for</span> inx <span class="hljs-keyword">in</span> range(<span class="hljs-number">52</span>):
+            c = ut[inx] % <span class="hljs-number">26</span> * <span class="hljs-number">12</span> + <span class="hljs-number">1</span>
+            u = height_half <span class="hljs-keyword">if</span> ut[inx] &gt; <span class="hljs-number">25</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            l_ = image.crop(box=(c, u, c + <span class="hljs-number">10</span>, u + <span class="hljs-number">80</span>))
+            s.paste(l_, box=(inx % <span class="hljs-number">26</span> * <span class="hljs-number">10</span>, <span class="hljs-number">80</span> <span class="hljs-keyword">if</span> inx &gt; <span class="hljs-number">25</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>))
+        <span class="hljs-keyword">if</span> index == <span class="hljs-number">0</span>:
+            s.save(<span class="hljs-string">&quot;./缺口背景图片.png&quot;</span>)
+        <span class="hljs-attr">else</span>:
+            s.save(<span class="hljs-string">&quot;./背景图片.png&quot;</span>)</code></pre>
+<p>还原后如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/78.png" alt="78"></p>
+<h3><span id="cuo-wu-jie-guo">错误结果</span></h3>
+<pre><code class="hljs JavaScript"><span class="hljs-comment">// challenge 不对</span>
+geetest_xxxxxxxxxxxxx(&#123;<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;illegal challenge&quot;</span>, <span class="hljs-string">&quot;user_error&quot;</span>: <span class="hljs-string">&quot;\u7f51\u7edc\u4e0d\u7ed9\u529b&quot;</span>, <span class="hljs-string">&quot;error_code&quot;</span>: <span class="hljs-string">&quot;error_23&quot;</span>&#125;)
+<span class="hljs-comment">// w 不对</span>
+geetest_xxxxxxxxxxxxx(&#123;<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;param decrypt error&quot;</span>, <span class="hljs-string">&quot;user_error&quot;</span>: <span class="hljs-string">&quot;\u7f51\u7edc\u4e0d\u7ed9\u529b&quot;</span>, <span class="hljs-string">&quot;error_code&quot;</span>: <span class="hljs-string">&quot;error_03&quot;</span>&#125;)
+<span class="hljs-comment">// 无轨迹</span>
+geetest_xxxxxxxxxxxxx(&#123;<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;not proof&quot;</span>, <span class="hljs-string">&quot;user_error&quot;</span>: <span class="hljs-string">&quot;\u7f51\u7edc\u4e0d\u7ed9\u529b&quot;</span>, <span class="hljs-string">&quot;error_code&quot;</span>: <span class="hljs-string">&quot;error_21&quot;</span>&#125;)
+<span class="hljs-comment">// 轨迹、缺口距离、参数问题</span>
+geetest_xxxxxxxxxxxxx(&#123;<span class="hljs-string">&quot;success&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;fail&quot;</span>&#125;)
+geetest_xxxxxxxxxxxxx(&#123;<span class="hljs-string">&quot;success&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;forbidden&quot;</span>&#125;)</code></pre>
+<h3><span id="jie-guo-yan-zheng">结果验证</span></h3>
+<p>100 次大概 95% 的成功率：</p>
+<p><img src="https://cdn.itbob.cn/img/article/060/79.jpg" alt="79"></p>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/061/" 
+                            class="post-title gt-a-link">极验行为验证，四代滑块验证码逆向分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/059/" 
+                            class="post-title gt-a-link">极验行为验证，二代滑块验证码逆向分析</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <!-- 建议保留版权信息或者添加主题信息到友链，感谢您的理解 -->
+        <!-- 文件位置：layout/_includes/footer.ejs -->
+        <!-- <span style="text-align: right; float: right;">
+            Theme 
+            <a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a>
+             | Powered by
+            <a href="https://hexo.io" target="_blank">Hexo</a>
+        </span>
+        <span style="text-align: left;"></span> -->
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">296.8k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "
+                    + "<font style='color:#FE3C65;font-weight:bold'>" + diffYears + "</font>" + " 年 "
+                    + "<font style='color:#FFA500;font-weight:bold'>" + diffDays + "</font>" + " 天 "
+                    + "<font style='color:#1DBF97;font-weight:bold'>" + diffHours + "</font>" + " 小时 "
+                    + "<font style='color:#8A2BE2;font-weight:bold'>" + diffMinutes + "</font>" + " 分 "
+                    + "<font style='color:#007EC6;font-weight:bold'>" + diffSeconds + "</font>" + " 秒 ";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://webify.cloudbase.net/" target="_blank"> 云开发 Webify</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+    </div>
+</div>
+
+<!-- <div class="sidebar_wo" id="leimu">
+    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+</div>
+<div class="sidebar_wo" id="lamu">
+    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+</div> -->
+
+<script>
+    /* 拉姆蕾姆回到顶部或底部按钮 */
+    $(function() {
+        $("#leimu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:$(document).height()},800);
+            return false;
+        });
+        $("#lamu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:0},800);
+            return false;
+        });
+    });
+</script>
+
+            </div>
+        </div>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
+        <script>
+            (function () {
+                // When to show the scroll link
+                // higher number = scroll link appears further down the page   
+                var upperLimit = 100;
+                
+                // Our scroll link element
+                var scrollElem = $('#back-to-top');
+            
+                // Scroll to top speed
+                var scrollSpeed = 500;
+            
+                // Show and hide the scroll to top link based on scroll position   
+                scrollElem.hide();
+                $(window).scroll(function () {            
+                    var scrollTop = $(document).scrollTop();       
+                    if ( scrollTop > upperLimit ) {
+                        $(scrollElem).stop().fadeTo(200, 1); // fade back in           
+                    }else{       
+                        $(scrollElem).stop().fadeTo(200, 0); // fade out
+                    }
+                });
+
+                // Scroll to top animation on click
+                $(scrollElem).click(function(){
+                    $('html, body').animate({scrollTop:0}, scrollSpeed); return false;
+                });
+            })();
+        </script>
+    </body>
+</html>
