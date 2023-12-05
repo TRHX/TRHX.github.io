@@ -1,0 +1,732 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>极验四代五子棋、消消乐验证码逆向分析 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- https://fontawesome.dashgame.com/ -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "IT.BOB",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://spiderbox.cn/" class="menu gt-a-link" target="_blank">虫盒</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://spiderapi.cn/" class="menu gt-a-link" target="_blank">虫术</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://www.travellings.cn/go.html" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">极验四代五子棋、消消乐验证码逆向分析</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2023-03-14丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 1.9k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 8分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            爬虫</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            验证码逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><img src="https://cdn.itbob.cn/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
+<p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<hr>
+<!-- toc -->
+<ul>
+<li><a href="#sheng-ming">声明</a></li>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#tong-xun-liu-cheng">通讯流程</a></li>
+<li><a href="#xiao-xiao-le-liu-cheng-fen-xi">消消乐流程分析</a></li>
+<li><a href="#ni-xiang-fen-xi">逆向分析</a>
+<ul>
+<li><a href="#w-can-shu">w 参数</a></li>
+</ul>
+</li>
+<li><a href="#xiao-xiao-le-jie-guo-yan-zheng">消消乐结果验证</a></li>
+<li><a href="#wu-zi-qi-liu-cheng-fen-xi">五子棋流程分析</a></li>
+<li><a href="#wu-zi-qi-jie-guo-yan-zheng">五子棋结果验证</a></li>
+<li><a href="#wu-zi-qi-he-xiao-xiao-le-suan-fa">五子棋和消消乐算法</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="sheng-ming">声明</span></h2>
+<p><strong><font color="red">本文章中所有内容仅供学习交流使用，不用于其他任何目的，不提供完整代码，抓包内容、敏感网址、数据接口等均已做脱敏处理，严禁用于商业用途和非法用途，否则由此产生的一切后果均与作者无关！</font></strong></p>
+<p><strong><font color="red">本文章未经许可禁止转载，禁止任何修改后二次传播，擅自使用本文讲解的技术而导致的任何意外，作者均不负责，若有侵权，请通过邮件 <a href="mailto:admin@itbob.cn">admin@itbob.cn</a> 联系我立即删除！</font></strong></p>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
+<ul>
+<li>
+<p>目标：某验四代消消乐、五子棋验证码，w 参数逆向及算法分析</p>
+</li>
+<li>
+<p>行为验证 4.0 demo：<code>aHR0cHM6Ly9ndDQuZ2VldGVzdC5jb20v</code></p>
+</li>
+<li>
+<p>加密算法：RSA、AES、MD5</p>
+</li>
+</ul>
+<h2><span id="tong-xun-liu-cheng">通讯流程</span></h2>
+<p><img src="https://cdn.itbob.cn/img/article/065/01.png" alt="01"></p>
+<h2><span id="xiao-xiao-le-liu-cheng-fen-xi">消消乐流程分析</span></h2>
+<p><img src="https://cdn.itbob.cn/img/article/065/02.png" alt="02"></p>
+<p>进入网页后，F12 进行抓包，选择消消乐验证码，抓包到 <code>load</code> 接口：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/03.png" alt="03"></p>
+<ul>
+<li><code>captcha_id</code>：验证码 id，固定值，四代滑块文章中有讲；</li>
+<li><code>challenge</code>：动态变化，由 <code>gtc4.js</code> 文件生成，四代滑块文章中有讲；</li>
+<li><code>client_type</code>：web 端；</li>
+<li><code>risk_type</code>：验证码类型，例如滑块为 slide，无感为 ai，消消乐为 match；</li>
+<li><code>lang</code>：语言；</li>
+<li><code>callback</code>：回调参数，<code>geetest_</code> + 时间戳。</li>
+</ul>
+<p>响应预览中返回的关键内容如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/04.png" alt="04"></p>
+<ul>
+<li><code>captcha_type</code>：验证码类型；</li>
+<li><code>gct_path</code>：gct4 文件路径；</li>
+<li><code>lot_number</code>：生成 pow_msg、w 的关键参数；</li>
+<li><code>payload</code>：verify 请求参数；</li>
+<li><code>datetime</code>：ISO 8601 扩展格式的日期，生成 pow_msg 的关键参数；</li>
+<li><code>process_token</code>：verify 请求参数；</li>
+<li><code>ques</code>：消消乐矩阵（3x3），每个数字代表一种颜色，将三个相同数字换到同一列或同一行即可通过。</li>
+</ul>
+<p>点击验证按钮，弹出消消乐验证码，移动图案之后，抓包到 <code>verify</code> 校验接口：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/05.png" alt="05"></p>
+<ul>
+<li><code>captcha_id</code>：与 load 请求头中的 captcha_id 一致；</li>
+<li><code>client_type</code>：web 端；</li>
+<li><code>lot_number</code>：load 响应返回；</li>
+<li><code>risk_type</code>：验证码类型；</li>
+<li><code>payload</code>：load 响应返回；</li>
+<li><code>process_token</code>：load 响应返回；</li>
+<li><code>payload_protocol</code>：1；</li>
+<li><code>pt</code>：1；</li>
+<li><code>w</code>：加密参数，由轨迹、passtime、userresponse 等参数加密得到；</li>
+<li><code>callback</code>：回调参数，<code>geetest_</code> + 时间戳。</li>
+</ul>
+<p>响应预览中返回的内容如下，result 值为 success 即校验通过，fail 即校验失败，携带 seccode 下的五个参数请求 login 接口，即可登录成功：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/06.png" alt="06"></p>
+<h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
+<h3><span id="w-can-shu">w 参数</span></h3>
+<p>四代的基本流程都是差不多的，直接搜索特征值 <code>&quot;\u0077&quot;</code> 即可定位到 w 参数生成的位置，先全局搜索 <code>&quot;\u0077&quot;</code>，找到对应的 js 文件，点击进去格式化后，再 ctrl + f 局部搜索定位关键位置：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/07.png" alt="07"></p>
+<p>在第 6251 行打下断点，移动图案即会断住，<code>r</code> 即 <code>w</code> 参数的值：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/08.png" alt="08"></p>
+<p>跟进 r 生成的位置，其定义在第 6237 行，可以看到加密方式与四代滑块是一样的：</p>
+<pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> r = (<span class="hljs-number">0</span>,d.default)(f.default.stringify(e), i)</code></pre>
+<p>唯一不同的就是 e 中参数值的构成，以下是四代滑块与消消乐的对比：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/09.png" alt="09"></p>
+<p>可以看到不同点在于四代滑块 e 中参数包括 <code>setLeft</code>（缺口距离）、<code>track</code>（滑动轨迹），自然消消乐是没有的，<code>userresponse</code> 在滑块中是数值计算，而消消乐中是交换的两个图片的坐标，举个例子：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/10.png" alt="10"></p>
+<p>上图中的验证码，接口返回的 <code>ques</code> 值为：</p>
+<pre><code class="hljs javascript">ques = [
+    [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>], 
+    [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>], 
+    [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+]</code></pre>
+<p><code>ques[0]</code>、<code>ques[1]</code>、<code>ques[2]</code> 分别对应验证码的第0列、第1列、第2列，注意是列，不是行！而我们只需要关心 ques 数组里的交换即可，正确应该交换第0行第1列和第0行第0列，那么 <code>userresponse</code> 的值应该为：<code>[[0, 1], [0, 0]]</code>。</p>
+<p>其他参数值的生成都是一样的方式，具体可以阅读 K 哥往期文章<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/zNb1uyzwU7a5n-zfRbN3bw">《【验证码逆向专栏】某验四代滑块验证码逆向分析》</a>，这里就不再重复写了。</p>
+<h2><span id="xiao-xiao-le-jie-guo-yan-zheng">消消乐结果验证</span></h2>
+<p>只要 JS 和交换的坐标没问题，成功率就为 100%。</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/11.png" alt="11"></p>
+<h2><span id="wu-zi-qi-liu-cheng-fen-xi">五子棋流程分析</span></h2>
+<p><img src="https://cdn.itbob.cn/img/article/065/12.png" alt="12"></p>
+<p>五子棋的流程跟消消乐一样，进入网页后，F12 进行抓包，选择五子棋验证码，抓包到 <code>load</code> 接口：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/13.png" alt="13"></p>
+<ul>
+<li><code>captcha_id</code>：验证码 id，固定值，四代滑块文章中有讲；</li>
+<li><code>challenge</code>：动态变化，由 <code>gtc4.js</code> 文件生成，四代滑块文章中有讲；</li>
+<li><code>client_type</code>：web 端；</li>
+<li><code>risk_type</code>：验证码类型，例如滑块为 slide，无感为 ai，五子棋为 winlinze；</li>
+<li><code>lang</code>：语言；</li>
+<li><code>callback</code>：回调参数，geetest_ + 时间戳。</li>
+</ul>
+<p>响应预览中返回的关键内容如下：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/14.png" alt="14"></p>
+<ul>
+<li><code>captcha_type</code>：验证码类型；</li>
+<li><code>gct_path</code>：gct4 文件路径；</li>
+<li><code>lot_number</code>：生成 pow_msg、w 的关键参数；</li>
+<li><code>payload</code>：verify 请求参数；</li>
+<li><code>datetime</code>：ISO 8601 扩展格式的日期，生成 pow_msg 的关键参数；</li>
+<li><code>process_token</code>：verify 请求参数；</li>
+<li><code>ques</code>：五子棋矩阵（5x5），每个数字代表一种颜色，0 表示空位，将五个相同数字换到同一列、同一行或对角线上即可通过。</li>
+</ul>
+<p>其他的与消消乐是一样的，e 参数如下，其中 <code>userresponse</code> 就是需要交换的两个棋子的坐标：</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/15.png" alt="15"></p>
+<h2><span id="wu-zi-qi-jie-guo-yan-zheng">五子棋结果验证</span></h2>
+<p>同样的，只要 JS 和交换的坐标没问题，成功率就为 100%。</p>
+<p><img src="https://cdn.itbob.cn/img/article/065/16.png" alt="16"></p>
+<h2><span id="wu-zi-qi-he-xiao-xiao-le-suan-fa">五子棋和消消乐算法</span></h2>
+<p>以下是消消乐和五子棋坐标交换的 Python 算法，注意是交换坐标的算法哟，不是全部的代码哈，消消乐大概30来行，五子棋大概60来行，还是很简单的，有需要的可以看看。</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">match_algorithm</span>(<span class="hljs-params">ques</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;消消乐算法&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># 横向查找</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_x</span>(<span class="hljs-params">matrix</span>):</span>
+        <span class="hljs-keyword">for</span> index, array <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(matrix):
+            unique_list = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">set</span>(array))
+            two_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array.count(x) == <span class="hljs-number">2</span>]
+            <span class="hljs-keyword">if</span> two_num:
+                one_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array.count(x) == <span class="hljs-number">1</span>]
+                one_num_index = array.index(one_num[<span class="hljs-number">0</span>])
+                <span class="hljs-keyword">if</span> index == <span class="hljs-number">0</span>:
+                    <span class="hljs-keyword">if</span> matrix[index+<span class="hljs-number">1</span>][one_num_index] == two_num[<span class="hljs-number">0</span>]:
+                        <span class="hljs-keyword">return</span> [[index+<span class="hljs-number">1</span>, one_num_index], [index, one_num_index]]
+                <span class="hljs-keyword">if</span> index == <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">if</span> matrix[index-<span class="hljs-number">1</span>][one_num_index] == two_num[<span class="hljs-number">0</span>]:
+                        <span class="hljs-keyword">return</span> [[index-<span class="hljs-number">1</span>, one_num_index], [index, one_num_index]]
+                    <span class="hljs-keyword">if</span> matrix[index+<span class="hljs-number">1</span>][one_num_index] == two_num[<span class="hljs-number">0</span>]:
+                        <span class="hljs-keyword">return</span> [[index+<span class="hljs-number">1</span>, one_num_index], [index, one_num_index]]
+                <span class="hljs-keyword">if</span> index == <span class="hljs-number">2</span>:
+                    <span class="hljs-keyword">if</span> matrix[index-<span class="hljs-number">1</span>][one_num_index] == two_num[<span class="hljs-number">0</span>]:
+                        <span class="hljs-keyword">return</span> [[index-<span class="hljs-number">1</span>, one_num_index], [index, one_num_index]]
+
+    <span class="hljs-comment"># 纵向查找</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_y</span>(<span class="hljs-params">matrix</span>):</span>
+        <span class="hljs-comment"># 转置原数组</span>
+        transposition_array = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">list</span>, <span class="hljs-built_in">zip</span>(*matrix)))
+        x_result = check_x(transposition_array)
+        actual_result = [[x_result[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>], x_result[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]], [x_result[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], x_result[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]]]
+        <span class="hljs-keyword">return</span> actual_result
+
+    result = check_x(ques)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result:
+        result = check_y(ques)
+    <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">winlinze_algorithm</span>(<span class="hljs-params">ques</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;五子棋算法&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># 横向查找</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_x</span>(<span class="hljs-params">matrix</span>):</span>
+        <span class="hljs-keyword">for</span> index1, array1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(matrix):
+            unique_list = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">set</span>(array1))
+            four_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array1.count(x) == <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> x != <span class="hljs-number">0</span>]
+            <span class="hljs-keyword">if</span> four_num:
+                one_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array1.count(x) == <span class="hljs-number">1</span>]
+                one_num_index = array1.index(one_num[<span class="hljs-number">0</span>])
+                <span class="hljs-keyword">for</span> index2, array2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(matrix):
+                    <span class="hljs-keyword">for</span> arr <span class="hljs-keyword">in</span> array2:
+                        <span class="hljs-keyword">if</span> four_num[<span class="hljs-number">0</span>] == arr <span class="hljs-keyword">and</span> index2 != index1:
+                            arr_index = array2.index(arr)
+                            <span class="hljs-keyword">return</span> [[index2, arr_index], [index1, one_num_index]]
+
+    <span class="hljs-comment"># 纵向查找</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_y</span>(<span class="hljs-params">matrix</span>):</span>
+        transposition_array = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">list</span>, <span class="hljs-built_in">zip</span>(*matrix)))
+        x_result = check_x(transposition_array)
+        <span class="hljs-keyword">if</span> x_result:
+            actual_result = [[x_result[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>], x_result[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]], [x_result[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], x_result[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]]]
+            <span class="hljs-keyword">return</span> actual_result
+
+    <span class="hljs-comment"># 对角查找(左 → 右: \)</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_left_to_right</span>(<span class="hljs-params">matrix</span>):</span>
+        array_left_to_right = []
+        <span class="hljs-keyword">for</span> index1, array1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(matrix):
+            array_left_to_right.append(array1[index1])
+        unique_list = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">set</span>(array_left_to_right))
+        four_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array_left_to_right.count(x) == <span class="hljs-number">4</span> <span class="hljs-keyword">and</span> x != <span class="hljs-number">0</span>]
+        <span class="hljs-keyword">if</span> four_num:
+            one_num = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> unique_list <span class="hljs-keyword">if</span> array_left_to_right.count(x) == <span class="hljs-number">1</span>]
+            one_num_index = array_left_to_right.index(one_num[<span class="hljs-number">0</span>])
+            <span class="hljs-keyword">for</span> index2, array2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(matrix):
+                <span class="hljs-keyword">for</span> index3, array3 <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(array2):
+                    <span class="hljs-keyword">if</span> four_num[<span class="hljs-number">0</span>] == array3 <span class="hljs-keyword">and</span> index2 != index3:
+                        <span class="hljs-keyword">return</span> [[index2, index3], [one_num_index, one_num_index]]
+
+    <span class="hljs-comment"># 对角查找(右 → 左: /)</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_right_to_left</span>(<span class="hljs-params">matrix</span>):</span>
+        reverse_matrix = [m[::-<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> matrix]
+        res = check_left_to_right(reverse_matrix)
+        actual_result = []
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> res:
+            <span class="hljs-keyword">if</span> i[<span class="hljs-number">1</span>] &lt; <span class="hljs-number">2</span>:
+                actual_result.append([i[<span class="hljs-number">0</span>], i[<span class="hljs-number">1</span>]+<span class="hljs-number">2</span>])
+            <span class="hljs-keyword">elif</span> i[<span class="hljs-number">1</span>] &gt; <span class="hljs-number">2</span>:
+                actual_result.append([i[<span class="hljs-number">0</span>], i[<span class="hljs-number">1</span>]-<span class="hljs-number">2</span>])
+            <span class="hljs-keyword">else</span>:
+                actual_result.append([i[<span class="hljs-number">0</span>], i[<span class="hljs-number">1</span>]])
+        <span class="hljs-keyword">return</span> actual_result
+
+    result = check_x(ques)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result:
+        result = check_y(ques)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result:
+        result = check_left_to_right(ques)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result:
+        result = check_right_to_left(ques)
+    <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-comment"># 消消乐示例</span>
+match_ques = [
+    [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], 
+    [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>], 
+    [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>]
+]
+
+<span class="hljs-comment"># 五子棋示例</span>
+winlinze_ques = [
+    [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], 
+    [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>], 
+    [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], 
+    [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>], 
+    [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+]
+
+match_result = match_algorithm(match_ques)
+winlinze_result = winlinze_algorithm(winlinze_ques)
+
+<span class="hljs-built_in">print</span>(match_result)
+<span class="hljs-built_in">print</span>(winlinze_result)</code></pre>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/066/" 
+                            class="post-title gt-a-link">极验三代、四代点选类验证码逆向分析</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/064/" 
+                            class="post-title gt-a-link">极验三代、四代无感验证（一键通过）逆向分析</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp.png" class="nofancybox" alt="ICP" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <!-- <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌ICP备20202022号</a>丨 -->
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 Webify" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a> 赞助CDN/COS服务丨
+            <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a>
+        </span>
+        <br/>
+        <br/>
+
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">314.6k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+        
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "
+                    + "<font style='color:#FE3C65;font-weight:bold'>" + diffYears + "</font>" + " 年 "
+                    + "<font style='color:#FFA500;font-weight:bold'>" + diffDays + "</font>" + " 天 "
+                    + "<font style='color:#1DBF97;font-weight:bold'>" + diffHours + "</font>" + " 小时 "
+                    + "<font style='color:#8A2BE2;font-weight:bold'>" + diffMinutes + "</font>" + " 分 "
+                    + "<font style='color:#007EC6;font-weight:bold'>" + diffSeconds + "</font>" + " 秒 ";
+                }
+                siteTime();
+            </script>
+        </span>
+    </div>
+</div>
+
+<!-- <div class="sidebar_wo" id="leimu">
+    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+</div>
+<div class="sidebar_wo" id="lamu">
+    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+</div> -->
+
+<script>
+    /* 拉姆蕾姆回到顶部或底部按钮 */
+    $(function() {
+        $("#leimu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:$(document).height()},800);
+            return false;
+        });
+        $("#lamu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:0},800);
+            return false;
+        });
+    });
+</script>
+
+            </div>
+        </div>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
+        <script>
+            (function () {
+                // When to show the scroll link
+                // higher number = scroll link appears further down the page   
+                var upperLimit = 100;
+                
+                // Our scroll link element
+                var scrollElem = $('#back-to-top');
+            
+                // Scroll to top speed
+                var scrollSpeed = 500;
+            
+                // Show and hide the scroll to top link based on scroll position   
+                scrollElem.hide();
+                $(window).scroll(function () {            
+                    var scrollTop = $(document).scrollTop();       
+                    if ( scrollTop > upperLimit ) {
+                        $(scrollElem).stop().fadeTo(200, 1); // fade back in           
+                    }else{       
+                        $(scrollElem).stop().fadeTo(200, 0); // fade out
+                    }
+                });
+
+                // Scroll to top animation on click
+                $(scrollElem).click(function(){
+                    $('html, body').animate({scrollTop:0}, scrollSpeed); return false;
+                });
+            })();
+        </script>
+    </body>
+</html>

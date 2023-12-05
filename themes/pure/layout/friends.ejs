@@ -5,9 +5,28 @@
             <div class="post-content">
                 <h3 id="linklist">我的信息</h3>
                 <div class="friends-desc"><%- page.content %></div>
+
+                <h3 id="linklist">逆向安全</h3>
+                    <% page.reverse.forEach(function(reverse) { %>
+                        <div class="friend-box">
+                            <a href="<%= reverse.link %>" target="_blank" rel="noopener nofollow">
+                                <img class="friend-avatar" src="<%= reverse.logo %>" loading="lazy">
+                            </a>
+                            <div class="friend-info">
+                                <a class="friend-info-title gt-c-content-color-first" 
+                                    href="<%= reverse.link %>" target="_blank" 
+                                    rel="noopener nofollow"><%= reverse.name %></a>
+                                <br>
+                                <div class="friend-info-description gt-c-content-color-first">
+                                    <%= reverse.description %>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+
                 <h3 id="linklist">友链列表</h3>
-                <% if (theme.friends) { %>
-                    <% theme.friends.forEach(function(friend) { %>
+                <% if (page.friends) { %>
+                    <% page.friends.forEach(function(friend) { %>
                         <div class="friend-box">
                             <a href="<%= friend.link %>" target="_blank" rel="noopener nofollow">
                                 <img class="friend-avatar" src="<%= friend.logo %>" loading="lazy">
@@ -26,6 +45,24 @@
                 <% } else { %>
                     暂无友链，快来申请吧！
                 <% } %>
+
+                <h3 id="linklist">爱情博客</h3>
+                <% page.love.forEach(function(love) { %>
+                    <div class="friend-box">
+                        <a href="<%= love.link %>" target="_blank" rel="noopener nofollow">
+                            <img class="friend-avatar" src="<%= love.logo %>" loading="lazy">
+                        </a>
+                        <div class="friend-info">
+                            <a class="friend-info-title gt-c-content-color-first" 
+                                href="<%= love.link %>" target="_blank" 
+                                rel="noopener nofollow"><%= love.name %></a>
+                            <br>
+                            <div class="friend-info-description gt-c-content-color-first">
+                                <%= love.description %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
             </div>
         </article>
     </div>

@@ -3,30 +3,63 @@ title: 关于
 layout: about
 ---
 
-<div class="text-roll">
+<img class="nofancybox" src="https://cdn.itbob.cn/img/about/bob.png" alt="I'M BOB"/>
+<br>
+<!-- <div class="text-roll">
     <p>
         <span>ITBOB ● 鲍勃</span>
-        WWW.ITBOB.CN
     </p>
-</div>
+</div> -->
 
-![](https://cdn.itbob.cn/img/bob.png)
+<div class="group">
+    <a href="https://cdn.itbob.cn/img/about/qq_group_hexo.jpg" title="点击扫码加入 Hexo 博客交流群">Hexo 博客交流群</a>丨
+    <a href="https://cdn.itbob.cn/img/about/qq_group_spider.jpg" title="点击扫码加入爬虫逆向 QQ 交流群">爬虫逆向 QQ 交流群</a>丨
+    <a href="https://cdn.itbob.cn/img/about/weixin.jpg" title="点击扫码加入爬虫逆向微信交流群（备注交流群）">爬虫逆向微信交流群（备注交流群）</a>
+</div>
+<br>
+
+<div class="contact">
+    <a href="https://itbob.cn/" title="Hexo 引导页">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_hexo.png" alt="Hexo 引导页"/>
+    </a>
+    <a href="https://github.com/TRHX" title="GitHub">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_github.png" alt="GitHub"/>
+    </a>
+    <a href="https://itrhx.blog.csdn.net/?type=blog" title="CSDN">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_csdn.png" alt="CSDN"/>
+    </a>
+    <a href="https://www.zhihu.com/people/itrhx" title="知乎">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_zhihu.png" alt="知乎"/>
+    </a>
+    <a href="https://cdn.itbob.cn/img/about/mp.weixin.png" title="微信公众号">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_mp.weixin.png" alt="微信公众号"/>
+    </a>
+    <a href="https://cdn.itbob.cn/img/about/weixin.jpg" title="个人微信">
+        <img class="nofancybox weixin" src="https://cdn.itbob.cn/img/about/logo_weixin.png" alt="个人微信"/>
+    </a>
+    <a href="http://discordapp.com/users/1124152819423920188" title="Discord">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_discord.png" alt="Discord"/>
+    </a>
+    <a href="https://t.me/itbob1" title="Telegram">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_telegram.png" alt="Telegram"/>
+    </a>
+    <a href="https://wotgame.cn/zh-cn/community/accounts/7050733952-%E8%88%92%E5%B0%8F%E5%85%8B%E4%B8%8E%E8%B4%9D%E5%B0%8F%E5%A1%94/" title="WOT 坦克世界">
+        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_wot.png" alt="WOT 坦克世界"/>
+    </a>
+</div>
 
 ### About
 
-- 👨‍💻 语言：Python、JavaScript、Java；
-- 👨‍🎓 专注：网络爬虫、逆向安全（JS、APP、小程序逆向）；
+- 👨‍💻 语言：Python、JavaScript、Golang；
+- 👨‍🎓 专注：爬虫、逆向安全 (JS、APP、小程序逆向)；
 - 🚴‍♀️ 兴趣：开源情报、业余公路自行车手、[WOT](https://wot.360.cn/) 玩家；
 - 🏗️ 域名：搞 IT 的小黄人鲍勃，故命名为 [ITBOB.CN](https://www.itbob.cn/)；
-- ✒️ 博客：活跃于 [CSDN](https://itrhx.blog.csdn.net/)，本博客随缘更新，现有运营公司公众号：[K哥爬虫](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=1996451898278608899)。
+- ✒️ 博客：随缘更新，<font color='red'>**曾经**</font>运营公司公众号：K哥爬虫。
 
-### Contact
+<!-- ### Contact -->
 
-- Email：[admin@itbob.cn](mailto:admin@itbob.cn)
-- Github：github.itbob.cn
-- Zhihu：zhihu.itbob.cn
-- CSDN：itrhx.blog.csdn.net
-- Group：Hexo 交流群：[735861501](https://jq.qq.com/?_wv=1027&k=Co8xooSK)，爬虫逆向交流群：[941013658](https://jq.qq.com/?_wv=1027&k=r2Pw3lPs)
+<!-- <font color='red'>**爬虫逆向微信交流群：添加微信 IT-BOB**</font> -->
+
 
 ### Timeline
 
@@ -43,7 +76,7 @@ layout: about
 - 2018-08-15：使用域名 [trhx.top](trhx.top)；
 - 2018-08-10：基于 [Hexo](https://hexo.io/) 的静态博客诞生，托管至 [Github Pages](https://pages.github.com/)，使用 [spfk](https://github.com/luuman/hexo-theme-spfk) 主题。
 
-### Tips
+<!-- ### Tips
 
 - **<font color=red>想要查看或发布评论，请确保您的网络能正常访问 [Github](https://github.com/)；</font>**
-- **<font color=red>由于评论调用的是 Github 的 Issues 功能，您参与评论后，有新评论也会邮件通知您，不想收到通知请前往 [Issues](https://github.com/TRHX/TRHX.github.io/issues) 页面取消通知。</font>**
+- **<font color=red>由于评论调用的是 Github 的 Issues 功能，您参与评论后，有新评论也会邮件通知您，不想收到通知请前往 [Issues](https://github.com/TRHX/TRHX.github.io/issues) 页面取消通知。</font>** -->
