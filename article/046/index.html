@@ -1,0 +1,680 @@
+<!-- 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+-->
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Force https -->
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+
+<!-- Title -->
+<title>吾爱破解2022春节解题领红包之番外篇 Web 中级题解 - BOB&#39;S BLOG</title>
+
+<!-- Icon -->
+<link rel="icon" href="/img/favicon.ico">
+
+<!-- Fonts -->
+<link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
+
+<!-- Font Awesome -->
+<!-- https://fontawesome.dashgame.com/ -->
+<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+
+
+    <!-- KaTeX -->
+    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
+    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+
+
+<!-- Style -->
+
+<link rel="stylesheet" href="/styles/main.css">
+
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-pure@1.0.1/dist/main.css"> -->
+
+<!-- Analytics -->
+
+    
+    
+        <!-- Baidu Analytics -->
+        <script defer>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement('script');
+                hm.src = 'https://hm.baidu.com/hm.js?6ca34ddce088f8434f3c7509576819f2';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+
+
+<!-- Busuanzi -->
+<!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
+<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+
+<!-- Typeit -->
+<!-- https://www.typeitjs.com/ -->
+<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+<!-- Fancybox -->
+
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
+    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+
+<!-- <script>
+  $('[data-fancybox="images"]').fancybox({//可选
+    thumbs : {
+      autoStart : true //缩略图
+    }
+  });
+  $('[data-fancybox]').fancybox({//启用函数，必须
+    protect: true //图片右键不能下载，可选
+  });
+</script> -->
+
+<!-- Console -->
+<script>
+    function makeMulti (string) {
+        let l = new String(string)
+        l = l.substring(l.indexOf("/*") + 3, l.lastIndexOf("*/"))
+        return l
+    }
+    let string = function () {
+      /* 
+          _____                   _______                   _____          
+          /\    \                 /::\    \                 /\    \         
+         /::\    \               /::::\    \               /::\    \        
+        /::::\    \             /::::::\    \             /::::\    \       
+       /::::::\    \           /::::::::\    \           /::::::\    \      
+      /:::/\:::\    \         /:::/~~\:::\    \         /:::/\:::\    \     
+     /:::/__\:::\    \       /:::/    \:::\    \       /:::/__\:::\    \    
+    /::::\   \:::\    \     /:::/    / \:::\    \     /::::\   \:::\    \   
+   /::::::\   \:::\    \   /:::/____/   \:::\____\   /::::::\   \:::\    \  
+  /:::/\:::\   \:::\ ___\ |:::|    |     |:::|    | /:::/\:::\   \:::\ ___\ 
+ /:::/__\:::\   \:::|    ||:::|____|     |:::|    |/:::/__\:::\   \:::|    |
+ \:::\   \:::\  /:::|____| \:::\    \   /:::/    / \:::\   \:::\  /:::|____|
+  \:::\   \:::\/:::/    /   \:::\    \ /:::/    /   \:::\   \:::\/:::/    / 
+   \:::\   \::::::/    /     \:::\    /:::/    /     \:::\   \::::::/    /  
+    \:::\   \::::/    /       \:::\__/:::/    /       \:::\   \::::/    /   
+     \:::\  /:::/    /         \::::::::/    /         \:::\  /:::/    /    
+      \:::\/:::/    /           \::::::/    /           \:::\/:::/    /     
+       \::::::/    /             \::::/    /             \::::::/    /      
+        \::::/    /               \::/____/               \::::/    /       
+         \::/____/                 ~~                      \::/____/        
+          ~~                                                ~~              
+                                                                            
+                                WWW.ITBOB.CN
+                                
+                        有毛的叫程序猿，沒毛的叫程序员。
+      */
+    }
+    console.log(makeMulti(string));
+    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+</script>
+
+<!-- 51.la 网站统计 2023.12.07 接入 -->
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id:"3GmZ0RhJYz29jEfJ",ck:"3GmZ0RhJYz29jEfJ"})</script>
+
+    <meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="BOB'S BLOG" type="application/atom+xml">
+</head>
+    <body>
+        <div class="main gt-bg-theme-color-first">
+            <div class="main-content">
+                <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first" id="typeitspan">
+            <!-- BOB&#39;S BLOG -->
+        </div>
+    </a>
+    <!-- <span id="typeitspan"></span> -->
+    <script>
+        new TypeIt('#typeitspan', {
+        strings: "IT.BOB",
+        speed: 150, 
+        afterComplete: function (instance) {
+            instance.destroy();
+        }
+        }).go();
+    </script>
+    <button aria-label="Navbar Toggler" class="navbar-toggler" type="button" id="changeNavbar">
+        <i class="gt-c-content-color-first" style="font-size: 18px;">
+            <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18px" fill="currentColor">
+                <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+            </svg>
+        </i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center; ">
+            
+                
+                    <div class="nav-item">
+                        <a href="/" class="menu gt-a-link" target="_self">首页</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/archives/" class="menu gt-a-link" target="_self">归档</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/tags/" class="menu gt-a-link" target="_self">标签</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/friends/" class="menu gt-a-link" target="_self">友链</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://spiderbox.cn/" class="menu gt-a-link" target="_blank">虫盒</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://spiderapi.cn/" class="menu gt-a-link" target="_blank">虫术</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="/about/" class="menu gt-a-link" target="_self">关于</a>
+                    </div>
+                
+            
+                
+                    <div class="nav-item">
+                        <a href="https://www.travellings.cn/go.html" target="_blank">
+                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                        </a>
+                    </div>
+                
+            
+        </div>
+    </div>
+</nav>
+
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = function() {
+        let element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else { 
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">吾爱破解2022春节解题领红包之番外篇 Web 中级题解</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    <i class="fa fa-calendar-alt"></i> 首发于: 2022-02-17丨
+                </time>
+                <span id="busuanzi_container_page_pv">
+                    <i class="fas fa-eye"></i> 阅读量: <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>丨
+                </span>
+                
+                    <span class="post-count">
+                        <i class="fa fa-keyboard"></i> 字数统计: 3.1k丨
+                    </span>
+                    <span class="post-count">
+                        <i class="fa fa-hourglass-half"></i> 阅读时长: 13分丨
+                    </span>
+                
+                
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/%E7%88%AC%E8%99%AB/" class="post-tag">
+                            爬虫</a>
+                    
+                        <!-- <i class="fa fa-tag"></i> -->
+                        <i class="fas fa-hashtag"></i>
+                        <a href="/tags/JS-%E9%80%86%E5%90%91%E5%AE%9E%E6%88%98/" class="post-tag">
+                            JS 逆向实战</a>
+                    
+                
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
+<h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
+<!-- toc -->
+<ul>
+<li><a href="#ni-xiang-mu-biao">逆向目标</a></li>
+<li><a href="#hls-liu-mei-ti-chuan-shu-xie-yi">HLS 流媒体传输协议</a></li>
+<li><a href="#saz-fen-xi">SAZ 分析</a></li>
+<li><a href="#js-ni-xiang">JS 逆向</a></li>
+<li><a href="#ts-jie-mi-he-bing-zhuan-huan">TS 解密合并转换</a></li>
+</ul>
+<!-- tocstop -->
+<hr>
+<h2><span id="ni-xiang-mu-biao">逆向目标</span></h2>
+<p>本次逆向的目标来源于吾爱破解 2022 春节解题领红包之番外篇 Web 中级题，吾爱破解每年都会有派送红包活动（送吾爱币），需要大家使出看家逆向本领来分析内容获得口令红包，今年一共有五个题，一个送分题，两个 Windows 题、一个 Android 题和一个 Web 题，本文分析的正是  Web 题，<strong>吾爱有规定活动结束前不要外泄口令、讨论分享分析过程，所以本文在活动结束后才发出来。</strong></p>
+<p>此 Web 题题目是：小 D 最爱看的视频网站最近关站了，关站前他用 Fiddler 和 Web Archive 保存了一位主播的视频，但他发现存下来的文件无法播放。你能帮小 D 找回他的回忆吗？（.saz 与 .wacz 任选其一即可解题）</p>
+<ul>
+<li>
+<p>活动地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1582582-1-1.html">https://www.52pojie.cn/thread-1582582-1-1.html</a></p>
+</li>
+<li>
+<p>Web 题地址：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17">https://www.52pojie.cn/home.php?mod=task&amp;do=view&amp;id=17</a></p>
+</li>
+</ul>
+<h2><span id="hls-liu-mei-ti-chuan-shu-xie-yi">HLS 流媒体传输协议</span></h2>
+<p>本题涉及到 HLS 流媒体传输协议，先简单介绍一下，了解的同志可直接跳过。</p>
+<p>HLS 全称 HTTP Live Streaming，即基于 HTTP 的自适应码率流媒体传输协议，是苹果研发的动态码率自适应技术，它包括一个 M3U(8) 的索引文件，若干 TS 视频流文件，如果视频流文件是加密的，那就还会存在一个 key 加密串文件。</p>
+<p>M3U8 文件是 M3U 的一种，只不过文件中存储的文本使用 UTF-8 字符编码，在极少数情况下，M3U8 文件可能会以 M3UP 扩展名保存。M3U8 文件是各种音频和视频播放程序使用的播放列表文件，它包含了媒体文件或媒体文件夹的路径或 URL，以及有关播放列表的相关信息。</p>
+<p>TS 全称为 MPEG2-TS，TS 即 Transport Stream 传输流，又称 MPEG-TS、MTS、TP，这种格式的特点就是从视频流的任一片段开始都是可以独立解码的。</p>
+<p>针对 TS 格式的文件，如果是未加密的，一般的播放器就能够直接播放，也可以使用 FFmpeg 等工具转换为其他格式，FFmpeg 也可以直接处理 M3U8 文件，自动解密合并转换 TS 文件，当然也有其他大佬写好的小工具，拖入 M3U8 文件就直接给你处理好了。</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/01.png" alt="01.png"></p>
+<p>M3U8 文件内容的大致格式示例如下：</p>
+<pre><code class="hljs awk"><span class="hljs-comment">#EXTM3U</span>
+<span class="hljs-comment">#EXT-X-VERSION:3</span>
+<span class="hljs-comment">#EXT-X-MEDIA-SEQUENCE:0</span>
+<span class="hljs-comment">#EXT-X-ALLOW-CACHE:YES</span>
+<span class="hljs-comment">#EXT-X-KEY:METHOD=AES-128,URI=&quot;https://www.example.com/m3u8.key&quot;</span>
+<span class="hljs-comment">#EXT-X-TARGETDURATION:5</span>
+<span class="hljs-comment">#EXTINF:4.200000,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00000.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00001.ts
+<span class="hljs-comment">#EXTINF:3.600000,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00002.ts
+<span class="hljs-comment">#EXTINF:2.516667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00003.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00004.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00005.ts
+<span class="hljs-comment">#EXTINF:4.166667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00006.ts
+<span class="hljs-comment">#EXTINF:1.716667,</span>
+https:<span class="hljs-regexp">//</span>www.example.com<span class="hljs-regexp">/hls/</span>live_00007.ts
+<span class="hljs-comment">#EXT-X-ENDLIST</span></code></pre>
+<p>各标签含义如下：</p>
+<ul>
+<li><code>#EXTM3U</code>：m3u文件头，必须放在第一行，起标示作用；</li>
+<li><code>#EXT-X-VERSION</code>：播放列表文件的兼容版本。若不存在此标记，则默认为协议的第一个版本；</li>
+<li><code>#EXT-X-MEDIA-SEQUENCE</code>： 播放列表中的每个媒体 URI 都有一个唯一的整数序列号。URI 的序列号等于它之前的 URI 的序列号加一；</li>
+<li><code>#EXT-X-ALLOW-CACHE</code>：指示客户端是否可以缓存下载的媒体片段以供以后重播；</li>
+<li><code>#EXT-X-KEY</code>：TS 片段可以被加密，该标签指定加密方式（METHOD）、密钥的 URI 以及偏移量 IV 等信息，没有此标签表示未加密；</li>
+<li><code>#EXT-X-TARGETDURATION</code>：每一份 TS 媒体文件的最大持续时间，以秒为单位；</li>
+<li><code>#EXTINF</code>：每一份媒体文件的详细信息，包括媒体持续时间、媒体 URL 地址等；</li>
+<li><code>#EXT-X-ENDLIST</code>：表示不再将媒体片段添加到播放列表文件中，一般位于文件结尾。</li>
+</ul>
+<p>完整格式、标准标签可参考 HLS 标准协议中，对 Playlist file 的介绍：<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08">https://datatracker.ietf.org/doc/html/draft-pantos-http-live-streaming-08</a></p>
+<h2><span id="saz-fen-xi">SAZ 分析</span></h2>
+<p>在 Fiddler 软件中，使用 SAZ 格式用来保存和读取 HTTP/HTTPS 请求信息，打开该文件可以注意到一些重要的请求：script.bundle.js、live.m3u8、drm 以及八个 ts 视频流文件。</p>
+<p>先来看看 m3u8 文件，可以看到是 AES-128 加密，加密的 key 文件地址为 <code>key://live</code>，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/02.png" alt="02.png"></p>
+<p>一般情况下，要想解密 ts，必然会去请求 key 的地址，拿到 key 后再解密 ts，很显然此题的 key 地址不是一个合法的 URL 地址，当然此题的抓包记录可能是出题人伪造的，因为这个 Host 是 52tube.mmxxii，也不是一个合法的域名，最主要的是，抓包记录里没有 <code>key://live</code> 这条请求，那么很大概率真实的地址隐藏在 JS 里，从另一个方面来思考，如果这是完整的抓包记录，不管真实的 key 地址是啥，必然会在记录里出现！</p>
+<p>有经验的朋友应该一眼就能看出来 drm 这条请求最有可能是拿 key 的操作了，第一是 drm 这个关键词在 ts 解密里经常会出现，搞得多的朋友应该见过不少，第二 ping 请求返回的 success，通过其名称和返回值来看也不像 key，剩下就只有 drm 了，查看返回值是乱码的，查看 Hex 值，32 位 16 进制数据，而正常的 key 应该是 16 位 16 进制数据，所以你如果直接拿这个数据当作 key 去解密，肯定也是失败的。</p>
+<p>到这里我们应该有如下猜想：drm 返回的数据，经过了 script.bundle.js 二次处理就能得到正确的 key。</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/03.png" alt="03.png"></p>
+<h2><span id="js-ni-xiang">JS 逆向</span></h2>
+<p>我们把抓包记录的 script.bundle.js，右键，save - response - response body，保存到本地。</p>
+<p>格式化之后有 15000+ 行代码，又不能动态调试，从哪里找加密入口呢？可以大胆尝试一下：</p>
+<ul>
+<li>JS 里可能会检测到 m3u8 里存在 key 的 URI 之后，发送 /api/drm/ 这个请求，可以直接搜索 <code>/api/drm/</code> 或者 <code>key://live</code> 定位；</li>
+<li>drm 是一个 post 请求，带有 h 和 id 两个参数，可以直接搜索 <code>post</code>、<code>id</code>、<code>h</code> 定位到大致位置。</li>
+</ul>
+<p><img src="https://cdn.itbob.cn/img/article/046/04.png" alt="04.png"></p>
+<p>通过搜索可以发现如下可疑代码片段：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/05.png" alt="05.png"></p>
+<p>将关键代码提炼一下：</p>
+<pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">n</span>(<span class="hljs-params">t</span>) </span>&#123;
+    <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Uint8Array</span>(t)].map((<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.toString(<span class="hljs-number">16</span>).padStart(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;0&quot;</span>))).join(<span class="hljs-string">&quot;&quot;</span>)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">t, e</span>) </span>&#123;
+    <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(t.length);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; t.length; i++) r[i] = t[i] ^ e[i];
+    <span class="hljs-keyword">return</span> r
+&#125;
+
+<span class="hljs-keyword">let</span> e = <span class="hljs-string">&quot;/api/ping/&quot;</span>,
+    i = <span class="hljs-string">&quot;/api/drm/&quot;</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">t</span>.<span class="hljs-title">DefaultConfig</span>.<span class="hljs-title">loader</span> </span>&#123;
+    <span class="hljs-keyword">let</span> e = <span class="hljs-keyword">await</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">let</span> t = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(<span class="hljs-number">16</span>);
+        crypto.getRandomValues(t);
+        <span class="hljs-keyword">let</span> e = n(t.buffer) + <span class="hljs-built_in">Date</span>.now() + <span class="hljs-built_in">Math</span>.random();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>((<span class="hljs-keyword">await</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>&#123;
+            <span class="hljs-keyword">const</span> e = (<span class="hljs-keyword">new</span> TextEncoder).encode(t);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> crypto.subtle.digest(<span class="hljs-string">&quot;SHA-256&quot;</span>, e)
+        &#125; (e)).slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>))
+    &#125;();
+    <span class="hljs-keyword">var</span> r = <span class="hljs-keyword">new</span> URLSearchParams;
+    r.append(<span class="hljs-string">&quot;h&quot;</span>, n(e.buffer)),
+        r.append(<span class="hljs-string">&quot;id&quot;</span>, t);
+    <span class="hljs-keyword">var</span> a = &#123;
+        <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+        <span class="hljs-attr">headers</span>: &#123;
+            <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/x-www-form-urlencoded&quot;</span>
+        &#125;,
+        <span class="hljs-attr">body</span>: r
+    &#125;;
+    <span class="hljs-keyword">let</span> o = <span class="hljs-keyword">await</span> fetch(i, a),
+        l = <span class="hljs-keyword">await</span> o.arrayBuffer();
+    <span class="hljs-keyword">if</span> (<span class="hljs-number">32</span> !== l.byteLength) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;Invalid response&quot;</span>);
+    <span class="hljs-keyword">let</span> u = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>)),
+        c = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>));
+    <span class="hljs-keyword">return</span> s(s(u, e), c)
+&#125;</code></pre>
+<p>可以看到事实上在发送 <code>/api/drm/</code> 请求拿到结果后，先后取前后 16 位数据，然后经过了 s 方法的处理，最后返回的 <code>s(s(u, e), c)</code> 应该才是正确的 key，这里的重点在于 e 的值，上面有个方法，取了当前时间+随机值，经过 SHA-256 加密，再取前 16 位。</p>
+<p>这里可以思考一下，这个 e 的值是不固定的，那么最后的 key 应该也是不固定的，同一个 TS 对应有无数个 key，我反正是没见过，不信的话尝试就用那个方法生成 e，你会发现最终的 key 是错误的。</p>
+<p>仔细看一下，发送 post 请求对 h 值赋值的地方：<code>r.append(&quot;h&quot;, n(e.buffer))</code>，n 方法是转 16 进制，那么我们直接将 h 值倒推，从16进制转为10进制，这才是正确的 e 的值！然后 l 的值是 <code>/api/drm/</code> 请求返回的 32 位 16 进制数据转为 10 进制，剩下的就好说了，直接改写一下 JS 代码拿到正确的 key：</p>
+<pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">t, e</span>) </span>&#123;
+    <span class="hljs-keyword">let</span> r = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(t.length);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; t.length; i++)
+        r[i] = t[i] ^ e[i];
+    <span class="hljs-keyword">return</span> r
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getKey</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-comment">// /api/drm/ 请求表单的 h 值，16进制数据</span>
+    <span class="hljs-keyword">const</span> h = [<span class="hljs-string">&quot;7b&quot;</span>, <span class="hljs-string">&quot;10&quot;</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-string">&quot;1e&quot;</span>, <span class="hljs-string">&quot;6e&quot;</span>, <span class="hljs-string">&quot;31&quot;</span>, <span class="hljs-string">&quot;0f&quot;</span>, <span class="hljs-string">&quot;0d&quot;</span>, <span class="hljs-string">&quot;f0&quot;</span>, <span class="hljs-string">&quot;68&quot;</span>, <span class="hljs-string">&quot;d9&quot;</span>, <span class="hljs-string">&quot;ed&quot;</span>, <span class="hljs-string">&quot;e1&quot;</span>, <span class="hljs-string">&quot;04&quot;</span>, <span class="hljs-string">&quot;75&quot;</span>, <span class="hljs-string">&quot;a8&quot;</span>];
+    <span class="hljs-comment">// /api/drm/ 请求返回的32位16进制数据</span>
+    <span class="hljs-keyword">const</span> drm = [<span class="hljs-string">&quot;08&quot;</span>, <span class="hljs-string">&quot;A5&quot;</span>, <span class="hljs-string">&quot;E6&quot;</span>, <span class="hljs-string">&quot;C2&quot;</span>, <span class="hljs-string">&quot;C2&quot;</span>, <span class="hljs-string">&quot;61&quot;</span>, <span class="hljs-string">&quot;A8&quot;</span>, <span class="hljs-string">&quot;AC&quot;</span>, <span class="hljs-string">&quot;B4&quot;</span>, <span class="hljs-string">&quot;D7&quot;</span>, <span class="hljs-string">&quot;9C&quot;</span>, <span class="hljs-string">&quot;49&quot;</span>, <span class="hljs-string">&quot;AF&quot;</span>, <span class="hljs-string">&quot;16&quot;</span>, <span class="hljs-string">&quot;0A&quot;</span>, <span class="hljs-string">&quot;3A&quot;</span>, <span class="hljs-string">&quot;DA&quot;</span>, <span class="hljs-string">&quot;4E&quot;</span>, <span class="hljs-string">&quot;5C&quot;</span>, <span class="hljs-string">&quot;EA&quot;</span>, <span class="hljs-string">&quot;E1&quot;</span>, <span class="hljs-string">&quot;6F&quot;</span>, <span class="hljs-string">&quot;ED&quot;</span>, <span class="hljs-string">&quot;46&quot;</span>, <span class="hljs-string">&quot;EB&quot;</span>, <span class="hljs-string">&quot;6F&quot;</span>, <span class="hljs-string">&quot;49&quot;</span>, <span class="hljs-string">&quot;8C&quot;</span>, <span class="hljs-string">&quot;9B&quot;</span>, <span class="hljs-string">&quot;63&quot;</span>, <span class="hljs-string">&quot;D5&quot;</span>, <span class="hljs-string">&quot;3B&quot;</span>]
+    <span class="hljs-comment">// 转换为10进制数据，为 e 和 l 赋值</span>
+    <span class="hljs-keyword">const</span> e = [];
+    <span class="hljs-keyword">const</span> l = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;h.length; i++)
+    &#123;
+        e.push(<span class="hljs-built_in">parseInt</span>(h[i],<span class="hljs-number">16</span>))
+    &#125;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;drm.length; i++)
+    &#123;
+        l.push(<span class="hljs-built_in">parseInt</span>(drm[i],<span class="hljs-number">16</span>))
+    &#125;
+
+    <span class="hljs-keyword">const</span> u = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">0</span>, <span class="hljs-number">16</span>));
+    <span class="hljs-keyword">const</span> c = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(l.slice(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>));
+
+    <span class="hljs-keyword">const</span> keyArray = s(s(u, e), c);
+    <span class="hljs-keyword">const</span> keyHex = <span class="hljs-keyword">new</span> Buffer.from(keyArray).toString(<span class="hljs-string">&#x27;hex&#x27;</span>);
+    <span class="hljs-keyword">const</span> keyBase64 = <span class="hljs-keyword">new</span> Buffer.from(keyArray).toString(<span class="hljs-string">&#x27;base64&#x27;</span>);
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyArray: &quot;</span>, keyArray)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyHex: &quot;</span>, keyHex)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;keyBase64: &quot;</span>, keyBase64)
+&#125;
+
+getKey()
+
+<span class="hljs-comment">// 输出</span>
+<span class="hljs-comment">// keyArray:  Uint8Array(16) [</span>
+<span class="hljs-comment">//   169, 251, 139,  54,  77,</span>
+<span class="hljs-comment">//    63,  74, 231, 175, 208,</span>
+<span class="hljs-comment">//    12,  40, 213, 113, 170,</span>
+<span class="hljs-comment">//   169</span>
+<span class="hljs-comment">// ]</span>
+<span class="hljs-comment">// keyHex:  a9fb8b364d3f4ae7afd00c28d571aaa9</span>
+<span class="hljs-comment">// keyBase64:  qfuLNk0/Suev0Awo1XGqqQ==</span></code></pre>
+<h2><span id="ts-jie-mi-he-bing-zhuan-huan">TS 解密合并转换</span></h2>
+<p>通过 JS 逆向我们拿到了 16进制和 base64 形式的  key，不管什么形式都可以拿来解密，这里介绍两种对 TS 媒体流解密、合并、转换的方法。</p>
+<p>第一种方法是使用 FFmpeg 工具，FFmpeg 是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序。官网地址：<a target="_blank" rel="noopener" href="https://ffmpeg.org/">https://ffmpeg.org/</a> ，下载编译好的程序，将 bin 目录添加到环境变量即可。</p>
+<p>首先我们要把 m3u8 文件和 ts 媒体流保存到同一个文件夹，由于是虚假的 Host，所以不能直接浏览器访问保存，可以直接在 Fiddler 里，右键，save - response - response body，保存到本地，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/06.png" alt="06.png"></p>
+<p>然后就是保存密钥文件，这里要求密钥文件必须是16进制的数据，如果你直接将 key 以字符串形式保存的话，解密也是失败的，编辑 16 进制文件有专门的工具，比如 HxD、010 editor、winhex 等，以 HxD 为例，新建文件，写入我们前面通过 JS 逆向得到的 key 的 16 进制数据，存为 .key 文件，如下图所示：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/07.png" alt="07.png"></p>
+<p>然后修改 m3u8 文件里 key 的地址、名称，建议将 key、m3u8、ts 文件都放同一个文件夹，这样 m3u8 文件里就不用添加资源路径了，不容易出错。</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/08.png" alt="08.png"></p>
+<p>然后在当前文件夹，打开命令行输入命令：<code>ffmpeg -allowed_extensions ALL -i live.m3u8 -c copy live.mp4</code>，即可自动解密 ts，并合并转换为 .mp4 格式：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/09.png" alt="09.png"></p>
+<p><img src="https://cdn.itbob.cn/img/article/046/10.png" alt="10.png"></p>
+<p>第二种方法就是使用大佬写的第三方小工具，这里推荐吾爱大佬逍遥一仙写的 M3U8 批量下载器，下载地址、使用方法见原贴：<a target="_blank" rel="noopener" href="https://www.52pojie.cn/thread-1374045-1-1.html">https://www.52pojie.cn/thread-1374045-1-1.html</a></p>
+<p>我们可以直接拖入处理好的 M3U8 文件，自动处理：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/11.png" alt="11.png"></p>
+<p>也可以选择其他 - 工具 - 合并助手，添加所有 TS 文件，输入 key 后自动处理：</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/12.png" alt="12.png"></p>
+<p>处理完毕后的 mp4 文件默认在软件目录的 output 文件夹里面，解密后是一段动画，往后看会找到 flag：<code>flag&#123;like_sub_52tube&#125;</code> 为正确答案。</p>
+<p><img src="https://cdn.itbob.cn/img/article/046/13.png" alt="13.png"></p>
+<p><img src="https://cdn.itbob.cn/img/article/046/14.png" alt="14.png"></p>
+<p><img src="https://cdn.itbob.cn/img/article/046/15.png" alt="15.png"></p>
+
+            </div>
+        </article>
+    </div>
+    <br>
+    
+        <div class="next-prev-post">
+            
+                <div class="prev-post">
+                    <div class="prev gt-c-content-color-first">
+                        上一篇：<a href="/article/047/" 
+                            class="post-title gt-a-link">RPC 技术及其框架 Sekiro 在爬虫逆向中的应用，加密数据一把梭</a>
+                    </div>
+                </div>
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/article/045/" 
+                            class="post-title gt-a-link">CTF&爬虫：掌握这些特征，一秒识别密文加密方式</a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+
+    
+</div>
+
+                <div class="site-footer gt-c-content-color-first">
+    <div class="footer-main">
+        <span>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user"></i> UV
+                </span>
+                <span class="badge-value bg-pink" id="busuanzi_value_site_uv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fas fa-user-plus"></i> PV
+                </span>
+                <span class="badge-value bg-blue" id="busuanzi_value_site_pv"></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-keyboard"></i> Word Count
+                </span>
+                <span class="badge-value bg-firebrick post-count">314.6k</span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-cog fa-spin"></i> Powered by
+                </span>
+                <span class="badge-value bg-brightgreen"><a href="https://hexo.io" target="_blank">Hexo</a></span>
+            </div>
+            <div class="itbob-github-badge">
+                <span class="badge-subject">
+                    <i class="fa fa-paper-plane"></i> Theme
+                </span>
+                <span class="badge-value bg-orange"><a href="https://github.com/renbaoshuo/hexo-theme-pure" target="_blank">Pure</a></span>
+            </div>
+        </span>
+        <br/>
+        <br/>
+        <span style="text-align: center; float: center;">
+            Copyright <i class="fa fa-copyright"></i> 2018 - <script>document.write(new Date().getFullYear());</script> <a href="https://www.itbob.cn/" target="_blank">ITBOB.CN</a> 丨
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+                <i class="fab fa-creative-commons"></i>
+                <i class="fab fa-creative-commons-by"></i>
+                <i class="fab fa-creative-commons-nc"></i>
+                <i class="fab fa-creative-commons-nd"></i>
+            </a> 丨
+            <!-- <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a> 丨 -->
+            <span id="sitetime">正在载入网站运行时间...</span>
+            <script>
+                function siteTime(){
+                    window.setTimeout("siteTime()", 1000);
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth()+1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    /* 
+                    Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+                    year - 作为date对象的年份，为4位年份值
+                    month - 0-11之间的整数，做为date对象的月份
+                    day - 1-31之间的整数，做为date对象的天数
+                    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+                    minutes - 0-59之间的整数，做为date对象的分钟数
+                    seconds - 0-59之间的整数，做为date对象的秒数
+                    microseconds - 0-999之间的整数，做为date对象的毫秒数
+                    */
+                    var t1 = Date.UTC(2018,08,10,17,38,00); //北京时间2018-8-10 17:38:00
+                    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+                    var diff = t2-t1;
+                    var diffYears = Math.floor(diff/years);
+                    var diffDays = Math.floor((diff/days)-diffYears*365);
+                    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+                    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+                    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+                    document.getElementById("sitetime").innerHTML="小破站已运行了 "
+                    + "<font style='color:#FE3C65;font-weight:bold'>" + diffYears + "</font>" + " 年 "
+                    + "<font style='color:#FFA500;font-weight:bold'>" + diffDays + "</font>" + " 天 "
+                    + "<font style='color:#1DBF97;font-weight:bold'>" + diffHours + "</font>" + " 小时 "
+                    + "<font style='color:#8A2BE2;font-weight:bold'>" + diffMinutes + "</font>" + " 分 "
+                    + "<font style='color:#007EC6;font-weight:bold'>" + diffSeconds + "</font>" + " 秒 ";
+                }
+                siteTime();
+            </script>
+        </span>
+        <br/>
+        <br/>
+        <span>
+            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
+            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+        </span>
+    </div>
+</div>
+
+<!-- <div class="sidebar_wo" id="leimu">
+    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+</div>
+<div class="sidebar_wo" id="lamu">
+    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
+    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
+    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+</div> -->
+
+<script>
+    /* 拉姆蕾姆回到顶部或底部按钮 */
+    $(function() {
+        $("#leimu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:$(document).height()},800);
+            return false;
+        });
+        $("#lamu img").eq(0).click(function() {
+            $("html,body").animate({scrollTop:0},800);
+            return false;
+        });
+    });
+</script>
+
+            </div>
+        </div>
+        <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
+        <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
+            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+        </a>
+        <script>
+            (function () {
+                // When to show the scroll link
+                // higher number = scroll link appears further down the page   
+                var upperLimit = 100;
+                
+                // Our scroll link element
+                var scrollElem = $('#back-to-top');
+            
+                // Scroll to top speed
+                var scrollSpeed = 500;
+            
+                // Show and hide the scroll to top link based on scroll position   
+                scrollElem.hide();
+                $(window).scroll(function () {            
+                    var scrollTop = $(document).scrollTop();       
+                    if ( scrollTop > upperLimit ) {
+                        $(scrollElem).stop().fadeTo(200, 1); // fade back in           
+                    }else{       
+                        $(scrollElem).stop().fadeTo(200, 0); // fade out
+                    }
+                });
+
+                // Scroll to top animation on click
+                $(scrollElem).click(function(){
+                    $('html, body').animate({scrollTop:0}, scrollSpeed); return false;
+                });
+            })();
+        </script>
+    </body>
+</html>
