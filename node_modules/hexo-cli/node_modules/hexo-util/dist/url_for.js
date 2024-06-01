@@ -1,0 +1,54 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+const url_1 = require("url");
+const encode_url_1 = __importDefault(require("./encode_url"));
+const relative_url_1 = __importDefault(require("./relative_url"));
+const pretty_urls_1 = __importDefault(require("./pretty_urls"));
+const cache_1 = __importDefault(require("./cache"));
+const cache = new cache_1.default();
+/**
+ * get url relative to base URL (config_yml.url)
+ * @param path relative path inside `source` folder (config_yml.source_dir)
+ * @param options
+ * @returns
+ * @example
+ * // global `hexo` must be exist when used this function inside plugin
+ * const Hutil = require('hexo-util')
+ * console.log(Hutil.url_for.bind(hexo)('path/to/file/inside/source.css')); // https://example.com/path/to/file/inside/source.css
+ */
+function urlForHelper(path = '/', options = {}) {
+    if (/^(#|\/\/|http(s)?:)/.test(path))
+        return path;
+    const { config } = this;
+    options = Object.assign({
+        relative: config.relative_link
+    }, 
+    // fallback empty object when options filled with NULL
+    options || {});
+    // Resolve relative url
+    if (options.relative) {
+        return (0, relative_url_1.default)(this.path, path);
+    }
+    const { root } = config;
+    const prettyUrlsOptions = Object.assign({
+        trailing_index: true,
+        trailing_html: true
+    }, config.pretty_urls);
+    // cacheId is designed to works across different hexo.config & options
+    return cache.apply(`${config.url}-${root}-${prettyUrlsOptions.trailing_index}-${prettyUrlsOptions.trailing_html}-${path}`, () => {
+        const sitehost = (0, url_1.parse)(config.url).hostname || config.url;
+        const data = new URL(path, `http://${sitehost}`);
+        // Exit if input is an external link or a data url
+        if (data.hostname !== sitehost || data.origin === 'null') {
+            return path;
+        }
+        // Prepend root path
+        path = (0, encode_url_1.default)((root + path).replace(/\/{2,}/g, '/'));
+        path = (0, pretty_urls_1.default)(path, prettyUrlsOptions);
+        return path;
+    });
+}
+module.exports = urlForHelper;
+//# sourceMappingURL=url_for.js.map

@@ -1,0 +1,15 @@
+interface Options {
+    autoDetect?: boolean;
+    caption?: string;
+    firstLine?: number;
+    gutter?: boolean;
+    hljs?: boolean;
+    lang?: string;
+    languageAttr?: boolean;
+    mark?: number[];
+    tab?: string;
+    wrap?: boolean;
+    stripIndent?: boolean;
+}
+declare function highlightUtil(str: string, options?: Options): string;
+export = highlightUtil;
