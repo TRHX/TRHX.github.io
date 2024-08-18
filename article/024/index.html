@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>Python 数据分析三剑客之 Matplotlib（十一）：最常用最有价值的 50 个图表【译文】 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -489,7 +496,7 @@ plt.xticks(fontsize=<span class="hljs-number">12</span>); plt.yticks(fontsize=<s
 plt.title(<span class="hljs-string">&quot;Scatterplot of Midwest Area vs Population&quot;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/01.png" alt="01"></p>
 <h3><span id="02-dai-bian-jie-de-qi-pao-tu-bubble-plot-with-encircling"><font color="##4876FF">【02】带边界的气泡图（Bubble plot with Encircling）</font></span></h3>
 <p>有时候您想在一个边界内显示一组点来强调它们的重要性。在本例中，您将从被包围的数据中获取记录，并将其传递给下面的代码中描述的 <code>encircle()</code>。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> matplotlib <span class="hljs-keyword">import</span> patches
@@ -535,7 +542,7 @@ plt.xticks(fontsize=<span class="hljs-number">12</span>); plt.yticks(fontsize=<s
 plt.title(<span class="hljs-string">&quot;Bubble Plot with Encircling&quot;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/02.png" alt="02"></p>
 <h3><span id="03-dai-xian-xing-hui-gui-zui-jia-ni-he-xian-de-san-dian-tu-scatter-plot-with-linear-regression-line-of-best-fit"><font color="##4876FF">【03】带线性回归最佳拟合线的散点图（Scatter plot with linear regression line of best fit）</font></span></h3>
 <p>如果你想了解两个变量之间是如何变化的，那么最佳拟合线就是常用的方法。下图显示了数据中不同组之间的最佳拟合线的差异。若要禁用分组并只为整个数据集绘制一条最佳拟合线，请从 <code>sns.lmplot()</code> 方法中删除 <code>hue ='cyl'</code> 参数。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -552,7 +559,7 @@ gridobj = sns.lmplot(x=<span class="hljs-string">&quot;displ&quot;</span>, y=<sp
 gridobj.<span class="hljs-built_in">set</span>(xlim=(<span class="hljs-number">0.5</span>, <span class="hljs-number">7.5</span>), ylim=(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>))
 plt.title(<span class="hljs-string">&quot;Scatterplot with line of best fit grouped by number of cylinders&quot;</span>, fontsize=<span class="hljs-number">20</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/03.png" alt="03"></p>
 <p>针对每一组数据绘制线性回归线（Each regression line in its own column），可以通过在 <code>sns.lmplot()</code> 中设置 <code>col=groupingcolumn</code> 参数来实现，如下：</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
 df = pd.read_csv(<span class="hljs-string">&quot;https://raw.githubusercontent.com/selva86/datasets/master/mpg_ggplot2.csv&quot;</span>)
@@ -571,7 +578,7 @@ gridobj = sns.lmplot(x=<span class="hljs-string">&quot;displ&quot;</span>, y=<sp
 <span class="hljs-comment"># Decorations</span>
 gridobj.<span class="hljs-built_in">set</span>(xlim=(<span class="hljs-number">0.5</span>, <span class="hljs-number">7.5</span>), ylim=(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>))
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/04.png" alt="04"></p>
 <h3><span id="04-dou-dong-tu-jittering-with-stripplot"><font color="##4876FF">【04】抖动图（Jittering with stripplot）</font></span></h3>
 <p>通常，多个数据点具有完全相同的 X 和 Y 值。 此时多个点绘制会重叠并隐藏。为避免这种情况，可以将数据点稍微抖动，以便可以直观地看到它们。 使用 <code>seaborn</code> 库的 <code>stripplot()</code> 方法可以很方便的实现这个功能。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -584,7 +591,7 @@ sns.stripplot(df.cty, df.hwy, jitter=<span class="hljs-number">0.25</span>, size
 <span class="hljs-comment"># Decorations</span>
 plt.title(<span class="hljs-string">&#x27;Use jittered plots to avoid overlapping of points&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/05.png" alt="05"></p>
 <h3><span id="05-ji-shu-tu-counts-plot"><font color="##4876FF">【05】计数图（Counts Plot）</font></span></h3>
 <p>避免点重叠问题的另一个选择是根据点的位置增加点的大小。所以，点的大小越大，它周围的点就越集中。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -601,7 +608,7 @@ sns.stripplot(df_counts.cty, df_counts.hwy, sizes=df_counts.counts*<span class="
 <span class="hljs-comment"># Decorations</span>
 plt.title(<span class="hljs-string">&#x27;Counts Plot - Size of circle is bigger as more points overlap&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/06.png" alt="06"></p>
 <h3><span id="06-bian-yuan-zhi-fang-tu-marginal-histogram"><font color="##4876FF">【06】边缘直方图（Marginal Histogram）</font></span></h3>
 <p>边缘直方图是具有沿 X 和 Y 轴变量的直方图。 这用于可视化 X 和 Y 之间的关系以及单独的 X 和 Y 的单变量分布。 这种图经常用于探索性数据分析（EDA）。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -635,7 +642,7 @@ ax_main.title.set_fontsize(<span class="hljs-number">20</span>)
 xlabels = ax_main.get_xticks().tolist()
 ax_main.set_xticklabels(xlabels)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/07.png" alt="07"></p>
 <h3><span id="07-bian-yuan-xiang-xing-tu-marginal-boxplot"><font color="##4876FF">【07】边缘箱形图（Marginal Boxplot）</font></span></h3>
 <p>边缘箱形图与边缘直方图具有相似的用途。 然而，箱线图有助于精确定位 X 和 Y 的中位数、第25和第75百分位数。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -671,7 +678,7 @@ ax_main.title.set_fontsize(<span class="hljs-number">20</span>)
     item.set_fontsize(<span class="hljs-number">14</span>)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/08.png" alt="08"></p>
 <h3><span id="08-xiang-guan-tu-correllogram"><font color="##4876FF">【08】相关图（Correllogram）</font></span></h3>
 <p>相关图用于直观地查看给定数据帧（或二维数组）中所有可能的数值变量对之间的相关性度量。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Dataset</span>
@@ -686,7 +693,7 @@ plt.title(<span class="hljs-string">&#x27;Correlogram of mtcars&#x27;</span>, fo
 plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/09.png" alt="09"></p>
 <h3><span id="09-cheng-dui-tu-pairwise-plot"><font color="##4876FF">【09】成对图（Pairwise Plot）</font></span></h3>
 <p>成对图是探索性分析中最受欢迎的一种方法，用来理解所有可能的数值变量对之间的关系。它是二元分析的必备工具。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
@@ -696,7 +703,7 @@ df = sns.load_dataset(<span class="hljs-string">&#x27;iris&#x27;</span>)
 plt.figure(figsize=(<span class="hljs-number">10</span>, <span class="hljs-number">8</span>), dpi=<span class="hljs-number">80</span>)
 sns.pairplot(df, kind=<span class="hljs-string">&quot;scatter&quot;</span>, hue=<span class="hljs-string">&quot;species&quot;</span>, plot_kws=<span class="hljs-built_in">dict</span>(s=<span class="hljs-number">80</span>, edgecolor=<span class="hljs-string">&quot;white&quot;</span>, linewidth=<span class="hljs-number">2.5</span>))
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/10.png" alt="10"></p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
 df = sns.load_dataset(<span class="hljs-string">&#x27;iris&#x27;</span>)
 
@@ -704,7 +711,7 @@ df = sns.load_dataset(<span class="hljs-string">&#x27;iris&#x27;</span>)
 plt.figure(figsize=(<span class="hljs-number">10</span>, <span class="hljs-number">8</span>), dpi=<span class="hljs-number">80</span>)
 sns.pairplot(df, kind=<span class="hljs-string">&quot;reg&quot;</span>, hue=<span class="hljs-string">&quot;species&quot;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/11.png" alt="11"></p>
 <h2><span id="4x00-pian-chai-deviation"><font color="#FF0000">【4x00】偏差（Deviation）</font></span></h2>
 <h3><span id="10-fa-san-xing-tiao-xing-tu-diverging-bars"><font color="##4876FF">【10】发散型条形图（Diverging Bars）</font></span></h3>
 <p>如果您想根据单个指标查看项目的变化情况，并可视化此差异的顺序和数量，那么散型条形图是一个很好的工具。 它有助于快速区分数据组的性能，并且非常直观，并且可以立即传达这一点。</p>
@@ -726,7 +733,7 @@ plt.yticks(df.index, df.cars, fontsize=<span class="hljs-number">12</span>)
 plt.title(<span class="hljs-string">&#x27;Diverging Bars of Car Mileage&#x27;</span>, fontdict=&#123;<span class="hljs-string">&#x27;size&#x27;</span>:<span class="hljs-number">20</span>&#125;)
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/12.png" alt="12"></p>
 <h3><span id="11-fa-san-xing-wen-ben-tu-diverging-texts"><font color="##4876FF">【11】发散型文本图（Diverging Texts）</font></span></h3>
 <p>发散型文本图与发散型条形图相似，如果你希望以一种美观的方式显示图表中每个项目的值，就可以使用这种方法。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
@@ -750,7 +757,7 @@ plt.title(<span class="hljs-string">&#x27;Diverging Text Bars of Car Mileage&#x2
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.xlim(-<span class="hljs-number">2.5</span>, <span class="hljs-number">2.5</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/13.png" alt="13"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/13.png" alt="13"></p>
 <h3><span id="12-fa-san-xing-san-dian-tu-diverging-dot-plot"><font color="##4876FF">【12】发散型散点图（Diverging Dot Plot）</font></span></h3>
 <p>发散型散点图类似于发散型条形图。 但是，与发散型条形图相比，没有条形会减少组之间的对比度和差异。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
@@ -781,7 +788,7 @@ plt.xlabel(<span class="hljs-string">&#x27;$Mileage$&#x27;</span>)
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.xlim(-<span class="hljs-number">2.5</span>, <span class="hljs-number">2.5</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/14.png" alt="14"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/14.png" alt="14"></p>
 <h3><span id="13-dai-biao-ji-de-fa-san-xing-bang-bang-tang-tu-diverging-lollipop-chart-with-markers"><font color="##4876FF">【13】带标记的发散型棒棒糖图（Diverging Lollipop Chart with Markers）</font></span></h3>
 <p>带有标记的棒棒糖提供了一种灵活的方式，强调您想要引起注意的任何重要数据点并在图表中适当地给出推理。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
@@ -821,7 +828,7 @@ plt.gca().add_patch(p2)
 plt.title(<span class="hljs-string">&#x27;Diverging Bars of Car Mileage&#x27;</span>, fontdict=&#123;<span class="hljs-string">&#x27;size&#x27;</span>: <span class="hljs-number">20</span>&#125;)
 plt.grid(linestyle=<span class="hljs-string">&#x27;--&#x27;</span>, alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/15.png" alt="15"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/15.png" alt="15"></p>
 <h3><span id="14-mian-ji-tu-area-chart"><font color="##4876FF">【14】面积图（Area Chart）</font></span></h3>
 <p>通过对轴和线之间的区域进行着色，面积图不仅强调波峰和波谷，还强调波峰和波谷的持续时间。 高点持续时间越长，线下面积越大。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -853,7 +860,7 @@ plt.title(<span class="hljs-string">&quot;Month Economics Return %&quot;</span>,
 plt.ylabel(<span class="hljs-string">&#x27;Monthly returns %&#x27;</span>)
 plt.grid(alpha=<span class="hljs-number">0.5</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/16.png" alt="16"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/16.png" alt="16"></p>
 <h2><span id="5x00-pai-xu-ranking"><font color="#FF0000">【5x00】排序（Ranking）</font></span></h2>
 <h3><span id="15-you-xu-tiao-xing-tu-ordered-bar-chart"><font color="##4876FF">【15】有序条形图（Ordered Bar Chart）</font></span></h3>
 <p>有序条形图有效地传达了项目的排序顺序。在图表上方添加度量标准的值，用户就可以从图表本身获得精确的信息。</p>
@@ -885,7 +892,7 @@ p2 = patches.Rectangle((<span class="hljs-number">.124</span>, -<span class="hlj
 fig.add_artist(p1)
 fig.add_artist(p2)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/17.png" alt="17"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/17.png" alt="17"></p>
 <h3><span id="16-bang-bang-tang-tu-lollipop-chart"><font color="##4876FF">【16】棒棒糖图（Lollipop Chart）</font></span></h3>
 <p>棒棒糖图表以一种视觉上令人愉悦的方式提供与有序条形图类似的目的。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
@@ -911,7 +918,7 @@ ax.set_ylim(<span class="hljs-number">0</span>, <span class="hljs-number">30</sp
     ax.text(row.Index, row.cty+<span class="hljs-number">.5</span>, s=<span class="hljs-built_in">round</span>(row.cty, <span class="hljs-number">2</span>), horizontalalignment=<span class="hljs-string">&#x27;center&#x27;</span>, verticalalignment=<span class="hljs-string">&#x27;bottom&#x27;</span>, fontsize=<span class="hljs-number">14</span>)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/18.png" alt="18"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/18.png" alt="18"></p>
 <h3><span id="17-dian-tu-dot-plot"><font color="##4876FF">【17】点图（Dot Plot）</font></span></h3>
 <p>点图可以表示项目的排名顺序。由于它是沿水平轴对齐的，所以可以更容易地看到点之间的距离。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Prepare Data</span>
@@ -932,7 +939,7 @@ ax.set_yticks(df.index)
 ax.set_yticklabels(df.manufacturer.<span class="hljs-built_in">str</span>.title(), fontdict=&#123;<span class="hljs-string">&#x27;horizontalalignment&#x27;</span>: <span class="hljs-string">&#x27;right&#x27;</span>&#125;)
 ax.set_xlim(<span class="hljs-number">10</span>, <span class="hljs-number">27</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/19.png" alt="19"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/19.png" alt="19"></p>
 <h3><span id="18-po-du-tu-slope-chart"><font color="##4876FF">【18】坡度图（Slope Chart）</font></span></h3>
 <p>坡度图最适合比较给定人员/项目的“前”和“后”位置。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.lines <span class="hljs-keyword">as</span> mlines
@@ -992,7 +999,7 @@ plt.gca().spines[<span class="hljs-string">&quot;bottom&quot;</span>].set_alpha(
 plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<span class="hljs-number">.0</span>)
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">.0</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/20.png" alt="20"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/20.png" alt="20"></p>
 <h3><span id="19-ya-ling-tu-dumbbell-plot"><font color="##4876FF">【19】哑铃图（Dumbbell Plot）</font></span></h3>
 <p>哑铃图传达了各种项目的“前”和“后”位置以及项目的等级顺序。如果您希望可视化特定项目/计划对不同对象的影响，那么它非常有用。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.lines <span class="hljs-keyword">as</span> mlines
@@ -1036,7 +1043,7 @@ ax.set_xticks([<span class="hljs-number">.05</span>, <span class="hljs-number">.
 ax.set_xticklabels([<span class="hljs-string">&#x27;5%&#x27;</span>, <span class="hljs-string">&#x27;15%&#x27;</span>, <span class="hljs-string">&#x27;20%&#x27;</span>, <span class="hljs-string">&#x27;25%&#x27;</span>])
 ax.set_xticklabels([<span class="hljs-string">&#x27;5%&#x27;</span>, <span class="hljs-string">&#x27;15%&#x27;</span>, <span class="hljs-string">&#x27;20%&#x27;</span>, <span class="hljs-string">&#x27;25%&#x27;</span>])
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/21.png" alt="21"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/21.png" alt="21"></p>
 <h2><span id="6x00-fen-bu-distribution"><font color="#FF0000">【6x00】分布（Distribution）</font></span></h2>
 <h3><span id="20-lian-xu-bian-liang-de-zhi-fang-tu-histogram-for-continuous-variable"><font color="##4876FF">【20】连续变量的直方图（Histogram for Continuous Variable）</font></span></h3>
 <p>连续变量的直方图显示给定变量的频率分布。下面的图表基于分类变量对频率条进行分组，从而更深入地了解连续变量和分类变量。</p>
@@ -1062,7 +1069,7 @@ plt.ylabel(<span class="hljs-string">&quot;Frequency&quot;</span>)
 plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">25</span>)
 plt.xticks(ticks=bins[::<span class="hljs-number">3</span>], labels=[<span class="hljs-built_in">round</span>(b, <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> bins[::<span class="hljs-number">3</span>]])
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/22.png" alt="22"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/22.png" alt="22"></p>
 <h3><span id="21-fen-lei-bian-liang-de-zhi-fang-tu-histogram-for-categorical-variable"><font color="##4876FF">【21】分类变量的直方图（Histogram for Categorical Variable）</font></span></h3>
 <p>分类变量的直方图显示该变量的频率分布。通过给条形图上色，您可以将分布与表示颜色的另一个类型变量相关联。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1087,7 +1094,7 @@ plt.ylabel(<span class="hljs-string">&quot;Frequency&quot;</span>)
 plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">40</span>)
 plt.xticks(ticks=bins, labels=np.unique(df[x_var]).tolist(), rotation=<span class="hljs-number">90</span>, horizontalalignment=<span class="hljs-string">&#x27;left&#x27;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/23.png" alt="23"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/23.png" alt="23"></p>
 <h3><span id="22-mi-du-tu-density-plot"><font color="##4876FF">【22】密度图（Density Plot）</font></span></h3>
 <p>密度图是连续变量分布可视化的常用工具。通过按“response”变量对它们进行分组，您可以检查 X 和 Y 之间的关系。如果出于代表性目的来描述城市里程分布如何随气缸数而变化，请参见下面的情况。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1104,7 +1111,7 @@ sns.kdeplot(df.loc[df[<span class="hljs-string">&#x27;cyl&#x27;</span>] == <span
 plt.title(<span class="hljs-string">&#x27;Density Plot of City Mileage by n_Cylinders&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend()
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/24.png" alt="24"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/24.png" alt="24"></p>
 <h3><span id="23-zhi-fang-tu-mi-du-qu-xian-density-curves-with-histogram"><font color="##4876FF">【23】直方图密度曲线（Density Curves with Histogram）</font></span></h3>
 <p>具有直方图的密度曲线将两个图所传达的信息集合在一起，因此您可以将它们都放在一个图形中，而不是放在两个图形中。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1124,7 +1131,7 @@ plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">0.35</spa
 plt.title(<span class="hljs-string">&#x27;Density Plot of City Mileage by Vehicle Type&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend()
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/25.png" alt="25"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/25.png" alt="25"></p>
 <h3><span id="24-shan-feng-die-luan-tu-huan-le-tu-joy-plot"><font color="##4876FF">【24】山峰叠峦图 / 欢乐图（Joy Plot）</font></span></h3>
 <p>Joy Plot 允许不同组的密度曲线重叠，这是一种很好的可视化方法，可以直观地显示大量分组之间的关系。它看起来赏心悦目，清楚地传达了正确的信息。它可以使用基于 <code>matplotlib</code> 的 <code>joypy</code> 包轻松构建。</p>
 <p>【译者 TRHX 注：Joy Plot 看起来就像是山峰叠峦，山峦起伏，层次分明，但取名为 Joy，欢乐的意思，所以不太好翻译，在使用该方法时要先安装 joypy 库】</p>
@@ -1142,7 +1149,7 @@ fig, axes = joypy.joyplot(mpg, column=[<span class="hljs-string">&#x27;hwy&#x27;
 <span class="hljs-comment"># Decoration</span>
 plt.title(<span class="hljs-string">&#x27;Joy Plot of City and Highway Mileage by Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/26.png" alt="26"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/26.png" alt="26"></p>
 <h3><span id="25-fen-bu-shi-dian-tu-distributed-dot-plot"><font color="##4876FF">【25】分布式点图（Distributed Dot Plot）</font></span></h3>
 <p>分布点图显示按组分割的点的单变量分布。点越暗，数据点在该区域的集中程度就越高。通过对中值进行不同的着色，这些组的真实位置立即变得明显。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.patches <span class="hljs-keyword">as</span> mpatches
@@ -1189,7 +1196,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_visible
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_visible(<span class="hljs-literal">False</span>)
 plt.grid(axis=<span class="hljs-string">&#x27;both&#x27;</span>, alpha=<span class="hljs-number">.4</span>, linewidth=<span class="hljs-number">.1</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/27.png" alt="27"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/27.png" alt="27"></p>
 <h3><span id="26-xiang-xing-tu-box-plot"><font color="##4876FF">【26】箱形图（Box Plot）</font></span></h3>
 <p>箱形图是可视化分布的一种好方法，同时牢记中位数，第 25 个第 75 个四分位数和离群值。 但是，在解释方框的大小时需要小心，这可能会扭曲该组中包含的点数。 因此，手动提供每个框中的观察次数可以帮助克服此缺点。</p>
 <p>例如，左侧的前两个框，尽管它们分别具有 5 和 47 个 obs，但是却具有相同大小， 因此，有必要写下该组中的观察数。</p>
@@ -1217,7 +1224,7 @@ add_n_obs(df, group_col=<span class="hljs-string">&#x27;class&#x27;</span>, y=<s
 plt.title(<span class="hljs-string">&#x27;Box Plot of Highway Mileage by Vehicle Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.ylim(<span class="hljs-number">10</span>, <span class="hljs-number">40</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/28.png" alt="28"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/28.png" alt="28"></p>
 <h3><span id="27-dian-xiang-xing-tu-dot-box-plot"><font color="##4876FF">【27】点 + 箱形图（Dot + Box Plot）</font></span></h3>
 <p>点 + 箱形图传达类似于分组的箱形图信息。此外，这些点还提供了每组中有多少数据点的含义。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1235,7 +1242,7 @@ sns.stripplot(x=<span class="hljs-string">&#x27;class&#x27;</span>, y=<span clas
 plt.title(<span class="hljs-string">&#x27;Box Plot of Highway Mileage by Vehicle Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend(title=<span class="hljs-string">&#x27;Cylinders&#x27;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/29.png" alt="29"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/29.png" alt="29"></p>
 <h3><span id="28-xiao-ti-qin-tu-violin-plot"><font color="##4876FF">【28】小提琴图（Violin Plot）</font></span></h3>
 <p>小提琴图是箱形图在视觉上令人愉悦的替代品。 小提琴的形状或面积取决于它所持有的观察次数。 但是，小提琴图可能更难以阅读，并且在专业设置中不常用。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1248,7 +1255,7 @@ sns.violinplot(x=<span class="hljs-string">&#x27;class&#x27;</span>, y=<span cla
 <span class="hljs-comment"># Decoration</span>
 plt.title(<span class="hljs-string">&#x27;Violin Plot of Highway Mileage by Vehicle Class&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/30.png" alt="30"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/30.png" alt="30"></p>
 <h3><span id="29-ren-kou-jin-zi-ta-tu-population-pyramid"><font color="##4876FF">【29】人口金字塔图（Population Pyramid）</font></span></h3>
 <p>人口金字塔可用于显示按体积排序的组的分布。或者它也可以用于显示人口的逐级过滤，因为它是用来显示有多少人通过一个营销漏斗（Marketing Funnel）的每个阶段。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Read data</span>
@@ -1270,7 +1277,7 @@ plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.title(<span class="hljs-string">&quot;Population Pyramid of the Marketing Funnel&quot;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.legend()
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/31.png" alt="31"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/31.png" alt="31"></p>
 <h3><span id="30-fen-lei-tu-categorical-plots"><font color="##4876FF">【30】分类图（Categorical Plots）</font></span></h3>
 <p>由 <code>seaborn</code> 库提供的分类图可用于可视化彼此相关的两个或更多分类变量的计数分布。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
@@ -1285,7 +1292,7 @@ g = sns.catplot(<span class="hljs-string">&quot;alive&quot;</span>, col=<span cl
 <span class="hljs-comment"># 译者 TRHX 注释掉了这一行代码</span>
 <span class="hljs-comment"># fig.suptitle(&#x27;sf&#x27;)</span>
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/32.png" alt="32"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/32.png" alt="32"></p>
 <pre><code class="hljs python"><span class="hljs-comment"># Load Dataset</span>
 titanic = sns.load_dataset(<span class="hljs-string">&quot;titanic&quot;</span>)
 
@@ -1298,7 +1305,7 @@ sns.catplot(x=<span class="hljs-string">&quot;age&quot;</span>, y=<span class="h
 
 <span class="hljs-comment"># 译者 TRHX 添加了这行代码</span>
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/33.png" alt="33"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/33.png" alt="33"></p>
 <h2><span id="7x00-zu-cheng-composition"><font color="#FF0000">【7x00】组成（Composition）</font></span></h2>
 <h3><span id="31-hua-fu-bing-tu-waffle-chart"><font color="##4876FF">【31】华夫饼图（Waffle Chart）</font></span></h3>
 <p>华夫饼图可以使用 <code>pywaffle</code> 包创建，用于显示较大群体中的组的组成。</p>
@@ -1333,7 +1340,7 @@ fig = plt.figure(
 
 <span class="hljs-comment"># 译者 TRHX 添加了这行代码</span>
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/34.png" alt="34"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/34.png" alt="34"></p>
 <pre><code class="hljs python"><span class="hljs-comment"># ! pip install pywaffle</span>
 <span class="hljs-keyword">from</span> pywaffle <span class="hljs-keyword">import</span> Waffle
 
@@ -1389,7 +1396,7 @@ fig = plt.figure(
 
 <span class="hljs-comment"># 译者 TRHX 添加了这行代码</span>
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/35.png" alt="35"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/35.png" alt="35"></p>
 <h3><span id="32-bing-tu-pie-chart"><font color="##4876FF">【32】饼图（Pie Chart）</font></span></h3>
 <p>饼图是显示组成的经典方法。然而，现在一般不宜使用，因为馅饼部分的面积有时会产生误导。因此，如果要使用饼图，强烈建议您显式地记下饼图每个部分的百分比或数字。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import</span>
@@ -1407,7 +1414,7 @@ df.plot(kind=<span class="hljs-string">&#x27;pie&#x27;</span>, subplots=<span cl
 plt.title(<span class="hljs-string">&quot;Pie Chart of Vehicle Class - Bad&quot;</span>)
 plt.ylabel(<span class="hljs-string">&quot;&quot;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/36.png" alt="36"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/36.png" alt="36"></p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import</span>
 df_raw = pd.read_csv(<span class="hljs-string">&quot;https://github.com/selva86/datasets/raw/master/mpg_ggplot2.csv&quot;</span>)
 
@@ -1439,7 +1446,7 @@ ax.legend(wedges, categories, title=<span class="hljs-string">&quot;Vehicle Clas
 plt.setp(autotexts, size=<span class="hljs-number">10</span>, weight=<span class="hljs-number">700</span>)
 ax.set_title(<span class="hljs-string">&quot;Class of Vehicles: Pie Chart&quot;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/37.png" alt="37"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/37.png" alt="37"></p>
 <h3><span id="33-ju-zhen-shu-xing-tu-treemap"><font color="##4876FF">【33】矩阵树形图（Treemap）</font></span></h3>
 <p>矩阵树形图类似于饼图，它可以更好地完成工作而不会误导每个组的贡献。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 squarify 库】</p>
@@ -1463,7 +1470,7 @@ squarify.plot(sizes=sizes, label=labels, color=colors, alpha=<span class="hljs-n
 plt.title(<span class="hljs-string">&#x27;Treemap of Vechile Class&#x27;</span>)
 plt.axis(<span class="hljs-string">&#x27;off&#x27;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/38.png" alt="38"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/38.png" alt="38"></p>
 <h3><span id="34-tiao-xing-tu-bar-chart"><font color="##4876FF">【34】条形图（Bar Chart）</font></span></h3>
 <p>条形图是一种基于计数或任何给定度量的可视化项的经典方法。在下面的图表中，我为每个项目使用了不同的颜色，但您通常可能希望为所有项目选择一种颜色，除非您按组对它们进行着色。颜色名称存储在下面代码中的 <code>all_colors</code> 中。您可以通过在 <code>plt.plot()</code> 中设置 <code>color</code> 参数来更改条形的颜色。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> random
@@ -1490,7 +1497,7 @@ plt.title(<span class="hljs-string">&quot;Number of Vehicles by Manaufacturers&q
 plt.ylabel(<span class="hljs-string">&#x27;# Vehicles&#x27;</span>)
 plt.ylim(<span class="hljs-number">0</span>, <span class="hljs-number">45</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/39.png" alt="39"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/39.png" alt="39"></p>
 <h2><span id="8x00-bian-hua-change"><font color="#FF0000">【8x00】变化（Change）</font></span></h2>
 <h3><span id="35-shi-jian-xu-lie-tu-time-series-plot"><font color="##4876FF">【35】时间序列图（Time Series Plot）</font></span></h3>
 <p>时间序列图用于可视化给定指标随时间的变化。在这里你可以看到 1949 年到 1969 年间的航空客运量是如何变化的。</p>
@@ -1516,7 +1523,7 @@ plt.gca().spines[<span class="hljs-string">&quot;bottom&quot;</span>].set_alpha(
 plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<span class="hljs-number">0.0</span>)
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">0.3</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/40.png" alt="40"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/40.png" alt="40"></p>
 <h3><span id="36-dai-bo-feng-he-bo-gu-zhu-shi-de-shi-jian-xu-lie-tu-time-series-with-peaks-and-troughs-annotated"><font color="##4876FF">【36】带波峰和波谷注释的时间序列图（Time Series with Peaks and Troughs Annotated）</font></span></h3>
 <p>下面的时间序列绘制了所有的波峰和波谷，并注释了所选特殊事件的发生。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1560,7 +1567,7 @@ plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<s
 plt.legend(loc=<span class="hljs-string">&#x27;upper left&#x27;</span>)
 plt.grid(axis=<span class="hljs-string">&#x27;y&#x27;</span>, alpha=<span class="hljs-number">.3</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/41.png" alt="41"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/41.png" alt="41"></p>
 <h3><span id="37-zi-xiang-guan-acf-he-bu-fen-zi-xiang-guan-pacf-tu-autocorrelation-acf-and-partial-autocorrelation-pacf-plot"><font color="##4876FF">【37】自相关 (ACF) 和部分自相关 (PACF) 图（Autocorrelation (ACF) and Partial Autocorrelation (PACF) Plot）</font></span></h3>
 <p>自相关图（ACF图）显示了时间序列与其自身滞后的相关性。 每条垂直线（在自相关图上）表示系列与滞后 0 之间的滞后的相关性。图中的蓝色阴影区域是显著性级别。 那些位于蓝线之上的滞后是显著的滞后。</p>
 <p>那么如何解释呢？</p>
@@ -1587,7 +1594,7 @@ ax1.spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span cl
 ax1.tick_params(axis=<span class="hljs-string">&#x27;both&#x27;</span>, labelsize=<span class="hljs-number">12</span>)
 ax2.tick_params(axis=<span class="hljs-string">&#x27;both&#x27;</span>, labelsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/42.png" alt="42"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/42.png" alt="42"></p>
 <h3><span id="38-jiao-cha-xiang-guan-tu-cross-correlation-plot"><font color="##4876FF">【38】交叉相关图（Cross Correlation plot）</font></span></h3>
 <p>交叉相关图显示了两个时间序列相互之间的滞后。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> statsmodels.tsa.stattools <span class="hljs-keyword">as</span> stattools
@@ -1618,7 +1625,7 @@ plt.bar(x=np.arange(<span class="hljs-built_in">len</span>(ccs)), height=ccs, wi
 plt.title(<span class="hljs-string">&#x27;$Cross\; Correlation\; Plot:\; mdeaths\; vs\; fdeaths$&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.xlim(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(ccs))
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/43.png" alt="43"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/43.png" alt="43"></p>
 <h3><span id="39-shi-jian-xu-lie-fen-jie-tu-time-series-decomposition-plot"><font color="##4876FF">【39】时间序列分解图（Time Series Decomposition Plot）</font></span></h3>
 <p>时间序列分解图将时间序列分解为趋势、季节和残差分量。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> statsmodels.tsa.seasonal <span class="hljs-keyword">import</span> seasonal_decompose
@@ -1636,7 +1643,7 @@ result = seasonal_decompose(df[<span class="hljs-string">&#x27;traffic&#x27;</sp
 plt.rcParams.update(&#123;<span class="hljs-string">&#x27;figure.figsize&#x27;</span>: (<span class="hljs-number">10</span>, <span class="hljs-number">10</span>)&#125;)
 result.plot().suptitle(<span class="hljs-string">&#x27;Time Series Decomposition of Air Passengers&#x27;</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/44.png" alt="44"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/44.png" alt="44"></p>
 <h3><span id="40-duo-chong-shi-jian-xu-lie-multiple-time-series"><font color="##4876FF">【40】多重时间序列（Multiple Time Series）</font></span></h3>
 <p>您可以在同一图表上绘制多个测量相同值的时间序列，如下所示。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1676,7 +1683,7 @@ plt.xticks(<span class="hljs-built_in">range</span>(<span class="hljs-number">0<
 plt.ylim(y_LL, y_UL)
 plt.xlim(-<span class="hljs-number">2</span>, <span class="hljs-number">80</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/45.png" alt="45"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/45.png" alt="45"></p>
 <h3><span id="41-shi-yong-ci-yao-de-y-zhou-lai-hui-zhi-bu-tong-fan-wei-de-tu-xing-plotting-with-different-scales-using-secondary-y-axis"><font color="##4876FF">【41】使用次要的 Y 轴来绘制不同范围的图形（Plotting with different scales using secondary Y axis）</font></span></h3>
 <p>如果要显示在同一时间点测量两个不同数量的两个时间序列，则可以在右侧的次要 Y 轴上再绘制第二个系列。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1710,7 +1717,7 @@ ax2.set_xticklabels(x[::<span class="hljs-number">60</span>], rotation=<span cla
 ax2.set_title(<span class="hljs-string">&quot;Personal Savings Rate vs Unemployed: Plotting in Secondary Y Axis&quot;</span>, fontsize=<span class="hljs-number">22</span>)
 fig.tight_layout()
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/46.png" alt="46"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/46.png" alt="46"></p>
 <h3><span id="42-dai-wu-chai-dai-de-shi-jian-xu-lie-time-series-with-error-bands"><font color="##4876FF">【42】带误差带的时间序列（Time Series with Error Bands）</font></span></h3>
 <p>如果您有一个时间序列数据集，其中每个时间点（日期/时间戳）有多个观测值，则可以构造具有误差带的时间序列。下面您可以看到一些基于一天中不同时间的订单的示例。还有一个关于45天内到达的订单数量的例子。</p>
 <p>在这种方法中，订单数量的平均值用白线表示。并计算95%的置信区间，并围绕平均值绘制。</p>
@@ -1746,7 +1753,7 @@ plt.xlim(s, e)
     plt.hlines(y, xmin=s, xmax=e, colors=<span class="hljs-string">&#x27;black&#x27;</span>, alpha=<span class="hljs-number">0.5</span>, linestyles=<span class="hljs-string">&quot;--&quot;</span>, lw=<span class="hljs-number">0.5</span>)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/47.png" alt="47"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/47.png" alt="47"></p>
 <pre><code class="hljs python"><span class="hljs-string">&quot;Data Source: https://www.kaggle.com/olistbr/brazilian-ecommerce#olist_orders_dataset.csv&quot;</span>
 <span class="hljs-keyword">from</span> dateutil.parser <span class="hljs-keyword">import</span> parse
 <span class="hljs-keyword">from</span> scipy.stats <span class="hljs-keyword">import</span> sem
@@ -1785,7 +1792,7 @@ plt.ylim(<span class="hljs-number">4</span>, <span class="hljs-number">10</span>
     plt.hlines(y, xmin=s, xmax=e, colors=<span class="hljs-string">&#x27;black&#x27;</span>, alpha=<span class="hljs-number">0.5</span>, linestyles=<span class="hljs-string">&quot;--&quot;</span>, lw=<span class="hljs-number">0.5</span>)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/48.png" alt="48"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/48.png" alt="48"></p>
 <h3><span id="43-dui-ji-mian-ji-tu-stacked-area-chart"><font color="##4876FF">【43】堆积面积图（Stacked Area Chart）</font></span></h3>
 <p>堆积面积图提供了多个时间序列的贡献程度的可视化表示，以便相互比较。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1831,7 +1838,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">.3</span>)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/49.png" alt="49"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/49.png" alt="49"></p>
 <h3><span id="44-wei-dui-ji-mian-ji-tu-area-chart-unstacked"><font color="##4876FF">【44】未堆积面积图（Area Chart UnStacked）</font></span></h3>
 <p>未堆积的面积图用于可视化两个或多个序列彼此之间的进度（起伏）。在下面的图表中，你可以清楚地看到，随着失业持续时间的中位数增加，个人储蓄率是如何下降的。未堆积面积图很好地展示了这一现象。</p>
 <pre><code class="hljs python"><span class="hljs-comment"># Import Data</span>
@@ -1867,7 +1874,7 @@ plt.gca().spines[<span class="hljs-string">&quot;bottom&quot;</span>].set_alpha(
 plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<span class="hljs-number">0</span>)
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">.3</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/50.png" alt="50"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/50.png" alt="50"></p>
 <h3><span id="45-ri-li-re-li-tu-calendar-heat-map"><font color="##4876FF">【45】日历热力图（Calendar Heat Map）</font></span></h3>
 <p>与时间序列相比，日历地图是另一种基于时间的数据可视化的不太受欢迎的方法。虽然在视觉上很吸引人，但数值并不十分明显。然而，它能很好地描绘极端值和假日效果。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 calmap 库】</p>
@@ -1883,7 +1890,7 @@ plt.figure(figsize=(<span class="hljs-number">16</span>, <span class="hljs-numbe
 calmap.calendarplot(df[<span class="hljs-string">&#x27;2014&#x27;</span>][<span class="hljs-string">&#x27;VIX.Close&#x27;</span>], fig_kws=&#123;<span class="hljs-string">&#x27;figsize&#x27;</span>: (<span class="hljs-number">16</span>, <span class="hljs-number">10</span>)&#125;,
                     yearlabel_kws=&#123;<span class="hljs-string">&#x27;color&#x27;</span>: <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-string">&#x27;fontsize&#x27;</span>: <span class="hljs-number">14</span>&#125;, subplot_kws=&#123;<span class="hljs-string">&#x27;title&#x27;</span>: <span class="hljs-string">&#x27;Yahoo Stock Prices&#x27;</span>&#125;)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/51.png" alt="51"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/51.png" alt="51"></p>
 <h3><span id="46-ji-jie-tu-seasonal-plot"><font color="##4876FF">【46】季节图（Seasonal Plot）</font></span></h3>
 <p>季节图可用于比较上一季度同一天（年/月/周等）时间序列的表现。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> dateutil.parser <span class="hljs-keyword">import</span> parse
@@ -1924,7 +1931,7 @@ plt.gca().spines[<span class="hljs-string">&quot;right&quot;</span>].set_alpha(<
 plt.gca().spines[<span class="hljs-string">&quot;left&quot;</span>].set_alpha(<span class="hljs-number">0.5</span>)
 <span class="hljs-comment"># plt.legend(loc=&#x27;upper right&#x27;, ncol=2, fontsize=12)</span>
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/52.png" alt="52"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/52.png" alt="52"></p>
 <h2><span id="9x00-fen-zu-groups"><font color="#FF0000">【9x00】分组（ Groups）</font></span></h2>
 <h3><span id="47-shu-zhuang-tu-dendrogram"><font color="##4876FF">【47】树状图（Dendrogram）</font></span></h3>
 <p>树状图根据给定的距离度量将相似的点组合在一起，并根据点的相似性将它们组织成树状链接。</p>
@@ -1940,7 +1947,7 @@ dend = shc.dendrogram(shc.linkage(df[[<span class="hljs-string">&#x27;Murder&#x2
                       color_threshold=<span class="hljs-number">100</span>)
 plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/53.png" alt="53"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/53.png" alt="53"></p>
 <h3><span id="48-ju-lei-tu-cluster-plot"><font color="##4876FF">【48】聚类图（Cluster Plot）</font></span></h3>
 <p>聚类图可以用来划分属于同一个聚类的点。下面是一个基于 USArrests 数据集将美国各州分成 5 组的代表性示例。这个聚类图使用 ‘murder’ 和 ‘assault’ 作为 X 轴和 Y 轴。或者，您可以将第一个主元件用作 X 轴和 Y 轴。</p>
 <p>【译者 TRHX 注：在使用该方法时要先安装 sklearn 库】</p>
@@ -1979,7 +1986,7 @@ plt.xlabel(<span class="hljs-string">&#x27;Murder&#x27;</span>); plt.xticks(font
 plt.ylabel(<span class="hljs-string">&#x27;Assault&#x27;</span>); plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.title(<span class="hljs-string">&#x27;Agglomerative Clustering of USArrests (5 Groups)&#x27;</span>, fontsize=<span class="hljs-number">22</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/54.png" alt="54"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/54.png" alt="54"></p>
 <h3><span id="49-an-de-lu-si-qu-xian-andrews-curve"><font color="##4876FF">【49】安德鲁斯曲线（Andrews Curve）</font></span></h3>
 <p>安德鲁斯曲线有助于可视化是否存在基于给定分组的数值特征的固有分组。如果特征（数据集中的列）不能帮助区分组（cyl），则行将不会像下图所示被很好地分隔开。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> pandas.plotting <span class="hljs-keyword">import</span> andrews_curves
@@ -2004,7 +2011,7 @@ plt.grid(alpha=<span class="hljs-number">0.3</span>)
 plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/55.png" alt="55"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/55.png" alt="55"></p>
 <h3><span id="50-ping-xing-zuo-biao-tu-parallel-coordinates"><font color="##4876FF">【50】平行坐标图（Parallel Coordinates）</font></span></h3>
 <p>平行坐标有助于可视化功能是否有助于有效地隔离组。如果一个分离受到影响，则该特征可能在预测该组时非常有用。</p>
 <pre><code class="hljs python"><span class="hljs-keyword">from</span> pandas.plotting <span class="hljs-keyword">import</span> parallel_coordinates
@@ -2027,7 +2034,7 @@ plt.grid(alpha=<span class="hljs-number">0.3</span>)
 plt.xticks(fontsize=<span class="hljs-number">12</span>)
 plt.yticks(fontsize=<span class="hljs-number">12</span>)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/024/56.png" alt="56"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/024/56.png" alt="56"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本译文首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">Selva</span> <span class="hljs-string">Prabhakaran，译者</span> <span class="hljs-string">TRHX。</span>
@@ -2062,6 +2069,25 @@ plt.show()</code></pre>
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -2158,25 +2184,24 @@ plt.show()</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -2197,7 +2222,7 @@ plt.show()</code></pre>
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

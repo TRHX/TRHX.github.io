@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>Python 数据分析三剑客之 Matplotlib（二）：文本描述/中文支持/画布/网格等基本图像属性 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -386,7 +393,7 @@ y = <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,
 plt.title(<span class="hljs-string">&#x27;This is a title&#x27;</span>)
 plt.plot(x, y)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/01.png" alt="01"></p>
 <h3><span id="1x02-wei-zuo-biao-zhou-tian-jia-biao-qian-matplotlib-pyplot-xlabel-ylabel"><font color="#1BC3FB">【1x02】为坐标轴添加标签：matplotlib.pyplot.xlabel() / ylabel()</font></span></h3>
 <p><code>matplotlib.pyplot.xlabel()</code>：为 x 轴添加标签；<br>
 <code>matplotlib.pyplot.ylabel()</code>：为 y 轴添加标签。</p>
@@ -431,7 +438,7 @@ plt.plot(x, y)
 plt.plot(a, b)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/02.png" alt="02"></p>
 <h3><span id="1x03-ren-yi-wei-zhi-tian-jia-wen-ben-matplotlib-pyplot-text"><font color="#1BC3FB">【1x03】任意位置添加文本：matplotlib.pyplot.text()</font></span></h3>
 <p><code>matplotlib.pyplot.text()</code> 方法可以在画布上任意位置添加文本描述。</p>
 <p>基本语法：<code>matplotlib.pyplot.text(x, y, s[, fontdict=None, withdash=&lt;deprecated parameter&gt;])</code></p>
@@ -490,7 +497,7 @@ plt.text(<span class="hljs-number">27.5</span>, <span class="hljs-number">7.9</s
 plt.plot(a, b)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/03.png" alt="03"></p>
 <h3><span id="1x03-ren-yi-wei-zhi-tian-jia-wen-ben-matplotlib-pyplot-annotate"><font color="#1BC3FB">【1x03】任意位置添加文本：matplotlib.pyplot.annotate()</font></span></h3>
 <p><code>matplotlib.pyplot.annotate()</code> 方法可以在指定坐标点添加文本或 LaTeX 描述，也可以在其他位置添加描述后，使用箭头指向某个坐标点。比 <code>matplotlib.pyplot.text()</code> 更高级。</p>
 <p>基本语法：<code>matplotlib.pyplot.annotate(text, xy, xytext, xycoords, textcoords, ha, va, arrowprops, \*\*kwargs)</code></p>
@@ -772,7 +779,7 @@ plt.show()</code></pre>
 </tbody>
 </table>
 <table><tr><td bgcolor="#7FFFD4" colspan="2"><strong><font color="#FF0000" size="3px">connectionstyle 样式举例</font></strong></td></tr></table>
-<p><img src="https://cdn.itbob.cn/img/article/015/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/04.png" alt="04"></p>
 <p>应用举例：</p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 <span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -794,7 +801,7 @@ plt.annotate(<span class="hljs-string">r&#x27;$\lim_&#123;x\to 0&#125;\frac&#123
              arrowprops=<span class="hljs-built_in">dict</span>(arrowstyle=<span class="hljs-string">&quot;-&gt;&quot;</span>, connectionstyle=<span class="hljs-string">&quot;arc3, rad=.2&quot;</span>))  <span class="hljs-comment"># 箭头样式</span>
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/05.png" alt="05"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
@@ -998,7 +1005,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/06.png" alt="06"></p>
 <h3><span id="2x03-zhi-ding-dan-ge-zi-ti-fontproperties"><font color="#1BC3FB">【2x03】指定单个字体：fontproperties</font></span></h3>
 <p><code>fontproperties</code> 参数可以加在要设置中文的地方</p>
 <p>优点：不污染全局；缺点：中文太多了挨个设置比较繁琐。</p>
@@ -1014,10 +1021,10 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, font
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/07.png" alt="07"></p>
 <h3><span id="2x04-zhi-ding-wen-zi-lu-jing-fontproperties"><font color="#1BC3FB">【2x04】指定文字路径：FontProperties</font></span></h3>
 <p><code>matplotlib</code> 中 <code>font_manager</code> 模块的 <code>FontProperties</code> 方法可以通过指定文字路径来使用本地文字，在 Windows 中，文字路径一般是 <code>C:\Windows\Fonts\</code>，文字名称可以通过其属性来获取，部分用户自己安装的字体可能包含多个类型，可打开字体合集后通过其属性来获取。</p>
-<p><img src="https://cdn.itbob.cn/img/article/015/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/08.png" alt="08"></p>
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 <span class="hljs-keyword">from</span> matplotlib.font_manager <span class="hljs-keyword">import</span> FontProperties
 
@@ -1031,7 +1038,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>, font
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/09.png" alt="09"></p>
 <h3><span id="2x05-wen-zi-geng-duo-shu-xing-rc"><font color="#1BC3FB">【2x05】文字更多属性：rc</font></span></h3>
 <p>rc 参数支持文字的更多属性设置，如字体粗细、大小等，这种方法同样将影响全局。</p>
 <p>官方参考：<a target="_blank" rel="noopener" href="https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc">https://matplotlib.org/api/matplotlib_configuration_api.html?highlight=rc#matplotlib.rc</a></p>
@@ -1053,7 +1060,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/10.png" alt="10"></p>
 <h2><span id="3x00-she-zhi-hua-bu-da-xiao-fen-bian-lu-yan-se"><font color="#FF0000">【3x00】设置画布大小 / 分辨率 / 颜色</font></span></h2>
 <p><code>matplotlib.pyplot.figure()</code> 可以设置画布的大小、图片分辨率、颜色等。</p>
 <p>基本语法：<code>matplotlib.pyplot.figure(figsize=None, dpi=None, facecolor=None, edgecolor=None, frameon=True, \*\*kwargs)</code></p>
@@ -1098,7 +1105,7 @@ plt.figure(figsize=(<span class="hljs-number">6.5</span>, <span class="hljs-numb
 plt.plot(x, y)
 
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/11.png" alt="11"></p>
 <h2><span id="4x00-she-zhi-wang-ge"><font color="#FF0000">【4x00】设置网格</font></span></h2>
 <p><code>matplotlib.pyplot.grid()</code> 方法可以为图表设置网格显示。</p>
 <p>基本语法：<code>matplotlib.pyplot.grid([b=None, which='major', axis='both', \*\*kwargs])</code></p>
@@ -1173,7 +1180,7 @@ plt.ylabel(<span class="hljs-string">&#x27;这是 y 轴标签&#x27;</span>)
 plt.grid(axis=<span class="hljs-string">&#x27;x&#x27;</span>, color=<span class="hljs-string">&#x27;red&#x27;</span>, linestyle=<span class="hljs-string">&#x27;-.&#x27;</span>, linewidth=<span class="hljs-number">2</span>)
 plt.plot(a, b)
 plt.show()</code></pre>
-<p><img src="https://cdn.itbob.cn/img/article/015/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/015/12.png" alt="12"></p>
 <hr>
 <pre><code class="hljs yaml"><span class="hljs-string">这里是一段物理防爬虫文本，请读者忽略。</span>
 <span class="hljs-string">本文原创首发于</span> <span class="hljs-string">CSDN，作者</span> <span class="hljs-string">ITBOB。</span>
@@ -1209,6 +1216,25 @@ plt.show()</code></pre>
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -1305,25 +1331,24 @@ plt.show()</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -1344,7 +1369,7 @@ plt.show()</code></pre>
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

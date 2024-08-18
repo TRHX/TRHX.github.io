@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -287,7 +294,7 @@
                 </div>
                 
                     <a href="/article/020/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -325,7 +332,7 @@
                 </div>
                 
                     <a href="/article/019/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -363,7 +370,7 @@
                 </div>
                 
                     <a href="/article/018/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -401,7 +408,7 @@
                 </div>
                 
                     <a href="/article/017/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -439,7 +446,7 @@
                 </div>
                 
                     <a href="/article/016/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -477,7 +484,7 @@
                 </div>
                 
                     <a href="/article/015/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -515,7 +522,7 @@
                 </div>
                 
                     <a href="/article/014/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/matplotlib.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/matplotlib.png');">
                     </a>
                 
             </article>
@@ -553,7 +560,7 @@
                 </div>
                 
                     <a href="/article/013/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/numpy.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/numpy.png');">
                     </a>
                 
             </article>
@@ -591,7 +598,7 @@
                 </div>
                 
                     <a href="/article/012/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/numpy.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/numpy.png');">
                     </a>
                 
             </article>
@@ -629,7 +636,7 @@
                 </div>
                 
                     <a href="/article/011/" class="post-feature-image"
-                        style="background-image: url('https://cdn.itbob.cn/img/thumbnail/numpy.png');">
+                        style="background-image: url('https://static.spiderapi.cn/itbob/images/thumbnail/numpy.png');">
                     </a>
                 
             </article>
@@ -738,25 +745,24 @@
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -777,7 +783,7 @@
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {
