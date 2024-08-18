@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>APP 逆向，Frida 初体验，root 检测与加密字符串定位 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -286,7 +293,7 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="https://cdn.itbob.cn/img/cover/app_reverse.png" alt="app_reverse"></p>
+                <p><img src="https://static.spiderapi.cn/itbob/images/cover/app_reverse.png" alt="app_reverse"></p>
 <p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
 <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
 <hr>
@@ -316,27 +323,27 @@
 </ul>
 <h2><span id="an-zhuang-adb">安装 ADB</span></h2>
 <p>adb（Android Debug Bridge）即安卓调试桥，安装后可以在电脑上与手机进行交互，Android Studio 等工具里面会自带 adb，有时候我们并不想下载这么大的工具，所以这里介绍一下 Android SDK Platform-Tools，它是 Android SDK 的一个组件，它包括与 Android 平台交互的工具，主要是 adb 和 fastboot，官方下载地址：<a target="_blank" rel="noopener" href="https://developer.android.com/studio/releases/platform-tools">https://developer.android.com/studio/releases/platform-tools</a> ，下载完成后将该目录添加到环境变量，USB 连接手机，手机上设置允许 USB 调试，使用命令 <code>adb version</code> 可查看版本信息，<code>adb devices</code> 可以查看当前连接的设备，如下图所示：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/01.png" alt="01"></p>
 <h2><span id="an-zhuang-frida">安装 Frida</span></h2>
 <p>Frida 是一款基于 Python + JavaScript 的 Hook 与调试框架，首先电脑端使用命令 <code>pip install frida-tools</code> 安装 frida 模块（此命令默认会安装最新版的 frida 和 frida-tools，如），然后下载 frida-server，下载地址：<a target="_blank" rel="noopener" href="https://github.com/frida/frida/releases">https://github.com/frida/frida/releases</a></p>
 <p>frida-server 要根据你电脑端安装的 frida 版本和手机的 CPU 架构来选择对应的，使用命令 <code>frida --version</code> 可以查看 frida 版本，使用命令 <code>adb shell</code> 进入手机，输入 <code>getprop ro.product.cpu.abi</code> 查看 CPU 架构，如下图所示，我这里 frida 是 15.2.2 版本，手机 CPU 为 arm64，所以我下载的是 <code>frida-server-15.2.2-android-arm64.xz</code>。</p>
 <p>某些 Android 低版本使用高版本 frida 可能有问题，遇到问题可尝试降低 frida 版本来解决。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/02.png" alt="02"></p>
-<p><img src="https://cdn.itbob.cn/img/article/055/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/03.png" alt="03"></p>
 <p>将下载好的 frida-server 使用 <code>adb push</code> 命令传到手机的 <code>/data/local/tmp/</code> 目录下，并给予 777 读、写、执行的权限，然后直接运行 frida-server，正常不会有任何输出，当然也可以使用 &amp; 等方式让其在后台运行。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/04.png" alt="04"></p>
 <p>然后另开一个 cmd 使用命令 <code>frida-ps -U </code> 可查看手机进程，有输出则正常。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/05.png" alt="05"></p>
 <h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
 <p>使用 <code>adb install</code> 命令安装 UnCrackable-Level1.apk，打开该 APP，会检测到 root，出现 <code>Root detected!</code> 的提示，如下图所示：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/06.png" alt="06"></p>
 <p>使用 JEB、JADX、GDA 等工具反编译 apk，直接搜索关键字 <code>Root detected!</code> 即可定位到检测的地方：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/07.png" alt="07"></p>
 <p>可以看到图中有三个检测方法 <code>c.a()</code>、<code>c.b()</code>、<code>c.c()</code>，其中一个返回为真，则弹出 <code>Root detected!</code>，然后前面还有一个 <code>onClick</code> 方法，如果点击 OK 按钮，则触发 <code>System.exit(0);</code>，即退出 APP，先点进三个检测方法看看：</p>
 <p><code>a()</code> 方法通过检测 Android 系统环境变量中是否有 su 文件来判断是否被 root；</p>
 <p><code>b()</code> 方法通过检测 <code>Build.TAGS</code> 中是否包含字符串 <code>test-keys</code> 来判断是否被 root；</p>
 <p><code>c()</code> 方法通过检测指定路径下是否包含指定的文件来判断是否被 root。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/08.png" alt="08"></p>
 <p>所以我们这里就有多种过掉检测的方法：</p>
 <p>方法一：Hook 三个检测方法，让它们都返回 false，不再执行后续的 a 方法，就不会退出 APP 了：</p>
 <pre><code class="hljs javascript">Java.perform(
@@ -391,13 +398,13 @@
     &#125;
 )</code></pre>
 <p>root 检测过掉之后，APP 还要输入一个字符串，输入错误会提示 <code>That's not it. Try again.</code>，如下图所示：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/09.png" alt="09"></p>
 <p>分析 Java 代码，有一个 <code>if-else</code> 判断，obj 为输入的字符串，<code>a.a(obj)</code> 判断为真，就表示输入正确。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/10.png" alt="10"></p>
 <p>跟到 <code>a.a()</code> 方法，可以看到 <code>bArr</code> 是内置的字符串，通过 <code>equals()</code> 方法比较输入的 <code>str</code> 是否和 <code>bArr</code> 相等：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/11.png" alt="11"></p>
 <p><code>bArr</code> 的值，主要经过 <code>sg.vantagepoint.a.a.a()</code> 方法处理后得到，继续跟进去可以发现是 AES 加密算法：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/12.png" alt="12"></p>
 <p>这里就可以直接 Hook <code>sg.vantagepoint.a.a.a()</code>，直接拿到加密后的值，也就是我们要的正确字符串，由于这里返回的是 ASCII 码，所以我们还需要在 JavaScript 代码中使用 <code>String.fromCharCode()</code> 将其转换成正常字符，Hook 代码如下：</p>
 <pre><code class="hljs javascript">Java.perform(
     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;
@@ -521,14 +528,14 @@ sys.stdin.read()
 <span class="hljs-comment"># device.resume(pid)</span>
 <span class="hljs-comment"># sys.stdin.read()</span></code></pre>
 <p>Python 代码中，attach 模式 Hook 已经存在的进程，spawn 模式会重启 APP，启动一个新的进程并挂起，在启动的同时注入 frida 代码，适用于在进程启动前的一些 Hook，attach 模式传入的是 APP 名称，spawn 模式传入的是 APP 包名，查看 APP 名称和包名的方法有很多，这里介绍两个 frida 命令，<code>frida-ps -Uai</code>：列出安装的程序，<code>frida-ps -Ua</code>：列出正在运行中的程序，如下图所示，本例中 <code>Uncrackable1</code> 就是 APP 名称，<code>owasp.mstg.uncrackable1</code> 就是包名：</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/13.png" alt="13"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/13.png" alt="13"></p>
 <p>运行 Python 代码，注意手机端也要启动 frida-server，过掉 root 检测后，先随便输入字符串，点击 VERIFY 就会 Hook 到正确的字符串为 <code>I want to believe</code>，再次输入正确的字符串，即可验证成功。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/14.png" alt="14"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/14.png" alt="14"></p>
 <h3><span id="frida-ming-ling">frida 命令</span></h3>
 <p>不使用 Python，也可以直接使用 frida 命令来实现，和前面 Python  一样也有两种模式，同样的一个是 APP 名一个是包名：</p>
 <p><code>frida -U Uncrackable1 -l .\frida-hook.js</code>：attach 模式，APP 启动后注入 frida 代码；</p>
 <p><code>frida -U -f owasp.mstg.uncrackable1 -l .\frida-hook.js --no-pause</code>：spawn 模式，重启 APP，启动的同时注入 frida 代码。</p>
-<p><img src="https://cdn.itbob.cn/img/article/055/15.png" alt="15"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/055/15.png" alt="15"></p>
 <p>至此，我们完美绕过了 root 检测，并成功找到了正确的字符串。</p>
 
             </div>
@@ -558,6 +565,25 @@ sys.stdin.read()
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -654,25 +680,24 @@ sys.stdin.read()
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -693,7 +718,7 @@ sys.stdin.read()
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

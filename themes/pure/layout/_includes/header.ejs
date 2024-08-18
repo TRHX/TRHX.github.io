@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="<%- url_for('/') %>">
-        <img class="user-avatar" src="<%- url_for(theme.avatar) %>" alt="头像">
+        <img class="user-avatar" src="<%- theme.cdn_self_domain %><%- theme.avatar %>" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- <%= config.title %> -->
         </div>
@@ -28,7 +28,7 @@
                 <% if (menu.picture) { %>
                     <div class="nav-item">
                         <a href="<%= url_for(menu.link) %>" target="<%- menu.target ? menu.target : "_self" %>">
-                            <img src="<%= url_for(menu.picture) %>" class="nofancybox" alt="<%- menu.alt %>" width="<%- menu.picture_width %>" height="<%- menu.picture_height %>">
+                            <img src="<%- theme.cdn_self_domain %><%- menu.picture %>" class="nofancybox" alt="<%- menu.alt %>" width="<%- menu.picture_width %>" height="<%- menu.picture_height %>">
                         </a>
                     </div>
                 <% } else { %>

@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>极验行为验证，四代滑块验证码逆向分析 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -286,7 +293,7 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="https://cdn.itbob.cn/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
+                <p><img src="https://static.spiderapi.cn/itbob/images/cover/captcha_reverse.png" alt="captcha_reverse"></p>
 <p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
 <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
 <hr>
@@ -317,10 +324,10 @@
 <li>加密算法：RSA、AES</li>
 </ul>
 <h2><span id="tong-xun-liu-cheng">通讯流程</span></h2>
-<p><img src="https://cdn.itbob.cn/img/article/061/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/01.png" alt="01"></p>
 <h2><span id="yan-zheng-ma-liu-cheng-fen-xi">验证码流程分析</span></h2>
 <p>进入网页后，打开开发者人员工具进行抓包，点击滑动拼图验证，此时还未点击按钮开始验证，抓到了一个名为 <code>load?captcha_id=xxx</code> 的包，<code>Query String Parameters</code> 包含了一些参数：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/02.png" alt="02"></p>
 <ul>
 <li><code>captcha_id</code>：验证码 id，固定值，由 <code>adaptive-captcha-demo.js</code> 文件生成，后文分析；</li>
 <li><code>challenge</code>：动态变化，由 <code>gtc4.js</code> 文件生成，后文分析；</li>
@@ -330,7 +337,7 @@
 <li><code>callback</code>：geetest_ + 时间戳，主要作用是防止缓存。</li>
 </ul>
 <p>响应预览中返回的关键内容如下，相较于三代，底图未做混淆：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/03.png" alt="03"></p>
 <ul>
 <li><code>bg</code>：背景图片地址；</li>
 <li><code>captcha_type</code>：验证码类型；</li>
@@ -342,7 +349,7 @@
 <li><code>slice</code>：滑块图片地址。</li>
 </ul>
 <p>点击按钮开始验证，弹出滑块验证码，滑动滑块，抓包到 <code>verify?captcha_id=xxx</code>，<code>Query String Parameters</code> 同样包含了一些参数：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/04.png" alt="04"></p>
 <ul>
 <li><code>captcha_id</code>：与 load 接口请求头中的 captcha_id 一致；</li>
 <li><code>client_type</code>：表示 web 端；</li>
@@ -354,36 +361,36 @@
 <li><code>callback</code>：geetest_ + 时间戳，主要作用是防止缓存。</li>
 </ul>
 <p>响应预览中返回的内容如下，result 值为 fail 即校验失败，success 为校验通过，通过后携带 seccode 下的参数进行后续业务请求：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/05.png" alt="05"></p>
 <h2><span id="ni-xiang-fen-xi">逆向分析</span></h2>
 <h3><span id="captcha-id-can-shu">captcha_id 参数</span></h3>
 <p>全局搜索 <code>captcha_id</code>，跟进到 gt4.js 文件中：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/06.png" alt="06"></p>
 <p>进去后在第 307 行打上断点，刷新页面即会断住，此时 <code>captcha_id</code> 参数的值已经生成，同时 challenge 参数定义在下一行：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/07.png" alt="07"></p>
 <p>向上跟栈到 value，即 <code>adaptive-captcha-demo.js</code> 文件中，会发现其是个固定值，实际上这个值是每个网站不一样，是管理员在极验后台申请得到的：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/08.png" alt="08"></p>
 <h3><span id="challenge-can-shu">challenge 参数</span></h3>
 <p>前面提到，<code>challenge</code> 参数定义在 <code>captcha_id</code> 参数的下一行，在 gt4.js 文件的第 309 行打下断点：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/09.png" alt="09"></p>
 <p>可以看到，challenge 参数的值由 <code>uuid</code> 函数生成，扣出即可。</p>
 <h3><span id="w-can-shu">w 参数</span></h3>
 <p>从 <code>verify?captcha_id=xxx</code> 接口的堆栈处跟栈进去：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/10.png" alt="10"></p>
 <p>打下断点滑动滑块断住后，向上跟栈到 s 处，如果做过某验三代滑块的话，第 6249 行有个很熟悉的东西，<code>&quot;\u0077&quot;: r</code>，<code>&quot;\u0077&quot;</code> 即字母 w 的 Unicode 值，r 即 w 参数的值：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/11.png" alt="11"></p>
 <p>r 参数定义在第 6237 行，e 也是跟三代类似的参数，r 是将 i 参数和转为字符串的 e 参数加密得到的：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/12.png" alt="12"></p>
 <p>向上跟栈，找到 e 参数中各部分定义生成的位置，跟到 <code>$_BHIH</code> 中，_ 中先生成了四个键值对：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/13.png" alt="13"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/13.png" alt="13"></p>
 <p><code>passtime</code> 和 <code>track</code> 是熟悉的滑动时间和轨迹，<code>setLeft</code> 为识别出来的缺口距离，<code>userresponse</code> 定义在 19593 行， a 为 <code>setLeft</code> 参数的值，<code>t[$_GDFCG(1909)]</code> 为定值 1.0059466666666665：</p>
 <pre><code class="hljs JavaScript">a / t[$_GDFCG(<span class="hljs-number">1909</span>)] + <span class="hljs-number">2</span></code></pre>
 <p>接着跟到 <code>$_BCFj</code> 中，e 定义在第 6201 行，下面几行定义了 e 中的 <code>device_id</code>、<code>lot_number</code>、<code>pow_msg</code>、<code>pow_sign</code>：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/14.png" alt="14"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/14.png" alt="14"></p>
 <p><code>device_id</code> 同一个网站是固定值，<code>lot_number</code> 是 load 响应返回的，控制台打印一下 <code>pow_msg</code>、<code>pow_sign</code> 的结果：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/15.png" alt="15"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/15.png" alt="15"></p>
 <p><code>pow_msg</code> 很明显是由几部分组成的，<code>pow_sign</code> 经过加密，向上跟栈到 init 中，分别定义在第 5837 行和第 5838 行，为 d 字典的键，根据键名取值：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/16.png" alt="16"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/16.png" alt="16"></p>
 <p>d 定义在第 5835 行，这部分还原一下就很明显了：</p>
 <pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> c = t[<span class="hljs-string">&quot;toDataURL&quot;</span>]()[<span class="hljs-string">&quot;replace&quot;</span>](<span class="hljs-string">&quot;data:image/png;base64,&quot;</span>, <span class="hljs-string">&quot;&quot;</span>)
     , _ = <span class="hljs-keyword">new</span> w[<span class="hljs-string">&quot;default&quot;</span>][<span class="hljs-string">&quot;MD5&quot;</span>]()[<span class="hljs-string">&quot;hex&quot;</span>](c);
@@ -394,7 +401,7 @@ a[<span class="hljs-string">&quot;options&quot;</span>][<span class="hljs-string
     , f = h[<span class="hljs-string">&quot;captchaId&quot;</span>]
     , d = v[<span class="hljs-string">&quot;default&quot;</span>](p, f, l[<span class="hljs-string">&quot;hashfunc&quot;</span>], l[<span class="hljs-string">&quot;version&quot;</span>], l[<span class="hljs-string">&quot;bits&quot;</span>], l[<span class="hljs-string">&quot;datetime&quot;</span>], <span class="hljs-string">&quot;&quot;</span>)</code></pre>
 <p>跟进到 <code>v[&quot;default&quot;]</code> 中，函数定义在第 6945 行，于 6978 行打下断点：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/17.png" alt="17"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/17.png" alt="17"></p>
 <p><code>pow_msg</code> 由 <code>_ + h</code> 得到，<code>_</code> 定义在第 6960 行：</p>
 <pre><code class="hljs JavaScript">_ = i + <span class="hljs-string">&quot;|&quot;</span> + r + <span class="hljs-string">&quot;|&quot;</span> + n + <span class="hljs-string">&quot;|&quot;</span> + s + <span class="hljs-string">&quot;|&quot;</span> + t + <span class="hljs-string">&quot;|&quot;</span> + e + <span class="hljs-string">&quot;|&quot;</span> + o + <span class="hljs-string">&quot;|&quot;</span>;</code></pre>
 <ul>
@@ -407,37 +414,37 @@ a[<span class="hljs-string">&quot;options&quot;</span>][<span class="hljs-string
 <li>o：<code>&quot;&quot;</code></li>
 </ul>
 <p>h 定义在第 6269 行，跟进去是 16 位随机数字符串，<code>pow_sign</code> 为 p，就是 <code>pow_msg</code> 经过 MD5 加密得到的：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/18.png" alt="18"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/18.png" alt="18"></p>
 <p>至此这四个也分析完了，还差以下这部分：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/19.png" alt="19"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/19.png" alt="19"></p>
 <p>em 等定值就不分析了，注意 <code>kqg5：&quot;1557244628&quot;</code>，这个参数值和三代滑块中一样，每隔几个小时会改变，向上跟栈到 <code>$_BCFj</code> 中，在第 6207 行打下断点，此时 e 中这个值还未生成：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/20.png" alt="20"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/20.png" alt="20"></p>
 <p>下一行打下断点，下步断点，即执行完 <code>n[$_CBHIE(791)](e);</code> 后，这个参数值就生成了，证明是 <code>n[$_CBHIE(791)]</code> 方法生成的，跟进去：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/21.png" alt="21"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/21.png" alt="21"></p>
 <p>跳转到第 5766 行，在第 5779 行打下断点，此时的 n 中还未生成此参数：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/22.png" alt="22"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/22.png" alt="22"></p>
 <p>执行了 <code>_gct(n)</code> 后即生成：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/23.png" alt="23"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/23.png" alt="23"></p>
 <p>可见其生成位置在 <code>_gct</code> 方法中，跟进去后到 gct4.js 文件，和三代大差不差：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/24.png" alt="24"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/24.png" alt="24"></p>
 <p>可以将值导出，至此 e 就分析完了，接着回到第 6238 行，跟进到加密函数 <code>d[$_CBHHO(84)]</code> 中，定义在第 11669 行，<code>d[$_DIEHS(177)](c) + u</code> 即 r 参数的值，c 为一个大数组，u 明显也经过加密了，所以 r 参数的值就是数组 c 加密后再加上 u 得到的：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/25.png" alt="25"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/25.png" alt="25"></p>
 <p>先跟进到 u，其定义在第 11705 行，解混淆后如下：</p>
 <pre><code class="hljs JavaScript">u = <span class="hljs-keyword">new</span> l[<span class="hljs-string">&quot;default&quot;</span>]()[<span class="hljs-string">&quot;encrypt&quot;</span>](i);</code></pre>
 <p>所以 u 是 i 经过加密后得到的，i 定义在第 11702 行：</p>
 <pre><code class="hljs JavaScript">i = (<span class="hljs-number">0</span>,d[$_DIEIq(<span class="hljs-number">103</span>)])()</code></pre>
 <p>跟进到 <code>d[$_DIEIq(103)]</code> 中，定义在第 852 行，又是熟悉的 16 位随机数：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/26.png" alt="26"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/26.png" alt="26"></p>
 <p>i 是随机数，跟进到加密函数 <code>l[($_DIEHS(84))]</code> 中，在第 12725 行，于 12741 行打下断点，可以看到这里就是个 RSA 加密，扣代码或者直接引库即可：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/27.png" alt="27"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/27.png" alt="27"></p>
 <p>回到 c 参数，c 参数的值为一个大数组，其定义在第 11705 行，解混淆后内容如下：</p>
 <pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> c = s[a][<span class="hljs-string">&quot;symmetrical&quot;</span>][<span class="hljs-string">&quot;encrypt&quot;</span>](e, i);</code></pre>
 <p>e 之前分析完了，i 为随机数，两个参数已经分析完了，跟进到加密方法中，在第 12174 行，于 12186 行打下断点，控制台打印一下混淆部分内容，很熟悉的东西，这里就是 AES 加密，iv 为初始向量，加密模式为 CBC：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/28.png" alt="28"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/28.png" alt="28"></p>
 <p>c 参数最后又被 <code>d[$_DIEHS(177)]</code> 函数加密，跟进后，定义在第 547 行，直接扣下来改改即可：</p>
-<p><img src="https://cdn.itbob.cn/img/article/061/29.png" alt="29"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/29.png" alt="29"></p>
 <h2><span id="jie-guo-yan-zheng">结果验证</span></h2>
-<p><img src="https://cdn.itbob.cn/img/article/061/30.png" alt="30"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/061/30.png" alt="30"></p>
 
             </div>
         </article>
@@ -466,6 +473,25 @@ a[<span class="hljs-string">&quot;options&quot;</span>][<span class="hljs-string
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -562,25 +588,24 @@ a[<span class="hljs-string">&quot;options&quot;</span>][<span class="hljs-string
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -601,7 +626,7 @@ a[<span class="hljs-string">&quot;options&quot;</span>][<span class="hljs-string
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

@@ -3,7 +3,7 @@ title: 关于
 layout: about
 ---
 
-<img class="nofancybox" src="https://cdn.itbob.cn/img/about/bob.png" alt="I'M BOB"/>
+<img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/about/bob.jpg" alt="I'M BOB"/>
 <br>
 <!-- <div class="text-roll">
     <p>
@@ -12,39 +12,39 @@ layout: about
 </div> -->
 
 <div class="group">
-    <a href="https://cdn.itbob.cn/img/about/qq_group_hexo.jpg" title="点击扫码加入 Hexo 博客交流群">Hexo 博客交流群</a>丨
-    <a href="https://cdn.itbob.cn/img/about/qq_group_spider.jpg" title="点击扫码加入爬虫逆向 QQ 交流群">爬虫逆向 QQ 交流群</a>丨
-    <a href="https://cdn.itbob.cn/img/about/weixin.jpg" title="点击扫码加入爬虫逆向微信交流群（备注交流群）">爬虫逆向微信交流群（备注交流群）</a>
+    <a href="https://static.spiderapi.cn/public/images/info/qq_group_hexo1.jpg" title="点击扫码加入 Hexo 博客交流群">Hexo 博客交流群</a>丨
+    <a href="https://static.spiderapi.cn/public/images/info/qq_group_spider1.jpg" title="点击扫码加入爬虫逆向 QQ 交流群">爬虫逆向 QQ 交流群</a>丨
+    <a href="https://static.spiderapi.cn/public/images/info/wechat.jpg" title="点击扫码加入爬虫逆向微信交流群（备注交流群）">爬虫逆向微信交流群（备注交流群）</a>
 </div>
 <br>
 
 <div class="contact">
     <a href="https://itbob.cn/" title="Hexo 引导页">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_hexo.png" alt="Hexo 引导页"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/hexo_48x48.png" alt="Hexo 引导页"/>
     </a>
     <a href="https://github.com/TRHX" title="GitHub">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_github.png" alt="GitHub"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/github_48x48.png" alt="GitHub"/>
     </a>
     <a href="https://itrhx.blog.csdn.net/?type=blog" title="CSDN">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_csdn.png" alt="CSDN"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/csdn_48x48.png" alt="CSDN"/>
     </a>
     <a href="https://www.zhihu.com/people/itrhx" title="知乎">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_zhihu.png" alt="知乎"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/zhihu_48x48.png" alt="知乎"/>
     </a>
-    <a href="https://cdn.itbob.cn/img/about/mp.weixin.png" title="微信公众号">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_mp.weixin.png" alt="微信公众号"/>
+    <a href="https://static.spiderapi.cn/public/images/info/spider_skill_green.png" title="微信公众号">
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/mpweixin_48x48.png" alt="微信公众号"/>
     </a>
-    <a href="https://cdn.itbob.cn/img/about/weixin.jpg" title="个人微信">
-        <img class="nofancybox weixin" src="https://cdn.itbob.cn/img/about/logo_weixin.png" alt="个人微信"/>
+    <a href="https://static.spiderapi.cn/public/images/info/wechat.jpg" title="个人微信">
+        <img class="nofancybox weixin" src="https://static.spiderapi.cn/public/images/logo/wechat_48x48.png" alt="个人微信"/>
     </a>
     <a href="http://discordapp.com/users/1124152819423920188" title="Discord">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_discord.png" alt="Discord"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/discord_48x48.png" alt="Discord"/>
     </a>
     <a href="https://t.me/itbob1" title="Telegram">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_telegram.png" alt="Telegram"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/telegram_48x48.png" alt="Telegram"/>
     </a>
     <a href="https://wotgame.cn/zh-cn/community/accounts/7050733952-%E8%88%92%E5%B0%8F%E5%85%8B%E4%B8%8E%E8%B4%9D%E5%B0%8F%E5%A1%94/" title="WOT 坦克世界">
-        <img class="nofancybox" src="https://cdn.itbob.cn/img/about/logo_wot.png" alt="WOT 坦克世界"/>
+        <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/wot_48x48.png" alt="WOT 坦克世界"/>
     </a>
 </div>
 
@@ -54,7 +54,7 @@ layout: about
 - 👨‍🎓 专注：爬虫、逆向安全 (JS、APP、小程序逆向)；
 - 🚴‍♀️ 兴趣：开源情报、业余公路自行车手、[WOT](https://wot.360.cn/) 玩家；
 - 🏗️ 域名：搞 IT 的小黄人鲍勃，故命名为 [ITBOB.CN](https://www.itbob.cn/)；
-- ✒️ 博客：随缘更新，<font color='red'>**曾经**</font>运营公司公众号：K哥爬虫。
+- ✒️ 博客：随缘更新，<font color='red'>曾经</font>运营公司公众号：K哥爬虫。
 
 <!-- ### Contact -->
 

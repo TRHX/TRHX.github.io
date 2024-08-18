@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>Hexo 博客提交百度、谷歌搜索引擎收录 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -304,19 +311,19 @@
 <hr>
 <h2><span id="cha-kan-wang-zhan-shi-fou-bei-shou-lu">查看网站是否被收录</span></h2>
 <p>首先我们可以输入 <code>site:域名</code> 来查看域名是否被搜索引擎收录，如下图所示，表示没有收录：</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/01.png" alt="01"></p>
 <hr>
 <h2><span id="bai-du-zi-yuan-ping-tai-tian-jia-wang-zhan">百度资源平台添加网站</span></h2>
 <p>访问<a target="_blank" rel="noopener" href="https://ziyuan.baidu.com/">百度搜索资源平台官网</a>，注册或者登陆百度账号，依次选择【用户中心】-【站点管理】，添加你的网站，在添加站点时会让你选择协议头（http 或者 https），如果选择 https，它会验证你的站点，大约能在一天之内完成，我的网站已经实现了全站 https，因此选择了 https 协议，但是不知道为什么始终验证失败，实在是无解，只能选择 http 协议了，如果你的站点也实现了全站 https，也可以尝试一下</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/02.png" alt="02"></p>
 <p>之后会让你验证网站所有权，提供三种验证方式：</p>
 <ul>
 <li>文件验证：下载给定的文件，将其放到本地<font color="#ff0000">主题目录 source 文件夹</font>，然后部署上去完成验证</li>
 <li>HTML 标签验证：一般是给一个 meta 标签，放到首页 <code>&lt;head&gt;</code> 与 <code>&lt;/head&gt;</code> 标签之间即可完成验证</li>
 <li>CNAME 验证：个人觉得这种方法最简单，去域名 DNS 添加一个 CNAME 记录即可完成验证</li>
 </ul>
-<p><img src="https://cdn.itbob.cn/img/article/007/03.png" alt="03"></p>
-<p><img src="https://cdn.itbob.cn/img/article/007/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/04.png" alt="04"></p>
 <hr>
 <h2><span id="ti-jiao-bai-du-sou-suo">提交百度搜索</span></h2>
 <p>百度提供了自动提交和手动提交两种方式，其中自动提交又分为主动推送、自动推送和 sitemap 三种方式，以下是官方给出的解释：</p>
@@ -393,7 +400,7 @@
   token: your_token      # 秘钥
   path: baidu_urls.txt   # 文本文档的地址， 新链接会保存在此文本文档里</code></pre>
 <p>其中的 <code>token</code> 可以在【链接提交】-【自动提交】-【主动推送】下面看到，接口调用地址最后面 <code>token=xxxxx</code> 即为你的 <code>token</code></p>
-<p><img src="https://cdn.itbob.cn/img/article/007/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/05.png" alt="05"></p>
 <p>同样是在根目录的 <code>_config.yml</code> 文件，大约第 17 行处，url 要改为在百度站长平台添加的域名，也就是你网站的首页地址：</p>
 <pre><code class="hljs txt"># URL
 url: https://www.itrhx.com
@@ -420,7 +427,7 @@ INFO  Deploy <span class="hljs-keyword">done</span>: baidu_url_submitter</code><
 <hr>
 <h3><span id="zi-dong-tui-song">自动推送</span></h3>
 <p>关于自动推送百度官网给出的解释是：自动推送是百度搜索资源平台为提高站点新增网页发现速度推出的工具，安装自动推送JS代码的网页，在页面被访问时，页面URL将立即被推送给百度</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/06.png" alt="06"></p>
 <p>此时要注意，有些 hexo 主题集成了这项功能，比如 next 主题，在 <code>themes\next\layout_scripts\</code> 下有个 <code>baidu_push.swig</code> 文件，我们只需要把如下代码粘贴到该文件，然后在主题配置文件设置 <code>baidu_push: true</code> 即可</p>
 <pre><code class="hljs js">&#123;% <span class="hljs-keyword">if</span> theme.baidu_push %&#125;
 &lt;script&gt;
@@ -467,17 +474,17 @@ permalink: :year/:month/:day/:title/</code></pre>
 <p>比如我的是：<a target="_blank" rel="noopener" href="https://www.itrhx.com/baidusitemap.xml">https://www.itrhx.com/baidusitemap.xml</a> 或者 <a target="_blank" rel="noopener" href="https://www.itrhx.com/sitemap.xml">https://www.itrhx.com/sitemap.xml</a></p>
 <p>其中 <code>sitemap.xml</code> 文件是搜索引擎通用的 sitemap 文件，<code>baidusitemap.xml</code> 是百度专用的 sitemap 文件</p>
 <p>然后来到百度站长平台的 sitemap 提交页面，将你的 sitemap 地址提交即可，如果成功的话状态会显示为正常，初次提交要等几分钟，sitemap.xml 相比 baidusitemap.xml 来说等待时间也会更长，如果以后你博客有新的文章或其他页面，可以点击<strong>手动更新文件</strong>，更新一下新的 sitemap</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/07.png" alt="07"></p>
 <hr>
 <h3><span id="shou-dong-ti-jiao">手动提交</span></h3>
 <p>手动提交不需要其他额外操作，直接把需要收录的页面的 url 提交即可，这种方法效率较低，更新较慢，不推荐使用</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/08.png" alt="08"></p>
 <hr>
 <h2><span id="ti-jiao-gu-ge-sou-suo">提交谷歌搜索</span></h2>
 <p>提交谷歌搜索引擎比较简单，在提交之前，我们依然可以使用 <code>site:域名</code> 查看网站是否被收录，我的网站搭建了有差不多一年了，之前也没提交过收录，不过谷歌爬虫的确是强大，即使没有提交过，现在也能看到有一百多条结果了：</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/09.png" alt="09"></p>
 <p>接下来我们将网站提交谷歌搜索引擎搜索，进入<a target="_blank" rel="noopener" href="https://www.google.com/webmasters/">谷歌站长平台</a>，登录你的谷歌账号之后会让你验证网站所有权：</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/10.png" alt="10"></p>
 <p>有两种验证方式，分别是网域和网址前缀，两种资源类型区别如下：</p>
 <table>
 <thead>
@@ -506,9 +513,9 @@ permalink: :year/:month/:day/:title/</code></pre>
 </tbody>
 </table>
 <p>由对比可知选择网域资源验证方式比较好，只需要一个域名就可以匹配到多种格式的 URL，之后会给你一个 TXT 的记录值，复制它到你域名 DNS 增加一个 TXT 记录，点击验证即可</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/11.png" alt="11"></p>
 <p>提交谷歌收录比较简单，选择站点地图，将我们之前生成的 sitemap 提交就行了，过几分钟刷新一下看到成功字样表示提交成功！</p>
-<p><img src="https://cdn.itbob.cn/img/article/007/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/007/12.png" alt="12"></p>
 
             </div>
         </article>
@@ -537,6 +544,25 @@ permalink: :year/:month/:day/:title/</code></pre>
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -633,25 +659,24 @@ permalink: :year/:month/:day/:title/</code></pre>
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -672,7 +697,7 @@ permalink: :year/:month/:day/:title/</code></pre>
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

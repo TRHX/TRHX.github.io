@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>安居客滑动验证码逆向分析 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -286,7 +293,7 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="https://cdn.itbob.cn/img/cover/captcha_reverse.png" alt="captcha_reverse"></p>
+                <p><img src="https://static.spiderapi.cn/itbob/images/cover/captcha_reverse.png" alt="captcha_reverse"></p>
 <p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
 <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
 <hr>
@@ -311,22 +318,22 @@
 <li>目标：安某客滑动验证码逆向分析</li>
 <li>主页：<code>aHR0cHM6Ly93d3cuYW5qdWtlLmNvbS9jYXB0Y2hhLXZlcmlmeS8/Y2FsbGJhY2s9c2hpZWxkJmZyb209YW50aXNwYW0=</code></li>
 </ul>
-<p><img src="https://cdn.itbob.cn/img/article/057/01.png" alt="01"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/01.png" alt="01"></p>
 <h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>首页请求，有个初始化函数，其中有个 <code>sessionId</code> 后续会用到。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/02.png" alt="02"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/02.png" alt="02"></p>
 <p>然后有个 <code>getInfoTp</code> 的请求，<code>Form Data</code> 里有个 <code>dInfo</code> 是加密参数，返回值里 <code>info</code> 也是加密的，包含了图片信息，返回值 <code>responseId</code> 在后续的请求也会用到。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/03.png" alt="03"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/03.png" alt="03"></p>
 <p>滑动之后，有个 <code>checkInfoTp</code> 请求，<code>Form Data</code> 里有个 <code>data</code> 是加密参数，包含了轨迹信息，返回值 <code>message</code> 可以看到是否校验成功。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/04.png" alt="04"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/04.png" alt="04"></p>
 <p>整体流程就是：请求首页获取 <code>sessionId</code>，请求 <code>getInfoTp</code> 获取图片信息和 <code>responseId</code>，请求 <code>checkInfoTp</code> 校验是否成功，中间涉及到 <code>dInfo</code> 和 <code>data</code> 两个加密参数，以及 <code>getInfoTp</code> 返回得到的 <code>info</code> 的解密。</p>
 <h2><span id="dinfo-sheng-cheng">dInfo 生成</span></h2>
 <p>先来看 <code>getInfoTp</code> 请求的 <code>dInfo</code> 参数，直接搜索可定位，刷新断下，大致就可以看出是 AES 加密，传入了 <code>sessionId</code> 和一个 <code>_taN()</code> 函数的返回值：</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/05.png" alt="05"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/05.png" alt="05"></p>
 <p><code>_taN()</code> 函数是一些 URL，UA 之类的信息，可以写死：</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/06.png" alt="06"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/06.png" alt="06"></p>
 <p>往里跟就可以看到 AES 算法了：</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/07.png" alt="07"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/07.png" alt="07"></p>
 <p>这里简简单单扣一下，JavaScript 代码如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-comment">/* ==================================</span>
 <span class="hljs-comment"># @Time    : 2021-12-14</span>
@@ -455,20 +462,20 @@
     ajk_slide.run()</code></pre>
 <h2><span id="getinfotp-jie-mi">getInfoTp 解密</span></h2>
 <p><code>getInfoTp</code> 这个接口返回的 <code>info</code> 的值是加密的，前面我们已经知道用到了 AES 加密算法，这里可以直接猜测也是用的的 AES 来解密的，找到 <code>AESDecrypt</code> 这个方法，下个断点，刷新发现断下之后传入了两个参数，第一个正是 <code>info</code> 的内容，第二个则是 <code>sessionId</code>。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/08.png" alt="08"></p>
-<p><img src="https://cdn.itbob.cn/img/article/057/09.png" alt="09"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/08.png" alt="08"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/09.png" alt="09"></p>
 <p>解密结果可以看到滑块的图片地址等信息：</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/10.png" alt="10"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/10.png" alt="10"></p>
 <h2><span id="data-sheng-cheng">data 生成</span></h2>
 <p>接下来就是 <code>checkInfoTp</code> 提交验证了，要搞清楚提交的 <code>data</code> 是什么东西，同样搜索打断点，如下图所示 <code>_5DD</code> 就是 <code>data</code> 值，传过来的。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/11.png" alt="11"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/11.png" alt="11"></p>
 <p>往上跟栈，可以看到 <code>_Ug0</code> 里面有个 <code>track</code> 参数，这明显就是轨迹了，同样最后的结果经过了 AES 加密。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/12.png" alt="12"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/12.png" alt="12"></p>
 <p>再往上跟，可以看到 <code>_Ug0</code> 由三个参数组成，<code>x</code> 是水平滑动的距离，<code>track</code> 是轨迹，<code>p</code> 是定值。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/13.png" alt="13"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/13.png" alt="13"></p>
 <h2><span id="gui-ji-chu-li">轨迹处理</span></h2>
 <p>轨迹生成前，得先识别缺口得到要滑动的距离，方式有很多，比如 <code>OpenCV</code>、开源的 <code>ddddocr</code>，或者直接打码平台都行，这里唯一要注意的一点就是图片是有缩放的，原始尺寸 <code>480 × 270 px</code> 渲染后的尺寸 <code>280 × 158 px</code>，比例大概是 <code>1:0.5833333333333333</code>，可以先将图片进行缩放后再识别，也可以先识别距离后再将距离进行缩放。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/14.png" alt="14"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/14.png" alt="14"></p>
 <p>轨迹的处理，该站点校验并不太严格，所以可以自己写一下，关于滑块的轨迹处理，主要有缩放法、本地轨迹库、根据一些函数来生成轨迹，如缓动函数、贝塞尔曲线等，以后再单独写一篇文章来介绍，本例中可以使用缩放法，先采集一条正常的，手动滑出来的轨迹，然后根据识别出的实际距离和样本轨迹中的距离相比，得到一个比值，然后将样本中的 x 值和时间值都做一个对应的缩放，生成新的轨迹，主要代码如下：</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_track</span>(<span class="hljs-params">distance</span>):</span>
     <span class="hljs-string">&quot;&quot;&quot;生成轨迹，样本距离为 126&quot;&quot;&quot;</span>
@@ -483,7 +490,7 @@
         <span class="hljs-keyword">return</span> new_track</code></pre>
 <h2><span id="jie-guo-yan-zheng">结果验证</span></h2>
 <p>整个过程比较简单，验证成功。</p>
-<p><img src="https://cdn.itbob.cn/img/article/057/15.png" alt="15"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/057/15.png" alt="15"></p>
 
             </div>
         </article>
@@ -512,6 +519,25 @@
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -608,25 +634,24 @@
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -647,7 +672,7 @@
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {

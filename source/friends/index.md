@@ -5,108 +5,108 @@ layout: friends
 bob:
     - name: 博客名称：BOB'S BLOG
       link: 博客地址：https://www.itbob.cn/
-      logo: 博客头像：https://www.itbob.cn/img/avatar.png
+      logo: 博客头像：https://static.spiderapi.cn/public/images/info/avatar_64x64.png
       description: 博客描述：数据采集、逆向安全
       other: 温馨提示：长期不更新或无法打开站点，本站会下架链接，申请添加/删除链接请在本页留言
 
 reverse:
   - name: 李玺
     link: http://www.lxspider.com/
-    logo: https://cdn.itbob.cn/img/friends/lxspider.jpg
+    logo: /itbob/images/friends/lxspider.jpg
     description: "中科大数据研究院高级工程师"
   - name: 华云彬
     link: https://hyb.life/
-    logo: https://cdn.itbob.cn/img/friends/hyb.png
+    logo: /itbob/images/friends/hyb.jpg
     description: "高级爬虫逆向工程师"
   - name: 奋飞安全
     link: http://91fans.com.cn/
-    logo: https://cdn.itbob.cn/img/friends/91fans.jpg
+    logo: /itbob/images/friends/91fans.jpg
     description: "高级信息系统项目管理师，独立安全研究员"
   - name: geekbyte
-    link: https://cdn.itbob.cn/img/friends/qrcode_geekbyte.jpg
-    logo: https://cdn.itbob.cn/img/friends/geekbyte.jpg
+    link: /itbob/images/friends/qrcode_geekbyte.jpg
+    logo: /itbob/images/friends/geekbyte.jpg
     description: "TLS 指纹专家，公众号编角料"
   - name: 无颜 | Alanhays
     link: https://alanhays.github.io/
-    logo: https://cdn.itbob.cn/img/friends/alanhays.jpg
+    logo: /itbob/images/friends/alanhays.jpg
     description: "数据采集、逆向安全、网络杂谈"
   # - name: Litt1eQ
-  #   link: https://cdn.itbob.cn/img/friends/qrcode_Litt1eQueen.jpg
-  #   logo: https://cdn.itbob.cn/img/friends/Litt1eQueen.jpg
+  #   link: /itbob/images/friends/qrcode_Litt1eQueen.jpg
+  #   logo: /itbob/images/friends/Litt1eQueen.jpg
   #   description: "密码学专家，公众号Coder小Q"
   - name: Nanda
-    link: https://cdn.itbob.cn/img/friends/qrcode_pcsyd.jpg
-    logo: https://cdn.itbob.cn/img/friends/pcsyd.jpg
+    link: /itbob/images/friends/qrcode_pcsyd.jpg
+    logo: /itbob/images/friends/pcsyd.jpg
     description: "探索主流混淆及风控策略，公众号爬虫术与道"
   - name: K哥爬虫
-    link: https://cdn.itbob.cn/img/friends/qrcode_kgepachong.jpg
-    logo: https://cdn.itbob.cn/img/friends/kgepachong.jpg
+    link: /itbob/images/friends/qrcode_kgepachong.jpg
+    logo: /itbob/images/friends/kgepachong.jpg
     description: "逆向领域知名博主，公众号K哥爬虫"
   - name: TheWeiJunTG
-    link: https://cdn.itbob.cn/img/friends/qrcode_ReverseCrawler.jpg
-    logo: https://cdn.itbob.cn/img/friends/ReverseCrawler.jpg
+    link: /itbob/images/friends/qrcode_ReverseCrawler.jpg
+    logo: /itbob/images/friends/ReverseCrawler.jpg
     description: "逆向领域知名博主，公众号逆向与爬虫的故事"
 
 friends:
   # - name: hojun
   #   link: https://www.hojun.cn/
-  #   logo: https://cdn.itbob.cn/img/friends/hojun.jpg
+  #   logo: /itbob/images/friends/hojun.jpg
   #   description: "一个好奇的博客"
   - name: xaoxuu
     link: https://xaoxuu.com/
-    logo: https://cdn.itbob.cn/img/friends/xaoxuu.jpg
+    logo: /itbob/images/friends/xaoxuu.jpg
     description: "iOS 开发"
   - name: ShanSan
     link: https://shan333.cn/
-    logo: https://cdn.itbob.cn/img/friends/shansan.jpg
+    logo: /itbob/images/friends/shansan.jpg
     description: "Cloud Native、DevOps"
   - name: 伊成博客
     link: https://www.devcheng.net/
-    logo: https://cdn.itbob.cn/img/friends/devcheng.jpg
+    logo: /itbob/images/friends/devcheng.jpg
     description: "Java 开发"
   - name: 一个薄荷
     link: https://abohe.cn/
-    logo: https://cdn.itbob.cn/img/friends/abohe.png
+    logo: /itbob/images/friends/abohe.jpg
     description: "新媒体运营"
   - name: 煎饼果子
     link: https://blog.moej.cn/
-    logo: https://cdn.itbob.cn/img/friends/moej.jpg
+    logo: /itbob/images/friends/moej.jpg
     description: "Vue、Spring"
   - name: 暗影
     link: https://dsanying.gitee.io/
-    logo: https://cdn.itbob.cn/img/friends/dsanying.jpg
+    logo: /itbob/images/friends/dsanying.jpg
     description: "算法"
   # - name: 刘向洋
   #   link: https://liuxiangyang.space/
-  #   logo: https://cdn.itbob.cn/img/friends/liuxiangyang.jpg
+  #   logo: /itbob/images/friends/liuxiangyang.jpg
   #   description: "运维"
   # - name: 过客～励む
   #   link: https://yafine-blog.cn/
-  #   logo: https://cdn.itbob.cn/img/friends/yafine-blog.jpg
+  #   logo: /itbob/images/friends/yafine-blog.jpg
   #   description: "全栈开发工程师"
   # - name: Emil's blog
   #   link: https://blog.hvnobug.com/
-  #   logo: https://cdn.itbob.cn/img/friends/hvnobug.jpg
+  #   logo: /itbob/images/friends/hvnobug.jpg
   #   description: "Java 后台、前端 web、小程序"
   # - name: 覃浩的博客
   #   link: https://www.imqinhao.cn/
-  #   logo: https://cdn.itbob.cn/img/friends/imqinhao.jpg
+  #   logo: /itbob/images/friends/imqinhao.jpg
   #   description: "爬虫、后端开发"
   # - name: R 喵呜的小窝
   #   link: https://rshow.top/
-  #   logo: https://cdn.itbob.cn/img/friends/rshow.jpg
+  #   logo: /itbob/images/friends/rshow.jpg
   #   description: "FE Node"
   - name: HCLonely
     link: https://blog.hclonely.com/
-    logo: https://cdn.itbob.cn/img/friends/hclonely.jpg
+    logo: /itbob/images/friends/hclonely.jpg
     description: "JavaScript"
   - name: Skykguj's Blog
     link: https://blog.sky390.cn/
-    logo: https://cdn.itbob.cn/img/friends/sky390.jpg
+    logo: /itbob/images/friends/sky390.jpg
     description: "OIer、软件开发者"
   # - name: 番茄酱の萌化小屋
   #   link: https://i.kurumi.ink/
-  #   logo: https://cdn.itbob.cn/img/friends/kurumi.png
+  #   logo: /itbob/images/friends/kurumi.png
   #   description: "Python Web 后端、JavaScript Web 前端"
   # - name: 神奈川上の星月夜
   #   link: https://blog.yinuxy.com/
@@ -144,17 +144,17 @@ friends:
 love:
   - name: 纪实小屋
     link: https://www.love109.cn/
-    logo: https://cdn.itbob.cn/img/friends/love109.jpg
+    logo: /itbob/images/friends/love109.jpg
     description: "记录爱情❤️记录生活"
   - name: 两个有意思的
     link: https://dxq520.cn/
-    logo: https://cdn.itbob.cn/img/friends/dxq520.png
+    logo: /itbob/images/friends/dxq520.jpg
     description: "小小酥和小可爱的情侣博客"
 ---
 
 博客名称：BOB'S BLOG
 博客地址：https://www.itbob.cn/
-博客头像：https://www.itbob.cn/img/avatar.png
+博客头像：https://static.spiderapi.cn/public/images/info/avatar_64x64.png
 博客描述：数据采集、逆向安全
 <font color="red"><strong>温馨提示：长期不更新或无法打开站点，本站会下架链接，申请添加/删除链接请在本页留言</strong></font>
 

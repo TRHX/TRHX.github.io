@@ -22,8 +22,6 @@
           ~~                                                ~~              
                                                                             
                                 WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
 -->
 
 <!DOCTYPE html>
@@ -41,7 +39,7 @@
 <title>某空气质量监测平台无限 debugger 以及数据动态加密分析 - BOB&#39;S BLOG</title>
 
 <!-- Icon -->
-<link rel="icon" href="/img/favicon.ico">
+<link rel="icon" href="/favicon.ico">
 
 <!-- Fonts -->
 <link rel="preload" href="//fonts.googleapis.com/css2?family=Roboto+Mono:ital@0;1&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null, this.rel='stylesheet'">
@@ -49,15 +47,17 @@
 
 <!-- Font Awesome -->
 <!-- https://fontawesome.dashgame.com/ -->
-<!-- <link rel="stylesheet" href="https://cdn.itbob.cn/css/font-awesome@5.6.3/all.min.css"> -->
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">
-<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.3/css/all.min.css"> -->
+<link rel="stylesheet" href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/5.15.4/css/all.min.css">-->
+<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css"> -->
+
+<!-- jquery -->
+<script src="//lib.baomitu.com/jquery/1.10.2/jquery.min.js" integrity="sha384-aBL3Lzi6c9LNDGvpHkZrrm3ZVsIwohDD7CDozL0pk8FwCrfmV7H9w8j3L7ikEv6h" crossorigin="anonymous"></script>
 
 
     <!-- KaTeX -->
-    <!-- //cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css -->
-    <link rel="preload" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css" as="style" onload="this.onload=null, this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="//cdn.itbob.cn/css/katex@0.12.0/katex.min.css"></noscript>
+    <!-- //cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
 
 
 <!-- Style -->
@@ -85,29 +85,40 @@
 
 <!-- Busuanzi -->
 <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-<script async src="//cdn.itbob.cn/js/busuanzi@2.3/busuanzi.pure.mini.js"></script>
+<script async src="https://static.spiderapi.cn/itbob/js/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Typeit -->
 <!-- https://www.typeitjs.com/ -->
-<script src="//unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/typeit/8.8.4/index.umd.min.js" integrity="sha384-TU1+uEUiqd64aFdXKeDARMOyNsgqfyODhcbL2sdscyK47LRDuuS516qgq8XWCd8r" crossorigin="anonymous"></script>
 
 <!-- Fancybox -->
 
-    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css">
-    <script src="//cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js"> </script>
-    <script src="//cdn.itbob.cn/js/fancybox@3.5.7/fancybox.js"> </script>
+    <link rel="stylesheet" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha384-Q8BgkilbsFGYNNiDqJm69hvDS7NCJWOodvfK/cwTyQD4VQA0qKzuPpvqNER1UC0F" crossorigin="anonymous">
+    <script src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha384-Zm+UU4tdcfAm29vg+MTbfu//q5B/lInMbMCr4T8c9rQFyOv6PlfQYpB5wItcXWe7" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('img').each(function() {
+                if ($(this).parent().hasClass('fancybox')) return;
+                if ($(this).hasClass('nofancybox')) return;
+                if ($(this).hasClass('user-avatar')) return;
+                if ($(this).hasClass('friend-avatar')) return;
+                var alt = this.alt;
+                // if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+                $(this).wrap('<a href="' + ($(this).attr('data-src') == null ? this.src : $(this).attr('data-src')) + '" title="点击放大图片"' + '" class="fancybox"></a>');
+            });
+            $(this).find('.fancybox').each(function(){
+                $(this).attr('rel', 'article');
+            });
+        });
+        $(document).ready(function() {
+            $("a[href$='.jpg'],a[href$='.png'],a[href$='.gif'],a[href$='.webp']").attr('rel', 'gallery').fancybox({
+                helpers : {
+                    title: { type: 'inside'}
+                }
+            });
+        });
+    </script>
 
-<!-- <script>
-  $('[data-fancybox="images"]').fancybox({//可选
-    thumbs : {
-      autoStart : true //缩略图
-    }
-  });
-  $('[data-fancybox]').fancybox({//启用函数，必须
-    protect: true //图片右键不能下载，可选
-  });
-</script> -->
 
 <!-- Console -->
 <script>
@@ -138,15 +149,11 @@
        \::::::/    /             \::::/    /             \::::::/    /      
         \::::/    /               \::/____/               \::::/    /       
          \::/____/                 ~~                      \::/____/        
-          ~~                                                ~~              
-                                                                            
-                                WWW.ITBOB.CN
-                                
-                        有毛的叫程序猿，沒毛的叫程序员。
+          ~~                                                ~~
       */
     }
     console.log(makeMulti(string));
-    console.log("\n %c © ITBOB'S BLOG %c https://www.itbob.cn %c © ITRHX'S BLOG %c https://www.itrhx.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
+    console.log("\n %c ©️ ITBOB'S BLOG %c https://www.itbob.cn %c ©️ WuKong Security %c https://wukongsec.com \n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;")
 </script>
 
 <!-- 51.la 网站统计 2023.12.07 接入 -->
@@ -160,7 +167,7 @@
             <div class="main-content">
                 <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
-        <img class="user-avatar" src="/img/avatar.png" alt="头像">
+        <img class="user-avatar" src="https://static.spiderapi.cn/public/images/info/avatar_64x64.png" alt="头像">
         <div class="site-name gt-c-content-color-first" id="typeitspan">
             <!-- BOB&#39;S BLOG -->
         </div>
@@ -230,7 +237,7 @@
                 
                     <div class="nav-item">
                         <a href="https://www.travellings.cn/go.html" target="_blank">
-                            <img src="https://cdn.itbob.cn/img/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
+                            <img src="https://static.spiderapi.cn/itbob/images/other/travelling.gif" class="nofancybox" alt="开往-友链接力" width="auto" height="25px">
                         </a>
                     </div>
                 
@@ -286,7 +293,7 @@
             </div>
             <hr>
             <div class="post-content gt-c-content-color-first">
-                <p><img src="https://cdn.itbob.cn/img/cover/javascript_reverse.png" alt="javascript_reverse"></p>
+                <p><img src="https://static.spiderapi.cn/itbob/images/cover/javascript_reverse.png" alt="javascript_reverse"></p>
 <p><strong><center><font color="red" size="5px" weight="bolder">欢迎加入爬虫逆向微信交流群：添加微信 IT-BOB（备注交流群）</font></center></strong></p>
 <h2><span id="wen-zhang-mu-lu">文章目录</span></h2>
 <hr>
@@ -323,10 +330,10 @@
 <p>在网站的“关于系统”里可以看到，这个站貌似是个人开发者在维护，最早在2013年就有了，在友情赞助列表里，可以看到大多数都是一些环境、测绘、公共卫生相关的大学专业、研究院人员，可以猜测到这些数据对于他们的研究是非常有帮助的，再加上反爬更新频繁，可以看出站长饱受爬虫之苦，咱们也不想给站长添加负担，毕竟这种站点咱们应该支持，让他长久维护下去，<strong>所以本期只分析逻辑和少部分代码，就不放完整代码了，如果有相关专业人士确实需要抓取数据做研究的，可以通过邮件联系我。</strong></p>
 <h2><span id="rao-guo-wu-xian-debugger">绕过无限 debugger</span></h2>
 <p>右键 F12，会提示右键被禁用，不要紧，使用快捷键 <code>Ctrl+Shift+i</code> 或者浏览器右上角，更多工具，开发者工具，照样能打开。</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/01.png" alt="01.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/01.png" alt="01.png"></p>
 <h3><span id="fang-fa-yi">方法一</span></h3>
 <p>打开控制台后会进入第一个无限 debugger，往上跟一个栈，可以看到一个 try-catch 语句，你下断点会发现他会一直走 catch，调用 <code>setTimeout()</code> 方法，该方法用于在指定的毫秒数后调用函数或计算表达式，注意上面，是将 debugger 传递给了构造方法 constructor，所以这里我们有两种方法过掉 debugger，Hook 掉 constructor 或 setTimeout 都可以。</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/02.png" alt="02.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/02.png" alt="02.png"></p>
 <pre><code class="hljs javascript"><span class="hljs-comment">// 两种 Hook 任选一中</span>
 <span class="hljs-comment">// Hook 构造方法</span>
 <span class="hljs-built_in">Function</span>.prototype.constructor_ = <span class="hljs-built_in">Function</span>.prototype.constructor;
@@ -346,7 +353,7 @@
     <span class="hljs-keyword">return</span> setTimeout_(func, time)
 &#125;</code></pre>
 <p>然后就来到了第二个无限 debugger，同样跟栈，发现有个 setInterval 定时器和构造方法 constructor，类似的，我们 Hook 掉 constructor 或 setInterval 都可以。注意：定时器这里还检测了窗口高宽，即便是你过了 constructor 或 setInterval，如果不把开发者工具单独拿出来也是不行的，会不断输出“检测到非法调试”。</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/03.png" alt="03.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/03.png" alt="03.png"></p>
 <pre><code class="hljs javascript"><span class="hljs-comment">// Hook setInterval</span>
 <span class="hljs-keyword">var</span> setInterval_ = <span class="hljs-built_in">setInterval</span>
 <span class="hljs-built_in">setInterval</span> = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">func, time</span>)</span>&#123;
@@ -356,63 +363,63 @@
     <span class="hljs-keyword">return</span> setInterval_(func, time)
 &#125;</code></pre>
 <p>我们观察到，其实这两个无限 debugger 都可以 Hook 构造方法来过掉，所以直接 Fiddler 注入该 Hook 构造方法的代码即可：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/04.png" alt="04.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/04.png" alt="04.png"></p>
 <h3><span id="fang-fa-er">方法二</span></h3>
 <p>在我们遇到第二个无限 debugger 的时候，还可以直接跟栈到一个 city_realtime.php 的页面，里面有两个 eval 语句，执行第一个 eval 里面的语句你就会发现正是前面我们在 VM 虚拟机里面看到的 debugger 代码，所以这里理论上可以直接替换掉这个页面，去掉 eval 语句，就不会有无限 debugger 了，但是先告诉你，现在不行了，因为里面有加载了某个 JS，这个 JS 在后面加密解密中会用到，但是这个 JS 是动态的，每10分钟就会改变，我们后面还要通过此页面来获取动态的 JS，所以是不能替换的！这里只是提一下这个思路！</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/05.png" alt="05.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/06.png" alt="06.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/05.png" alt="05.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/06.png" alt="06.png"></p>
 <h3><span id="fang-fa-san">方法三</span></h3>
 <p>当然，这里还有一种最简单的方法，直接右键选择 Never pause here，永不在此处断下即可，同样还需要把开发者工具窗口单独拿出来，不然会一直输出“检测到非法调试”。</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/07.png" alt="07.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/07.png" alt="07.png"></p>
 <h2><span id="zhua-bao-fen-xi">抓包分析</span></h2>
 <p>我们在实时监控页面，顺便点击查询一个城市，可以看到请求的 Form Data 和返回的数据都是加密的，如下图所示：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/08.png" alt="08.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/08.png" alt="08.png"></p>
 <h2><span id="jia-mi-ru-kou">加密入口</span></h2>
 <p>由于是 XHR，所以我们直接跟栈，很容易找到加密的位置：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/09.png" alt="09.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/10.png" alt="10.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/09.png" alt="09.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/10.png" alt="10.png"></p>
 <p>可以看到传递的 data 键值对：<code>&#123;hXM8NDFHN: p7crXYR&#125;</code>，键在这个 JS 里是写死的，值是通过一个方法 <code>pU14VhqrofroULds()</code> 得到的，这个方法需要传递两个参数，第一个是定值 GETDATA，第二个就是城市名称，我们再跟进看看这个方法是啥：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/11.png" alt="11.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/11.png" alt="11.png"></p>
 <p>一些 appId、时间戳、城市等参数，做了一些 MD5、base64 的操作，返回的 param 就是我们要的值了。看起来不难，我们再找找返回的加密数据是如何解密的，我们注意到 ajax 请求有个 success 关键字，我们即便是不懂 JS 逻辑，也可以猜到应该是请求成功后的处理操作吧，如下图所示：传进来的 dzJMI 就是返回的加密的数据，经过 <code>db0HpCYIy97HkHS7RkhUn()</code> 方法后，就解密成功了：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/12.png" alt="12.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/12.png" alt="12.png"></p>
 <p>跟进 <code>db0HpCYIy97HkHS7RkhUn()</code> 方法，可以看到是 AES+DES+BASE64 解密，传入的密钥 key 和偏移量 iv 都在头部有定义：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/13.png" alt="13.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/14.png" alt="14.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/13.png" alt="13.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/14.png" alt="14.png"></p>
 <h2><span id="dong-tai-js">动态 JS</span></h2>
 <p>经过以上分析后，我们加密解密的逻辑都搞定了，但是你多调试一下就会发现，这一个加密解密的 JS 是动态变化的，定义的密钥 key 和偏移量 iv 都是隔段时间就会改变的，如果你在这段代码里下断点，停留时间过长，突然发现断点失效无法断下了，那就是 JS 变了，当前代码已经失效了。</p>
 <p>我们随便薅两个不同的 JS 下来（提示：JS 每隔10分钟会变化，后文有详细分析），利用 PyCharm 的文件对比功能（依次选择 View - Compare With）可以总结出以下几个变化的地方（变量名的变化不算）：</p>
 <ol>
 <li>开头的8个参数的值：两个 aes key 和 iv，两个 des key 和 iv；</li>
 </ol>
-<p><img src="https://cdn.itbob.cn/img/article/044/15.png" alt="15.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/15.png" alt="15.png"></p>
 <ol start="2">
 <li>生成加密的 param 时，appId 是变化的，最后的加密分为 AES、DES 和没有加密，三种情况（这里是最容易忽略的地方，这里没有注意到，请求可能会提示 appId 无效的情况）：</li>
 </ol>
-<p><img src="https://cdn.itbob.cn/img/article/044/16.png" alt="16.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/16.png" alt="16.png"></p>
 <ol start="3">
 <li>最后发送请求时，data 键值对，其中的键也是变化的：</li>
 </ol>
-<p><img src="https://cdn.itbob.cn/img/article/044/17.png" alt="17.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/17.png" alt="17.png"></p>
 <p>变化的地方我们找到了，那我们怎么获取这个 JS 呢？因为这个 JS 的在 VM 虚拟机里，所以我们还要找到它的源头，是从哪里来的，我们抓包可以看到一个比较特殊的 JS，类似于 encrypt_xxxxxx.js，看这取名就知道不简单，返回的是一段 eval 包裹的代码：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/18.png" alt="18.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/18.png" alt="18.png"></p>
 <p>对于 eval 我们已经很熟悉了，直接去掉 eval，让他执行一下，就可以看到正是我们需要的那段 JS：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/19.png" alt="19.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/19.png" alt="19.png"></p>
 <p>这里有个小细节，如果你使用控制台，会发现它一直在打印 img 标签，影响我们的输入，这里可以直接跟进去下断点暂时阻止他运行就行了，不需要做其他操作浪费时间：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/20.png" alt="20.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/20.png" alt="20.png"></p>
 <p>你以为到这里就差不多搞定了？错了，同样的这个 encrypt_xxxxxx.js 也藏有玄机：</p>
 <ol>
 <li>encrypt_xxxxxx.js 的名称是动态的，后面的 v 值是秒级时间戳，隔600秒，也就是十分钟就会改变，这个 JS 可以在 city_realtime.php 页面找到，还记得我们前面说过的绕过无限 debugger 不能替换此页面吗？我们要通过此页面来获取动态的 JS，所以是不能替换的！</li>
 </ol>
-<p><img src="https://cdn.itbob.cn/img/article/044/21.png" alt="21.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/22.png" alt="22.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/21.png" alt="21.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/22.png" alt="22.png"></p>
 <ol start="2">
 <li>encrypt_xxxxxx.js 返回的 JS，并不是所有的执行一遍 eval 就能得到明文代码了，它是 eval 和 base64 相结合的，第一遍都是 eval，但是后面就说不定了，有可能直接出结果，有可能需要 base64，有可能 base64 两遍，有可能两遍 base64 之后还要再 eval，总之，除了第一遍是 eval 以外，后面是否需要 base64 和 eval，以及需要的次数和先后顺序，都是不确定的！举几个例子：</li>
 </ol>
-<p><img src="https://cdn.itbob.cn/img/article/044/23.png" alt="23.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/24.png" alt="24.png"></p>
-<p><img src="https://cdn.itbob.cn/img/article/044/25.png" alt="25.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/23.png" alt="23.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/24.png" alt="24.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/25.png" alt="25.png"></p>
 <p>这里可能有人会问，你怎么看出来那是 base64 呢？很简单，直接在网站页面的控制台里输入 <code>dswejwehxt</code>，点击去看这个函数，就是 base64：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/26.png" alt="26.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/26.png" alt="26.png"></p>
 <p>那么针对 encrypt_xxxxxx.js 内容不确定的情况，我们可以写一个方法，获取到 encrypt_xxxxxx.js 后，需要执行 eval 就执行 eval，需要执行 base64 就执行 base64，直到没有 eval 和 base64 即可，可以分别用字符串 <code>eval(function</code> 和 <code>dswejwehxt(</code> 来判断是否需要 eval 和 base64（当然也有其他方式，比如 <code>()</code> 的个数等），示例代码如下所示：</p>
 <pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_decrypted_js</span>(<span class="hljs-params">encrypted_js_url</span>):</span>
     <span class="hljs-string">&quot;&quot;&quot;</span>
@@ -627,7 +634,7 @@
     )
     <span class="hljs-built_in">print</span>(json.loads(decrypted_data))</code></pre>
 <p>运行结果，成功请求并解密返回值：</p>
-<p><img src="https://cdn.itbob.cn/img/article/044/27.png" alt="27.png"></p>
+<p><img src="https://static.spiderapi.cn/itbob/images/article/044/27.png" alt="27.png"></p>
 
             </div>
         </article>
@@ -656,6 +663,25 @@
     
 
     
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script>
+    var gitalk = new Gitalk({
+        clientID: 'd19a84b9d9a2ddb2c6b9',
+        clientSecret: 'cec9feae5129a6106edc68ce06d167be8eb06021',
+        repo: 'trhx.github.io',
+        owner: 'TRHX',
+        admin: ['TRHX'],
+        id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false       // Facebook-like distraction free mode
+    });
+    gitalk.render('gitalk-container');
+    </script>
+
 
     
 </div>
@@ -752,25 +778,24 @@
         <br/>
         <br/>
         <span>
-            <img src="https://cdn.itbob.cn/img/footer/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
-            <img src="https://cdn.itbob.cn/img/footer/moeicp.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
-            <img src="https://cdn.itbob.cn/img/footer/webify.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:25px; margin-bottom:-8px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
-            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://cdn.itbob.cn/img/footer/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
-            <!-- <a href="https://www.foreverblog.cn/" target="_blank"><img src="https://cdn.itbob.cn/img/footer/foreverblog.png" class="nofancybox" alt="十年之约" style="width:auto; height:15px; margin-bottom:-2px"></a> -->
+            <img src="https://static.spiderapi.cn/public/images/logo/icp_48x48.png" class="nofancybox" alt="ICP 备案" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.miit.gov.cn/" target="_blank"> 鄂ICP备19003281号-7</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/mps_48x48.png" class="nofancybox" alt="MPS 公网安备" style="width:auto; height:20px; margin-bottom:-4px"><a href="https://beian.mps.gov.cn/" target="_blank"> 鄂公网安备42280202422961</a>
+            <img src="https://static.spiderapi.cn/public/images/logo/moeicp_48x48.png" class="nofancybox" alt="MOE ICP" style="width:auto; height:18px; margin-bottom:-3.5px"><a href="https://icp.gov.moe/" target="_blank"> 萌国 No.20202022</a>丨
+            <img src="https://static.spiderapi.cn/public/images/logo/cloudbase.png" class="nofancybox" alt="腾讯云开发 CloudBase" style="width:auto; height:18px; margin-bottom:-4px"><a href="https://cloudbase.net/" target="_blank"> CloudBase</a>丨
+            <a href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="_blank"><img src="https://static.spiderapi.cn/public/images/logo/upyun.png" class="nofancybox" alt="又拍云赞助云存储" style="width:auto; height:19px; margin-bottom:-4px"></a>
         </span>
     </div>
 </div>
 
 <!-- <div class="sidebar_wo" id="leimu">
-    <img src="https://cdn.itbob.cn/img/footer/leimuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/leimuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/leimuA.png'" title="回到底部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/leimuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/leimuA.png'" title="回到底部">
 </div>
 <div class="sidebar_wo" id="lamu">
-    <img src="https://cdn.itbob.cn/img/footer/lamuA.png" class="nofancybox" alt="雷姆" 
-    onmouseover="this.src='https://cdn.itbob.cn/img/footer/lamuB.png'" 
-    onmouseout="this.src='https://cdn.itbob.cn/img/footer/lamuA.png'" title="回到顶部">
+    <img src="https://static.spiderapi.cn/itbob/images/footer/lamuA.png" class="nofancybox" alt="雷姆"
+    onmouseover="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuB.png'"
+    onmouseout="this.src='https://static.spiderapi.cn/itbob/images/footer/lamuA.png'" title="回到顶部">
 </div> -->
 
 <script>
@@ -791,7 +816,7 @@
         </div>
         <!-- <a id="back-to-top" class="back-to-top show hl fa fa-arrow-up" href="javascript:void(0)" title="回到顶部"></a> -->
         <a id="back-to-top" class="back-to-top2" href="javascript:void(0)" title="回到顶部">
-            <img class="nofancybox" src="https://cdn.itbob.cn/img/back_to_top.png"/>
+            <img class="nofancybox" src="https://static.spiderapi.cn/itbob/images/other/back_to_top.png"/>
         </a>
         <script>
             (function () {
