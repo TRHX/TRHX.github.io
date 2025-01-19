@@ -1,5 +1,5 @@
 ---
-title: 关于
+title: 关于站长
 layout: about
 ---
 
@@ -40,7 +40,7 @@ layout: about
     <a href="http://discordapp.com/users/1124152819423920188" title="Discord">
         <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/discord_48x48.png" alt="Discord"/>
     </a>
-    <a href="https://t.me/itbob1" title="Telegram">
+    <a href="https://t.me/WUKSEC" title="Telegram">
         <img class="nofancybox" src="https://static.spiderapi.cn/public/images/logo/telegram_48x48.png" alt="Telegram"/>
     </a>
     <a href="https://wotgame.cn/zh-cn/community/accounts/7050733952-%E8%88%92%E5%B0%8F%E5%85%8B%E4%B8%8E%E8%B4%9D%E5%B0%8F%E5%A1%94/" title="WOT 坦克世界">
@@ -51,10 +51,10 @@ layout: about
 ### About
 
 - 👨‍💻 语言：Python、JavaScript、Golang；
-- 👨‍🎓 专注：爬虫、逆向安全 (JS、APP、小程序逆向)；
-- 🚴‍♀️ 兴趣：开源情报、业余公路自行车手、[WOT](https://wot.360.cn/) 玩家；
-- 🏗️ 域名：搞 IT 的小黄人鲍勃，故命名为 [ITBOB.CN](https://www.itbob.cn/)；
-- ✒️ 博客：随缘更新，<font color='red'>曾经</font>运营公司公众号：K哥爬虫。
+- 👨‍🎓 擅长：数据挖掘、逆向和正向安全、浏览器指纹、风控对抗；
+- 🚴‍♀️ 兴趣：开源情报、自媒体运营、业余公路自行车手、[WOT](https://wot.360.cn/) 玩家；
+- 💾 项目：[SpiderBOX - 虫盒](https://spiderbox.cn/)丨[SpiderAPI - 虫术](https://spiderapi.cn/)丨[SpiderGRC - 虫规](https://spidergrc.cn/)；
+- ✒️ 博客：随缘更新，曾经从0打造、运营公司公众号：K哥爬虫（后变相被迫离职交由他人运营）。
 
 <!-- ### Contact -->
 
