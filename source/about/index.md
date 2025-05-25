@@ -54,7 +54,7 @@ layout: about
 - 👨‍🎓 擅长：数据挖掘、逆向和正向安全、浏览器指纹、风控对抗；
 - 🚴‍♀️ 兴趣：开源情报、自媒体运营、业余公路自行车手、[WOT](https://wot.360.cn/) 玩家；
 - 💾 项目：[SpiderBOX - 虫盒](https://spiderbox.cn/)丨[SpiderAPI - 虫术](https://spiderapi.cn/)丨[SpiderGRC - 虫规](https://spidergrc.cn/)；
-- ✒️ 博客：18年开始写文章，曾经从0打造、运营公司公众号：K哥爬虫，后变相被迫离职交还给公司。
+- ✒️ 博客：<font color="red">18年开始写文章，曾经从0打造、运营公司公众号：K哥爬虫，粉丝1W+，后变相被迫离职交还给公司。</font>
 
 <!-- ### Contact -->
 
