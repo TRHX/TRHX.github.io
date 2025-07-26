@@ -5,7 +5,7 @@ layout: friends
 bob:
     - name: 博客名称：BOB'S BLOG
       link: 博客地址：https://www.itbob.cn/
-      logo: 博客头像：https://static.spiderapi.cn/public/images/info/avatar_64x64.png
+      logo: 博客头像：https://static.wukongsec.com/public/images/info/avatar_64x64.png
       description: 博客描述：数据采集、逆向安全
       other: 温馨提示：长期不更新或无法打开站点，本站会下架链接，申请添加/删除链接请在本页留言
 
@@ -33,7 +33,7 @@ reverse:
     logo: /itbob/images/friends/lxspider.jpg
     description: "中科大数据研究院高级工程师"
   - name: geekbyte
-    link: https://static.spiderapi.cn/itbob/images/friends/qrcode_geekbyte.jpg
+    link: https://static.wukongsec.com/itbob/images/friends/qrcode_geekbyte.jpg
     logo: /itbob/images/friends/geekbyte.jpg
     description: "TLS 指纹专家，公众号编角料"
   - name: 十一姐
@@ -57,11 +57,11 @@ reverse:
   #  logo: /itbob/images/friends/Litt1eQueen.jpg
   #  description: "密码学专家，公众号Coder小Q"
   # - name: Nanda
-  #   link: https://static.spiderapi.cn/itbob/images/friends/qrcode_pcsyd.jpg
+  #   link: https://static.wukongsec.com/itbob/images/friends/qrcode_pcsyd.jpg
   #   logo: /itbob/images/friends/pcsyd.jpg
   #   description: "探索主流混淆及风控策略，公众号爬虫术与道"
   # - name: TheWeiJunTG
-  #   link: https://static.spiderapi.cn/itbob/images/friends/qrcode_ReverseCrawler.jpg
+  #   link: https://static.wukongsec.com/itbob/images/friends/qrcode_ReverseCrawler.jpg
   #   logo: /itbob/images/friends/ReverseCrawler.jpg
   #   description: "逆向领域知名博主，公众号逆向与爬虫的故事"
 
@@ -172,7 +172,7 @@ friends:
 
 博客名称：BOB'S BLOG
 博客地址：https://www.itbob.cn/
-博客头像：https://static.spiderapi.cn/public/images/info/avatar_64x64.png
+博客头像：https://static.wukongsec.com/public/images/info/avatar_64x64.png
 博客描述：数据采集、逆向安全
 <font color="red"><strong>温馨提示：长期不更新或无法打开站点，本站会下架链接，申请添加/删除链接请在本页留言</strong></font>
 
